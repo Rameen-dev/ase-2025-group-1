@@ -1,16 +1,19 @@
 name: Node.js CI
 
 on:
-  pull_request:
   push:
-    branches: [dev]   # run on dev pushes; PRs from any branch
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Mark start time
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -31,3 +34,107 @@ jobs:
 
       - name: Test
         run: npm test --if-present
+
+      # --------- Discord notifications (embeds) ----------
+      - name: Install jq (for JSON encoding)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Notify Discord (success)
+        if: ${{ success() }}
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL_ACTIONS }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+          REF_NAME: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          SHA: ${{ github.sha }}
+          EVENT: ${{ github.event_name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || '' }}
+        run: |
+          SHORT_SHA=${SHA::7}
+          NOW=$(date +%s); DURATION=$((NOW - START_TIME))
+          M=$((DURATION/60)); S=$((DURATION%60))
+          DURATION_STR="${M}m ${S}s"
+
+          # description is optional; safely JSON-encode if present
+          DESC=$(jq -Rn --arg x "$COMMIT_MSG" '$x')
+
+          cat > payload.json <<EOF
+          {
+            "username": "CI Bot",
+            "embeds": [{
+              "title": "✅ CI Passed",
+              "description": $DESC,
+              "url": "${RUN_URL}",
+              "color": 5763719,
+              "fields": [
+                {"name":"Repo","value":"\`${REPO}\`","inline":true},
+                {"name":"Branch","value":"\`${REF_NAME}\`","inline":true},
+                {"name":"Actor","value":"${ACTOR}","inline":true},
+                {"name":"Commit","value":"[\`${SHORT_SHA}\`](${COMMIT_URL})","inline":true},
+                {"name":"Event","value":"${EVENT}","inline":true},
+                {"name":"Duration","value":"${DURATION_STR}","inline":true}
+              ],
+              "footer": {"text":"GitHub Actions • Run #${RUN_NUMBER}"},
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            }]
+          }
+          EOF
+
+          curl -H "Content-Type: application/json" -d @payload.json "$WEBHOOK"
+
+      - name: Notify Discord (failure)
+        if: ${{ failure() }}
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL_ACTIONS }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_NUMBER: ${{ github.run_number }}
+          REF_NAME: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+          SHA: ${{ github.sha }}
+          EVENT: ${{ github.event_name }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          COMMIT_URL: ${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
+          COMMIT_MSG: ${{ github.event.head_commit.message || github.event.pull_request.title || '' }}
+          ALERT_ROLE_ID: ""  # set to a role ID to ping, e.g. "123456789012345678"
+        run: |
+          SHORT_SHA=${SHA::7}
+          NOW=$(date +%s); DURATION=$((NOW - START_TIME))
+          M=$((DURATION/60)); S=$((DURATION%60))
+          DURATION_STR="${M}m ${S}s"
+
+          CONTENT="❌ Build failed on \`${REF_NAME}\`"
+          if [ -n "$ALERT_ROLE_ID" ]; then
+            CONTENT="<@&$ALERT_ROLE_ID> $CONTENT"
+          fi
+
+          DESC=$(jq -Rn --arg x "$COMMIT_MSG" '$x')
+
+          cat > payload.json <<EOF
+          {
+            "username": "CI Bot",
+            "content": "$CONTENT",
+            "embeds": [{
+              "title": "CI Failed",
+              "description": $DESC,
+              "url": "${RUN_URL}",
+              "color": 15548997,
+              "fields": [
+                {"name":"Repo","value":"\`${REPO}\`","inline":true},
+                {"name":"Branch","value":"\`${REF_NAME}\`","inline":true},
+                {"name":"Actor","value":"${ACTOR}","inline":true},
+                {"name":"Commit","value":"[\`${SHORT_SHA}\`](${COMMIT_URL})","inline":true},
+                {"name":"Event","value":"${EVENT}","inline":true},
+                {"name":"Duration","value":"${DURATION_STR}","inline":true}
+              ],
+              "footer": {"text":"GitHub Actions • Run #${RUN_NUMBER}"},
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            }]
+          }
+          EOF
+
+          curl -H "Content-Type: application/json" -d @payload.json "$WEBHOOK"
