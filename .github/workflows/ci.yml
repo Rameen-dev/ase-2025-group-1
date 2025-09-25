@@ -1,28 +1,33 @@
-name: .NET CI
+name: Node.js CI
 
 on:
   pull_request:
   push:
-    branches: [ dev ]   # run checks when code is pushed to dev or a PR is opened
+    branches: [dev]   # run on dev pushes; PRs from any branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          dotnet-version: '8.0.x'   # adjust if you’re using .NET 7 or 6
+          node-version: '20'
+          cache: 'npm'   # caches node_modules based on package-lock.json
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint --if-present
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        env:
+          NODE_ENV: production
+        run: npm run build
 
-      - name: Run tests
-        run: dotnet test --no-build --verbosity normal
+      - name: Test
+        run: npm test --if-present
