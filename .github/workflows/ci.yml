@@ -64,7 +64,8 @@ jobs:
 
           cat > payload.json <<EOF
           {
-            "username": "CI Bot",
+            "username": "GitHub - CI Bot",
+            "avatar_url": "https://imgur.com/gallery/github-ZkSDkDe",
             "embeds": [{
               "title": "✅ CI Passed",
               "description": $DESC,
