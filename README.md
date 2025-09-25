@@ -110,7 +110,8 @@ Run this if dependencies break or after pulling major changes.
 
 ## ✅ CI/CD (GitHub Actions)
 
-Every push and pull request triggers: 1. **Install deps** (`npm ci`)\
+Every push and pull request triggers: 
+1. **Install deps** (`npm ci`)\
 2. **Lint** (`npm run lint`)\
 3. **Build** (`npm run build`)\
 4. **Run tests** (when configured)
@@ -177,6 +178,6 @@ require **passing checks** before merging.
 
 ## 🏁 Next Steps
 
--   Implement project features incrementally.\
--   Maintain feature branches small and focused.\
+-   Implement project features incrementally.
+-   Maintain feature branches small and focused.
 -   Use GitHub Issues/Projects to track tasks.
