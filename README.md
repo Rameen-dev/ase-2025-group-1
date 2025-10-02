@@ -155,8 +155,3 @@ Feature flags / migrations / rollout:
 - Ensure `npm run lint` and `npm run build` pass locally before opening PRs.
 
 ---
-
-## 🏁 Next Steps
-- Add tests (unit + e2e smoke) to CI.  
-- Set up PR preview deploys and dev auto-deploy.  
-- Use GitHub Issues/Projects to track stories and tasks.
