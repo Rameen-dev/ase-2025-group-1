@@ -1,183 +1,162 @@
-# 📘 ASE-2025-Group-1 --- Applied Software Engineering Project
+# 📘 ASE-2025-Group-1 — Applied Software Engineering Project
 
-This repository hosts the **Group 1 project** for the 2025 Applied
-Software Engineering module. It is a **Next.js (React + Node.js)**
-monorepo with both frontend and backend functionality managed in a
-single codebase, split logically by branches and workflows.
+This repository hosts the **Group 1 project** for the 2025 Applied Software Engineering module.  
+It’s a **Next.js (React + Node.js)** monorepo with both frontend UI and backend API in one codebase.
 
-------------------------------------------------------------------------
+---
 
 ## 🚀 Tech Stack
 
--   **Framework:** [Next.js 15](https://nextjs.org/) (React + Node.js)\
--   **Language:** JavaScript / TypeScript (if extended)\
--   **Styling:** TailwindCSS\
--   **CI/CD:** GitHub Actions (build + lint checks)\
--   **Package Manager:** npm
+- **Framework:** Next.js 15 (React + Node.js)  
+- **Language:** JavaScript / TypeScript (if extended)  
+- **Styling:** TailwindCSS  
+- **CI/CD:** GitHub Actions (build + lint + tests)  
+- **Package Manager:** npm
 
-------------------------------------------------------------------------
+---
 
-## 📂 Branch Strategy
+## 🌿 Branching & Git Workflow (Professional Setup)
 
-We follow a **trunk-based + feature branching** model to ensure quality,
-consistency, and alignment with Agile practices.
+We now use a **trunk-based + short-lived feature branch** model.  
+👉 The old permanent `frontend` and `backend` branches have been removed for clarity.
 
-    (main)   ← production-ready, stable branch
-       ▲
-     (dev)   ← integration branch (frontend + backend merge here)
-      ▲   ▲
-      │   └── (backend) ← API, database, server-side features
-      └───── (frontend) ← UI, pages, components
+```
+(main)  ← production-only, stable
+  ▲
+(dev)   ← shared integration (auto-deploy & test)
+  ▲
+  ├─ feature/login-ui
+  ├─ feature/login-api
+  ├─ feature/payments-refactor
+  └─ feature/bugfix-xyz
+```
 
--   **`main`** → Stable release branch. Only updated from `dev`.
-    Protected (PRs required).\
--   **`dev`** → Integration branch. Frontend and backend changes are
-    merged here.\
--   **`frontend`** → Active development for UI and React pages.\
--   **`backend`** → Active development for API routes and backend
-    logic.\
--   **feature branches** → Named as `feat/login-form`,
-    `fix/api-timeout`, etc., and merged back into either `frontend` or
-    `backend`.
+**Key rules**
+- **`main`**: production-ready only. Updated *only* via PR from `dev` and tagged releases.  
+- **`dev`**: single integration branch. All work merges here via PR after passing CI.  
+- **`feature/*`**: short‑lived task branches (front or back end). Merge → `dev` via PR.
 
-All long-lived branches (**main**, **dev**, **frontend**, **backend**) have already been created.  
-👉 Team members should only start working in these branches **once discussed and agreed during team planning** to avoid conflicts.  
+This keeps integration clean, supports parallel work, and mirrors industry practice.
 
+---
 
-------------------------------------------------------------------------
+## ⚙️ Quick Start (Local Setup)
 
-## 🔧 Setup Guide for Team Members
-
-### 1. Clone the repository
-
-``` bash
+```bash
 git clone https://github.com/Rameen-dev/ase-2025-group-1.git
 cd ase-2025-group-1
-```
 
-### 2. Switch to the correct branch
+# Work from dev
+git switch dev
+git pull
 
-Choose based on your work:
+# Create a task branch
+git checkout -b feature/<topic-short-desc>
 
-``` bash
-git switch frontend   # For UI / Next.js pages
-git switch backend    # For API / server logic / Database
-git switch dev        # For integration tasks
-```
-
-### 3. Install dependencies
-
-We use `npm ci` (clean install) to guarantee consistent dependencies:
-
-``` bash
+# Install dependencies (clean install for consistency)
 npm ci
+
+# Run the app
+npm run dev   # http://localhost:3000
 ```
 
-### 4. Run in development mode
-
-``` bash
-npm run dev
+### Useful scripts
+```bash
+npm run build   # Production build
+npm run start   # Run production build
+npm run lint    # ESLint checks
+npm test        # (when tests are added)
 ```
 
-Visit <http://localhost:3000> in your browser.
+---
 
-### 5. Other useful scripts
+## 🔐 Branch Protection (recommended)
+- **dev**: require PRs, passing status checks, 1–2 reviews, up‑to‑date with base.  
+- **main**: same as dev **plus** releases are cut from tags (e.g., `v0.1.0`).
 
-``` bash
-npm run build   # Creates an optimized production build
-npm run start   # Runs the production build
-npm run lint    # Runs ESLint checks
-npm test        # (if tests are added later)
-```
+---
 
-------------------------------------------------------------------------
+## 🤝 Collaboration Workflow
 
-## 🛠 Dependency Reset (Windows Users)
+1) **Create** a feature branch from `dev`  
+   ```bash
+   git switch dev && git pull
+   git checkout -b feature/<topic-short-desc>
+   ```
 
-If you run into errors with `npm ci` on Windows (locked files, EPERM) do this in Command prompt (Make sure to close VSC):
+2) **Develop & commit** (use Conventional Commits when possible)  
+   ```bash
+   git commit -m "feat: add login form component"
+   ```
 
-``` bat
-@echo off
-rmdir /s /q node_modules
-npm cache clean --force
-npm ci
-echo Dependencies reset. Run: npm run dev
-```
+3) **Open PR → `dev`**  
+   - CI runs: lint, typecheck, unit tests, build (and e2e when available).  
+   - Address review comments; PR must be green.
 
-Run this if dependencies break or after pulling major changes.
+4) **Merge** when CI passes. `dev` auto-deploys to the shared dev environment.
 
-------------------------------------------------------------------------
+5) **Release**: when stable, open PR `dev → main`, run full checks, tag release.
+
+> **Tip:** Slice work by *feature*, not by “frontend vs backend”. If a UI depends on an API change, coordinate two PRs (e.g., `feature/login-ui` and `feature/login-api`) that both target `dev`. Use feature flags if needed.
+
+---
 
 ## ✅ CI/CD (GitHub Actions)
 
-Every push and pull request triggers: 
-1. **Install deps** (`npm ci`)\
-2. **Lint** (`npm run lint`)\
-3. **Build** (`npm run build`)\
-4. **Run tests** (when configured)
+Every push and PR triggers:  
+1. **Install deps** (`npm ci`)  
+2. **Lint** (`npm run lint`)  
+3. **Build** (`npm run build`)  
+4. **Tests** (unit/e2e as configured)  
+5. (Optional) **Preview Deploy** for PRs and **auto-deploy** for `dev`
 
-Branches `main`, `dev`, `frontend`, and `backend` are protected to
-require **passing checks** before merging.
+---
 
-------------------------------------------------------------------------
+## 🧩 Conventions
 
-## 👥 Collaboration Workflow
+- **Branch names:** `feature/<topic-short-desc>`, `fix/<bug-id>`, `chore/<task>`  
+- **Commits:** Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, etc.)  
+- **PR Template:** add `.github/pull_request_template.md`
 
-1.  Create a **feature branch** from `frontend` or `backend`:
+Example PR template:
+```md
+## Summary
+<What this changes and why>
 
-    ``` bash
-    git switch frontend
-    git checkout -b feat/login-form
-    ```
+## Scope
+- [ ] Frontend
+- [ ] Backend
+- [ ] DB/Schema
+- [ ] Docs
 
-2.  Commit changes with clear messages:
+## Tests
+- [ ] Unit tests added/updated
+- [ ] E2E/Smoke (if applicable)
 
-    ``` bash
-    git commit -m "feat: add login form component"
-    ```
+## Notes
+Feature flags / migrations / rollout:
+```
 
-3.  Push branch and open a Pull Request into `frontend` or `backend`.\
-
-4.  Once reviewed, merged → `dev`.\
-
-5.  `dev` is periodically merged into `main` after testing.
-
-------------------------------------------------------------------------
+---
 
 ## 🧾 Assessment Alignment
 
--   **Agile Practices:** We use a branching model aligned with Agile
-    (Scrum), allowing parallel frontend/backend development and
-    integration sprints.\
--   **CI/CD:** Automated builds, linting, and tests enforce software
-    engineering best practices.\
--   **Version Control:** GitHub branch protection rules ensure
-    collaborative, structured workflow.\
--   **Maintainability:** Dependency management with `npm ci` ensures
-    reproducibility and consistency across environments.\
--   **Professionalism:** Clear README, scripts, and workflow
-    documentation support team onboarding and project sustainability.
+- **Agile & CI/CD:** Professional branching + PR reviews + automated checks.  
+- **Version Control Rigor:** Protected branches and traceable releases.  
+- **Maintainability:** Reproducible installs via `npm ci`; clear workflow docs.  
+- **Professionalism:** Industry-aligned process that assessors can audit easily.
 
-------------------------------------------------------------------------
+---
 
 ## 📌 Contribution Guidelines
 
--   Always pull the latest changes before starting work:
+- Pull latest before starting work: `git switch dev && git pull`.  
+- Do **not** commit directly to `main` or `dev`. Always use PRs.  
+- Ensure `npm run lint` and `npm run build` pass locally before opening PRs.
 
-    ``` bash
-    git pull origin <branch>
-    ```
-
--   Use meaningful commit messages (`feat:`, `fix:`, `chore:`).\
-
--   Do not commit directly to `main` or `dev`.\
-
--   Ensure lint and build checks pass locally before PR.
-
-------------------------------------------------------------------------
+---
 
 ## 🏁 Next Steps
-
--   Implement project features incrementally.
--   Maintain feature branches small and focused.
--   Use GitHub Issues/Projects to track tasks.
+- Add tests (unit + e2e smoke) to CI.  
+- Set up PR preview deploys and dev auto-deploy.  
+- Use GitHub Issues/Projects to track stories and tasks.
