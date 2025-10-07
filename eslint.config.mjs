@@ -1,3 +1,4 @@
+// eslint.config.mjs
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
@@ -5,12 +6,13 @@ import { FlatCompat } from "@eslint/eslintrc";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
+const compat = new FlatCompat({ baseDirectory: __dirname });
 
-const eslintConfig = [
+const config = [
+  // Next + TS presets (eslintrc-style via compat)
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Global ignores
   {
     ignores: [
       "node_modules/**",
@@ -20,6 +22,21 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+
+  // Project-wide rule tweaks (optional)
+  {
+    rules: {
+      // your rules here
+    },
+  },
+
+  // Allow require() in Jest config files only
+  {
+    files: ["jest.config.*"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ];
 
-export default eslintConfig;
+export default config;

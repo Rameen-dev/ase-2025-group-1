@@ -3,7 +3,6 @@
 
 export default function HomePage() {
   return (
-
     // The whole page is wrapped in a <main> tag
     // I used Tailwind classes to make it take the full screen height,
     // with a dark background and white text for good contrast.
