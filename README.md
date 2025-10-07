@@ -150,7 +150,7 @@ Feature flags / migrations / rollout:
 
 ## 📌 Contribution Guidelines
 
-- Pull latest before starting work: `git switch dev && git pull`.  
+- Pull latest before starting work: `git switch/ checkout dev && git pull`.  
 - Do **not** commit directly to `main` or `dev`. Always use PRs.  
 - Ensure `npm run lint` and `npm run build` pass locally before opening PRs.
 
