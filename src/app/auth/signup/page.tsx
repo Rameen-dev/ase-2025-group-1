@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, type SignUpInput } from "@/lib/validation";
 import { Input } from "@/components/forms/input";
 import { PasswordInput } from "@/components/forms/passwordInput";
+import SignupIcon from "@/assets/signup.svg";
 
 export default function SignUpPage() {
   const {
@@ -58,10 +59,10 @@ export default function SignUpPage() {
 
   return (
     <div className="flex min-h-screen">
-      <div
-        className="w-1/2 h-screen bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/logo.png')" }}
-      ></div>
+      <div className="w-1/2 flex items-center justify-center bg-gray-100">
+        <SignupIcon className="w-32 h-32 fill-green-600" />
+      </div>
+
       <div className="w-1/2 flex items-center justify-center">
         <main className="mx-auto max-w-md p-6">
           <h1 className="mb-4 text-2xl font-semibold">Create your account</h1>
@@ -88,11 +89,6 @@ export default function SignUpPage() {
               type="email"
               {...register("email")}
               error={errors.email?.message}
-            />
-            <Input
-              label="Phone (optional)"
-              {...register("phone")}
-              error={errors.phone?.message}
             />
             <PasswordInput
               label="Password"
