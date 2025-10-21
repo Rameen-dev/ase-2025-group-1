@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, type SignUpInput } from "@/lib/validation";
 import { Input } from "@/components/forms/input";
 import { PasswordInput } from "@/components/forms/passwordInput";
-import SignupIcon from "@/assets/signup.svg";
+import Image from "@images/logo.png";
+import { logDOM } from "@testing-library/react";
 
 export default function SignUpPage() {
   const {
@@ -59,9 +60,7 @@ export default function SignUpPage() {
 
   return (
     <div className="flex min-h-screen">
-      <div className="w-1/2 flex items-center justify-center bg-gray-100">
-        <SignupIcon className="w-32 h-32 fill-green-600" />
-      </div>
+      <div className="w-full h-96 bg-[url('/your-image.jpg')] bg-cover bg-center bg-no-repeat"></div>
 
       <div className="w-1/2 flex items-center justify-center">
         <main className="mx-auto max-w-md p-6">
