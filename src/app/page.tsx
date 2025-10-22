@@ -1,4 +1,4 @@
-import { SignUpButton } from "@/components/quickbutton";
+import { SignUpButton } from "@/components/signupButton";
 
 export default function HomePage() {
   return (

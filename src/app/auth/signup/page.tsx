@@ -22,6 +22,7 @@ export default function SignUpPage() {
       lastName: "",
       email: "",
       password: "",
+      confirmPassword: "",
       marketingOptIn: false,
       termsAccepted: false,
     },
@@ -59,7 +60,7 @@ export default function SignUpPage() {
   return (
     <div className="flex min-h-screen">
       <Link href="/">
-        <Image
+        <Image //Logo appearing in top right of the screen, with link to home page
           src="/images/logo.png"
           alt="SustainWear"
           width={750}
@@ -98,6 +99,11 @@ export default function SignUpPage() {
             {...register("password")}
             error={errors.password?.message}
           />
+          <PasswordInput
+            label="Confirm password"
+            {...register("confirmPassword")}
+            error={errors.confirmPassword?.message}
+          />
 
           <label className="flex items-center gap-2 text-sm">
             <input type="checkbox" {...register("marketingOptIn")} /> Receive
@@ -127,6 +133,12 @@ export default function SignUpPage() {
             {isSubmitting ? "Creating..." : "Sign up"}
           </button>
         </form>
+        <h1>
+          Already have an account with us?{" "}
+          <a href="/auth/login" className="text-blue-500 underline">
+            Log in
+          </a>
+        </h1>
       </main>
 
       <div className="w-1/2 flex-col justify-center items-center bg-green-200">
