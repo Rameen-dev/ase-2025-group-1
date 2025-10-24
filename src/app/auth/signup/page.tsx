@@ -8,8 +8,12 @@ import { Input } from "@/components/forms/input";
 import { PasswordInput } from "@/components/forms/passwordInput";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";   // ✅ add this
 
-export default function SignUpPage() {
+
+export default function SignUpPage() 
+{
+  const router = useRouter();                   // ✅ add this
   const {
     register,
     handleSubmit,
@@ -27,6 +31,8 @@ export default function SignUpPage() {
       termsAccepted: false,
     },
   });
+
+  
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverMsg, setServerMsg] = useState<string | null>(null);
@@ -52,9 +58,13 @@ export default function SignUpPage() {
       setServerError(map[data?.code] ?? map.SERVER_ERROR);
       return;
     }
+    router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
+
 
     setServerMsg("Account created! Check your email to verify.");
     reset(); // clear the form after success
+
+    
   };
 
   return (
