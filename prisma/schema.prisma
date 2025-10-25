@@ -18,7 +18,10 @@ model User {
   last_name               String
   created_on              DateTime                  @default(now())
   updated_on              DateTime                  @updatedAt
+
+  // RELATIONS:
   EmailVerificationTokens EmailVerificationTokens[]
+  PasswordResetTokens     PasswordResetTokens[]     // ← add this
 }
 
 model EmailVerificationTokens {
@@ -28,7 +31,22 @@ model EmailVerificationTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
+
   User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
+  @@index([user_id, created_on])
+}
+
+model PasswordResetTokens {
+  pr_token_id Int       @id @default(autoincrement())
+  user_id     Int
+  code        String     // this will be the 6-digit code we email
+  expires_on  DateTime   // e.g. now + 10 mins
+  consumed_on DateTime?  // once used, we timestamp it
+  created_on  DateTime   @default(now())
+
+  User        User       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  // helpful index so we can quickly find latest valid code by user
   @@index([user_id, created_on])
 }

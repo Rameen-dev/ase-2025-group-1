@@ -149,7 +149,7 @@ export default function LoginPage() {
           <p>
             Forgotten your Password?{" "}
             <a
-              href="/auth/reset/verify"
+              href="/auth/reset/request"
               className="text-green-800 font-medium hover:underline"
             >
               Click Here
