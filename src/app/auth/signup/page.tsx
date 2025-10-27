@@ -60,9 +60,7 @@ export default function SignUpPage()
 
 
     setServerMsg("Account created! Check your email to verify.");
-    reset(); // clear the form after success
-
-    
+    reset(); // clear the form after success 
   };
 
   return (
