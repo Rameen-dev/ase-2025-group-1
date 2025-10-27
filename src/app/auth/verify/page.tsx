@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation"; // add router for redirect if you want later
+import { useSearchParams, useRouter } from "next/navigation";
 
 const BOXES = 4;
 
@@ -14,6 +14,7 @@ export default function VerifyEmailPage() {
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const [serverErr, setServerErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [resending, setResending] = useState(false); // ⭐ NEW
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -45,7 +46,6 @@ export default function VerifyEmailPage() {
     e.preventDefault();
   }
 
-  // 🔥 THIS is now the real verify call
   async function handleContinue() {
     setServerErr(null);
     setServerMsg(null);
@@ -73,7 +73,6 @@ export default function VerifyEmailPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        // handle known codes from the backend
         const map: Record<string, string> = {
           INVALID_REQUEST: "Invalid request.",
           INVALID_CODE: "That code is incorrect.",
@@ -86,16 +85,14 @@ export default function VerifyEmailPage() {
         return;
       }
 
-    if (data.code === "ALREADY_VERIFIED" || data.code === "VERIFIED") {
-      setServerMsg("Your email is verified ✅");
+      if (data.code === "ALREADY_VERIFIED" || data.code === "VERIFIED") {
+        setServerMsg("Your email is now verified!");
 
-      // small UX: wait a moment so they see the tick, then go
-      setTimeout(() => {
-        router.push("/donor/dashboard");
-      }, 1200);
-    }
-
-
+        // tiny delay then redirect
+        setTimeout(() => {
+          router.push("/donor/dashboard");
+        }, 1200);
+      }
     } catch (err) {
       console.error(err);
       setServerErr("Network error. Try again.");
@@ -104,15 +101,52 @@ export default function VerifyEmailPage() {
     }
   }
 
-  function handleResend() {
-    // future step: call /api/resend-otp
-    console.log("Resend clicked for:", email);
+  // ⭐ NEW: resend logic
+  async function handleResend() {
+    if (!email) {
+      setServerErr("Missing email in URL.");
+      return;
+    }
+
+    setServerErr(null);
+    setServerMsg(null);
+    setResending(true);
+
+    try {
+      const res = await fetch("/api/resend-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        // backend will send a `code` like USER_NOT_FOUND or RATE_LIMIT
+        const map: Record<string, string> = {
+          USER_NOT_FOUND: "We couldn't find an account for that email.",
+          RATE_LIMIT: "Please wait before requesting another code.",
+          ALREADY_VERIFIED: "Your email is already verified.",
+          SERVER_ERROR: "Server error. Try again.",
+        };
+
+        setServerErr(map[data?.code] ?? "Could not resend code.");
+        return;
+      }
+
+      // success case
+      // We don't reveal the code obviously, just confirm we sent it.
+      setServerMsg("We've sent you a new code.");
+    } catch (err) {
+      console.error(err);
+      setServerErr("Network error. Try again.");
+    } finally {
+      setResending(false);
+    }
   }
 
   return (
     <main className="min-h-screen bg-white flex flex-col">
-      {/* ... header etc. (keep your current JSX) ... */}
-
       <section className="flex-1 flex items-center justify-center px-6">
         <div className="max-w-xl w-full text-center" onPaste={onPaste}>
           <h2 className="text-4xl font-semibold mb-1">Verify Your Email</h2>
@@ -121,7 +155,6 @@ export default function VerifyEmailPage() {
             <span className="font-medium">{email || "your email"}</span>
           </p>
 
-          {/* show status / errors */}
           {serverErr && (
             <p className="text-red-600 text-sm mb-4">{serverErr}</p>
           )}
@@ -129,7 +162,6 @@ export default function VerifyEmailPage() {
             <p className="text-green-700 text-sm mb-4">{serverMsg}</p>
           )}
 
-          {/* OTP inputs */}
           <div className="flex items-center justify-center gap-4 mb-8">
             {Array.from({ length: BOXES }).map((_, i) => (
               <input
@@ -148,7 +180,6 @@ export default function VerifyEmailPage() {
             ))}
           </div>
 
-          {/* Continue button */}
           <button
             onClick={handleContinue}
             disabled={submitting}
@@ -157,15 +188,14 @@ export default function VerifyEmailPage() {
             {submitting ? "Verifying..." : "Continue"}
           </button>
 
-          {/* Resend link */}
           <p className="mt-6 text-sm">
             Didn’t receive your code?{" "}
             <button
-              className="text-green-700 underline"
+              className="text-green-700 underline disabled:opacity-50"
               onClick={handleResend}
-              disabled={submitting}
+              disabled={submitting || resending} // ⭐ NEW
             >
-              Click here to send another
+              {resending ? "Sending..." : "Click here to send another"}
             </button>
           </p>
         </div>

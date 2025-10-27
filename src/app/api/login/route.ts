@@ -1,31 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
+import { sendVerificationEmail } from "@/lib/email";
 
 export const runtime = "nodejs"; // bcrypt requires Node.js runtime
+
+// generate a 4-digit OTP like "4821"
+function generateOtp() {
+  const n = Math.floor(Math.random() * 10000); // 0..9999
+  return n.toString().padStart(4, "0");
+}
 
 export async function POST(req: NextRequest) {
   try {
     // 1️⃣ Read email + password from the request body
-    const { email, password } = await req.json();
+    const { email: rawEmail, password } = await req.json();
 
     // 2️⃣ Basic validation
-    if (!email || !password) {
+    if (!rawEmail || !password) {
       return NextResponse.json(
         { success: false, message: "Email and password are required." },
         { status: 400 }
       );
     }
 
+    // normalise email
+    const email = rawEmail.toLowerCase().trim();
+
     // 3️⃣ Find the user by email
     const user = await prisma.user.findUnique({
       where: { email },
+      select: {
+        user_id: true,
+        email: true,
+        password_hash: true,
+        is_verified: true,
+        first_name: true,
+        last_name: true,
+        role: true,
+      },
     });
 
     // If user not found
     if (!user) {
       return NextResponse.json(
-        { success: false, message: "Invalid email or password." },
+        {
+          success: false,
+          code: "INVALID_LOGIN",
+          message: "Invalid email or password.",
+        },
         { status: 401 }
       );
     }
@@ -34,28 +57,93 @@ export async function POST(req: NextRequest) {
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return NextResponse.json(
-        { success: false, message: "Invalid email or password." },
+        {
+          success: false,
+          code: "INVALID_LOGIN",
+          message: "Invalid email or password.",
+        },
         { status: 401 }
       );
     }
 
     // 5️⃣ Check if user is verified
     if (!user.is_verified) {
+      // The user exists and password is correct, BUT they haven't verified email.
+      // We do the "resend OTP" flow here automatically.
+
+      // 5a. generate a fresh OTP
+      const newCode = generateOtp();
+
+      // 5b. invalidate any previous tokens for this user (mark consumed_on)
+      await prisma.emailVerificationTokens.updateMany({
+        where: {
+          user_id: user.user_id,
+          consumed_on: null,
+        },
+        data: {
+          consumed_on: new Date(),
+        },
+      });
+
+      // 5c. create/save a brand new token with expiry (10 minutes for example)
+      const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+      await prisma.emailVerificationTokens.create({
+        data: {
+          user_id: user.user_id,
+          token: newCode,
+          expires_on: expiresAt,
+          // consumed_on defaults to null in schema
+        },
+      });
+
+      // 5d. send them the new verification code email
+      try {
+        await sendVerificationEmail(user.email, user.first_name, newCode);
+      } catch (err) {
+        console.error("❌ Failed to send verification email during login:", err);
+
+        // rollback this token (so user can't try to use a code they never actually received)
+        await prisma.emailVerificationTokens.updateMany({
+          where: {
+            user_id: user.user_id,
+            token: newCode,
+          },
+          data: {
+            consumed_on: new Date(),
+          },
+        });
+
+        return NextResponse.json(
+          {
+            success: false,
+            code: "SERVER_ERROR",
+            message: "Could not send verification email.",
+          },
+          { status: 500 }
+        );
+      }
+
+      // 5e. respond with NOT_VERIFIED and include the email
+      // the frontend will see this and redirect them to /auth/verify?email=...
       return NextResponse.json(
         {
           success: false,
+          code: "NOT_VERIFIED",
           message:
-            "Your email is not verified yet. Please verify before logging in.",
+            "Your email is not verified yet. We've sent you a new code.",
+          email: user.email,
         },
         { status: 403 }
       );
     }
 
     // 6️⃣ If all checks pass → return success
-    // (Later we’ll add proper sessions/cookies here)
+    // (Later you’ll add session cookie / JWT here)
     return NextResponse.json(
       {
         success: true,
+        code: "LOGIN_OK",
         user: {
           user_id: user.user_id,
           role: user.role,
@@ -68,7 +156,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Login error:", err);
     return NextResponse.json(
-      { success: false, message: "Server error during login." },
+      { success: false, code: "SERVER_ERROR", message: "Server error during login." },
       { status: 500 }
     );
   }

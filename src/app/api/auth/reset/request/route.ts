@@ -102,28 +102,37 @@ export async function POST(req: NextRequest) {
 
 
 
-    
     // 6. send email with up to 3 attempts
     let sent = false;
     let attempt = 0;
-    const maxAttempts = 1001;
+    const maxAttempts = 3; // ✅ allow up to 3 tries
 
-    while (attempt < maxAttempts) {
-    attempt++;
-    try {
+    while (attempt < maxAttempts && !sent) {
+      attempt++;
+      try {
         console.log(`📧 Attempt ${attempt} to send reset email...`);
         await sendResetCodeEmail(user.email, user.first_name, code);
         sent = true;
         console.log("✅ Email sent successfully.");
-    } catch (err) {
+      } catch (err) {
         console.error(`❌ Attempt ${attempt} failed:`, err);
+
         if (attempt < maxAttempts) {
-        // small exponential backoff: 1s, 2s, then stop
-        const delay = 1000 * Math.pow(2, attempt - 1);
-        await new Promise((res) => setTimeout(res, delay));
+          // small exponential backoff: 1s, 2s, then stop
+          const delay = 1000 * Math.pow(2, attempt - 1);
+          console.log(`⏳ Retrying in ${delay / 1000}s...`);
+          await new Promise((res) => setTimeout(res, delay));
+        } else {
+          console.error("🚫 All email attempts failed.");
         }
+      }
     }
-    }
+
+    // Optionally handle the case where it never sent
+    if (!sent) {
+      throw new Error("Failed to send reset email after multiple attempts.");
+}
+
 
 
     // 7. always reply with the same success message

@@ -12,6 +12,10 @@ export default function VerifyResetCodePage() {
   const [statusMsg, setStatusMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ⭐ NEW: resend state
+  const [resending, setResending] = useState(false);
+  const [resendMsg, setResendMsg] = useState(""); // success / error from resend
+
   const inputRefs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -45,6 +49,7 @@ export default function VerifyResetCodePage() {
     }
   }
 
+  // 🔐 Submit the 6-digit code they entered
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatusMsg("");
@@ -86,6 +91,43 @@ export default function VerifyResetCodePage() {
     }
   }
 
+  // ♻️ RESEND: issue a new password reset code
+  async function handleResend() {
+    // clear any old messages
+    setResendMsg("");
+    setStatusMsg("");
+    setResending(true);
+
+    try {
+      const res = await fetch("/api/auth/reset/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        // backend will (in our design) send things like USER_NOT_FOUND, RATE_LIMIT, SERVER_ERROR
+        if (data.code === "USER_NOT_FOUND") {
+          setResendMsg("No account found with that email.");
+        } else if (data.code === "RATE_LIMIT") {
+          setResendMsg("Please wait before requesting another code.");
+        } else {
+          setResendMsg("Could not resend code. Please try again.");
+        }
+      } else {
+        // success: we emailed a new code + invalidated the old one
+        setResendMsg("We've sent you a new code.");
+      }
+    } catch (err) {
+      console.error(err);
+      setResendMsg("Network error, try again.");
+    } finally {
+      setResending(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg border border-gray-200 p-8">
@@ -94,15 +136,17 @@ export default function VerifyResetCodePage() {
             Check your email
           </h1>
 
-        <p className="mt-2 text-sm text-gray-600">
-          We’ve sent a 6-digit code to{" "}
-          <span className="font-medium text-gray-900 break-all">
-            {email || "your email"}
-          </span>. Enter it below to continue.
-        </p>
+          <p className="mt-2 text-sm text-gray-600">
+            We’ve sent a 6-digit code to{" "}
+            <span className="font-medium text-gray-900 break-all">
+              {email || "your email"}
+            </span>
+            . Enter it below to continue.
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-6">
+          {/* 6 digit inputs */}
           <div className="flex justify-between gap-2">
             {code.map((val, i) => (
               <input
@@ -119,8 +163,14 @@ export default function VerifyResetCodePage() {
             ))}
           </div>
 
+          {/* code check / invalid message */}
           {statusMsg && (
             <p className="text-xs text-center text-red-600">{statusMsg}</p>
+          )}
+
+          {/* resend feedback message */}
+          {resendMsg && (
+            <p className="text-xs text-center text-gray-700">{resendMsg}</p>
           )}
 
           <button
@@ -131,6 +181,18 @@ export default function VerifyResetCodePage() {
             {loading ? "Checking..." : "Continue"}
           </button>
         </form>
+
+        {/* 🔄 Resend link */}
+        <p className="mt-6 text-center text-xs text-gray-700">
+          Didn’t get your code?{" "}
+          <button
+            onClick={handleResend}
+            disabled={resending}
+            className="text-black underline disabled:opacity-50"
+          >
+            {resending ? "Sending..." : "Click here to resend"}
+          </button>
+        </p>
       </div>
     </main>
   );

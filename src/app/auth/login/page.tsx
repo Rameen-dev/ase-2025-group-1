@@ -28,17 +28,41 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      if (!data.success) {
-        // Show error message from backend
+      // ❌ Request failed (e.g. wrong login, not verified, server error, etc.)
+      if (!res.ok) {
+        // 1. not verified case
+        if (data.code === "NOT_VERIFIED") {
+          // show message above form
+          setErrorMsg(
+            "Your email is not verified yet. We've sent you a new code."
+          );
+
+          // send them to /auth/verify with their email in the query
+          router.push(
+            `/auth/verify?email=${encodeURIComponent(data.email ?? email)}`
+          );
+
+          setLoading(false);
+          return;
+        }
+
+        // 2. invalid login (bad password / no such user)
+        if (data.code === "INVALID_LOGIN") {
+          setErrorMsg("Invalid email or password.");
+          setLoading(false);
+          return;
+        }
+
+        // 3. fallback / server error
         setErrorMsg(data.message || "Login failed. Please try again.");
         setLoading(false);
         return;
       }
 
-      // ✅ Store a simple temporary session flag
+      // ✅ Success path
+      // data.success === true, code === "LOGIN_OK"
       sessionStorage.setItem("loggedIn", "true");
 
-      // ✅ Redirect to donor dashboard
       router.push("/donor/dashboard");
     } catch (err) {
       console.error("Login error:", err);

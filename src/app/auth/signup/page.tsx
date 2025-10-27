@@ -32,8 +32,6 @@ export default function SignUpPage()
     },
   });
 
-  
-
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const onSubmit: SubmitHandler<SignUpInput> = async (values) => {

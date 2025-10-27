@@ -11,21 +11,39 @@ export default function NewPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [statusMsg, setStatusMsg] = useState("");
+  const [statusType, setStatusType] = useState<"error" | "success" | "">("");
   const [loading, setLoading] = useState(false);
+
+  // simple helper: must be 8+ chars, 1 upper, 1 lower, 1 number, 1 special
+  function passwordStrongEnough(pw: string) {
+    return (
+      pw.length >= 8 &&
+      /[A-Z]/.test(pw) && // at least one uppercase
+      /[a-z]/.test(pw) && // at least one lowercase
+      /[0-9]/.test(pw) && // at least one digit
+      /[^A-Za-z0-9]/.test(pw) // at least one special char
+    );
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatusMsg("");
+    setStatusType("");
     setLoading(true);
 
-    if (password.length < 8) {
-      setStatusMsg("Password must be at least 8 characters.");
+    // local validation
+    if (!passwordStrongEnough(password)) {
+      setStatusMsg(
+        "Password must be at least 8 characters and include: 1 uppercase, 1 lowercase, 1 number, and 1 special character."
+      );
+      setStatusType("error");
       setLoading(false);
       return;
     }
 
     if (password !== confirm) {
       setStatusMsg("Passwords do not match.");
+      setStatusType("error");
       setLoading(false);
       return;
     }
@@ -44,15 +62,24 @@ export default function NewPasswordPage() {
 
       if (!res.ok || !data.success) {
         setStatusMsg(data.message || "Could not reset password.");
+        setStatusType("error");
         setLoading(false);
         return;
       }
 
-      // success -> send them to login
+      // ✅ success: show green success message, then redirect to login
+      setStatusMsg("Password changed successfully. You can now log in.");
+      setStatusType("success");
+
+      // if you have any auth cookies/session for reset, you could clear here
+      // await fetch("/api/auth/logout", { method: "POST" });
+
+      // redirect to login
       router.push("/auth/login");
     } catch (err) {
       console.error(err);
       setStatusMsg("Network error, try again.");
+      setStatusType("error");
     } finally {
       setLoading(false);
     }
@@ -82,6 +109,9 @@ export default function NewPasswordPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
             />
+            <p className="text-[11px] text-gray-500 leading-snug">
+              Must include: uppercase, lowercase, number, special character.
+            </p>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -99,7 +129,13 @@ export default function NewPasswordPage() {
           </div>
 
           {statusMsg && (
-            <p className="text-xs text-center text-red-600">{statusMsg}</p>
+            <p
+              className={`text-xs text-center font-medium ${
+                statusType === "success" ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {statusMsg}
+            </p>
           )}
 
           <button
