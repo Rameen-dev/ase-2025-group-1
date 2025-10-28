@@ -152,6 +152,6 @@ Feature flags / migrations / rollout:
 
 - Pull latest before starting work: `git switch/ checkout dev && git pull`.  
 - Do **not** commit directly to `main` or `dev`. Always use PRs.  
-- Ensure `npm run lint` and `npm run build` pass locally before opening PRs.
+- Ensure `npm run lint` and `npm run build` and `npm run test` pass locally before opening PRs.
 
 ---
