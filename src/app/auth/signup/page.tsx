@@ -20,7 +20,7 @@ export default function SignUpPage()
   // Here we set up the form with react-hook-form + Zod validation
   const {register, 
     handleSubmit, 
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,} = useForm<SignUpInput>({ resolver: zodResolver(signUpSchema), // Here I am using the Zod schema for validation
     defaultValues: {
       firstName: "",
@@ -36,39 +36,56 @@ export default function SignUpPage()
   // Here we receive feedback messages from the server (API).
   const [serverError, setServerError] = useState<string | null>(null);
   const [serverMsg, setServerMsg] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false); // 👈 our own loading flag
 
   // This is the function that runs when a user clicks "Sign Up"
   const onSubmit: SubmitHandler<SignUpInput> = async (values) => {
     // Clear any previous messages for clean UI.
     setServerError(null);
     setServerMsg(null);
+    setSubmitting(true); // ⏳ start loading
 
-    // Here we send the signup data to the backend API.
-    const res = await fetch("/api/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values), // We send the form data as JSON.
-    });
 
-    // Parse the backends response
-    const data = await res.json(); 
+      try {
+      // send signup request
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
 
-    // If something goes wrong, we display an appropriate error message for the user.
-    if (!res.ok) {
-      const map: Record<string, string> = {
-        EMAIL_TAKEN: "That email is already registered.",
-        VALIDATION_ERROR: "Please fix the highlighted fields.",
-        RATE_LIMITED: "Too many attempts. Try again in a minute.",
-        SERVER_ERROR: "Something went wrong.",
-      };
-      setServerError(map[data?.code] ?? map.SERVER_ERROR);
-      return;
+      const data = await res.json();
+
+      if (!res.ok) {
+        // map backend codes -> friendly messages
+        const map: Record<string, string> = {
+          EMAIL_TAKEN: "That email is already registered.",
+          VALIDATION_ERROR: "Please fix the highlighted fields.",
+          RATE_LIMITED: "Too many attempts. Try again in a minute.",
+          SERVER_ERROR: "Something went wrong.",
+        };
+
+        setServerError(map[data?.code] ?? map.SERVER_ERROR ?? "Something went wrong.");
+        setSubmitting(false); // ❌ stop loading on error
+        return;
+      }
+
+      // ✅ success
+      setServerMsg("Account created! Check your email to verify.");
+
+      // optional: clear form
+      reset();
+
+      // move to verification screen
+      router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
+
+      // we'll still stop loading just in case this component stays mounted briefly
+      setSubmitting(false);
+    } catch (err) {
+      console.error("signup error:", err);
+      setServerError("Network error. Please try again.");
+      setSubmitting(false); // ❌ stop loading on network fail
     }
-    // If Signup form has been validated successfully, we redirect the user to the verification page with their email.
-    router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
-    // A success message for the user.
-    setServerMsg("Account created! Check your email to verify.");
-    reset(); // clear the form after success 
   };
 
   // Page layout for Sign-Up form:
@@ -147,9 +164,9 @@ export default function SignUpPage()
 
           {/* Submit button */}
           <button
-            disabled={isSubmitting}
-            className="w-full rounded bg-green-700 py-2 border-1 border-black text-white disabled:opacity-50">
-            {isSubmitting ? "Creating..." : "Sign up"}
+            disabled={submitting}
+            className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-800 transition-colors">
+            {submitting ? "Creating..." : "Sign up"}
           </button>
         </form>
 
