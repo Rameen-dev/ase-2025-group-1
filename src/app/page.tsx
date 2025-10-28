@@ -1,5 +1,7 @@
 import Image from "next/image";
-
+import Link from "next/link";
+// This is the main page (homepage) of your web app.
+// Next.js treats this as the route: '/'.
 export default function HomePage() {
   return (
     <main className="w-full text-black text-center">
@@ -16,13 +18,19 @@ export default function HomePage() {
                 <li>How it Works</li>
                 <li>Contact</li>
               </ul>
-
-              <li>Log In</li>
               <li>
-                <button className="font-sans bg-[#2E7D32] text-white px-4 py-2 rounded hover:bg-green-800 transition">
-                  Sign Up
-                </button>
-              </li>
+              <Link href="/auth/login" className="text-black hover:underline">
+                Log In
+              </Link>
+            </li>
+             <li>
+              <Link
+                href="/auth/signup"
+                className="font-sans bg-[#2E7D32] text-white px-4 py-2 rounded hover:bg-green-800 transition inline-block">
+                Sign Up
+              </Link>
+            </li>
+
             </ul>
           </nav>
         </div>
