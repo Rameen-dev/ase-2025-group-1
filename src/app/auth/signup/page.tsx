@@ -34,9 +34,10 @@ export default function SignUpPage()
   });
 
   // Here we receive feedback messages from the server (API).
-  const [serverError, setServerError] = useState<string | null>(null);
+  //const [serverError, setServerError] = useState<string | null>(null);
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false); // 👈 our own loading flag
+  const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
   // This is the function that runs when a user clicks "Sign Up"
   const onSubmit: SubmitHandler<SignUpInput> = async (values) => {
@@ -58,16 +59,27 @@ export default function SignUpPage()
 
       if (!res.ok) {
         // map backend codes -> friendly messages
-        const map: Record<string, string> = {
-          EMAIL_TAKEN: "That email is already registered.",
+        const map: Record<string, React.ReactNode> = {
+          EMAIL_TAKEN: (
+            <>
+              That email is already registered. Please head to{" "}
+              <Link
+                href="/auth/login"
+                className="text-blue-500 underline hover:text-blue-800"
+              >
+                Login
+              </Link>.
+            </>
+          ),
           VALIDATION_ERROR: "Please fix the highlighted fields.",
           RATE_LIMITED: "Too many attempts. Try again in a minute.",
           SERVER_ERROR: "Something went wrong.",
         };
 
-        setServerError(map[data?.code] ?? map.SERVER_ERROR ?? "Something went wrong.");
-        setSubmitting(false); // ❌ stop loading on error
-        return;
+        const msg = map[data.code] ?? "Unexpected error occurred.";
+        setServerError(msg); // ✅ can hold JSX
+        setSubmitting(false); // ✅ stop loading on error
+        return; // ✅ prevent success logic from running
       }
 
       // ✅ success
@@ -173,7 +185,7 @@ export default function SignUpPage()
         {/* Link to login page */}
         <h1>
           Already have an account with us?{" "}
-          <a href="/auth/login" className="text-blue-500 underline">Log in
+          <a href="/auth/login" className="text-blue-500 underline hover:text-blue-800">Login
           </a>
         </h1>
       </main>
