@@ -35,12 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.18.0
- * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+ * Prisma Client JS version: 6.17.1
+ * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
  */
 Prisma.prismaVersion = {
-  client: "6.18.0",
-  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
+  client: "6.17.1",
+  engine: "272a37d34178c2894197e17273bf937f25acdeac"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -155,7 +155,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -169,7 +169,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -177,8 +177,8 @@ const config = {
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
-  "clientVersion": "6.18.0",
-  "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
+  "clientVersion": "6.17.1",
+  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
   "datasourceNames": [
     "db"
   ],
