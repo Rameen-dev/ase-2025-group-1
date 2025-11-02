@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 // React-hook-form helps manage forms efficiently in React.
-import { useForm, type SubmitHandler } from "react-hook-form"; 
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // signUpSchema defines the input validation rules (like required fields, email format, etc.)
 import { signUpSchema, type SignUpInput } from "@/lib/validation";
@@ -13,15 +13,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function SignUpPage()
-{
+export default function SignUpPage() {
   const router = useRouter(); // This is used to redirect the user after signup success.
 
   // Here we set up the form with react-hook-form + Zod validation
-  const {register, 
-    handleSubmit, 
+  const {
+    register,
+    handleSubmit,
     formState: { errors },
-    reset,} = useForm<SignUpInput>({ resolver: zodResolver(signUpSchema), // Here I am using the Zod schema for validation
+    reset,
+  } = useForm<SignUpInput>({
+    resolver: zodResolver(signUpSchema), // Here I am using the Zod schema for validation
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -46,8 +48,7 @@ export default function SignUpPage()
     setServerMsg(null);
     setSubmitting(true); // ⏳ start loading
 
-
-      try {
+    try {
       // send signup request
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -68,7 +69,8 @@ export default function SignUpPage()
                 className="text-blue-500 underline hover:text-blue-800"
               >
                 Login
-              </Link>.
+              </Link>
+              .
             </>
           ),
           VALIDATION_ERROR: "Please fix the highlighted fields.",
@@ -103,34 +105,37 @@ export default function SignUpPage()
   // Page layout for Sign-Up form:
   return (
     // Logo appearing in top right of the screen, with link to home page
-    <div className="flex min-h-screen">
+    <div className="relative flex min-h-screen">
       <Link href="/">
-        <Image 
+        <Image
           src="/images/logo.png"
           alt="SustainWear"
-          width={750}
-          height={750}
-          className="absolute top-6 left-6 w-64 h-auto cursor-pointer"/>
-      </Link> 
+          width={600}
+          height={600}
+          className="absolute top-6 left-1/2 -translate-x-1/2 md:left-30 w-48 md:h-auto cursor-pointer"
+        />
+      </Link>
 
       {/*The form section */}
-      <main className="flex flex-col justify-center items-center mx-auto max-w-md p-6">
+      <main className="flex flex-col justify-center items-center mx-auto max-w-md pt-25 p-6">
         <h1 className="mb-4 text-2xl font-semibold">Create your account</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3"
-          noValidate>
-
+          noValidate
+        >
           {/* First and Last name fields side by side */}
           <div className="flex gap-4">
             <Input
               label="First name"
               {...register("firstName")}
-              error={errors.firstName?.message}/>
+              error={errors.firstName?.message}
+            />
             <Input
               label="Last name"
               {...register("lastName")}
-              error={errors.lastName?.message}/>
+              error={errors.lastName?.message}
+            />
           </div>
 
           {/* Email and password inputs */}
@@ -138,23 +143,28 @@ export default function SignUpPage()
             label="Email"
             type="email"
             {...register("email")}
-            error={errors.email?.message}/>
+            error={errors.email?.message}
+          />
           <PasswordInput // Password field
-            label="Password" 
+            label="Password"
             {...register("password")}
-            error={errors.password?.message}/>
+            error={errors.password?.message}
+          />
           <PasswordInput // Confirm Password field
             label="Confirm password"
             {...register("confirmPassword")}
-            error={errors.confirmPassword?.message}/>
+            error={errors.confirmPassword?.message}
+          />
 
           {/* Checkboxes for marketing and terms */}
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" {...register("marketingOptIn")}/>Receive occasional updates
-          </label> 
+            <input type="checkbox" {...register("marketingOptIn")} />
+            Receive occasional updates
+          </label>
 
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" {...register("termsAccepted")} />I accept the Terms
+            <input type="checkbox" {...register("termsAccepted")} />I accept the
+            Terms
           </label>
 
           {/* If user forgots to tick terms */}
@@ -177,7 +187,8 @@ export default function SignUpPage()
           {/* Submit button */}
           <button
             disabled={submitting}
-            className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-800 transition-colors">
+            className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-800 transition-colors"
+          >
             {submitting ? "Creating..." : "Sign up"}
           </button>
         </form>
@@ -185,13 +196,17 @@ export default function SignUpPage()
         {/* Link to login page */}
         <h1>
           Already have an account with us?{" "}
-          <a href="/auth/login" className="text-blue-500 underline hover:text-blue-800">Login
+          <a
+            href="/auth/login"
+            className="text-blue-500 underline hover:text-blue-800"
+          >
+            Login
           </a>
         </h1>
       </main>
 
       {/* Right side Image for decoration */}
-      <div className="w-1/2 flex-col justify-center items-center bg-green-200">
+      <div className="hidden md:flex md:w-1/2 md:flex-col md:justify-center md:items-center md:bg-green-100">
         <Image
           src="/images/signupShapes.png"
           alt="shapes"
@@ -200,11 +215,11 @@ export default function SignUpPage()
           className="mx-auto"
         />
         <Image
-          src="/images/signupLady.png"
+          src="\illustrations\undraw_window-shopping_9l2k.svg"
           alt="signupLady"
-          width={750}
-          height={750}
-          className="mx-auto"
+          width={500}
+          height={500}
+          className="w-auto h-full object-contain"
         />
       </div>
     </div>
