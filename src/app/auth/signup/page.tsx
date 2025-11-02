@@ -212,14 +212,14 @@ export default function SignUpPage() {
           alt="shapes"
           width={750}
           height={750}
-          className="mx-auto"
+          className="w-auto h-100 object-contain"
         />
         <Image
           src="\illustrations\undraw_window-shopping_9l2k.svg"
           alt="signupLady"
           width={500}
           height={500}
-          className="w-auto h-full object-contain"
+          className="w-auto h-100 object-contain"
         />
       </div>
     </div>
