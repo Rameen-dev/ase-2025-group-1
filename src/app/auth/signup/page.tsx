@@ -1,11 +1,8 @@
-// This tells Next.js that this file runs on the client (browser) side.
+// app/auth/signup/page.tsx
 "use client";
-
 import { useState } from "react";
-// React-hook-form helps manage forms efficiently in React.
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// signUpSchema defines the input validation rules (like required fields, email format, etc.)
 import { signUpSchema, type SignUpInput } from "@/lib/validation";
 import { Input } from "@/components/forms/input";
 import { PasswordInput } from "@/components/forms/passwordInput";
@@ -14,16 +11,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function SignUpPage() {
-  const router = useRouter(); // This is used to redirect the user after signup success.
+  const router = useRouter();
 
-  // Here we set up the form with react-hook-form + Zod validation
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setError,                           // ✅ NEW
   } = useForm<SignUpInput>({
-    resolver: zodResolver(signUpSchema), // Here I am using the Zod schema for validation
+    resolver: zodResolver(signUpSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -35,70 +34,54 @@ export default function SignUpPage() {
     },
   });
 
-  // Here we receive feedback messages from the server (API).
-  //const [serverError, setServerError] = useState<string | null>(null);
   const [serverMsg, setServerMsg] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false); // 👈 our own loading flag
+  const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
-  // This is the function that runs when a user clicks "Sign Up"
   const onSubmit: SubmitHandler<SignUpInput> = async (values) => {
-    // Clear any previous messages for clean UI.
     setServerError(null);
     setServerMsg(null);
-    setSubmitting(true); // ⏳ start loading
+    setSubmitting(true);
 
     try {
-      // send signup request
       const res = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        // map backend codes -> friendly messages
-        const map: Record<string, React.ReactNode> = {
-          EMAIL_TAKEN: (
-            <>
-              That email is already registered. Please head to{" "}
-              <Link
-                href="/auth/login"
-                className="text-blue-500 underline hover:text-blue-800"
-              >
-                Login
-              </Link>
-              .
-            </>
-          ),
-          VALIDATION_ERROR: "Please fix the highlighted fields.",
-          RATE_LIMITED: "Too many attempts. Try again in a minute.",
-          SERVER_ERROR: "Something went wrong.",
-        };
+        // ✅ NEW: show field errors under inputs
+        if (data?.fieldErrors) {
+          Object.entries(data.fieldErrors).forEach(([name, message]) => {
+            setError(name as keyof SignUpInput, { type: "server", message: String(message) });
+          });
+        }
 
-        const msg = map[data.code] ?? "Unexpected error occurred.";
-        setServerError(msg); // ✅ can hold JSX
-        setSubmitting(false); // ✅ stop loading on error
-        return; // ✅ prevent success logic from running
+        // Optional generic message
+        if (data?.code && !data?.fieldErrors) {
+          const map: Record<string, React.ReactNode> = {
+            EMAIL_TAKEN: "That email is already registered.",
+            VALIDATION_ERROR: "Please fix the highlighted fields.",
+            RATE_LIMITED: "Too many attempts. Try again in a minute.",
+            SERVER_ERROR: "Something went wrong.",
+          };
+          setServerError(map[data.code] ?? "Unexpected error occurred.");
+        }
+
+        setSubmitting(false);
+        return;
       }
 
-      // ✅ success
       setServerMsg("Account created! Check your email to verify.");
-
-      // optional: clear form
       reset();
-
-      // move to verification screen
       router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
-
-      // we'll still stop loading just in case this component stays mounted briefly
       setSubmitting(false);
-    } catch (err) {
-      console.error("signup error:", err);
+    } catch {
       setServerError("Network error. Please try again.");
-      setSubmitting(false); // ❌ stop loading on network fail
+      setSubmitting(false);
     }
   };
 
