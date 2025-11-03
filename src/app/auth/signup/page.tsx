@@ -1,24 +1,33 @@
 // app/auth/signup/page.tsx
+// This file renders the "Create Account" page and handles the signup form.
+// We use a React Hook Form (RHF) + Zod for validation and call our /api/signup route on submit
+
 "use client";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema, type SignUpInput } from "@/lib/validation";
-import { Input } from "@/components/forms/input";
-import { PasswordInput } from "@/components/forms/passwordInput";
+import { signUpSchema, type SignUpInput } from "@/lib/validation"; // Zod schema and validation check for Signup
+import { Input } from "@/components/forms/input"; // Our reusable Input (Forwards ref)
+import { PasswordInput } from "@/components/forms/passwordInput"; // Our reusable password input (forwards ref)
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+/** Our React Hook Form setup
+ * Resolver - Connects Zod to RHF so Zod errors become RHF field errors.
+ * DefaultValues:  Initial values for all fields (helps with controlled inputs).
+ * Mode - reValidateMode: When to validate (on blur, then change after that).
+ */
 
 export default function SignUpPage() {
   const router = useRouter();
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    setError,                           // ✅ NEW
+    register, // Here we register "fieldName" and wire an input to RHF
+    handleSubmit, // This wraps our onSubmit. Only calls it if the form is valid.
+    formState: { errors }, // Zod/RHF Messages appear here (e.g., errors.email?.message)
+    reset, // Clear the form after successful Signup
+    setError, // To push server-side field errors into RHF (e.g., "email already in use")
   } = useForm<SignUpInput>({
     resolver: zodResolver(signUpSchema),
     mode: "onBlur",
@@ -34,11 +43,20 @@ export default function SignUpPage() {
     },
   });
 
+  // UI Flags/ messages owned by the component (not RHF) 
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
+  /** onSubmit runs ONLY if RHF+Zod say the form is valid
+   * We post to /api/signup and then:
+   * - If the API returns field errors, we direct them into RHF with setError so they render under the inputs.
+   * - If the API returns a general error (code), we show it above the form.
+   * - On success, show a message and send the user to /auth/verify
+   */
+
   const onSubmit: SubmitHandler<SignUpInput> = async (values) => {
+    // Here we clear any previous messages
     setServerError(null);
     setServerMsg(null);
     setSubmitting(true);
@@ -50,17 +68,18 @@ export default function SignUpPage() {
         body: JSON.stringify(values),
       });
 
+      // Try to parse JSON even on error to read { code, fieldErrors }
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        // ✅ NEW: show field errors under inputs
+        // 1) Field-level errors from server (e.g., { fieldErrors: { email: "Email already in use" } })
         if (data?.fieldErrors) {
           Object.entries(data.fieldErrors).forEach(([name, message]) => {
             setError(name as keyof SignUpInput, { type: "server", message: String(message) });
           });
         }
 
-        // Optional generic message
+        // 2) General server code (shown above the form)
         if (data?.code && !data?.fieldErrors) {
           const map: Record<string, React.ReactNode> = {
             EMAIL_TAKEN: "That email is already registered.",
@@ -72,14 +91,16 @@ export default function SignUpPage() {
         }
 
         setSubmitting(false);
-        return;
+        return; // Don't run success logic.
       }
 
+      // Successful signup: We tell the user and redirect them to email verification screen.
       setServerMsg("Account created! Check your email to verify.");
       reset();
       router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
       setSubmitting(false);
     } catch {
+      // Network or unexpected client error
       setServerError("Network error. Please try again.");
       setSubmitting(false);
     }
