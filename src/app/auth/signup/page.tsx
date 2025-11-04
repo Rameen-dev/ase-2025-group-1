@@ -103,7 +103,7 @@ export default function SignUpPage() {
       setServerMsg("Account created! Check your email to verify.");
       reset();
       router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`); // We use router.push() here instead of a <Link> so the navigation happens automatically.
-      // encodeURIComponent() ensures special characters like "@" are safe in URLs.
+      // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded 
       
       setSubmitting(false);
     } catch { // This catch part runs only if something goes wrong in the try block. 
