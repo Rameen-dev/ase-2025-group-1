@@ -4,14 +4,14 @@
 
 "use client";
 import { useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, type SubmitHandler } from "react-hook-form"; // Here we use RHF to keep form state, run validation, collect errors, and calls your submit handler only if valid.
+import { zodResolver } from "@hookform/resolvers/zod"; // This bridges Zod to RHF so Zod errors appear in formState.errors.
 import { signUpSchema, type SignUpInput } from "@/lib/validation"; // Zod schema and validation check for Signup
 import { Input } from "@/components/forms/input"; // Our reusable Input (Forwards ref)
 import { PasswordInput } from "@/components/forms/passwordInput"; // Our reusable password input (forwards ref)
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Import the Next.js App Router hook
 
 /** Our React Hook Form setup
  * Resolver - Connects Zod to RHF so Zod errors become RHF field errors.
@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
  */
 
 export default function SignUpPage() {
-  const router = useRouter();
+  const router = useRouter(); // useRouter() lets us programmatically navigate between pages in client components.
 
   const {
     register, // Here we register "fieldName" and wire an input to RHF
@@ -30,9 +30,9 @@ export default function SignUpPage() {
     setError, // To push server-side field errors into RHF (e.g., "email already in use")
   } = useForm<SignUpInput>({
     resolver: zodResolver(signUpSchema),
-    mode: "onBlur",
+    mode: "onBlur", // First show an error when you leave a field, then once an error is visible, re-validate as you type to clear it quickly.
     reValidateMode: "onChange",
-    defaultValues: {
+    defaultValues: { // Signup form values
       firstName: "",
       lastName: "",
       email: "",
@@ -48,8 +48,8 @@ export default function SignUpPage() {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
-  /** onSubmit runs ONLY if RHF+Zod say the form is valid
-   * We post to /api/signup and then:
+  /** onSubmit runs ONLY if RHF + Zod say the form is valid
+   * We POST to /api/signup and then:
    * - If the API returns field errors, we direct them into RHF with setError so they render under the inputs.
    * - If the API returns a general error (code), we show it above the form.
    * - On success, show a message and send the user to /auth/verify
@@ -61,6 +61,7 @@ export default function SignUpPage() {
     setServerMsg(null);
     setSubmitting(true);
 
+    // Send the form to our API route.
     try {
       const res = await fetch("/api/signup", {
         method: "POST",
@@ -69,39 +70,45 @@ export default function SignUpPage() {
       });
 
       // Try to parse JSON even on error to read { code, fieldErrors }
+      // If it fails, just use an empty object {} instead of crashing.
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
         // 1) Field-level errors from server (e.g., { fieldErrors: { email: "Email already in use" } })
-        if (data?.fieldErrors) {
-          Object.entries(data.fieldErrors).forEach(([name, message]) => {
-            setError(name as keyof SignUpInput, { type: "server", message: String(message) });
+        // This logic uses the parsed object to decide what kind of error it was.
+        if (data?.fieldErrors) { // Here we check if there are any field errors, otherwise skip this.
+          Object.entries(data.fieldErrors).forEach(([name, message]) => { // Here we turn the fieldErrors object into a list of pairs.
+            setError(name as keyof SignUpInput, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
           });
         }
 
         // 2) General server code (shown above the form)
-        if (data?.code && !data?.fieldErrors) {
-          const map: Record<string, React.ReactNode> = {
-            EMAIL_TAKEN: "That email is already registered.",
+        if (data?.code && !data?.fieldErrors) { // Here we check if there's a general code
+          // Below is a map of known codes to friendly messages
+          const map: Record<string, React.ReactNode> = { // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
+            EMAIL_TAKEN: "That email is already registered.", 
             VALIDATION_ERROR: "Please fix the highlighted fields.",
             RATE_LIMITED: "Too many attempts. Try again in a minute.",
             SERVER_ERROR: "Something went wrong.",
           };
-          setServerError(map[data.code] ?? "Unexpected error occurred.");
+          setServerError(map[data.code] ?? "Unexpected error occurred."); // Here we look up data.code in the map. 
+          // If it can't find a match (data.code isn't in the map), we use the default message of "Unexpected error occurred."
         }
 
         setSubmitting(false);
-        return; // Don't run success logic.
+        return; // Don't run success logic
       }
 
-      // Successful signup: We tell the user and redirect them to email verification screen.
+      // Successful signup: We tell the user and redirect them to email verification screen
       setServerMsg("Account created! Check your email to verify.");
       reset();
-      router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`);
+      router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`); // We use router.push() here instead of a <Link> so the navigation happens automatically.
+      // encodeURIComponent() ensures special characters like "@" are safe in URLs.
+      
       setSubmitting(false);
-    } catch {
-      // Network or unexpected client error
-      setServerError("Network error. Please try again.");
+    } catch { // This catch part runs only if something goes wrong in the try block. 
+      // For example, the network is down (No internet).
+      setServerError("Network error. Please try again."); // 
       setSubmitting(false);
     }
   };
