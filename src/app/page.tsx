@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-// This is the main page (homepage) of your web app.
+// This is the main page (Landing Page) of our SustainWear Web-application.
 // Next.js treats this as the route: '/'.
 export default function HomePage() {
   return (
@@ -164,7 +164,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section*/}
+      {/* About Section */}
       <section>
         <div className="flex flex-col md:flex-row items-stretch justify-center">
           <div className="flex-1 bg-[#C9DECA] flex justify-center items-center flex-col py-20">

@@ -12,13 +12,13 @@
   Light Grey:#E6E6E6
 */
 
-/* ✅ Base light mode values */
+/* Base light mode values */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
 
-/* ✅ Dark mode values based on system preference */
+/* Dark mode values based on system preference */
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -26,7 +26,7 @@
   }
 } */
 
-/* ✅ Tailwind theme tokens (global defaults) */
+/* Tailwind theme tokens (global defaults) */
 @theme {
   /* Fonts */
   --font-sans: "Krub", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -40,7 +40,7 @@
   --color-grey-light: #e6e6e6;
 }
 
-/* ✅ Optional inline theme extension (only if you actually need it) */
+/* Optional inline theme extension (only if you actually need it) */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -49,7 +49,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* ✅ Global body styles */
+/* Global body styles */
 body {
   background: var(--background);
   color: var(--foreground);
@@ -57,7 +57,7 @@ body {
     Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* ✅ Utility class for Kalam headings (no weird overrides) */
+/* Utility class for Kalam headings (no weird overrides) */
 .font-kalam {
   font-family: "Kalam", cursive;
 }

@@ -13,10 +13,10 @@ function generateOtp() {
 
 export async function POST(req: NextRequest) {
   try {
-    // 1️⃣ Read email + password from the request body
+    // 1) Read email + password from the request body
     const { email: rawEmail, password } = await req.json();
 
-    // 2️⃣ Basic validation
+    // 2️) Basic validation
     if (!rawEmail || !password) {
       return NextResponse.json(
         { success: false, message: "Email and password are required." },
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     // normalise email
     const email = rawEmail.toLowerCase().trim();
 
-    // 3️⃣ Find the user by email
+    // 3️) Find the user by email
     const user = await prisma.user.findUnique({
       where: { email },
       select: {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // If user not found
+    // If user not found in the database (Meaning they haven't Signed up)
     if (!user) {
       return NextResponse.json(
         {
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4️⃣ Compare password hashes
+    // 4️) Compare password hashes to ensure secure login
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
       return NextResponse.json(
@@ -66,10 +66,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 5️⃣ Check if user is verified
+    // 5️) Check if user is verified
     if (!user.is_verified) {
-      // The user exists and password is correct, BUT they haven't verified email.
-      // We do the "resend OTP" flow here automatically.
+      // The user exists and password is correct, BUT they haven't verified their email yet
+      // We do the "resend OTP" flow here automatically 
 
       // 5a. generate a fresh OTP
       const newCode = generateOtp();
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // 5c. create/save a brand new token with expiry (10 minutes for example)
+      // 5c. create/save a brand new token with expiry (10 minutes)
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
       await prisma.emailVerificationTokens.create({
@@ -101,7 +101,8 @@ export async function POST(req: NextRequest) {
       try {
         await sendVerificationEmail(user.email, user.first_name, newCode);
       } catch (err) {
-        console.error("❌ Failed to send verification email during login:", err);
+        // Any errors that may occur is shown in console
+        console.error("Failed to send verification email during login:", err);
 
         // rollback this token (so user can't try to use a code they never actually received)
         await prisma.emailVerificationTokens.updateMany({
@@ -138,8 +139,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 6️⃣ If all checks pass → return success
-    // (Later you’ll add session cookie / JWT here)
+    // 6️) If all checks pass → return success
     return NextResponse.json(
       {
         success: true,

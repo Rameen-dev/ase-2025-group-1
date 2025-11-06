@@ -198,7 +198,7 @@ export default function SignUpPage() {
           {/* Submit button */}
           <button
             disabled={submitting}
-            className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-800 transition-colors"
+            className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-900 transition-colors"
           >
             {submitting ? "Creating..." : "Sign up"}
           </button>
