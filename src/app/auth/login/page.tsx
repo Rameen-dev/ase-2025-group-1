@@ -29,6 +29,7 @@ export default function LoginPage() {
 
       const data = await res.json();
 
+
       // ❌ Request failed (e.g. wrong login, not verified, server error, etc.)
       if (!res.ok) {
         // 1. not verified case
@@ -64,7 +65,13 @@ export default function LoginPage() {
       // data.success === true, code === "LOGIN_OK"
       sessionStorage.setItem("loggedIn", "true");
 
-      router.push("/donor/dashboard");
+      //based on role, take user to appropriate dashboard
+      if (data.user.role === "admin") {
+        router.push("/admin/dashboard");
+      }
+      else if (data.user.role === "donor") {
+        router.push("/donor/dashboard");
+      }
     } catch (err) {
       console.error("Login error:", err);
       setErrorMsg("Network error. Please try again.");
