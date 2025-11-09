@@ -122,6 +122,49 @@ exports.Prisma.PasswordResetTokensScalarFieldEnum = {
   created_on: 'created_on'
 };
 
+exports.Prisma.CharityApplicationsScalarFieldEnum = {
+  application_id: 'application_id',
+  org_name: 'org_name',
+  contact_name: 'contact_name',
+  contact_email: 'contact_email',
+  contact_number: 'contact_number',
+  website: 'website',
+  org_address: 'org_address',
+  charity_number: 'charity_number',
+  status: 'status',
+  reviewed_on: 'reviewed_on',
+  reviewed_by: 'reviewed_by',
+  approved_on: 'approved_on',
+  approved_by: 'approved_by',
+  charity_id: 'charity_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
+exports.Prisma.CharitiesScalarFieldEnum = {
+  charity_id: 'charity_id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  website: 'website',
+  verified: 'verified',
+  user_id: 'user_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
+exports.Prisma.CharitySignupTokensScalarFieldEnum = {
+  invite_id: 'invite_id',
+  charity_id: 'charity_id',
+  email: 'email',
+  token: 'token',
+  expires_on: 'expires_on',
+  consumed_on: 'consumed_on',
+  created_on: 'created_on',
+  created_by: 'created_by'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -136,12 +179,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.CharityApplicationStatus = exports.$Enums.CharityApplicationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
-  PasswordResetTokens: 'PasswordResetTokens'
+  PasswordResetTokens: 'PasswordResetTokens',
+  CharityApplications: 'CharityApplications',
+  Charities: 'Charities',
+  CharitySignupTokens: 'CharitySignupTokens'
 };
 /**
  * Create the Client
@@ -182,7 +232,6 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -191,13 +240,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  user_id       Int      @id @default(autoincrement())\n  email         String   @unique\n  password_hash String\n  role          String\n  is_verified   Boolean\n  first_name    String\n  last_name     String\n  created_on    DateTime @default(now())\n  updated_on    DateTime @updatedAt\n\n  // RELATIONS:\n  EmailVerificationTokens EmailVerificationTokens[]\n  PasswordResetTokens     PasswordResetTokens[] // ← add this\n}\n\nmodel EmailVerificationTokens {\n  ev_token_id Int       @id @default(autoincrement())\n  user_id     Int\n  token       String    @unique\n  expires_on  DateTime\n  consumed_on DateTime?\n  created_on  DateTime  @default(now())\n\n  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)\n\n  @@index([user_id, created_on])\n}\n\nmodel PasswordResetTokens {\n  pr_token_id Int       @id @default(autoincrement())\n  user_id     Int\n  code        String // this will be the 6-digit code we email\n  expires_on  DateTime // e.g. now + 10 mins\n  consumed_on DateTime? // once used, we timestamp it\n  created_on  DateTime  @default(now())\n\n  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)\n\n  // helpful index so we can quickly find latest valid code by user\n  @@index([user_id, created_on])\n}\n",
-  "inlineSchemaHash": "473c73e439a4a1de4c9e192d125c050b08816c2da474750666565148f97c16b6",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  user_id       Int      @id @default(autoincrement())\n  email         String   @unique\n  password_hash String\n  role          String\n  is_verified   Boolean\n  first_name    String\n  last_name     String\n  created_on    DateTime @default(now())\n  updated_on    DateTime @updatedAt\n\n  // RELATIONS:\n  EmailVerificationTokens EmailVerificationTokens[]\n  PasswordResetTokens     PasswordResetTokens[]\n\n  // NEW back-relations so Prisma can “see” both sides:\n  reviewed_applications CharityApplications[] @relation(\"reviewed_by_admin\")\n  approved_applications CharityApplications[] @relation(\"approved_by_admin\")\n  created_invites       CharitySignupTokens[] @relation(\"invites_created_by\")\n\n  // 1:1 optional back-relation to Charities (since Charities.user_id is @unique)\n  Charity Charities?\n}\n\n// Table for Email Verification where tokens are stored\nmodel EmailVerificationTokens {\n  ev_token_id Int       @id @default(autoincrement())\n  user_id     Int\n  token       String    @unique\n  expires_on  DateTime\n  consumed_on DateTime?\n  created_on  DateTime  @default(now())\n\n  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)\n\n  @@index([user_id, created_on])\n}\n\n// Table for Password Reset where tokens are stored\nmodel PasswordResetTokens {\n  pr_token_id Int       @id @default(autoincrement())\n  user_id     Int\n  code        String // this will be the 6-digit code we email\n  expires_on  DateTime // now + 10 mins\n  consumed_on DateTime?\n  created_on  DateTime  @default(now())\n\n  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)\n\n  // helpful index so we can quickly find latest valid code by user\n  @@index([user_id, created_on])\n}\n\n// Enum for clarity to be used to state the stating of a charity application\nenum CharityApplicationStatus {\n  PENDING\n  APPROVED\n  REJECTED\n}\n\n// Charity Applications Entities and tables are all below\n\n// Charity Application Table\nmodel CharityApplications {\n  application_id Int                      @id @default(autoincrement())\n  org_name       String\n  contact_name   String\n  contact_email  String\n  contact_number String\n  website        String\n  org_address    String\n  charity_number String?\n  status         CharityApplicationStatus @default(PENDING)\n  reviewed_on    DateTime?\n  reviewed_by    Int? // Admin (User.user_id)\n  approved_on    DateTime?\n  approved_by    Int? // Admin (User.user_id)\n  charity_id     Int? // Links to created charity record\n\n  created_on DateTime @default(now())\n  updated_on DateTime @updatedAt\n\n  // Relations\n  reviewer User?      @relation(\"reviewed_by_admin\", fields: [reviewed_by], references: [user_id], onDelete: SetNull)\n  approver User?      @relation(\"approved_by_admin\", fields: [approved_by], references: [user_id], onDelete: SetNull)\n  charity  Charities? @relation(fields: [charity_id], references: [charity_id], onDelete: SetNull)\n\n  @@index([status, created_on])\n  @@index([contact_email])\n}\n\n// Approved Charities Table\nmodel Charities {\n  charity_id Int     @id @default(autoincrement())\n  name       String\n  email      String\n  phone      String?\n  address    String\n  website    String\n  verified   Boolean @default(false)\n\n  // Once the charity sets their password and completes signup:\n  user_id Int? @unique\n\n  created_on DateTime @default(now())\n  updated_on DateTime @updatedAt\n\n  // Relation to user\n  User User? @relation(fields: [user_id], references: [user_id], onDelete: SetNull)\n\n  // NEW back-relations (opposite of CharityApplications.charity and CharitySignupTokens.charity)\n  applications  CharityApplications[]\n  signup_tokens CharitySignupTokens[]\n\n  @@index([name])\n  @@index([email])\n}\n\n// Table for One-time signup token \nmodel CharitySignupTokens {\n  invite_id   Int       @id @default(autoincrement())\n  charity_id  Int\n  email       String\n  token       String    @unique\n  expires_on  DateTime\n  consumed_on DateTime?\n  created_on  DateTime  @default(now())\n  created_by  Int? // Admin who created invite\n\n  charity Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)\n\n  // Add the relation name so it pairs with User.created_invites\n  creator User? @relation(\"invites_created_by\", fields: [created_by], references: [user_id], onDelete: SetNull)\n\n  @@index([charity_id, created_on])\n  @@index([email])\n}\n",
+  "inlineSchemaHash": "479c16de3a8bb0a4160c673dcbcc8ae90f9978aa01ac5da6ab86a990c462e435",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"EmailVerificationTokens\",\"kind\":\"object\",\"type\":\"EmailVerificationTokens\",\"relationName\":\"EmailVerificationTokensToUser\"},{\"name\":\"PasswordResetTokens\",\"kind\":\"object\",\"type\":\"PasswordResetTokens\",\"relationName\":\"PasswordResetTokensToUser\"}],\"dbName\":null},\"EmailVerificationTokens\":{\"fields\":[{\"name\":\"ev_token_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"consumed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EmailVerificationTokensToUser\"}],\"dbName\":null},\"PasswordResetTokens\":{\"fields\":[{\"name\":\"pr_token_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"consumed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokensToUser\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"password_hash\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"role\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"is_verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"first_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"last_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"EmailVerificationTokens\",\"kind\":\"object\",\"type\":\"EmailVerificationTokens\",\"relationName\":\"EmailVerificationTokensToUser\"},{\"name\":\"PasswordResetTokens\",\"kind\":\"object\",\"type\":\"PasswordResetTokens\",\"relationName\":\"PasswordResetTokensToUser\"},{\"name\":\"reviewed_applications\",\"kind\":\"object\",\"type\":\"CharityApplications\",\"relationName\":\"reviewed_by_admin\"},{\"name\":\"approved_applications\",\"kind\":\"object\",\"type\":\"CharityApplications\",\"relationName\":\"approved_by_admin\"},{\"name\":\"created_invites\",\"kind\":\"object\",\"type\":\"CharitySignupTokens\",\"relationName\":\"invites_created_by\"},{\"name\":\"Charity\",\"kind\":\"object\",\"type\":\"Charities\",\"relationName\":\"CharitiesToUser\"}],\"dbName\":null},\"EmailVerificationTokens\":{\"fields\":[{\"name\":\"ev_token_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"consumed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EmailVerificationTokensToUser\"}],\"dbName\":null},\"PasswordResetTokens\":{\"fields\":[{\"name\":\"pr_token_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"code\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"consumed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"PasswordResetTokensToUser\"}],\"dbName\":null},\"CharityApplications\":{\"fields\":[{\"name\":\"application_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"org_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"contact_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"org_address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"charity_number\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"status\",\"kind\":\"enum\",\"type\":\"CharityApplicationStatus\"},{\"name\":\"reviewed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reviewed_by\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"approved_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"approved_by\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"charity_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"reviewer\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"reviewed_by_admin\"},{\"name\":\"approver\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"approved_by_admin\"},{\"name\":\"charity\",\"kind\":\"object\",\"type\":\"Charities\",\"relationName\":\"CharitiesToCharityApplications\"}],\"dbName\":null},\"Charities\":{\"fields\":[{\"name\":\"charity_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phone\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"address\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"website\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"verified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"user_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updated_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"User\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"CharitiesToUser\"},{\"name\":\"applications\",\"kind\":\"object\",\"type\":\"CharityApplications\",\"relationName\":\"CharitiesToCharityApplications\"},{\"name\":\"signup_tokens\",\"kind\":\"object\",\"type\":\"CharitySignupTokens\",\"relationName\":\"CharitiesToCharitySignupTokens\"}],\"dbName\":null},\"CharitySignupTokens\":{\"fields\":[{\"name\":\"invite_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"charity_id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"token\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"expires_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"consumed_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_on\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"created_by\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"charity\",\"kind\":\"object\",\"type\":\"Charities\",\"relationName\":\"CharitiesToCharitySignupTokens\"},{\"name\":\"creator\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"invites_created_by\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

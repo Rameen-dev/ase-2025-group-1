@@ -9,21 +9,30 @@ datasource db {
 }
 
 model User {
-  user_id                 Int                       @id @default(autoincrement())
-  email                   String                    @unique
-  password_hash           String
-  role                    String
-  is_verified             Boolean
-  first_name              String
-  last_name               String
-  created_on              DateTime                  @default(now())
-  updated_on              DateTime                  @updatedAt
+  user_id       Int      @id @default(autoincrement())
+  email         String   @unique
+  password_hash String
+  role          String
+  is_verified   Boolean
+  first_name    String
+  last_name     String
+  created_on    DateTime @default(now())
+  updated_on    DateTime @updatedAt
 
   // RELATIONS:
   EmailVerificationTokens EmailVerificationTokens[]
-  PasswordResetTokens     PasswordResetTokens[]     // ← add this
+  PasswordResetTokens     PasswordResetTokens[]
+
+  // NEW back-relations so Prisma can “see” both sides:
+  reviewed_applications CharityApplications[] @relation("reviewed_by_admin")
+  approved_applications CharityApplications[] @relation("approved_by_admin")
+  created_invites       CharitySignupTokens[] @relation("invites_created_by")
+
+  // 1:1 optional back-relation to Charities (since Charities.user_id is @unique)
+  Charity Charities?
 }
 
+// Table for Email Verification where tokens are stored
 model EmailVerificationTokens {
   ev_token_id Int       @id @default(autoincrement())
   user_id     Int
@@ -32,21 +41,107 @@ model EmailVerificationTokens {
   consumed_on DateTime?
   created_on  DateTime  @default(now())
 
-  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
 
+// Table for Password Reset where tokens are stored
 model PasswordResetTokens {
   pr_token_id Int       @id @default(autoincrement())
   user_id     Int
-  code        String     // this will be the 6-digit code we email
-  expires_on  DateTime   // e.g. now + 10 mins
-  consumed_on DateTime?  // once used, we timestamp it
-  created_on  DateTime   @default(now())
+  code        String // this will be the 6-digit code we email
+  expires_on  DateTime // now + 10 mins
+  consumed_on DateTime?
+  created_on  DateTime  @default(now())
 
-  User        User       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   // helpful index so we can quickly find latest valid code by user
   @@index([user_id, created_on])
+}
+
+// Enum for clarity to be used to state the stating of a charity application
+enum CharityApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// Charity Applications Entities and tables are all below
+
+// Charity Application Table
+model CharityApplications {
+  application_id Int                      @id @default(autoincrement())
+  org_name       String
+  contact_name   String
+  contact_email  String
+  contact_number String
+  website        String
+  org_address    String
+  charity_number String?
+  status         CharityApplicationStatus @default(PENDING)
+  reviewed_on    DateTime?
+  reviewed_by    Int? // Admin (User.user_id)
+  approved_on    DateTime?
+  approved_by    Int? // Admin (User.user_id)
+  charity_id     Int? // Links to created charity record
+
+  created_on DateTime @default(now())
+  updated_on DateTime @updatedAt
+
+  // Relations
+  reviewer User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id], onDelete: SetNull)
+  approver User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id], onDelete: SetNull)
+  charity  Charities? @relation(fields: [charity_id], references: [charity_id], onDelete: SetNull)
+
+  @@index([status, created_on])
+  @@index([contact_email])
+}
+
+// Approved Charities Table
+model Charities {
+  charity_id Int     @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String?
+  address    String
+  website    String
+  verified   Boolean @default(false)
+
+  // Once the charity sets their password and completes signup:
+  user_id Int? @unique
+
+  created_on DateTime @default(now())
+  updated_on DateTime @updatedAt
+
+  // Relation to user
+  User User? @relation(fields: [user_id], references: [user_id], onDelete: SetNull)
+
+  // NEW back-relations (opposite of CharityApplications.charity and CharitySignupTokens.charity)
+  applications  CharityApplications[]
+  signup_tokens CharitySignupTokens[]
+
+  @@index([name])
+  @@index([email])
+}
+
+// Table for One-time signup token 
+model CharitySignupTokens {
+  invite_id   Int       @id @default(autoincrement())
+  charity_id  Int
+  email       String
+  token       String    @unique
+  expires_on  DateTime
+  consumed_on DateTime?
+  created_on  DateTime  @default(now())
+  created_by  Int? // Admin who created invite
+
+  charity Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+
+  // Add the relation name so it pairs with User.created_invites
+  creator User? @relation("invites_created_by", fields: [created_by], references: [user_id], onDelete: SetNull)
+
+  @@index([charity_id, created_on])
+  @@index([email])
 }

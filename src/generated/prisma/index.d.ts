@@ -28,6 +28,39 @@ export type EmailVerificationTokens = $Result.DefaultSelection<Prisma.$EmailVeri
  * 
  */
 export type PasswordResetTokens = $Result.DefaultSelection<Prisma.$PasswordResetTokensPayload>
+/**
+ * Model CharityApplications
+ * 
+ */
+export type CharityApplications = $Result.DefaultSelection<Prisma.$CharityApplicationsPayload>
+/**
+ * Model Charities
+ * 
+ */
+export type Charities = $Result.DefaultSelection<Prisma.$CharitiesPayload>
+/**
+ * Model CharitySignupTokens
+ * 
+ */
+export type CharitySignupTokens = $Result.DefaultSelection<Prisma.$CharitySignupTokensPayload>
+
+/**
+ * Enums
+ */
+export namespace $Enums {
+  export const CharityApplicationStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export type CharityApplicationStatus = (typeof CharityApplicationStatus)[keyof typeof CharityApplicationStatus]
+
+}
+
+export type CharityApplicationStatus = $Enums.CharityApplicationStatus
+
+export const CharityApplicationStatus: typeof $Enums.CharityApplicationStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -176,6 +209,36 @@ export class PrismaClient<
     * ```
     */
   get passwordResetTokens(): Prisma.PasswordResetTokensDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.charityApplications`: Exposes CRUD operations for the **CharityApplications** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CharityApplications
+    * const charityApplications = await prisma.charityApplications.findMany()
+    * ```
+    */
+  get charityApplications(): Prisma.CharityApplicationsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.charities`: Exposes CRUD operations for the **Charities** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Charities
+    * const charities = await prisma.charities.findMany()
+    * ```
+    */
+  get charities(): Prisma.CharitiesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.charitySignupTokens`: Exposes CRUD operations for the **CharitySignupTokens** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CharitySignupTokens
+    * const charitySignupTokens = await prisma.charitySignupTokens.findMany()
+    * ```
+    */
+  get charitySignupTokens(): Prisma.CharitySignupTokensDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -619,7 +682,10 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     EmailVerificationTokens: 'EmailVerificationTokens',
-    PasswordResetTokens: 'PasswordResetTokens'
+    PasswordResetTokens: 'PasswordResetTokens',
+    CharityApplications: 'CharityApplications',
+    Charities: 'Charities',
+    CharitySignupTokens: 'CharitySignupTokens'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -638,7 +704,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens"
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charityApplications" | "charities" | "charitySignupTokens"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -864,6 +930,228 @@ export namespace Prisma {
           }
         }
       }
+      CharityApplications: {
+        payload: Prisma.$CharityApplicationsPayload<ExtArgs>
+        fields: Prisma.CharityApplicationsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CharityApplicationsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CharityApplicationsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          findFirst: {
+            args: Prisma.CharityApplicationsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CharityApplicationsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          findMany: {
+            args: Prisma.CharityApplicationsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>[]
+          }
+          create: {
+            args: Prisma.CharityApplicationsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          createMany: {
+            args: Prisma.CharityApplicationsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CharityApplicationsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>[]
+          }
+          delete: {
+            args: Prisma.CharityApplicationsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          update: {
+            args: Prisma.CharityApplicationsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          deleteMany: {
+            args: Prisma.CharityApplicationsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CharityApplicationsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CharityApplicationsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>[]
+          }
+          upsert: {
+            args: Prisma.CharityApplicationsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharityApplicationsPayload>
+          }
+          aggregate: {
+            args: Prisma.CharityApplicationsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCharityApplications>
+          }
+          groupBy: {
+            args: Prisma.CharityApplicationsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CharityApplicationsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CharityApplicationsCountArgs<ExtArgs>
+            result: $Utils.Optional<CharityApplicationsCountAggregateOutputType> | number
+          }
+        }
+      }
+      Charities: {
+        payload: Prisma.$CharitiesPayload<ExtArgs>
+        fields: Prisma.CharitiesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CharitiesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CharitiesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          findFirst: {
+            args: Prisma.CharitiesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CharitiesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          findMany: {
+            args: Prisma.CharitiesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>[]
+          }
+          create: {
+            args: Prisma.CharitiesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          createMany: {
+            args: Prisma.CharitiesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CharitiesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>[]
+          }
+          delete: {
+            args: Prisma.CharitiesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          update: {
+            args: Prisma.CharitiesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          deleteMany: {
+            args: Prisma.CharitiesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CharitiesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CharitiesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>[]
+          }
+          upsert: {
+            args: Prisma.CharitiesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitiesPayload>
+          }
+          aggregate: {
+            args: Prisma.CharitiesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCharities>
+          }
+          groupBy: {
+            args: Prisma.CharitiesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CharitiesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CharitiesCountArgs<ExtArgs>
+            result: $Utils.Optional<CharitiesCountAggregateOutputType> | number
+          }
+        }
+      }
+      CharitySignupTokens: {
+        payload: Prisma.$CharitySignupTokensPayload<ExtArgs>
+        fields: Prisma.CharitySignupTokensFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CharitySignupTokensFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CharitySignupTokensFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          findFirst: {
+            args: Prisma.CharitySignupTokensFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CharitySignupTokensFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          findMany: {
+            args: Prisma.CharitySignupTokensFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>[]
+          }
+          create: {
+            args: Prisma.CharitySignupTokensCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          createMany: {
+            args: Prisma.CharitySignupTokensCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CharitySignupTokensCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>[]
+          }
+          delete: {
+            args: Prisma.CharitySignupTokensDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          update: {
+            args: Prisma.CharitySignupTokensUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          deleteMany: {
+            args: Prisma.CharitySignupTokensDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CharitySignupTokensUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CharitySignupTokensUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>[]
+          }
+          upsert: {
+            args: Prisma.CharitySignupTokensUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CharitySignupTokensPayload>
+          }
+          aggregate: {
+            args: Prisma.CharitySignupTokensAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCharitySignupTokens>
+          }
+          groupBy: {
+            args: Prisma.CharitySignupTokensGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CharitySignupTokensGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CharitySignupTokensCountArgs<ExtArgs>
+            result: $Utils.Optional<CharitySignupTokensCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -963,6 +1251,9 @@ export namespace Prisma {
     user?: UserOmit
     emailVerificationTokens?: EmailVerificationTokensOmit
     passwordResetTokens?: PasswordResetTokensOmit
+    charityApplications?: CharityApplicationsOmit
+    charities?: CharitiesOmit
+    charitySignupTokens?: CharitySignupTokensOmit
   }
 
   /* Types for Logging */
@@ -1045,11 +1336,17 @@ export namespace Prisma {
   export type UserCountOutputType = {
     EmailVerificationTokens: number
     PasswordResetTokens: number
+    reviewed_applications: number
+    approved_applications: number
+    created_invites: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     EmailVerificationTokens?: boolean | UserCountOutputTypeCountEmailVerificationTokensArgs
     PasswordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
+    reviewed_applications?: boolean | UserCountOutputTypeCountReviewed_applicationsArgs
+    approved_applications?: boolean | UserCountOutputTypeCountApproved_applicationsArgs
+    created_invites?: boolean | UserCountOutputTypeCountCreated_invitesArgs
   }
 
   // Custom InputTypes
@@ -1075,6 +1372,67 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PasswordResetTokensWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReviewed_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharityApplicationsWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountApproved_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharityApplicationsWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreated_invitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharitySignupTokensWhereInput
+  }
+
+
+  /**
+   * Count Type CharitiesCountOutputType
+   */
+
+  export type CharitiesCountOutputType = {
+    applications: number
+    signup_tokens: number
+  }
+
+  export type CharitiesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    applications?: boolean | CharitiesCountOutputTypeCountApplicationsArgs
+    signup_tokens?: boolean | CharitiesCountOutputTypeCountSignup_tokensArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitiesCountOutputType
+     */
+    select?: CharitiesCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountApplicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharityApplicationsWhereInput
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountSignup_tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharitySignupTokensWhereInput
   }
 
 
@@ -1314,6 +1672,10 @@ export namespace Prisma {
     updated_on?: boolean
     EmailVerificationTokens?: boolean | User$EmailVerificationTokensArgs<ExtArgs>
     PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
+    reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
+    approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
+    created_invites?: boolean | User$created_invitesArgs<ExtArgs>
+    Charity?: boolean | User$CharityArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1357,6 +1719,10 @@ export namespace Prisma {
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     EmailVerificationTokens?: boolean | User$EmailVerificationTokensArgs<ExtArgs>
     PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
+    reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
+    approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
+    created_invites?: boolean | User$created_invitesArgs<ExtArgs>
+    Charity?: boolean | User$CharityArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1367,6 +1733,10 @@ export namespace Prisma {
     objects: {
       EmailVerificationTokens: Prisma.$EmailVerificationTokensPayload<ExtArgs>[]
       PasswordResetTokens: Prisma.$PasswordResetTokensPayload<ExtArgs>[]
+      reviewed_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
+      approved_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
+      created_invites: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
+      Charity: Prisma.$CharitiesPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       user_id: number
@@ -1774,6 +2144,10 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     EmailVerificationTokens<T extends User$EmailVerificationTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$EmailVerificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     PasswordResetTokens<T extends User$PasswordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$PasswordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    reviewed_applications<T extends User$reviewed_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewed_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    approved_applications<T extends User$approved_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$approved_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    created_invites<T extends User$created_invitesArgs<ExtArgs> = {}>(args?: Subset<T, User$created_invitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Charity<T extends User$CharityArgs<ExtArgs> = {}>(args?: Subset<T, User$CharityArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2245,6 +2619,97 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PasswordResetTokensScalarFieldEnum | PasswordResetTokensScalarFieldEnum[]
+  }
+
+  /**
+   * User.reviewed_applications
+   */
+  export type User$reviewed_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    where?: CharityApplicationsWhereInput
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    cursor?: CharityApplicationsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * User.approved_applications
+   */
+  export type User$approved_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    where?: CharityApplicationsWhereInput
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    cursor?: CharityApplicationsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * User.created_invites
+   */
+  export type User$created_invitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    where?: CharitySignupTokensWhereInput
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    cursor?: CharitySignupTokensWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharitySignupTokensScalarFieldEnum | CharitySignupTokensScalarFieldEnum[]
+  }
+
+  /**
+   * User.Charity
+   */
+  export type User$CharityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    where?: CharitiesWhereInput
   }
 
   /**
@@ -4485,6 +4950,3730 @@ export namespace Prisma {
 
 
   /**
+   * Model CharityApplications
+   */
+
+  export type AggregateCharityApplications = {
+    _count: CharityApplicationsCountAggregateOutputType | null
+    _avg: CharityApplicationsAvgAggregateOutputType | null
+    _sum: CharityApplicationsSumAggregateOutputType | null
+    _min: CharityApplicationsMinAggregateOutputType | null
+    _max: CharityApplicationsMaxAggregateOutputType | null
+  }
+
+  export type CharityApplicationsAvgAggregateOutputType = {
+    application_id: number | null
+    reviewed_by: number | null
+    approved_by: number | null
+    charity_id: number | null
+  }
+
+  export type CharityApplicationsSumAggregateOutputType = {
+    application_id: number | null
+    reviewed_by: number | null
+    approved_by: number | null
+    charity_id: number | null
+  }
+
+  export type CharityApplicationsMinAggregateOutputType = {
+    application_id: number | null
+    org_name: string | null
+    contact_name: string | null
+    contact_email: string | null
+    contact_number: string | null
+    website: string | null
+    org_address: string | null
+    charity_number: string | null
+    status: $Enums.CharityApplicationStatus | null
+    reviewed_on: Date | null
+    reviewed_by: number | null
+    approved_on: Date | null
+    approved_by: number | null
+    charity_id: number | null
+    created_on: Date | null
+    updated_on: Date | null
+  }
+
+  export type CharityApplicationsMaxAggregateOutputType = {
+    application_id: number | null
+    org_name: string | null
+    contact_name: string | null
+    contact_email: string | null
+    contact_number: string | null
+    website: string | null
+    org_address: string | null
+    charity_number: string | null
+    status: $Enums.CharityApplicationStatus | null
+    reviewed_on: Date | null
+    reviewed_by: number | null
+    approved_on: Date | null
+    approved_by: number | null
+    charity_id: number | null
+    created_on: Date | null
+    updated_on: Date | null
+  }
+
+  export type CharityApplicationsCountAggregateOutputType = {
+    application_id: number
+    org_name: number
+    contact_name: number
+    contact_email: number
+    contact_number: number
+    website: number
+    org_address: number
+    charity_number: number
+    status: number
+    reviewed_on: number
+    reviewed_by: number
+    approved_on: number
+    approved_by: number
+    charity_id: number
+    created_on: number
+    updated_on: number
+    _all: number
+  }
+
+
+  export type CharityApplicationsAvgAggregateInputType = {
+    application_id?: true
+    reviewed_by?: true
+    approved_by?: true
+    charity_id?: true
+  }
+
+  export type CharityApplicationsSumAggregateInputType = {
+    application_id?: true
+    reviewed_by?: true
+    approved_by?: true
+    charity_id?: true
+  }
+
+  export type CharityApplicationsMinAggregateInputType = {
+    application_id?: true
+    org_name?: true
+    contact_name?: true
+    contact_email?: true
+    contact_number?: true
+    website?: true
+    org_address?: true
+    charity_number?: true
+    status?: true
+    reviewed_on?: true
+    reviewed_by?: true
+    approved_on?: true
+    approved_by?: true
+    charity_id?: true
+    created_on?: true
+    updated_on?: true
+  }
+
+  export type CharityApplicationsMaxAggregateInputType = {
+    application_id?: true
+    org_name?: true
+    contact_name?: true
+    contact_email?: true
+    contact_number?: true
+    website?: true
+    org_address?: true
+    charity_number?: true
+    status?: true
+    reviewed_on?: true
+    reviewed_by?: true
+    approved_on?: true
+    approved_by?: true
+    charity_id?: true
+    created_on?: true
+    updated_on?: true
+  }
+
+  export type CharityApplicationsCountAggregateInputType = {
+    application_id?: true
+    org_name?: true
+    contact_name?: true
+    contact_email?: true
+    contact_number?: true
+    website?: true
+    org_address?: true
+    charity_number?: true
+    status?: true
+    reviewed_on?: true
+    reviewed_by?: true
+    approved_on?: true
+    approved_by?: true
+    charity_id?: true
+    created_on?: true
+    updated_on?: true
+    _all?: true
+  }
+
+  export type CharityApplicationsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CharityApplications to aggregate.
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharityApplications to fetch.
+     */
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CharityApplicationsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharityApplications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharityApplications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CharityApplications
+    **/
+    _count?: true | CharityApplicationsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CharityApplicationsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CharityApplicationsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CharityApplicationsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CharityApplicationsMaxAggregateInputType
+  }
+
+  export type GetCharityApplicationsAggregateType<T extends CharityApplicationsAggregateArgs> = {
+        [P in keyof T & keyof AggregateCharityApplications]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCharityApplications[P]>
+      : GetScalarType<T[P], AggregateCharityApplications[P]>
+  }
+
+
+
+
+  export type CharityApplicationsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharityApplicationsWhereInput
+    orderBy?: CharityApplicationsOrderByWithAggregationInput | CharityApplicationsOrderByWithAggregationInput[]
+    by: CharityApplicationsScalarFieldEnum[] | CharityApplicationsScalarFieldEnum
+    having?: CharityApplicationsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CharityApplicationsCountAggregateInputType | true
+    _avg?: CharityApplicationsAvgAggregateInputType
+    _sum?: CharityApplicationsSumAggregateInputType
+    _min?: CharityApplicationsMinAggregateInputType
+    _max?: CharityApplicationsMaxAggregateInputType
+  }
+
+  export type CharityApplicationsGroupByOutputType = {
+    application_id: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number: string | null
+    status: $Enums.CharityApplicationStatus
+    reviewed_on: Date | null
+    reviewed_by: number | null
+    approved_on: Date | null
+    approved_by: number | null
+    charity_id: number | null
+    created_on: Date
+    updated_on: Date
+    _count: CharityApplicationsCountAggregateOutputType | null
+    _avg: CharityApplicationsAvgAggregateOutputType | null
+    _sum: CharityApplicationsSumAggregateOutputType | null
+    _min: CharityApplicationsMinAggregateOutputType | null
+    _max: CharityApplicationsMaxAggregateOutputType | null
+  }
+
+  type GetCharityApplicationsGroupByPayload<T extends CharityApplicationsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CharityApplicationsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CharityApplicationsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
+            : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CharityApplicationsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    application_id?: boolean
+    org_name?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    contact_number?: boolean
+    website?: boolean
+    org_address?: boolean
+    charity_number?: boolean
+    status?: boolean
+    reviewed_on?: boolean
+    reviewed_by?: boolean
+    approved_on?: boolean
+    approved_by?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["charityApplications"]>
+
+  export type CharityApplicationsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    application_id?: boolean
+    org_name?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    contact_number?: boolean
+    website?: boolean
+    org_address?: boolean
+    charity_number?: boolean
+    status?: boolean
+    reviewed_on?: boolean
+    reviewed_by?: boolean
+    approved_on?: boolean
+    approved_by?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["charityApplications"]>
+
+  export type CharityApplicationsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    application_id?: boolean
+    org_name?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    contact_number?: boolean
+    website?: boolean
+    org_address?: boolean
+    charity_number?: boolean
+    status?: boolean
+    reviewed_on?: boolean
+    reviewed_by?: boolean
+    approved_on?: boolean
+    approved_by?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["charityApplications"]>
+
+  export type CharityApplicationsSelectScalar = {
+    application_id?: boolean
+    org_name?: boolean
+    contact_name?: boolean
+    contact_email?: boolean
+    contact_number?: boolean
+    website?: boolean
+    org_address?: boolean
+    charity_number?: boolean
+    status?: boolean
+    reviewed_on?: boolean
+    reviewed_by?: boolean
+    approved_on?: boolean
+    approved_by?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+  }
+
+  export type CharityApplicationsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"application_id" | "org_name" | "contact_name" | "contact_email" | "contact_number" | "website" | "org_address" | "charity_number" | "status" | "reviewed_on" | "reviewed_by" | "approved_on" | "approved_by" | "charity_id" | "created_on" | "updated_on", ExtArgs["result"]["charityApplications"]>
+  export type CharityApplicationsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }
+  export type CharityApplicationsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }
+  export type CharityApplicationsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    reviewer?: boolean | CharityApplications$reviewerArgs<ExtArgs>
+    approver?: boolean | CharityApplications$approverArgs<ExtArgs>
+    charity?: boolean | CharityApplications$charityArgs<ExtArgs>
+  }
+
+  export type $CharityApplicationsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CharityApplications"
+    objects: {
+      reviewer: Prisma.$UserPayload<ExtArgs> | null
+      approver: Prisma.$UserPayload<ExtArgs> | null
+      charity: Prisma.$CharitiesPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      application_id: number
+      org_name: string
+      contact_name: string
+      contact_email: string
+      contact_number: string
+      website: string
+      org_address: string
+      charity_number: string | null
+      status: $Enums.CharityApplicationStatus
+      reviewed_on: Date | null
+      reviewed_by: number | null
+      approved_on: Date | null
+      approved_by: number | null
+      charity_id: number | null
+      created_on: Date
+      updated_on: Date
+    }, ExtArgs["result"]["charityApplications"]>
+    composites: {}
+  }
+
+  type CharityApplicationsGetPayload<S extends boolean | null | undefined | CharityApplicationsDefaultArgs> = $Result.GetResult<Prisma.$CharityApplicationsPayload, S>
+
+  type CharityApplicationsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CharityApplicationsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CharityApplicationsCountAggregateInputType | true
+    }
+
+  export interface CharityApplicationsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CharityApplications'], meta: { name: 'CharityApplications' } }
+    /**
+     * Find zero or one CharityApplications that matches the filter.
+     * @param {CharityApplicationsFindUniqueArgs} args - Arguments to find a CharityApplications
+     * @example
+     * // Get one CharityApplications
+     * const charityApplications = await prisma.charityApplications.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CharityApplicationsFindUniqueArgs>(args: SelectSubset<T, CharityApplicationsFindUniqueArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CharityApplications that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CharityApplicationsFindUniqueOrThrowArgs} args - Arguments to find a CharityApplications
+     * @example
+     * // Get one CharityApplications
+     * const charityApplications = await prisma.charityApplications.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CharityApplicationsFindUniqueOrThrowArgs>(args: SelectSubset<T, CharityApplicationsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CharityApplications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsFindFirstArgs} args - Arguments to find a CharityApplications
+     * @example
+     * // Get one CharityApplications
+     * const charityApplications = await prisma.charityApplications.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CharityApplicationsFindFirstArgs>(args?: SelectSubset<T, CharityApplicationsFindFirstArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CharityApplications that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsFindFirstOrThrowArgs} args - Arguments to find a CharityApplications
+     * @example
+     * // Get one CharityApplications
+     * const charityApplications = await prisma.charityApplications.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CharityApplicationsFindFirstOrThrowArgs>(args?: SelectSubset<T, CharityApplicationsFindFirstOrThrowArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CharityApplications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CharityApplications
+     * const charityApplications = await prisma.charityApplications.findMany()
+     * 
+     * // Get first 10 CharityApplications
+     * const charityApplications = await prisma.charityApplications.findMany({ take: 10 })
+     * 
+     * // Only select the `application_id`
+     * const charityApplicationsWithApplication_idOnly = await prisma.charityApplications.findMany({ select: { application_id: true } })
+     * 
+     */
+    findMany<T extends CharityApplicationsFindManyArgs>(args?: SelectSubset<T, CharityApplicationsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CharityApplications.
+     * @param {CharityApplicationsCreateArgs} args - Arguments to create a CharityApplications.
+     * @example
+     * // Create one CharityApplications
+     * const CharityApplications = await prisma.charityApplications.create({
+     *   data: {
+     *     // ... data to create a CharityApplications
+     *   }
+     * })
+     * 
+     */
+    create<T extends CharityApplicationsCreateArgs>(args: SelectSubset<T, CharityApplicationsCreateArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CharityApplications.
+     * @param {CharityApplicationsCreateManyArgs} args - Arguments to create many CharityApplications.
+     * @example
+     * // Create many CharityApplications
+     * const charityApplications = await prisma.charityApplications.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CharityApplicationsCreateManyArgs>(args?: SelectSubset<T, CharityApplicationsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CharityApplications and returns the data saved in the database.
+     * @param {CharityApplicationsCreateManyAndReturnArgs} args - Arguments to create many CharityApplications.
+     * @example
+     * // Create many CharityApplications
+     * const charityApplications = await prisma.charityApplications.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CharityApplications and only return the `application_id`
+     * const charityApplicationsWithApplication_idOnly = await prisma.charityApplications.createManyAndReturn({
+     *   select: { application_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CharityApplicationsCreateManyAndReturnArgs>(args?: SelectSubset<T, CharityApplicationsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CharityApplications.
+     * @param {CharityApplicationsDeleteArgs} args - Arguments to delete one CharityApplications.
+     * @example
+     * // Delete one CharityApplications
+     * const CharityApplications = await prisma.charityApplications.delete({
+     *   where: {
+     *     // ... filter to delete one CharityApplications
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CharityApplicationsDeleteArgs>(args: SelectSubset<T, CharityApplicationsDeleteArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CharityApplications.
+     * @param {CharityApplicationsUpdateArgs} args - Arguments to update one CharityApplications.
+     * @example
+     * // Update one CharityApplications
+     * const charityApplications = await prisma.charityApplications.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CharityApplicationsUpdateArgs>(args: SelectSubset<T, CharityApplicationsUpdateArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CharityApplications.
+     * @param {CharityApplicationsDeleteManyArgs} args - Arguments to filter CharityApplications to delete.
+     * @example
+     * // Delete a few CharityApplications
+     * const { count } = await prisma.charityApplications.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CharityApplicationsDeleteManyArgs>(args?: SelectSubset<T, CharityApplicationsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CharityApplications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CharityApplications
+     * const charityApplications = await prisma.charityApplications.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CharityApplicationsUpdateManyArgs>(args: SelectSubset<T, CharityApplicationsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CharityApplications and returns the data updated in the database.
+     * @param {CharityApplicationsUpdateManyAndReturnArgs} args - Arguments to update many CharityApplications.
+     * @example
+     * // Update many CharityApplications
+     * const charityApplications = await prisma.charityApplications.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CharityApplications and only return the `application_id`
+     * const charityApplicationsWithApplication_idOnly = await prisma.charityApplications.updateManyAndReturn({
+     *   select: { application_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CharityApplicationsUpdateManyAndReturnArgs>(args: SelectSubset<T, CharityApplicationsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CharityApplications.
+     * @param {CharityApplicationsUpsertArgs} args - Arguments to update or create a CharityApplications.
+     * @example
+     * // Update or create a CharityApplications
+     * const charityApplications = await prisma.charityApplications.upsert({
+     *   create: {
+     *     // ... data to create a CharityApplications
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CharityApplications we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CharityApplicationsUpsertArgs>(args: SelectSubset<T, CharityApplicationsUpsertArgs<ExtArgs>>): Prisma__CharityApplicationsClient<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CharityApplications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsCountArgs} args - Arguments to filter CharityApplications to count.
+     * @example
+     * // Count the number of CharityApplications
+     * const count = await prisma.charityApplications.count({
+     *   where: {
+     *     // ... the filter for the CharityApplications we want to count
+     *   }
+     * })
+    **/
+    count<T extends CharityApplicationsCountArgs>(
+      args?: Subset<T, CharityApplicationsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CharityApplicationsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CharityApplications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CharityApplicationsAggregateArgs>(args: Subset<T, CharityApplicationsAggregateArgs>): Prisma.PrismaPromise<GetCharityApplicationsAggregateType<T>>
+
+    /**
+     * Group by CharityApplications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharityApplicationsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CharityApplicationsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CharityApplicationsGroupByArgs['orderBy'] }
+        : { orderBy?: CharityApplicationsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CharityApplicationsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharityApplicationsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CharityApplications model
+   */
+  readonly fields: CharityApplicationsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CharityApplications.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CharityApplicationsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    reviewer<T extends CharityApplications$reviewerArgs<ExtArgs> = {}>(args?: Subset<T, CharityApplications$reviewerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    approver<T extends CharityApplications$approverArgs<ExtArgs> = {}>(args?: Subset<T, CharityApplications$approverArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    charity<T extends CharityApplications$charityArgs<ExtArgs> = {}>(args?: Subset<T, CharityApplications$charityArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CharityApplications model
+   */
+  interface CharityApplicationsFieldRefs {
+    readonly application_id: FieldRef<"CharityApplications", 'Int'>
+    readonly org_name: FieldRef<"CharityApplications", 'String'>
+    readonly contact_name: FieldRef<"CharityApplications", 'String'>
+    readonly contact_email: FieldRef<"CharityApplications", 'String'>
+    readonly contact_number: FieldRef<"CharityApplications", 'String'>
+    readonly website: FieldRef<"CharityApplications", 'String'>
+    readonly org_address: FieldRef<"CharityApplications", 'String'>
+    readonly charity_number: FieldRef<"CharityApplications", 'String'>
+    readonly status: FieldRef<"CharityApplications", 'CharityApplicationStatus'>
+    readonly reviewed_on: FieldRef<"CharityApplications", 'DateTime'>
+    readonly reviewed_by: FieldRef<"CharityApplications", 'Int'>
+    readonly approved_on: FieldRef<"CharityApplications", 'DateTime'>
+    readonly approved_by: FieldRef<"CharityApplications", 'Int'>
+    readonly charity_id: FieldRef<"CharityApplications", 'Int'>
+    readonly created_on: FieldRef<"CharityApplications", 'DateTime'>
+    readonly updated_on: FieldRef<"CharityApplications", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CharityApplications findUnique
+   */
+  export type CharityApplicationsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter, which CharityApplications to fetch.
+     */
+    where: CharityApplicationsWhereUniqueInput
+  }
+
+  /**
+   * CharityApplications findUniqueOrThrow
+   */
+  export type CharityApplicationsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter, which CharityApplications to fetch.
+     */
+    where: CharityApplicationsWhereUniqueInput
+  }
+
+  /**
+   * CharityApplications findFirst
+   */
+  export type CharityApplicationsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter, which CharityApplications to fetch.
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharityApplications to fetch.
+     */
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CharityApplications.
+     */
+    cursor?: CharityApplicationsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharityApplications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharityApplications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CharityApplications.
+     */
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * CharityApplications findFirstOrThrow
+   */
+  export type CharityApplicationsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter, which CharityApplications to fetch.
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharityApplications to fetch.
+     */
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CharityApplications.
+     */
+    cursor?: CharityApplicationsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharityApplications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharityApplications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CharityApplications.
+     */
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * CharityApplications findMany
+   */
+  export type CharityApplicationsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter, which CharityApplications to fetch.
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharityApplications to fetch.
+     */
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CharityApplications.
+     */
+    cursor?: CharityApplicationsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharityApplications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharityApplications.
+     */
+    skip?: number
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * CharityApplications create
+   */
+  export type CharityApplicationsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CharityApplications.
+     */
+    data: XOR<CharityApplicationsCreateInput, CharityApplicationsUncheckedCreateInput>
+  }
+
+  /**
+   * CharityApplications createMany
+   */
+  export type CharityApplicationsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CharityApplications.
+     */
+    data: CharityApplicationsCreateManyInput | CharityApplicationsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CharityApplications createManyAndReturn
+   */
+  export type CharityApplicationsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * The data used to create many CharityApplications.
+     */
+    data: CharityApplicationsCreateManyInput | CharityApplicationsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CharityApplications update
+   */
+  export type CharityApplicationsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CharityApplications.
+     */
+    data: XOR<CharityApplicationsUpdateInput, CharityApplicationsUncheckedUpdateInput>
+    /**
+     * Choose, which CharityApplications to update.
+     */
+    where: CharityApplicationsWhereUniqueInput
+  }
+
+  /**
+   * CharityApplications updateMany
+   */
+  export type CharityApplicationsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CharityApplications.
+     */
+    data: XOR<CharityApplicationsUpdateManyMutationInput, CharityApplicationsUncheckedUpdateManyInput>
+    /**
+     * Filter which CharityApplications to update
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * Limit how many CharityApplications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CharityApplications updateManyAndReturn
+   */
+  export type CharityApplicationsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * The data used to update CharityApplications.
+     */
+    data: XOR<CharityApplicationsUpdateManyMutationInput, CharityApplicationsUncheckedUpdateManyInput>
+    /**
+     * Filter which CharityApplications to update
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * Limit how many CharityApplications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CharityApplications upsert
+   */
+  export type CharityApplicationsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CharityApplications to update in case it exists.
+     */
+    where: CharityApplicationsWhereUniqueInput
+    /**
+     * In case the CharityApplications found by the `where` argument doesn't exist, create a new CharityApplications with this data.
+     */
+    create: XOR<CharityApplicationsCreateInput, CharityApplicationsUncheckedCreateInput>
+    /**
+     * In case the CharityApplications was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CharityApplicationsUpdateInput, CharityApplicationsUncheckedUpdateInput>
+  }
+
+  /**
+   * CharityApplications delete
+   */
+  export type CharityApplicationsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    /**
+     * Filter which CharityApplications to delete.
+     */
+    where: CharityApplicationsWhereUniqueInput
+  }
+
+  /**
+   * CharityApplications deleteMany
+   */
+  export type CharityApplicationsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CharityApplications to delete
+     */
+    where?: CharityApplicationsWhereInput
+    /**
+     * Limit how many CharityApplications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CharityApplications.reviewer
+   */
+  export type CharityApplications$reviewerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CharityApplications.approver
+   */
+  export type CharityApplications$approverArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CharityApplications.charity
+   */
+  export type CharityApplications$charityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    where?: CharitiesWhereInput
+  }
+
+  /**
+   * CharityApplications without action
+   */
+  export type CharityApplicationsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Charities
+   */
+
+  export type AggregateCharities = {
+    _count: CharitiesCountAggregateOutputType | null
+    _avg: CharitiesAvgAggregateOutputType | null
+    _sum: CharitiesSumAggregateOutputType | null
+    _min: CharitiesMinAggregateOutputType | null
+    _max: CharitiesMaxAggregateOutputType | null
+  }
+
+  export type CharitiesAvgAggregateOutputType = {
+    charity_id: number | null
+    user_id: number | null
+  }
+
+  export type CharitiesSumAggregateOutputType = {
+    charity_id: number | null
+    user_id: number | null
+  }
+
+  export type CharitiesMinAggregateOutputType = {
+    charity_id: number | null
+    name: string | null
+    email: string | null
+    phone: string | null
+    address: string | null
+    website: string | null
+    verified: boolean | null
+    user_id: number | null
+    created_on: Date | null
+    updated_on: Date | null
+  }
+
+  export type CharitiesMaxAggregateOutputType = {
+    charity_id: number | null
+    name: string | null
+    email: string | null
+    phone: string | null
+    address: string | null
+    website: string | null
+    verified: boolean | null
+    user_id: number | null
+    created_on: Date | null
+    updated_on: Date | null
+  }
+
+  export type CharitiesCountAggregateOutputType = {
+    charity_id: number
+    name: number
+    email: number
+    phone: number
+    address: number
+    website: number
+    verified: number
+    user_id: number
+    created_on: number
+    updated_on: number
+    _all: number
+  }
+
+
+  export type CharitiesAvgAggregateInputType = {
+    charity_id?: true
+    user_id?: true
+  }
+
+  export type CharitiesSumAggregateInputType = {
+    charity_id?: true
+    user_id?: true
+  }
+
+  export type CharitiesMinAggregateInputType = {
+    charity_id?: true
+    name?: true
+    email?: true
+    phone?: true
+    address?: true
+    website?: true
+    verified?: true
+    user_id?: true
+    created_on?: true
+    updated_on?: true
+  }
+
+  export type CharitiesMaxAggregateInputType = {
+    charity_id?: true
+    name?: true
+    email?: true
+    phone?: true
+    address?: true
+    website?: true
+    verified?: true
+    user_id?: true
+    created_on?: true
+    updated_on?: true
+  }
+
+  export type CharitiesCountAggregateInputType = {
+    charity_id?: true
+    name?: true
+    email?: true
+    phone?: true
+    address?: true
+    website?: true
+    verified?: true
+    user_id?: true
+    created_on?: true
+    updated_on?: true
+    _all?: true
+  }
+
+  export type CharitiesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Charities to aggregate.
+     */
+    where?: CharitiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charities to fetch.
+     */
+    orderBy?: CharitiesOrderByWithRelationInput | CharitiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CharitiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Charities
+    **/
+    _count?: true | CharitiesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CharitiesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CharitiesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CharitiesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CharitiesMaxAggregateInputType
+  }
+
+  export type GetCharitiesAggregateType<T extends CharitiesAggregateArgs> = {
+        [P in keyof T & keyof AggregateCharities]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCharities[P]>
+      : GetScalarType<T[P], AggregateCharities[P]>
+  }
+
+
+
+
+  export type CharitiesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharitiesWhereInput
+    orderBy?: CharitiesOrderByWithAggregationInput | CharitiesOrderByWithAggregationInput[]
+    by: CharitiesScalarFieldEnum[] | CharitiesScalarFieldEnum
+    having?: CharitiesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CharitiesCountAggregateInputType | true
+    _avg?: CharitiesAvgAggregateInputType
+    _sum?: CharitiesSumAggregateInputType
+    _min?: CharitiesMinAggregateInputType
+    _max?: CharitiesMaxAggregateInputType
+  }
+
+  export type CharitiesGroupByOutputType = {
+    charity_id: number
+    name: string
+    email: string
+    phone: string | null
+    address: string
+    website: string
+    verified: boolean
+    user_id: number | null
+    created_on: Date
+    updated_on: Date
+    _count: CharitiesCountAggregateOutputType | null
+    _avg: CharitiesAvgAggregateOutputType | null
+    _sum: CharitiesSumAggregateOutputType | null
+    _min: CharitiesMinAggregateOutputType | null
+    _max: CharitiesMaxAggregateOutputType | null
+  }
+
+  type GetCharitiesGroupByPayload<T extends CharitiesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CharitiesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CharitiesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
+            : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CharitiesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    charity_id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    website?: boolean
+    verified?: boolean
+    user_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    User?: boolean | Charities$UserArgs<ExtArgs>
+    applications?: boolean | Charities$applicationsArgs<ExtArgs>
+    signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
+    _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["charities"]>
+
+  export type CharitiesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    charity_id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    website?: boolean
+    verified?: boolean
+    user_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    User?: boolean | Charities$UserArgs<ExtArgs>
+  }, ExtArgs["result"]["charities"]>
+
+  export type CharitiesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    charity_id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    website?: boolean
+    verified?: boolean
+    user_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+    User?: boolean | Charities$UserArgs<ExtArgs>
+  }, ExtArgs["result"]["charities"]>
+
+  export type CharitiesSelectScalar = {
+    charity_id?: boolean
+    name?: boolean
+    email?: boolean
+    phone?: boolean
+    address?: boolean
+    website?: boolean
+    verified?: boolean
+    user_id?: boolean
+    created_on?: boolean
+    updated_on?: boolean
+  }
+
+  export type CharitiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"charity_id" | "name" | "email" | "phone" | "address" | "website" | "verified" | "user_id" | "created_on" | "updated_on", ExtArgs["result"]["charities"]>
+  export type CharitiesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | Charities$UserArgs<ExtArgs>
+    applications?: boolean | Charities$applicationsArgs<ExtArgs>
+    signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
+    _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | Charities$UserArgs<ExtArgs>
+  }
+  export type CharitiesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    User?: boolean | Charities$UserArgs<ExtArgs>
+  }
+
+  export type $CharitiesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Charities"
+    objects: {
+      User: Prisma.$UserPayload<ExtArgs> | null
+      applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
+      signup_tokens: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      charity_id: number
+      name: string
+      email: string
+      phone: string | null
+      address: string
+      website: string
+      verified: boolean
+      user_id: number | null
+      created_on: Date
+      updated_on: Date
+    }, ExtArgs["result"]["charities"]>
+    composites: {}
+  }
+
+  type CharitiesGetPayload<S extends boolean | null | undefined | CharitiesDefaultArgs> = $Result.GetResult<Prisma.$CharitiesPayload, S>
+
+  type CharitiesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CharitiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CharitiesCountAggregateInputType | true
+    }
+
+  export interface CharitiesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Charities'], meta: { name: 'Charities' } }
+    /**
+     * Find zero or one Charities that matches the filter.
+     * @param {CharitiesFindUniqueArgs} args - Arguments to find a Charities
+     * @example
+     * // Get one Charities
+     * const charities = await prisma.charities.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CharitiesFindUniqueArgs>(args: SelectSubset<T, CharitiesFindUniqueArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Charities that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CharitiesFindUniqueOrThrowArgs} args - Arguments to find a Charities
+     * @example
+     * // Get one Charities
+     * const charities = await prisma.charities.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CharitiesFindUniqueOrThrowArgs>(args: SelectSubset<T, CharitiesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Charities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesFindFirstArgs} args - Arguments to find a Charities
+     * @example
+     * // Get one Charities
+     * const charities = await prisma.charities.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CharitiesFindFirstArgs>(args?: SelectSubset<T, CharitiesFindFirstArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Charities that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesFindFirstOrThrowArgs} args - Arguments to find a Charities
+     * @example
+     * // Get one Charities
+     * const charities = await prisma.charities.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CharitiesFindFirstOrThrowArgs>(args?: SelectSubset<T, CharitiesFindFirstOrThrowArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Charities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Charities
+     * const charities = await prisma.charities.findMany()
+     * 
+     * // Get first 10 Charities
+     * const charities = await prisma.charities.findMany({ take: 10 })
+     * 
+     * // Only select the `charity_id`
+     * const charitiesWithCharity_idOnly = await prisma.charities.findMany({ select: { charity_id: true } })
+     * 
+     */
+    findMany<T extends CharitiesFindManyArgs>(args?: SelectSubset<T, CharitiesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Charities.
+     * @param {CharitiesCreateArgs} args - Arguments to create a Charities.
+     * @example
+     * // Create one Charities
+     * const Charities = await prisma.charities.create({
+     *   data: {
+     *     // ... data to create a Charities
+     *   }
+     * })
+     * 
+     */
+    create<T extends CharitiesCreateArgs>(args: SelectSubset<T, CharitiesCreateArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Charities.
+     * @param {CharitiesCreateManyArgs} args - Arguments to create many Charities.
+     * @example
+     * // Create many Charities
+     * const charities = await prisma.charities.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CharitiesCreateManyArgs>(args?: SelectSubset<T, CharitiesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Charities and returns the data saved in the database.
+     * @param {CharitiesCreateManyAndReturnArgs} args - Arguments to create many Charities.
+     * @example
+     * // Create many Charities
+     * const charities = await prisma.charities.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Charities and only return the `charity_id`
+     * const charitiesWithCharity_idOnly = await prisma.charities.createManyAndReturn({
+     *   select: { charity_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CharitiesCreateManyAndReturnArgs>(args?: SelectSubset<T, CharitiesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Charities.
+     * @param {CharitiesDeleteArgs} args - Arguments to delete one Charities.
+     * @example
+     * // Delete one Charities
+     * const Charities = await prisma.charities.delete({
+     *   where: {
+     *     // ... filter to delete one Charities
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CharitiesDeleteArgs>(args: SelectSubset<T, CharitiesDeleteArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Charities.
+     * @param {CharitiesUpdateArgs} args - Arguments to update one Charities.
+     * @example
+     * // Update one Charities
+     * const charities = await prisma.charities.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CharitiesUpdateArgs>(args: SelectSubset<T, CharitiesUpdateArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Charities.
+     * @param {CharitiesDeleteManyArgs} args - Arguments to filter Charities to delete.
+     * @example
+     * // Delete a few Charities
+     * const { count } = await prisma.charities.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CharitiesDeleteManyArgs>(args?: SelectSubset<T, CharitiesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Charities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Charities
+     * const charities = await prisma.charities.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CharitiesUpdateManyArgs>(args: SelectSubset<T, CharitiesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Charities and returns the data updated in the database.
+     * @param {CharitiesUpdateManyAndReturnArgs} args - Arguments to update many Charities.
+     * @example
+     * // Update many Charities
+     * const charities = await prisma.charities.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Charities and only return the `charity_id`
+     * const charitiesWithCharity_idOnly = await prisma.charities.updateManyAndReturn({
+     *   select: { charity_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CharitiesUpdateManyAndReturnArgs>(args: SelectSubset<T, CharitiesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Charities.
+     * @param {CharitiesUpsertArgs} args - Arguments to update or create a Charities.
+     * @example
+     * // Update or create a Charities
+     * const charities = await prisma.charities.upsert({
+     *   create: {
+     *     // ... data to create a Charities
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Charities we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CharitiesUpsertArgs>(args: SelectSubset<T, CharitiesUpsertArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Charities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesCountArgs} args - Arguments to filter Charities to count.
+     * @example
+     * // Count the number of Charities
+     * const count = await prisma.charities.count({
+     *   where: {
+     *     // ... the filter for the Charities we want to count
+     *   }
+     * })
+    **/
+    count<T extends CharitiesCountArgs>(
+      args?: Subset<T, CharitiesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CharitiesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Charities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CharitiesAggregateArgs>(args: Subset<T, CharitiesAggregateArgs>): Prisma.PrismaPromise<GetCharitiesAggregateType<T>>
+
+    /**
+     * Group by Charities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitiesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CharitiesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CharitiesGroupByArgs['orderBy'] }
+        : { orderBy?: CharitiesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CharitiesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharitiesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Charities model
+   */
+  readonly fields: CharitiesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Charities.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CharitiesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    User<T extends Charities$UserArgs<ExtArgs> = {}>(args?: Subset<T, Charities$UserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    applications<T extends Charities$applicationsArgs<ExtArgs> = {}>(args?: Subset<T, Charities$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    signup_tokens<T extends Charities$signup_tokensArgs<ExtArgs> = {}>(args?: Subset<T, Charities$signup_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Charities model
+   */
+  interface CharitiesFieldRefs {
+    readonly charity_id: FieldRef<"Charities", 'Int'>
+    readonly name: FieldRef<"Charities", 'String'>
+    readonly email: FieldRef<"Charities", 'String'>
+    readonly phone: FieldRef<"Charities", 'String'>
+    readonly address: FieldRef<"Charities", 'String'>
+    readonly website: FieldRef<"Charities", 'String'>
+    readonly verified: FieldRef<"Charities", 'Boolean'>
+    readonly user_id: FieldRef<"Charities", 'Int'>
+    readonly created_on: FieldRef<"Charities", 'DateTime'>
+    readonly updated_on: FieldRef<"Charities", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Charities findUnique
+   */
+  export type CharitiesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter, which Charities to fetch.
+     */
+    where: CharitiesWhereUniqueInput
+  }
+
+  /**
+   * Charities findUniqueOrThrow
+   */
+  export type CharitiesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter, which Charities to fetch.
+     */
+    where: CharitiesWhereUniqueInput
+  }
+
+  /**
+   * Charities findFirst
+   */
+  export type CharitiesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter, which Charities to fetch.
+     */
+    where?: CharitiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charities to fetch.
+     */
+    orderBy?: CharitiesOrderByWithRelationInput | CharitiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Charities.
+     */
+    cursor?: CharitiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Charities.
+     */
+    distinct?: CharitiesScalarFieldEnum | CharitiesScalarFieldEnum[]
+  }
+
+  /**
+   * Charities findFirstOrThrow
+   */
+  export type CharitiesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter, which Charities to fetch.
+     */
+    where?: CharitiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charities to fetch.
+     */
+    orderBy?: CharitiesOrderByWithRelationInput | CharitiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Charities.
+     */
+    cursor?: CharitiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Charities.
+     */
+    distinct?: CharitiesScalarFieldEnum | CharitiesScalarFieldEnum[]
+  }
+
+  /**
+   * Charities findMany
+   */
+  export type CharitiesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter, which Charities to fetch.
+     */
+    where?: CharitiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Charities to fetch.
+     */
+    orderBy?: CharitiesOrderByWithRelationInput | CharitiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Charities.
+     */
+    cursor?: CharitiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Charities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Charities.
+     */
+    skip?: number
+    distinct?: CharitiesScalarFieldEnum | CharitiesScalarFieldEnum[]
+  }
+
+  /**
+   * Charities create
+   */
+  export type CharitiesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Charities.
+     */
+    data: XOR<CharitiesCreateInput, CharitiesUncheckedCreateInput>
+  }
+
+  /**
+   * Charities createMany
+   */
+  export type CharitiesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Charities.
+     */
+    data: CharitiesCreateManyInput | CharitiesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Charities createManyAndReturn
+   */
+  export type CharitiesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * The data used to create many Charities.
+     */
+    data: CharitiesCreateManyInput | CharitiesCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Charities update
+   */
+  export type CharitiesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Charities.
+     */
+    data: XOR<CharitiesUpdateInput, CharitiesUncheckedUpdateInput>
+    /**
+     * Choose, which Charities to update.
+     */
+    where: CharitiesWhereUniqueInput
+  }
+
+  /**
+   * Charities updateMany
+   */
+  export type CharitiesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Charities.
+     */
+    data: XOR<CharitiesUpdateManyMutationInput, CharitiesUncheckedUpdateManyInput>
+    /**
+     * Filter which Charities to update
+     */
+    where?: CharitiesWhereInput
+    /**
+     * Limit how many Charities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Charities updateManyAndReturn
+   */
+  export type CharitiesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * The data used to update Charities.
+     */
+    data: XOR<CharitiesUpdateManyMutationInput, CharitiesUncheckedUpdateManyInput>
+    /**
+     * Filter which Charities to update
+     */
+    where?: CharitiesWhereInput
+    /**
+     * Limit how many Charities to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Charities upsert
+   */
+  export type CharitiesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Charities to update in case it exists.
+     */
+    where: CharitiesWhereUniqueInput
+    /**
+     * In case the Charities found by the `where` argument doesn't exist, create a new Charities with this data.
+     */
+    create: XOR<CharitiesCreateInput, CharitiesUncheckedCreateInput>
+    /**
+     * In case the Charities was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CharitiesUpdateInput, CharitiesUncheckedUpdateInput>
+  }
+
+  /**
+   * Charities delete
+   */
+  export type CharitiesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    /**
+     * Filter which Charities to delete.
+     */
+    where: CharitiesWhereUniqueInput
+  }
+
+  /**
+   * Charities deleteMany
+   */
+  export type CharitiesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Charities to delete
+     */
+    where?: CharitiesWhereInput
+    /**
+     * Limit how many Charities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Charities.User
+   */
+  export type Charities$UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Charities.applications
+   */
+  export type Charities$applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharityApplications
+     */
+    select?: CharityApplicationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharityApplications
+     */
+    omit?: CharityApplicationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharityApplicationsInclude<ExtArgs> | null
+    where?: CharityApplicationsWhereInput
+    orderBy?: CharityApplicationsOrderByWithRelationInput | CharityApplicationsOrderByWithRelationInput[]
+    cursor?: CharityApplicationsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharityApplicationsScalarFieldEnum | CharityApplicationsScalarFieldEnum[]
+  }
+
+  /**
+   * Charities.signup_tokens
+   */
+  export type Charities$signup_tokensArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    where?: CharitySignupTokensWhereInput
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    cursor?: CharitySignupTokensWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CharitySignupTokensScalarFieldEnum | CharitySignupTokensScalarFieldEnum[]
+  }
+
+  /**
+   * Charities without action
+   */
+  export type CharitiesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CharitySignupTokens
+   */
+
+  export type AggregateCharitySignupTokens = {
+    _count: CharitySignupTokensCountAggregateOutputType | null
+    _avg: CharitySignupTokensAvgAggregateOutputType | null
+    _sum: CharitySignupTokensSumAggregateOutputType | null
+    _min: CharitySignupTokensMinAggregateOutputType | null
+    _max: CharitySignupTokensMaxAggregateOutputType | null
+  }
+
+  export type CharitySignupTokensAvgAggregateOutputType = {
+    invite_id: number | null
+    charity_id: number | null
+    created_by: number | null
+  }
+
+  export type CharitySignupTokensSumAggregateOutputType = {
+    invite_id: number | null
+    charity_id: number | null
+    created_by: number | null
+  }
+
+  export type CharitySignupTokensMinAggregateOutputType = {
+    invite_id: number | null
+    charity_id: number | null
+    email: string | null
+    token: string | null
+    expires_on: Date | null
+    consumed_on: Date | null
+    created_on: Date | null
+    created_by: number | null
+  }
+
+  export type CharitySignupTokensMaxAggregateOutputType = {
+    invite_id: number | null
+    charity_id: number | null
+    email: string | null
+    token: string | null
+    expires_on: Date | null
+    consumed_on: Date | null
+    created_on: Date | null
+    created_by: number | null
+  }
+
+  export type CharitySignupTokensCountAggregateOutputType = {
+    invite_id: number
+    charity_id: number
+    email: number
+    token: number
+    expires_on: number
+    consumed_on: number
+    created_on: number
+    created_by: number
+    _all: number
+  }
+
+
+  export type CharitySignupTokensAvgAggregateInputType = {
+    invite_id?: true
+    charity_id?: true
+    created_by?: true
+  }
+
+  export type CharitySignupTokensSumAggregateInputType = {
+    invite_id?: true
+    charity_id?: true
+    created_by?: true
+  }
+
+  export type CharitySignupTokensMinAggregateInputType = {
+    invite_id?: true
+    charity_id?: true
+    email?: true
+    token?: true
+    expires_on?: true
+    consumed_on?: true
+    created_on?: true
+    created_by?: true
+  }
+
+  export type CharitySignupTokensMaxAggregateInputType = {
+    invite_id?: true
+    charity_id?: true
+    email?: true
+    token?: true
+    expires_on?: true
+    consumed_on?: true
+    created_on?: true
+    created_by?: true
+  }
+
+  export type CharitySignupTokensCountAggregateInputType = {
+    invite_id?: true
+    charity_id?: true
+    email?: true
+    token?: true
+    expires_on?: true
+    consumed_on?: true
+    created_on?: true
+    created_by?: true
+    _all?: true
+  }
+
+  export type CharitySignupTokensAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CharitySignupTokens to aggregate.
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharitySignupTokens to fetch.
+     */
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CharitySignupTokensWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharitySignupTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharitySignupTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CharitySignupTokens
+    **/
+    _count?: true | CharitySignupTokensCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CharitySignupTokensAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CharitySignupTokensSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CharitySignupTokensMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CharitySignupTokensMaxAggregateInputType
+  }
+
+  export type GetCharitySignupTokensAggregateType<T extends CharitySignupTokensAggregateArgs> = {
+        [P in keyof T & keyof AggregateCharitySignupTokens]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
+      : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
+  }
+
+
+
+
+  export type CharitySignupTokensGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CharitySignupTokensWhereInput
+    orderBy?: CharitySignupTokensOrderByWithAggregationInput | CharitySignupTokensOrderByWithAggregationInput[]
+    by: CharitySignupTokensScalarFieldEnum[] | CharitySignupTokensScalarFieldEnum
+    having?: CharitySignupTokensScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CharitySignupTokensCountAggregateInputType | true
+    _avg?: CharitySignupTokensAvgAggregateInputType
+    _sum?: CharitySignupTokensSumAggregateInputType
+    _min?: CharitySignupTokensMinAggregateInputType
+    _max?: CharitySignupTokensMaxAggregateInputType
+  }
+
+  export type CharitySignupTokensGroupByOutputType = {
+    invite_id: number
+    charity_id: number
+    email: string
+    token: string
+    expires_on: Date
+    consumed_on: Date | null
+    created_on: Date
+    created_by: number | null
+    _count: CharitySignupTokensCountAggregateOutputType | null
+    _avg: CharitySignupTokensAvgAggregateOutputType | null
+    _sum: CharitySignupTokensSumAggregateOutputType | null
+    _min: CharitySignupTokensMinAggregateOutputType | null
+    _max: CharitySignupTokensMaxAggregateOutputType | null
+  }
+
+  type GetCharitySignupTokensGroupByPayload<T extends CharitySignupTokensGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CharitySignupTokensGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CharitySignupTokensGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
+            : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CharitySignupTokensSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    invite_id?: boolean
+    charity_id?: boolean
+    email?: boolean
+    token?: boolean
+    expires_on?: boolean
+    consumed_on?: boolean
+    created_on?: boolean
+    created_by?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }, ExtArgs["result"]["charitySignupTokens"]>
+
+  export type CharitySignupTokensSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    invite_id?: boolean
+    charity_id?: boolean
+    email?: boolean
+    token?: boolean
+    expires_on?: boolean
+    consumed_on?: boolean
+    created_on?: boolean
+    created_by?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }, ExtArgs["result"]["charitySignupTokens"]>
+
+  export type CharitySignupTokensSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    invite_id?: boolean
+    charity_id?: boolean
+    email?: boolean
+    token?: boolean
+    expires_on?: boolean
+    consumed_on?: boolean
+    created_on?: boolean
+    created_by?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }, ExtArgs["result"]["charitySignupTokens"]>
+
+  export type CharitySignupTokensSelectScalar = {
+    invite_id?: boolean
+    charity_id?: boolean
+    email?: boolean
+    token?: boolean
+    expires_on?: boolean
+    consumed_on?: boolean
+    created_on?: boolean
+    created_by?: boolean
+  }
+
+  export type CharitySignupTokensOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"invite_id" | "charity_id" | "email" | "token" | "expires_on" | "consumed_on" | "created_on" | "created_by", ExtArgs["result"]["charitySignupTokens"]>
+  export type CharitySignupTokensInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }
+  export type CharitySignupTokensIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }
+  export type CharitySignupTokensIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    creator?: boolean | CharitySignupTokens$creatorArgs<ExtArgs>
+  }
+
+  export type $CharitySignupTokensPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CharitySignupTokens"
+    objects: {
+      charity: Prisma.$CharitiesPayload<ExtArgs>
+      creator: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      invite_id: number
+      charity_id: number
+      email: string
+      token: string
+      expires_on: Date
+      consumed_on: Date | null
+      created_on: Date
+      created_by: number | null
+    }, ExtArgs["result"]["charitySignupTokens"]>
+    composites: {}
+  }
+
+  type CharitySignupTokensGetPayload<S extends boolean | null | undefined | CharitySignupTokensDefaultArgs> = $Result.GetResult<Prisma.$CharitySignupTokensPayload, S>
+
+  type CharitySignupTokensCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CharitySignupTokensFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CharitySignupTokensCountAggregateInputType | true
+    }
+
+  export interface CharitySignupTokensDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CharitySignupTokens'], meta: { name: 'CharitySignupTokens' } }
+    /**
+     * Find zero or one CharitySignupTokens that matches the filter.
+     * @param {CharitySignupTokensFindUniqueArgs} args - Arguments to find a CharitySignupTokens
+     * @example
+     * // Get one CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CharitySignupTokensFindUniqueArgs>(args: SelectSubset<T, CharitySignupTokensFindUniqueArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CharitySignupTokens that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CharitySignupTokensFindUniqueOrThrowArgs} args - Arguments to find a CharitySignupTokens
+     * @example
+     * // Get one CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CharitySignupTokensFindUniqueOrThrowArgs>(args: SelectSubset<T, CharitySignupTokensFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CharitySignupTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensFindFirstArgs} args - Arguments to find a CharitySignupTokens
+     * @example
+     * // Get one CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CharitySignupTokensFindFirstArgs>(args?: SelectSubset<T, CharitySignupTokensFindFirstArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CharitySignupTokens that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensFindFirstOrThrowArgs} args - Arguments to find a CharitySignupTokens
+     * @example
+     * // Get one CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CharitySignupTokensFindFirstOrThrowArgs>(args?: SelectSubset<T, CharitySignupTokensFindFirstOrThrowArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CharitySignupTokens that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findMany()
+     * 
+     * // Get first 10 CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.findMany({ take: 10 })
+     * 
+     * // Only select the `invite_id`
+     * const charitySignupTokensWithInvite_idOnly = await prisma.charitySignupTokens.findMany({ select: { invite_id: true } })
+     * 
+     */
+    findMany<T extends CharitySignupTokensFindManyArgs>(args?: SelectSubset<T, CharitySignupTokensFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CharitySignupTokens.
+     * @param {CharitySignupTokensCreateArgs} args - Arguments to create a CharitySignupTokens.
+     * @example
+     * // Create one CharitySignupTokens
+     * const CharitySignupTokens = await prisma.charitySignupTokens.create({
+     *   data: {
+     *     // ... data to create a CharitySignupTokens
+     *   }
+     * })
+     * 
+     */
+    create<T extends CharitySignupTokensCreateArgs>(args: SelectSubset<T, CharitySignupTokensCreateArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CharitySignupTokens.
+     * @param {CharitySignupTokensCreateManyArgs} args - Arguments to create many CharitySignupTokens.
+     * @example
+     * // Create many CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CharitySignupTokensCreateManyArgs>(args?: SelectSubset<T, CharitySignupTokensCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CharitySignupTokens and returns the data saved in the database.
+     * @param {CharitySignupTokensCreateManyAndReturnArgs} args - Arguments to create many CharitySignupTokens.
+     * @example
+     * // Create many CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CharitySignupTokens and only return the `invite_id`
+     * const charitySignupTokensWithInvite_idOnly = await prisma.charitySignupTokens.createManyAndReturn({
+     *   select: { invite_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CharitySignupTokensCreateManyAndReturnArgs>(args?: SelectSubset<T, CharitySignupTokensCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CharitySignupTokens.
+     * @param {CharitySignupTokensDeleteArgs} args - Arguments to delete one CharitySignupTokens.
+     * @example
+     * // Delete one CharitySignupTokens
+     * const CharitySignupTokens = await prisma.charitySignupTokens.delete({
+     *   where: {
+     *     // ... filter to delete one CharitySignupTokens
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CharitySignupTokensDeleteArgs>(args: SelectSubset<T, CharitySignupTokensDeleteArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CharitySignupTokens.
+     * @param {CharitySignupTokensUpdateArgs} args - Arguments to update one CharitySignupTokens.
+     * @example
+     * // Update one CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CharitySignupTokensUpdateArgs>(args: SelectSubset<T, CharitySignupTokensUpdateArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CharitySignupTokens.
+     * @param {CharitySignupTokensDeleteManyArgs} args - Arguments to filter CharitySignupTokens to delete.
+     * @example
+     * // Delete a few CharitySignupTokens
+     * const { count } = await prisma.charitySignupTokens.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CharitySignupTokensDeleteManyArgs>(args?: SelectSubset<T, CharitySignupTokensDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CharitySignupTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CharitySignupTokensUpdateManyArgs>(args: SelectSubset<T, CharitySignupTokensUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CharitySignupTokens and returns the data updated in the database.
+     * @param {CharitySignupTokensUpdateManyAndReturnArgs} args - Arguments to update many CharitySignupTokens.
+     * @example
+     * // Update many CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CharitySignupTokens and only return the `invite_id`
+     * const charitySignupTokensWithInvite_idOnly = await prisma.charitySignupTokens.updateManyAndReturn({
+     *   select: { invite_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CharitySignupTokensUpdateManyAndReturnArgs>(args: SelectSubset<T, CharitySignupTokensUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CharitySignupTokens.
+     * @param {CharitySignupTokensUpsertArgs} args - Arguments to update or create a CharitySignupTokens.
+     * @example
+     * // Update or create a CharitySignupTokens
+     * const charitySignupTokens = await prisma.charitySignupTokens.upsert({
+     *   create: {
+     *     // ... data to create a CharitySignupTokens
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CharitySignupTokens we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CharitySignupTokensUpsertArgs>(args: SelectSubset<T, CharitySignupTokensUpsertArgs<ExtArgs>>): Prisma__CharitySignupTokensClient<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CharitySignupTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensCountArgs} args - Arguments to filter CharitySignupTokens to count.
+     * @example
+     * // Count the number of CharitySignupTokens
+     * const count = await prisma.charitySignupTokens.count({
+     *   where: {
+     *     // ... the filter for the CharitySignupTokens we want to count
+     *   }
+     * })
+    **/
+    count<T extends CharitySignupTokensCountArgs>(
+      args?: Subset<T, CharitySignupTokensCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CharitySignupTokensCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CharitySignupTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CharitySignupTokensAggregateArgs>(args: Subset<T, CharitySignupTokensAggregateArgs>): Prisma.PrismaPromise<GetCharitySignupTokensAggregateType<T>>
+
+    /**
+     * Group by CharitySignupTokens.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CharitySignupTokensGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CharitySignupTokensGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CharitySignupTokensGroupByArgs['orderBy'] }
+        : { orderBy?: CharitySignupTokensGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CharitySignupTokensGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharitySignupTokensGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CharitySignupTokens model
+   */
+  readonly fields: CharitySignupTokensFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CharitySignupTokens.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CharitySignupTokensClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    charity<T extends CharitiesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CharitiesDefaultArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    creator<T extends CharitySignupTokens$creatorArgs<ExtArgs> = {}>(args?: Subset<T, CharitySignupTokens$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CharitySignupTokens model
+   */
+  interface CharitySignupTokensFieldRefs {
+    readonly invite_id: FieldRef<"CharitySignupTokens", 'Int'>
+    readonly charity_id: FieldRef<"CharitySignupTokens", 'Int'>
+    readonly email: FieldRef<"CharitySignupTokens", 'String'>
+    readonly token: FieldRef<"CharitySignupTokens", 'String'>
+    readonly expires_on: FieldRef<"CharitySignupTokens", 'DateTime'>
+    readonly consumed_on: FieldRef<"CharitySignupTokens", 'DateTime'>
+    readonly created_on: FieldRef<"CharitySignupTokens", 'DateTime'>
+    readonly created_by: FieldRef<"CharitySignupTokens", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CharitySignupTokens findUnique
+   */
+  export type CharitySignupTokensFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter, which CharitySignupTokens to fetch.
+     */
+    where: CharitySignupTokensWhereUniqueInput
+  }
+
+  /**
+   * CharitySignupTokens findUniqueOrThrow
+   */
+  export type CharitySignupTokensFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter, which CharitySignupTokens to fetch.
+     */
+    where: CharitySignupTokensWhereUniqueInput
+  }
+
+  /**
+   * CharitySignupTokens findFirst
+   */
+  export type CharitySignupTokensFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter, which CharitySignupTokens to fetch.
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharitySignupTokens to fetch.
+     */
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CharitySignupTokens.
+     */
+    cursor?: CharitySignupTokensWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharitySignupTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharitySignupTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CharitySignupTokens.
+     */
+    distinct?: CharitySignupTokensScalarFieldEnum | CharitySignupTokensScalarFieldEnum[]
+  }
+
+  /**
+   * CharitySignupTokens findFirstOrThrow
+   */
+  export type CharitySignupTokensFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter, which CharitySignupTokens to fetch.
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharitySignupTokens to fetch.
+     */
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CharitySignupTokens.
+     */
+    cursor?: CharitySignupTokensWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharitySignupTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharitySignupTokens.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CharitySignupTokens.
+     */
+    distinct?: CharitySignupTokensScalarFieldEnum | CharitySignupTokensScalarFieldEnum[]
+  }
+
+  /**
+   * CharitySignupTokens findMany
+   */
+  export type CharitySignupTokensFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter, which CharitySignupTokens to fetch.
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CharitySignupTokens to fetch.
+     */
+    orderBy?: CharitySignupTokensOrderByWithRelationInput | CharitySignupTokensOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CharitySignupTokens.
+     */
+    cursor?: CharitySignupTokensWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CharitySignupTokens from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CharitySignupTokens.
+     */
+    skip?: number
+    distinct?: CharitySignupTokensScalarFieldEnum | CharitySignupTokensScalarFieldEnum[]
+  }
+
+  /**
+   * CharitySignupTokens create
+   */
+  export type CharitySignupTokensCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CharitySignupTokens.
+     */
+    data: XOR<CharitySignupTokensCreateInput, CharitySignupTokensUncheckedCreateInput>
+  }
+
+  /**
+   * CharitySignupTokens createMany
+   */
+  export type CharitySignupTokensCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CharitySignupTokens.
+     */
+    data: CharitySignupTokensCreateManyInput | CharitySignupTokensCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CharitySignupTokens createManyAndReturn
+   */
+  export type CharitySignupTokensCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * The data used to create many CharitySignupTokens.
+     */
+    data: CharitySignupTokensCreateManyInput | CharitySignupTokensCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CharitySignupTokens update
+   */
+  export type CharitySignupTokensUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CharitySignupTokens.
+     */
+    data: XOR<CharitySignupTokensUpdateInput, CharitySignupTokensUncheckedUpdateInput>
+    /**
+     * Choose, which CharitySignupTokens to update.
+     */
+    where: CharitySignupTokensWhereUniqueInput
+  }
+
+  /**
+   * CharitySignupTokens updateMany
+   */
+  export type CharitySignupTokensUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CharitySignupTokens.
+     */
+    data: XOR<CharitySignupTokensUpdateManyMutationInput, CharitySignupTokensUncheckedUpdateManyInput>
+    /**
+     * Filter which CharitySignupTokens to update
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * Limit how many CharitySignupTokens to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CharitySignupTokens updateManyAndReturn
+   */
+  export type CharitySignupTokensUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * The data used to update CharitySignupTokens.
+     */
+    data: XOR<CharitySignupTokensUpdateManyMutationInput, CharitySignupTokensUncheckedUpdateManyInput>
+    /**
+     * Filter which CharitySignupTokens to update
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * Limit how many CharitySignupTokens to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CharitySignupTokens upsert
+   */
+  export type CharitySignupTokensUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CharitySignupTokens to update in case it exists.
+     */
+    where: CharitySignupTokensWhereUniqueInput
+    /**
+     * In case the CharitySignupTokens found by the `where` argument doesn't exist, create a new CharitySignupTokens with this data.
+     */
+    create: XOR<CharitySignupTokensCreateInput, CharitySignupTokensUncheckedCreateInput>
+    /**
+     * In case the CharitySignupTokens was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CharitySignupTokensUpdateInput, CharitySignupTokensUncheckedUpdateInput>
+  }
+
+  /**
+   * CharitySignupTokens delete
+   */
+  export type CharitySignupTokensDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+    /**
+     * Filter which CharitySignupTokens to delete.
+     */
+    where: CharitySignupTokensWhereUniqueInput
+  }
+
+  /**
+   * CharitySignupTokens deleteMany
+   */
+  export type CharitySignupTokensDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CharitySignupTokens to delete
+     */
+    where?: CharitySignupTokensWhereInput
+    /**
+     * Limit how many CharitySignupTokens to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CharitySignupTokens.creator
+   */
+  export type CharitySignupTokens$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * CharitySignupTokens without action
+   */
+  export type CharitySignupTokensDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CharitySignupTokens
+     */
+    select?: CharitySignupTokensSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CharitySignupTokens
+     */
+    omit?: CharitySignupTokensOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitySignupTokensInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -4535,6 +8724,58 @@ export namespace Prisma {
   };
 
   export type PasswordResetTokensScalarFieldEnum = (typeof PasswordResetTokensScalarFieldEnum)[keyof typeof PasswordResetTokensScalarFieldEnum]
+
+
+  export const CharityApplicationsScalarFieldEnum: {
+    application_id: 'application_id',
+    org_name: 'org_name',
+    contact_name: 'contact_name',
+    contact_email: 'contact_email',
+    contact_number: 'contact_number',
+    website: 'website',
+    org_address: 'org_address',
+    charity_number: 'charity_number',
+    status: 'status',
+    reviewed_on: 'reviewed_on',
+    reviewed_by: 'reviewed_by',
+    approved_on: 'approved_on',
+    approved_by: 'approved_by',
+    charity_id: 'charity_id',
+    created_on: 'created_on',
+    updated_on: 'updated_on'
+  };
+
+  export type CharityApplicationsScalarFieldEnum = (typeof CharityApplicationsScalarFieldEnum)[keyof typeof CharityApplicationsScalarFieldEnum]
+
+
+  export const CharitiesScalarFieldEnum: {
+    charity_id: 'charity_id',
+    name: 'name',
+    email: 'email',
+    phone: 'phone',
+    address: 'address',
+    website: 'website',
+    verified: 'verified',
+    user_id: 'user_id',
+    created_on: 'created_on',
+    updated_on: 'updated_on'
+  };
+
+  export type CharitiesScalarFieldEnum = (typeof CharitiesScalarFieldEnum)[keyof typeof CharitiesScalarFieldEnum]
+
+
+  export const CharitySignupTokensScalarFieldEnum: {
+    invite_id: 'invite_id',
+    charity_id: 'charity_id',
+    email: 'email',
+    token: 'token',
+    expires_on: 'expires_on',
+    consumed_on: 'consumed_on',
+    created_on: 'created_on',
+    created_by: 'created_by'
+  };
+
+  export type CharitySignupTokensScalarFieldEnum = (typeof CharitySignupTokensScalarFieldEnum)[keyof typeof CharitySignupTokensScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4616,6 +8857,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CharityApplicationStatus'
+   */
+  export type EnumCharityApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CharityApplicationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'CharityApplicationStatus[]'
+   */
+  export type ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CharityApplicationStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4647,6 +8902,10 @@ export namespace Prisma {
     updated_on?: DateTimeFilter<"User"> | Date | string
     EmailVerificationTokens?: EmailVerificationTokensListRelationFilter
     PasswordResetTokens?: PasswordResetTokensListRelationFilter
+    reviewed_applications?: CharityApplicationsListRelationFilter
+    approved_applications?: CharityApplicationsListRelationFilter
+    created_invites?: CharitySignupTokensListRelationFilter
+    Charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4661,6 +8920,10 @@ export namespace Prisma {
     updated_on?: SortOrder
     EmailVerificationTokens?: EmailVerificationTokensOrderByRelationAggregateInput
     PasswordResetTokens?: PasswordResetTokensOrderByRelationAggregateInput
+    reviewed_applications?: CharityApplicationsOrderByRelationAggregateInput
+    approved_applications?: CharityApplicationsOrderByRelationAggregateInput
+    created_invites?: CharitySignupTokensOrderByRelationAggregateInput
+    Charity?: CharitiesOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4678,6 +8941,10 @@ export namespace Prisma {
     updated_on?: DateTimeFilter<"User"> | Date | string
     EmailVerificationTokens?: EmailVerificationTokensListRelationFilter
     PasswordResetTokens?: PasswordResetTokensListRelationFilter
+    reviewed_applications?: CharityApplicationsListRelationFilter
+    approved_applications?: CharityApplicationsListRelationFilter
+    created_invites?: CharitySignupTokensListRelationFilter
+    Charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
   }, "user_id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4836,6 +9103,287 @@ export namespace Prisma {
     created_on?: DateTimeWithAggregatesFilter<"PasswordResetTokens"> | Date | string
   }
 
+  export type CharityApplicationsWhereInput = {
+    AND?: CharityApplicationsWhereInput | CharityApplicationsWhereInput[]
+    OR?: CharityApplicationsWhereInput[]
+    NOT?: CharityApplicationsWhereInput | CharityApplicationsWhereInput[]
+    application_id?: IntFilter<"CharityApplications"> | number
+    org_name?: StringFilter<"CharityApplications"> | string
+    contact_name?: StringFilter<"CharityApplications"> | string
+    contact_email?: StringFilter<"CharityApplications"> | string
+    contact_number?: StringFilter<"CharityApplications"> | string
+    website?: StringFilter<"CharityApplications"> | string
+    org_address?: StringFilter<"CharityApplications"> | string
+    charity_number?: StringNullableFilter<"CharityApplications"> | string | null
+    status?: EnumCharityApplicationStatusFilter<"CharityApplications"> | $Enums.CharityApplicationStatus
+    reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
+    approved_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    approved_by?: IntNullableFilter<"CharityApplications"> | number | null
+    charity_id?: IntNullableFilter<"CharityApplications"> | number | null
+    created_on?: DateTimeFilter<"CharityApplications"> | Date | string
+    updated_on?: DateTimeFilter<"CharityApplications"> | Date | string
+    reviewer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+  }
+
+  export type CharityApplicationsOrderByWithRelationInput = {
+    application_id?: SortOrder
+    org_name?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    contact_number?: SortOrder
+    website?: SortOrder
+    org_address?: SortOrder
+    charity_number?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewed_on?: SortOrderInput | SortOrder
+    reviewed_by?: SortOrderInput | SortOrder
+    approved_on?: SortOrderInput | SortOrder
+    approved_by?: SortOrderInput | SortOrder
+    charity_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+    reviewer?: UserOrderByWithRelationInput
+    approver?: UserOrderByWithRelationInput
+    charity?: CharitiesOrderByWithRelationInput
+  }
+
+  export type CharityApplicationsWhereUniqueInput = Prisma.AtLeast<{
+    application_id?: number
+    AND?: CharityApplicationsWhereInput | CharityApplicationsWhereInput[]
+    OR?: CharityApplicationsWhereInput[]
+    NOT?: CharityApplicationsWhereInput | CharityApplicationsWhereInput[]
+    org_name?: StringFilter<"CharityApplications"> | string
+    contact_name?: StringFilter<"CharityApplications"> | string
+    contact_email?: StringFilter<"CharityApplications"> | string
+    contact_number?: StringFilter<"CharityApplications"> | string
+    website?: StringFilter<"CharityApplications"> | string
+    org_address?: StringFilter<"CharityApplications"> | string
+    charity_number?: StringNullableFilter<"CharityApplications"> | string | null
+    status?: EnumCharityApplicationStatusFilter<"CharityApplications"> | $Enums.CharityApplicationStatus
+    reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
+    approved_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    approved_by?: IntNullableFilter<"CharityApplications"> | number | null
+    charity_id?: IntNullableFilter<"CharityApplications"> | number | null
+    created_on?: DateTimeFilter<"CharityApplications"> | Date | string
+    updated_on?: DateTimeFilter<"CharityApplications"> | Date | string
+    reviewer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    approver?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+  }, "application_id">
+
+  export type CharityApplicationsOrderByWithAggregationInput = {
+    application_id?: SortOrder
+    org_name?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    contact_number?: SortOrder
+    website?: SortOrder
+    org_address?: SortOrder
+    charity_number?: SortOrderInput | SortOrder
+    status?: SortOrder
+    reviewed_on?: SortOrderInput | SortOrder
+    reviewed_by?: SortOrderInput | SortOrder
+    approved_on?: SortOrderInput | SortOrder
+    approved_by?: SortOrderInput | SortOrder
+    charity_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+    _count?: CharityApplicationsCountOrderByAggregateInput
+    _avg?: CharityApplicationsAvgOrderByAggregateInput
+    _max?: CharityApplicationsMaxOrderByAggregateInput
+    _min?: CharityApplicationsMinOrderByAggregateInput
+    _sum?: CharityApplicationsSumOrderByAggregateInput
+  }
+
+  export type CharityApplicationsScalarWhereWithAggregatesInput = {
+    AND?: CharityApplicationsScalarWhereWithAggregatesInput | CharityApplicationsScalarWhereWithAggregatesInput[]
+    OR?: CharityApplicationsScalarWhereWithAggregatesInput[]
+    NOT?: CharityApplicationsScalarWhereWithAggregatesInput | CharityApplicationsScalarWhereWithAggregatesInput[]
+    application_id?: IntWithAggregatesFilter<"CharityApplications"> | number
+    org_name?: StringWithAggregatesFilter<"CharityApplications"> | string
+    contact_name?: StringWithAggregatesFilter<"CharityApplications"> | string
+    contact_email?: StringWithAggregatesFilter<"CharityApplications"> | string
+    contact_number?: StringWithAggregatesFilter<"CharityApplications"> | string
+    website?: StringWithAggregatesFilter<"CharityApplications"> | string
+    org_address?: StringWithAggregatesFilter<"CharityApplications"> | string
+    charity_number?: StringNullableWithAggregatesFilter<"CharityApplications"> | string | null
+    status?: EnumCharityApplicationStatusWithAggregatesFilter<"CharityApplications"> | $Enums.CharityApplicationStatus
+    reviewed_on?: DateTimeNullableWithAggregatesFilter<"CharityApplications"> | Date | string | null
+    reviewed_by?: IntNullableWithAggregatesFilter<"CharityApplications"> | number | null
+    approved_on?: DateTimeNullableWithAggregatesFilter<"CharityApplications"> | Date | string | null
+    approved_by?: IntNullableWithAggregatesFilter<"CharityApplications"> | number | null
+    charity_id?: IntNullableWithAggregatesFilter<"CharityApplications"> | number | null
+    created_on?: DateTimeWithAggregatesFilter<"CharityApplications"> | Date | string
+    updated_on?: DateTimeWithAggregatesFilter<"CharityApplications"> | Date | string
+  }
+
+  export type CharitiesWhereInput = {
+    AND?: CharitiesWhereInput | CharitiesWhereInput[]
+    OR?: CharitiesWhereInput[]
+    NOT?: CharitiesWhereInput | CharitiesWhereInput[]
+    charity_id?: IntFilter<"Charities"> | number
+    name?: StringFilter<"Charities"> | string
+    email?: StringFilter<"Charities"> | string
+    phone?: StringNullableFilter<"Charities"> | string | null
+    address?: StringFilter<"Charities"> | string
+    website?: StringFilter<"Charities"> | string
+    verified?: BoolFilter<"Charities"> | boolean
+    user_id?: IntNullableFilter<"Charities"> | number | null
+    created_on?: DateTimeFilter<"Charities"> | Date | string
+    updated_on?: DateTimeFilter<"Charities"> | Date | string
+    User?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    applications?: CharityApplicationsListRelationFilter
+    signup_tokens?: CharitySignupTokensListRelationFilter
+  }
+
+  export type CharitiesOrderByWithRelationInput = {
+    charity_id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrder
+    website?: SortOrder
+    verified?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+    User?: UserOrderByWithRelationInput
+    applications?: CharityApplicationsOrderByRelationAggregateInput
+    signup_tokens?: CharitySignupTokensOrderByRelationAggregateInput
+  }
+
+  export type CharitiesWhereUniqueInput = Prisma.AtLeast<{
+    charity_id?: number
+    user_id?: number
+    AND?: CharitiesWhereInput | CharitiesWhereInput[]
+    OR?: CharitiesWhereInput[]
+    NOT?: CharitiesWhereInput | CharitiesWhereInput[]
+    name?: StringFilter<"Charities"> | string
+    email?: StringFilter<"Charities"> | string
+    phone?: StringNullableFilter<"Charities"> | string | null
+    address?: StringFilter<"Charities"> | string
+    website?: StringFilter<"Charities"> | string
+    verified?: BoolFilter<"Charities"> | boolean
+    created_on?: DateTimeFilter<"Charities"> | Date | string
+    updated_on?: DateTimeFilter<"Charities"> | Date | string
+    User?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    applications?: CharityApplicationsListRelationFilter
+    signup_tokens?: CharitySignupTokensListRelationFilter
+  }, "charity_id" | "user_id">
+
+  export type CharitiesOrderByWithAggregationInput = {
+    charity_id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrderInput | SortOrder
+    address?: SortOrder
+    website?: SortOrder
+    verified?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+    _count?: CharitiesCountOrderByAggregateInput
+    _avg?: CharitiesAvgOrderByAggregateInput
+    _max?: CharitiesMaxOrderByAggregateInput
+    _min?: CharitiesMinOrderByAggregateInput
+    _sum?: CharitiesSumOrderByAggregateInput
+  }
+
+  export type CharitiesScalarWhereWithAggregatesInput = {
+    AND?: CharitiesScalarWhereWithAggregatesInput | CharitiesScalarWhereWithAggregatesInput[]
+    OR?: CharitiesScalarWhereWithAggregatesInput[]
+    NOT?: CharitiesScalarWhereWithAggregatesInput | CharitiesScalarWhereWithAggregatesInput[]
+    charity_id?: IntWithAggregatesFilter<"Charities"> | number
+    name?: StringWithAggregatesFilter<"Charities"> | string
+    email?: StringWithAggregatesFilter<"Charities"> | string
+    phone?: StringNullableWithAggregatesFilter<"Charities"> | string | null
+    address?: StringWithAggregatesFilter<"Charities"> | string
+    website?: StringWithAggregatesFilter<"Charities"> | string
+    verified?: BoolWithAggregatesFilter<"Charities"> | boolean
+    user_id?: IntNullableWithAggregatesFilter<"Charities"> | number | null
+    created_on?: DateTimeWithAggregatesFilter<"Charities"> | Date | string
+    updated_on?: DateTimeWithAggregatesFilter<"Charities"> | Date | string
+  }
+
+  export type CharitySignupTokensWhereInput = {
+    AND?: CharitySignupTokensWhereInput | CharitySignupTokensWhereInput[]
+    OR?: CharitySignupTokensWhereInput[]
+    NOT?: CharitySignupTokensWhereInput | CharitySignupTokensWhereInput[]
+    invite_id?: IntFilter<"CharitySignupTokens"> | number
+    charity_id?: IntFilter<"CharitySignupTokens"> | number
+    email?: StringFilter<"CharitySignupTokens"> | string
+    token?: StringFilter<"CharitySignupTokens"> | string
+    expires_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    consumed_on?: DateTimeNullableFilter<"CharitySignupTokens"> | Date | string | null
+    created_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    created_by?: IntNullableFilter<"CharitySignupTokens"> | number | null
+    charity?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type CharitySignupTokensOrderByWithRelationInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires_on?: SortOrder
+    consumed_on?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    charity?: CharitiesOrderByWithRelationInput
+    creator?: UserOrderByWithRelationInput
+  }
+
+  export type CharitySignupTokensWhereUniqueInput = Prisma.AtLeast<{
+    invite_id?: number
+    token?: string
+    AND?: CharitySignupTokensWhereInput | CharitySignupTokensWhereInput[]
+    OR?: CharitySignupTokensWhereInput[]
+    NOT?: CharitySignupTokensWhereInput | CharitySignupTokensWhereInput[]
+    charity_id?: IntFilter<"CharitySignupTokens"> | number
+    email?: StringFilter<"CharitySignupTokens"> | string
+    expires_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    consumed_on?: DateTimeNullableFilter<"CharitySignupTokens"> | Date | string | null
+    created_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    created_by?: IntNullableFilter<"CharitySignupTokens"> | number | null
+    charity?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
+    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "invite_id" | "token">
+
+  export type CharitySignupTokensOrderByWithAggregationInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires_on?: SortOrder
+    consumed_on?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    created_by?: SortOrderInput | SortOrder
+    _count?: CharitySignupTokensCountOrderByAggregateInput
+    _avg?: CharitySignupTokensAvgOrderByAggregateInput
+    _max?: CharitySignupTokensMaxOrderByAggregateInput
+    _min?: CharitySignupTokensMinOrderByAggregateInput
+    _sum?: CharitySignupTokensSumOrderByAggregateInput
+  }
+
+  export type CharitySignupTokensScalarWhereWithAggregatesInput = {
+    AND?: CharitySignupTokensScalarWhereWithAggregatesInput | CharitySignupTokensScalarWhereWithAggregatesInput[]
+    OR?: CharitySignupTokensScalarWhereWithAggregatesInput[]
+    NOT?: CharitySignupTokensScalarWhereWithAggregatesInput | CharitySignupTokensScalarWhereWithAggregatesInput[]
+    invite_id?: IntWithAggregatesFilter<"CharitySignupTokens"> | number
+    charity_id?: IntWithAggregatesFilter<"CharitySignupTokens"> | number
+    email?: StringWithAggregatesFilter<"CharitySignupTokens"> | string
+    token?: StringWithAggregatesFilter<"CharitySignupTokens"> | string
+    expires_on?: DateTimeWithAggregatesFilter<"CharitySignupTokens"> | Date | string
+    consumed_on?: DateTimeNullableWithAggregatesFilter<"CharitySignupTokens"> | Date | string | null
+    created_on?: DateTimeWithAggregatesFilter<"CharitySignupTokens"> | Date | string
+    created_by?: IntNullableWithAggregatesFilter<"CharitySignupTokens"> | number | null
+  }
+
   export type UserCreateInput = {
     email: string
     password_hash: string
@@ -4847,6 +9395,10 @@ export namespace Prisma {
     updated_on?: Date | string
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4861,6 +9413,10 @@ export namespace Prisma {
     updated_on?: Date | string
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -4874,6 +9430,10 @@ export namespace Prisma {
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4888,6 +9448,10 @@ export namespace Prisma {
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5043,6 +9607,300 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CharityApplicationsCreateInput = {
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    reviewer?: UserCreateNestedOneWithoutReviewed_applicationsInput
+    approver?: UserCreateNestedOneWithoutApproved_applicationsInput
+    charity?: CharitiesCreateNestedOneWithoutApplicationsInput
+  }
+
+  export type CharityApplicationsUncheckedCreateInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsUpdateInput = {
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewer?: UserUpdateOneWithoutReviewed_applicationsNestedInput
+    approver?: UserUpdateOneWithoutApproved_applicationsNestedInput
+    charity?: CharitiesUpdateOneWithoutApplicationsNestedInput
+  }
+
+  export type CharityApplicationsUncheckedUpdateInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsCreateManyInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsUpdateManyMutationInput = {
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitiesCreateInput = {
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    User?: UserCreateNestedOneWithoutCharityInput
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    user_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCharityNestedInput
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesCreateManyInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    user_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharitiesUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitiesUncheckedUpdateManyInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitySignupTokensCreateInput = {
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    charity: CharitiesCreateNestedOneWithoutSignup_tokensInput
+    creator?: UserCreateNestedOneWithoutCreated_invitesInput
+  }
+
+  export type CharitySignupTokensUncheckedCreateInput = {
+    invite_id?: number
+    charity_id: number
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    created_by?: number | null
+  }
+
+  export type CharitySignupTokensUpdateInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    charity?: CharitiesUpdateOneRequiredWithoutSignup_tokensNestedInput
+    creator?: UserUpdateOneWithoutCreated_invitesNestedInput
+  }
+
+  export type CharitySignupTokensUncheckedUpdateInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type CharitySignupTokensCreateManyInput = {
+    invite_id?: number
+    charity_id: number
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    created_by?: number | null
+  }
+
+  export type CharitySignupTokensUpdateManyMutationInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitySignupTokensUncheckedUpdateManyInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -5097,11 +9955,36 @@ export namespace Prisma {
     none?: PasswordResetTokensWhereInput
   }
 
+  export type CharityApplicationsListRelationFilter = {
+    every?: CharityApplicationsWhereInput
+    some?: CharityApplicationsWhereInput
+    none?: CharityApplicationsWhereInput
+  }
+
+  export type CharitySignupTokensListRelationFilter = {
+    every?: CharitySignupTokensWhereInput
+    some?: CharitySignupTokensWhereInput
+    none?: CharitySignupTokensWhereInput
+  }
+
+  export type CharitiesNullableScalarRelationFilter = {
+    is?: CharitiesWhereInput | null
+    isNot?: CharitiesWhereInput | null
+  }
+
   export type EmailVerificationTokensOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type PasswordResetTokensOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CharityApplicationsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CharitySignupTokensOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5314,6 +10197,258 @@ export namespace Prisma {
     user_id?: SortOrder
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type EnumCharityApplicationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type CharityApplicationsCountOrderByAggregateInput = {
+    application_id?: SortOrder
+    org_name?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    contact_number?: SortOrder
+    website?: SortOrder
+    org_address?: SortOrder
+    charity_number?: SortOrder
+    status?: SortOrder
+    reviewed_on?: SortOrder
+    reviewed_by?: SortOrder
+    approved_on?: SortOrder
+    approved_by?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharityApplicationsAvgOrderByAggregateInput = {
+    application_id?: SortOrder
+    reviewed_by?: SortOrder
+    approved_by?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type CharityApplicationsMaxOrderByAggregateInput = {
+    application_id?: SortOrder
+    org_name?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    contact_number?: SortOrder
+    website?: SortOrder
+    org_address?: SortOrder
+    charity_number?: SortOrder
+    status?: SortOrder
+    reviewed_on?: SortOrder
+    reviewed_by?: SortOrder
+    approved_on?: SortOrder
+    approved_by?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharityApplicationsMinOrderByAggregateInput = {
+    application_id?: SortOrder
+    org_name?: SortOrder
+    contact_name?: SortOrder
+    contact_email?: SortOrder
+    contact_number?: SortOrder
+    website?: SortOrder
+    org_address?: SortOrder
+    charity_number?: SortOrder
+    status?: SortOrder
+    reviewed_on?: SortOrder
+    reviewed_by?: SortOrder
+    approved_on?: SortOrder
+    approved_by?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharityApplicationsSumOrderByAggregateInput = {
+    application_id?: SortOrder
+    reviewed_by?: SortOrder
+    approved_by?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+    _max?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type CharitiesCountOrderByAggregateInput = {
+    charity_id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    website?: SortOrder
+    verified?: SortOrder
+    user_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharitiesAvgOrderByAggregateInput = {
+    charity_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CharitiesMaxOrderByAggregateInput = {
+    charity_id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    website?: SortOrder
+    verified?: SortOrder
+    user_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharitiesMinOrderByAggregateInput = {
+    charity_id?: SortOrder
+    name?: SortOrder
+    email?: SortOrder
+    phone?: SortOrder
+    address?: SortOrder
+    website?: SortOrder
+    verified?: SortOrder
+    user_id?: SortOrder
+    created_on?: SortOrder
+    updated_on?: SortOrder
+  }
+
+  export type CharitiesSumOrderByAggregateInput = {
+    charity_id?: SortOrder
+    user_id?: SortOrder
+  }
+
+  export type CharitiesScalarRelationFilter = {
+    is?: CharitiesWhereInput
+    isNot?: CharitiesWhereInput
+  }
+
+  export type CharitySignupTokensCountOrderByAggregateInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires_on?: SortOrder
+    consumed_on?: SortOrder
+    created_on?: SortOrder
+    created_by?: SortOrder
+  }
+
+  export type CharitySignupTokensAvgOrderByAggregateInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    created_by?: SortOrder
+  }
+
+  export type CharitySignupTokensMaxOrderByAggregateInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires_on?: SortOrder
+    consumed_on?: SortOrder
+    created_on?: SortOrder
+    created_by?: SortOrder
+  }
+
+  export type CharitySignupTokensMinOrderByAggregateInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    email?: SortOrder
+    token?: SortOrder
+    expires_on?: SortOrder
+    consumed_on?: SortOrder
+    created_on?: SortOrder
+    created_by?: SortOrder
+  }
+
+  export type CharitySignupTokensSumOrderByAggregateInput = {
+    invite_id?: SortOrder
+    charity_id?: SortOrder
+    created_by?: SortOrder
+  }
+
   export type EmailVerificationTokensCreateNestedManyWithoutUserInput = {
     create?: XOR<EmailVerificationTokensCreateWithoutUserInput, EmailVerificationTokensUncheckedCreateWithoutUserInput> | EmailVerificationTokensCreateWithoutUserInput[] | EmailVerificationTokensUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EmailVerificationTokensCreateOrConnectWithoutUserInput | EmailVerificationTokensCreateOrConnectWithoutUserInput[]
@@ -5328,6 +10463,33 @@ export namespace Prisma {
     connect?: PasswordResetTokensWhereUniqueInput | PasswordResetTokensWhereUniqueInput[]
   }
 
+  export type CharityApplicationsCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput> | CharityApplicationsCreateWithoutReviewerInput[] | CharityApplicationsUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutReviewerInput | CharityApplicationsCreateOrConnectWithoutReviewerInput[]
+    createMany?: CharityApplicationsCreateManyReviewerInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
+    create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
+    createMany?: CharityApplicationsCreateManyApproverInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharitySignupTokensCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput> | CharitySignupTokensCreateWithoutCreatorInput[] | CharitySignupTokensUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCreatorInput | CharitySignupTokensCreateOrConnectWithoutCreatorInput[]
+    createMany?: CharitySignupTokensCreateManyCreatorInputEnvelope
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+  }
+
+  export type CharitiesCreateNestedOneWithoutUserInput = {
+    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
   export type EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<EmailVerificationTokensCreateWithoutUserInput, EmailVerificationTokensUncheckedCreateWithoutUserInput> | EmailVerificationTokensCreateWithoutUserInput[] | EmailVerificationTokensUncheckedCreateWithoutUserInput[]
     connectOrCreate?: EmailVerificationTokensCreateOrConnectWithoutUserInput | EmailVerificationTokensCreateOrConnectWithoutUserInput[]
@@ -5340,6 +10502,33 @@ export namespace Prisma {
     connectOrCreate?: PasswordResetTokensCreateOrConnectWithoutUserInput | PasswordResetTokensCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokensCreateManyUserInputEnvelope
     connect?: PasswordResetTokensWhereUniqueInput | PasswordResetTokensWhereUniqueInput[]
+  }
+
+  export type CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput = {
+    create?: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput> | CharityApplicationsCreateWithoutReviewerInput[] | CharityApplicationsUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutReviewerInput | CharityApplicationsCreateOrConnectWithoutReviewerInput[]
+    createMany?: CharityApplicationsCreateManyReviewerInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput = {
+    create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
+    createMany?: CharityApplicationsCreateManyApproverInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput> | CharitySignupTokensCreateWithoutCreatorInput[] | CharitySignupTokensUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCreatorInput | CharitySignupTokensCreateOrConnectWithoutCreatorInput[]
+    createMany?: CharitySignupTokensCreateManyCreatorInputEnvelope
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+  }
+
+  export type CharitiesUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
+    connect?: CharitiesWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5382,6 +10571,58 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokensScalarWhereInput | PasswordResetTokensScalarWhereInput[]
   }
 
+  export type CharityApplicationsUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput> | CharityApplicationsCreateWithoutReviewerInput[] | CharityApplicationsUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutReviewerInput | CharityApplicationsCreateOrConnectWithoutReviewerInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutReviewerInput | CharityApplicationsUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: CharityApplicationsCreateManyReviewerInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutReviewerInput | CharityApplicationsUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutReviewerInput | CharityApplicationsUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharityApplicationsUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput | CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: CharityApplicationsCreateManyApproverInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutApproverInput | CharityApplicationsUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutApproverInput | CharityApplicationsUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharitySignupTokensUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput> | CharitySignupTokensCreateWithoutCreatorInput[] | CharitySignupTokensUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCreatorInput | CharitySignupTokensCreateOrConnectWithoutCreatorInput[]
+    upsert?: CharitySignupTokensUpsertWithWhereUniqueWithoutCreatorInput | CharitySignupTokensUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: CharitySignupTokensCreateManyCreatorInputEnvelope
+    set?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    disconnect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    delete?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    update?: CharitySignupTokensUpdateWithWhereUniqueWithoutCreatorInput | CharitySignupTokensUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: CharitySignupTokensUpdateManyWithWhereWithoutCreatorInput | CharitySignupTokensUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+  }
+
+  export type CharitiesUpdateOneWithoutUserNestedInput = {
+    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
+    upsert?: CharitiesUpsertWithoutUserInput
+    disconnect?: CharitiesWhereInput | boolean
+    delete?: CharitiesWhereInput | boolean
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutUserInput, CharitiesUpdateWithoutUserInput>, CharitiesUncheckedUpdateWithoutUserInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -5418,6 +10659,58 @@ export namespace Prisma {
     deleteMany?: PasswordResetTokensScalarWhereInput | PasswordResetTokensScalarWhereInput[]
   }
 
+  export type CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput> | CharityApplicationsCreateWithoutReviewerInput[] | CharityApplicationsUncheckedCreateWithoutReviewerInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutReviewerInput | CharityApplicationsCreateOrConnectWithoutReviewerInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutReviewerInput | CharityApplicationsUpsertWithWhereUniqueWithoutReviewerInput[]
+    createMany?: CharityApplicationsCreateManyReviewerInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutReviewerInput | CharityApplicationsUpdateWithWhereUniqueWithoutReviewerInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutReviewerInput | CharityApplicationsUpdateManyWithWhereWithoutReviewerInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput | CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: CharityApplicationsCreateManyApproverInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutApproverInput | CharityApplicationsUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutApproverInput | CharityApplicationsUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput> | CharitySignupTokensCreateWithoutCreatorInput[] | CharitySignupTokensUncheckedCreateWithoutCreatorInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCreatorInput | CharitySignupTokensCreateOrConnectWithoutCreatorInput[]
+    upsert?: CharitySignupTokensUpsertWithWhereUniqueWithoutCreatorInput | CharitySignupTokensUpsertWithWhereUniqueWithoutCreatorInput[]
+    createMany?: CharitySignupTokensCreateManyCreatorInputEnvelope
+    set?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    disconnect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    delete?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    update?: CharitySignupTokensUpdateWithWhereUniqueWithoutCreatorInput | CharitySignupTokensUpdateWithWhereUniqueWithoutCreatorInput[]
+    updateMany?: CharitySignupTokensUpdateManyWithWhereWithoutCreatorInput | CharitySignupTokensUpdateManyWithWhereWithoutCreatorInput[]
+    deleteMany?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+  }
+
+  export type CharitiesUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
+    upsert?: CharitiesUpsertWithoutUserInput
+    disconnect?: CharitiesWhereInput | boolean
+    delete?: CharitiesWhereInput | boolean
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutUserInput, CharitiesUpdateWithoutUserInput>, CharitiesUncheckedUpdateWithoutUserInput>
+  }
+
   export type UserCreateNestedOneWithoutEmailVerificationTokensInput = {
     create?: XOR<UserCreateWithoutEmailVerificationTokensInput, UserUncheckedCreateWithoutEmailVerificationTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutEmailVerificationTokensInput
@@ -5448,6 +10741,200 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutPasswordResetTokensInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
+  }
+
+  export type UserCreateNestedOneWithoutReviewed_applicationsInput = {
+    create?: XOR<UserCreateWithoutReviewed_applicationsInput, UserUncheckedCreateWithoutReviewed_applicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReviewed_applicationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutApproved_applicationsInput = {
+    create?: XOR<UserCreateWithoutApproved_applicationsInput, UserUncheckedCreateWithoutApproved_applicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApproved_applicationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CharitiesCreateNestedOneWithoutApplicationsInput = {
+    create?: XOR<CharitiesCreateWithoutApplicationsInput, CharitiesUncheckedCreateWithoutApplicationsInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutApplicationsInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type EnumCharityApplicationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.CharityApplicationStatus
+  }
+
+  export type UserUpdateOneWithoutReviewed_applicationsNestedInput = {
+    create?: XOR<UserCreateWithoutReviewed_applicationsInput, UserUncheckedCreateWithoutReviewed_applicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReviewed_applicationsInput
+    upsert?: UserUpsertWithoutReviewed_applicationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReviewed_applicationsInput, UserUpdateWithoutReviewed_applicationsInput>, UserUncheckedUpdateWithoutReviewed_applicationsInput>
+  }
+
+  export type UserUpdateOneWithoutApproved_applicationsNestedInput = {
+    create?: XOR<UserCreateWithoutApproved_applicationsInput, UserUncheckedCreateWithoutApproved_applicationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutApproved_applicationsInput
+    upsert?: UserUpsertWithoutApproved_applicationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutApproved_applicationsInput, UserUpdateWithoutApproved_applicationsInput>, UserUncheckedUpdateWithoutApproved_applicationsInput>
+  }
+
+  export type CharitiesUpdateOneWithoutApplicationsNestedInput = {
+    create?: XOR<CharitiesCreateWithoutApplicationsInput, CharitiesUncheckedCreateWithoutApplicationsInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutApplicationsInput
+    upsert?: CharitiesUpsertWithoutApplicationsInput
+    disconnect?: CharitiesWhereInput | boolean
+    delete?: CharitiesWhereInput | boolean
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutApplicationsInput, CharitiesUpdateWithoutApplicationsInput>, CharitiesUncheckedUpdateWithoutApplicationsInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserCreateNestedOneWithoutCharityInput = {
+    create?: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCharityInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CharityApplicationsCreateNestedManyWithoutCharityInput = {
+    create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
+    createMany?: CharityApplicationsCreateManyCharityInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharitySignupTokensCreateNestedManyWithoutCharityInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput> | CharitySignupTokensCreateWithoutCharityInput[] | CharitySignupTokensUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCharityInput | CharitySignupTokensCreateOrConnectWithoutCharityInput[]
+    createMany?: CharitySignupTokensCreateManyCharityInputEnvelope
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+  }
+
+  export type CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput = {
+    create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
+    createMany?: CharityApplicationsCreateManyCharityInputEnvelope
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+  }
+
+  export type CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput> | CharitySignupTokensCreateWithoutCharityInput[] | CharitySignupTokensUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCharityInput | CharitySignupTokensCreateOrConnectWithoutCharityInput[]
+    createMany?: CharitySignupTokensCreateManyCharityInputEnvelope
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutCharityNestedInput = {
+    create?: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCharityInput
+    upsert?: UserUpsertWithoutCharityInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCharityInput, UserUpdateWithoutCharityInput>, UserUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type CharityApplicationsUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput | CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: CharityApplicationsCreateManyCharityInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutCharityInput | CharityApplicationsUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutCharityInput | CharityApplicationsUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharitySignupTokensUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput> | CharitySignupTokensCreateWithoutCharityInput[] | CharitySignupTokensUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCharityInput | CharitySignupTokensCreateOrConnectWithoutCharityInput[]
+    upsert?: CharitySignupTokensUpsertWithWhereUniqueWithoutCharityInput | CharitySignupTokensUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: CharitySignupTokensCreateManyCharityInputEnvelope
+    set?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    disconnect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    delete?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    update?: CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput | CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: CharitySignupTokensUpdateManyWithWhereWithoutCharityInput | CharitySignupTokensUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
+    upsert?: CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput | CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: CharityApplicationsCreateManyCharityInputEnvelope
+    set?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    disconnect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    delete?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    connect?: CharityApplicationsWhereUniqueInput | CharityApplicationsWhereUniqueInput[]
+    update?: CharityApplicationsUpdateWithWhereUniqueWithoutCharityInput | CharityApplicationsUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: CharityApplicationsUpdateManyWithWhereWithoutCharityInput | CharityApplicationsUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+  }
+
+  export type CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput> | CharitySignupTokensCreateWithoutCharityInput[] | CharitySignupTokensUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: CharitySignupTokensCreateOrConnectWithoutCharityInput | CharitySignupTokensCreateOrConnectWithoutCharityInput[]
+    upsert?: CharitySignupTokensUpsertWithWhereUniqueWithoutCharityInput | CharitySignupTokensUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: CharitySignupTokensCreateManyCharityInputEnvelope
+    set?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    disconnect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    delete?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    connect?: CharitySignupTokensWhereUniqueInput | CharitySignupTokensWhereUniqueInput[]
+    update?: CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput | CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: CharitySignupTokensUpdateManyWithWhereWithoutCharityInput | CharitySignupTokensUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+  }
+
+  export type CharitiesCreateNestedOneWithoutSignup_tokensInput = {
+    create?: XOR<CharitiesCreateWithoutSignup_tokensInput, CharitiesUncheckedCreateWithoutSignup_tokensInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutSignup_tokensInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreated_invitesInput = {
+    create?: XOR<UserCreateWithoutCreated_invitesInput, UserUncheckedCreateWithoutCreated_invitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreated_invitesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CharitiesUpdateOneRequiredWithoutSignup_tokensNestedInput = {
+    create?: XOR<CharitiesCreateWithoutSignup_tokensInput, CharitiesUncheckedCreateWithoutSignup_tokensInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutSignup_tokensInput
+    upsert?: CharitiesUpsertWithoutSignup_tokensInput
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutSignup_tokensInput, CharitiesUpdateWithoutSignup_tokensInput>, CharitiesUncheckedUpdateWithoutSignup_tokensInput>
+  }
+
+  export type UserUpdateOneWithoutCreated_invitesNestedInput = {
+    create?: XOR<UserCreateWithoutCreated_invitesInput, UserUncheckedCreateWithoutCreated_invitesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreated_invitesInput
+    upsert?: UserUpsertWithoutCreated_invitesInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreated_invitesInput, UserUpdateWithoutCreated_invitesInput>, UserUncheckedUpdateWithoutCreated_invitesInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -5593,6 +11080,81 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedEnumCharityApplicationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+    _max?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type EmailVerificationTokensCreateWithoutUserInput = {
     token: string
     expires_on: Date | string
@@ -5641,6 +11203,157 @@ export namespace Prisma {
   export type PasswordResetTokensCreateManyUserInputEnvelope = {
     data: PasswordResetTokensCreateManyUserInput | PasswordResetTokensCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type CharityApplicationsCreateWithoutReviewerInput = {
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    approver?: UserCreateNestedOneWithoutApproved_applicationsInput
+    charity?: CharitiesCreateNestedOneWithoutApplicationsInput
+  }
+
+  export type CharityApplicationsUncheckedCreateWithoutReviewerInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsCreateOrConnectWithoutReviewerInput = {
+    where: CharityApplicationsWhereUniqueInput
+    create: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type CharityApplicationsCreateManyReviewerInputEnvelope = {
+    data: CharityApplicationsCreateManyReviewerInput | CharityApplicationsCreateManyReviewerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CharityApplicationsCreateWithoutApproverInput = {
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    reviewer?: UserCreateNestedOneWithoutReviewed_applicationsInput
+    charity?: CharitiesCreateNestedOneWithoutApplicationsInput
+  }
+
+  export type CharityApplicationsUncheckedCreateWithoutApproverInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsCreateOrConnectWithoutApproverInput = {
+    where: CharityApplicationsWhereUniqueInput
+    create: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput>
+  }
+
+  export type CharityApplicationsCreateManyApproverInputEnvelope = {
+    data: CharityApplicationsCreateManyApproverInput | CharityApplicationsCreateManyApproverInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CharitySignupTokensCreateWithoutCreatorInput = {
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    charity: CharitiesCreateNestedOneWithoutSignup_tokensInput
+  }
+
+  export type CharitySignupTokensUncheckedCreateWithoutCreatorInput = {
+    invite_id?: number
+    charity_id: number
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+  }
+
+  export type CharitySignupTokensCreateOrConnectWithoutCreatorInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    create: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type CharitySignupTokensCreateManyCreatorInputEnvelope = {
+    data: CharitySignupTokensCreateManyCreatorInput | CharitySignupTokensCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CharitiesCreateWithoutUserInput = {
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutUserInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutUserInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
   }
 
   export type EmailVerificationTokensUpsertWithWhereUniqueWithoutUserInput = {
@@ -5699,6 +11412,128 @@ export namespace Prisma {
     created_on?: DateTimeFilter<"PasswordResetTokens"> | Date | string
   }
 
+  export type CharityApplicationsUpsertWithWhereUniqueWithoutReviewerInput = {
+    where: CharityApplicationsWhereUniqueInput
+    update: XOR<CharityApplicationsUpdateWithoutReviewerInput, CharityApplicationsUncheckedUpdateWithoutReviewerInput>
+    create: XOR<CharityApplicationsCreateWithoutReviewerInput, CharityApplicationsUncheckedCreateWithoutReviewerInput>
+  }
+
+  export type CharityApplicationsUpdateWithWhereUniqueWithoutReviewerInput = {
+    where: CharityApplicationsWhereUniqueInput
+    data: XOR<CharityApplicationsUpdateWithoutReviewerInput, CharityApplicationsUncheckedUpdateWithoutReviewerInput>
+  }
+
+  export type CharityApplicationsUpdateManyWithWhereWithoutReviewerInput = {
+    where: CharityApplicationsScalarWhereInput
+    data: XOR<CharityApplicationsUpdateManyMutationInput, CharityApplicationsUncheckedUpdateManyWithoutReviewerInput>
+  }
+
+  export type CharityApplicationsScalarWhereInput = {
+    AND?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+    OR?: CharityApplicationsScalarWhereInput[]
+    NOT?: CharityApplicationsScalarWhereInput | CharityApplicationsScalarWhereInput[]
+    application_id?: IntFilter<"CharityApplications"> | number
+    org_name?: StringFilter<"CharityApplications"> | string
+    contact_name?: StringFilter<"CharityApplications"> | string
+    contact_email?: StringFilter<"CharityApplications"> | string
+    contact_number?: StringFilter<"CharityApplications"> | string
+    website?: StringFilter<"CharityApplications"> | string
+    org_address?: StringFilter<"CharityApplications"> | string
+    charity_number?: StringNullableFilter<"CharityApplications"> | string | null
+    status?: EnumCharityApplicationStatusFilter<"CharityApplications"> | $Enums.CharityApplicationStatus
+    reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
+    approved_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
+    approved_by?: IntNullableFilter<"CharityApplications"> | number | null
+    charity_id?: IntNullableFilter<"CharityApplications"> | number | null
+    created_on?: DateTimeFilter<"CharityApplications"> | Date | string
+    updated_on?: DateTimeFilter<"CharityApplications"> | Date | string
+  }
+
+  export type CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput = {
+    where: CharityApplicationsWhereUniqueInput
+    update: XOR<CharityApplicationsUpdateWithoutApproverInput, CharityApplicationsUncheckedUpdateWithoutApproverInput>
+    create: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput>
+  }
+
+  export type CharityApplicationsUpdateWithWhereUniqueWithoutApproverInput = {
+    where: CharityApplicationsWhereUniqueInput
+    data: XOR<CharityApplicationsUpdateWithoutApproverInput, CharityApplicationsUncheckedUpdateWithoutApproverInput>
+  }
+
+  export type CharityApplicationsUpdateManyWithWhereWithoutApproverInput = {
+    where: CharityApplicationsScalarWhereInput
+    data: XOR<CharityApplicationsUpdateManyMutationInput, CharityApplicationsUncheckedUpdateManyWithoutApproverInput>
+  }
+
+  export type CharitySignupTokensUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    update: XOR<CharitySignupTokensUpdateWithoutCreatorInput, CharitySignupTokensUncheckedUpdateWithoutCreatorInput>
+    create: XOR<CharitySignupTokensCreateWithoutCreatorInput, CharitySignupTokensUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type CharitySignupTokensUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    data: XOR<CharitySignupTokensUpdateWithoutCreatorInput, CharitySignupTokensUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type CharitySignupTokensUpdateManyWithWhereWithoutCreatorInput = {
+    where: CharitySignupTokensScalarWhereInput
+    data: XOR<CharitySignupTokensUpdateManyMutationInput, CharitySignupTokensUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type CharitySignupTokensScalarWhereInput = {
+    AND?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+    OR?: CharitySignupTokensScalarWhereInput[]
+    NOT?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
+    invite_id?: IntFilter<"CharitySignupTokens"> | number
+    charity_id?: IntFilter<"CharitySignupTokens"> | number
+    email?: StringFilter<"CharitySignupTokens"> | string
+    token?: StringFilter<"CharitySignupTokens"> | string
+    expires_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    consumed_on?: DateTimeNullableFilter<"CharitySignupTokens"> | Date | string | null
+    created_on?: DateTimeFilter<"CharitySignupTokens"> | Date | string
+    created_by?: IntNullableFilter<"CharitySignupTokens"> | number | null
+  }
+
+  export type CharitiesUpsertWithoutUserInput = {
+    update: XOR<CharitiesUpdateWithoutUserInput, CharitiesUncheckedUpdateWithoutUserInput>
+    create: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutUserInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutUserInput, CharitiesUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CharitiesUpdateWithoutUserInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutUserInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
   export type UserCreateWithoutEmailVerificationTokensInput = {
     email: string
     password_hash: string
@@ -5709,6 +11544,10 @@ export namespace Prisma {
     created_on?: Date | string
     updated_on?: Date | string
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
@@ -5722,6 +11561,10 @@ export namespace Prisma {
     created_on?: Date | string
     updated_on?: Date | string
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
@@ -5750,6 +11593,10 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
@@ -5763,6 +11610,10 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -5775,6 +11626,10 @@ export namespace Prisma {
     created_on?: Date | string
     updated_on?: Date | string
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -5788,6 +11643,10 @@ export namespace Prisma {
     created_on?: Date | string
     updated_on?: Date | string
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -5816,6 +11675,10 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -5829,6 +11692,584 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutReviewed_applicationsInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutReviewed_applicationsInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutReviewed_applicationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReviewed_applicationsInput, UserUncheckedCreateWithoutReviewed_applicationsInput>
+  }
+
+  export type UserCreateWithoutApproved_applicationsInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutApproved_applicationsInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutApproved_applicationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutApproved_applicationsInput, UserUncheckedCreateWithoutApproved_applicationsInput>
+  }
+
+  export type CharitiesCreateWithoutApplicationsInput = {
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    User?: UserCreateNestedOneWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutApplicationsInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    user_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutApplicationsInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutApplicationsInput, CharitiesUncheckedCreateWithoutApplicationsInput>
+  }
+
+  export type UserUpsertWithoutReviewed_applicationsInput = {
+    update: XOR<UserUpdateWithoutReviewed_applicationsInput, UserUncheckedUpdateWithoutReviewed_applicationsInput>
+    create: XOR<UserCreateWithoutReviewed_applicationsInput, UserUncheckedCreateWithoutReviewed_applicationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReviewed_applicationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReviewed_applicationsInput, UserUncheckedUpdateWithoutReviewed_applicationsInput>
+  }
+
+  export type UserUpdateWithoutReviewed_applicationsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReviewed_applicationsInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutApproved_applicationsInput = {
+    update: XOR<UserUpdateWithoutApproved_applicationsInput, UserUncheckedUpdateWithoutApproved_applicationsInput>
+    create: XOR<UserCreateWithoutApproved_applicationsInput, UserUncheckedCreateWithoutApproved_applicationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutApproved_applicationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutApproved_applicationsInput, UserUncheckedUpdateWithoutApproved_applicationsInput>
+  }
+
+  export type UserUpdateWithoutApproved_applicationsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutApproved_applicationsInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type CharitiesUpsertWithoutApplicationsInput = {
+    update: XOR<CharitiesUpdateWithoutApplicationsInput, CharitiesUncheckedUpdateWithoutApplicationsInput>
+    create: XOR<CharitiesCreateWithoutApplicationsInput, CharitiesUncheckedCreateWithoutApplicationsInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutApplicationsInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutApplicationsInput, CharitiesUncheckedUpdateWithoutApplicationsInput>
+  }
+
+  export type CharitiesUpdateWithoutApplicationsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutApplicationsInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type UserCreateWithoutCharityInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutCharityInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutCharityInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
+  }
+
+  export type CharityApplicationsCreateWithoutCharityInput = {
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    reviewer?: UserCreateNestedOneWithoutReviewed_applicationsInput
+    approver?: UserCreateNestedOneWithoutApproved_applicationsInput
+  }
+
+  export type CharityApplicationsUncheckedCreateWithoutCharityInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsCreateOrConnectWithoutCharityInput = {
+    where: CharityApplicationsWhereUniqueInput
+    create: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput>
+  }
+
+  export type CharityApplicationsCreateManyCharityInputEnvelope = {
+    data: CharityApplicationsCreateManyCharityInput | CharityApplicationsCreateManyCharityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CharitySignupTokensCreateWithoutCharityInput = {
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    creator?: UserCreateNestedOneWithoutCreated_invitesInput
+  }
+
+  export type CharitySignupTokensUncheckedCreateWithoutCharityInput = {
+    invite_id?: number
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    created_by?: number | null
+  }
+
+  export type CharitySignupTokensCreateOrConnectWithoutCharityInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    create: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput>
+  }
+
+  export type CharitySignupTokensCreateManyCharityInputEnvelope = {
+    data: CharitySignupTokensCreateManyCharityInput | CharitySignupTokensCreateManyCharityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutCharityInput = {
+    update: XOR<UserUpdateWithoutCharityInput, UserUncheckedUpdateWithoutCharityInput>
+    create: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCharityInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCharityInput, UserUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type UserUpdateWithoutCharityInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCharityInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput = {
+    where: CharityApplicationsWhereUniqueInput
+    update: XOR<CharityApplicationsUpdateWithoutCharityInput, CharityApplicationsUncheckedUpdateWithoutCharityInput>
+    create: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput>
+  }
+
+  export type CharityApplicationsUpdateWithWhereUniqueWithoutCharityInput = {
+    where: CharityApplicationsWhereUniqueInput
+    data: XOR<CharityApplicationsUpdateWithoutCharityInput, CharityApplicationsUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type CharityApplicationsUpdateManyWithWhereWithoutCharityInput = {
+    where: CharityApplicationsScalarWhereInput
+    data: XOR<CharityApplicationsUpdateManyMutationInput, CharityApplicationsUncheckedUpdateManyWithoutCharityInput>
+  }
+
+  export type CharitySignupTokensUpsertWithWhereUniqueWithoutCharityInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    update: XOR<CharitySignupTokensUpdateWithoutCharityInput, CharitySignupTokensUncheckedUpdateWithoutCharityInput>
+    create: XOR<CharitySignupTokensCreateWithoutCharityInput, CharitySignupTokensUncheckedCreateWithoutCharityInput>
+  }
+
+  export type CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput = {
+    where: CharitySignupTokensWhereUniqueInput
+    data: XOR<CharitySignupTokensUpdateWithoutCharityInput, CharitySignupTokensUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type CharitySignupTokensUpdateManyWithWhereWithoutCharityInput = {
+    where: CharitySignupTokensScalarWhereInput
+    data: XOR<CharitySignupTokensUpdateManyMutationInput, CharitySignupTokensUncheckedUpdateManyWithoutCharityInput>
+  }
+
+  export type CharitiesCreateWithoutSignup_tokensInput = {
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    User?: UserCreateNestedOneWithoutCharityInput
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutSignup_tokensInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone?: string | null
+    address: string
+    website: string
+    verified?: boolean
+    user_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutSignup_tokensInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutSignup_tokensInput, CharitiesUncheckedCreateWithoutSignup_tokensInput>
+  }
+
+  export type UserCreateWithoutCreated_invitesInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    Charity?: CharitiesCreateNestedOneWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreated_invitesInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreated_invitesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreated_invitesInput, UserUncheckedCreateWithoutCreated_invitesInput>
+  }
+
+  export type CharitiesUpsertWithoutSignup_tokensInput = {
+    update: XOR<CharitiesUpdateWithoutSignup_tokensInput, CharitiesUncheckedUpdateWithoutSignup_tokensInput>
+    create: XOR<CharitiesCreateWithoutSignup_tokensInput, CharitiesUncheckedCreateWithoutSignup_tokensInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutSignup_tokensInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutSignup_tokensInput, CharitiesUncheckedUpdateWithoutSignup_tokensInput>
+  }
+
+  export type CharitiesUpdateWithoutSignup_tokensInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneWithoutCharityNestedInput
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutSignup_tokensInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type UserUpsertWithoutCreated_invitesInput = {
+    update: XOR<UserUpdateWithoutCreated_invitesInput, UserUncheckedUpdateWithoutCreated_invitesInput>
+    create: XOR<UserCreateWithoutCreated_invitesInput, UserUncheckedCreateWithoutCreated_invitesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreated_invitesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreated_invitesInput, UserUncheckedUpdateWithoutCreated_invitesInput>
+  }
+
+  export type UserUpdateWithoutCreated_invitesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    Charity?: CharitiesUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreated_invitesInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type EmailVerificationTokensCreateManyUserInput = {
@@ -5842,6 +12283,52 @@ export namespace Prisma {
   export type PasswordResetTokensCreateManyUserInput = {
     pr_token_id?: number
     code: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+  }
+
+  export type CharityApplicationsCreateManyReviewerInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharityApplicationsCreateManyApproverInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    charity_id?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharitySignupTokensCreateManyCreatorInput = {
+    invite_id?: number
+    charity_id: number
+    email: string
+    token: string
     expires_on: Date | string
     consumed_on?: Date | string | null
     created_on?: Date | string
@@ -5891,6 +12378,251 @@ export namespace Prisma {
     expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
     consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUpdateWithoutReviewerInput = {
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    approver?: UserUpdateOneWithoutApproved_applicationsNestedInput
+    charity?: CharitiesUpdateOneWithoutApplicationsNestedInput
+  }
+
+  export type CharityApplicationsUncheckedUpdateWithoutReviewerInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyWithoutReviewerInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUpdateWithoutApproverInput = {
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewer?: UserUpdateOneWithoutReviewed_applicationsNestedInput
+    charity?: CharitiesUpdateOneWithoutApplicationsNestedInput
+  }
+
+  export type CharityApplicationsUncheckedUpdateWithoutApproverInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyWithoutApproverInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitySignupTokensUpdateWithoutCreatorInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    charity?: CharitiesUpdateOneRequiredWithoutSignup_tokensNestedInput
+  }
+
+  export type CharitySignupTokensUncheckedUpdateWithoutCreatorInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitySignupTokensUncheckedUpdateManyWithoutCreatorInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsCreateManyCharityInput = {
+    application_id?: number
+    org_name: string
+    contact_name: string
+    contact_email: string
+    contact_number: string
+    website: string
+    org_address: string
+    charity_number?: string | null
+    status?: $Enums.CharityApplicationStatus
+    reviewed_on?: Date | string | null
+    reviewed_by?: number | null
+    approved_on?: Date | string | null
+    approved_by?: number | null
+    created_on?: Date | string
+    updated_on?: Date | string
+  }
+
+  export type CharitySignupTokensCreateManyCharityInput = {
+    invite_id?: number
+    email: string
+    token: string
+    expires_on: Date | string
+    consumed_on?: Date | string | null
+    created_on?: Date | string
+    created_by?: number | null
+  }
+
+  export type CharityApplicationsUpdateWithoutCharityInput = {
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    reviewer?: UserUpdateOneWithoutReviewed_applicationsNestedInput
+    approver?: UserUpdateOneWithoutApproved_applicationsNestedInput
+  }
+
+  export type CharityApplicationsUncheckedUpdateWithoutCharityInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharityApplicationsUncheckedUpdateManyWithoutCharityInput = {
+    application_id?: IntFieldUpdateOperationsInput | number
+    org_name?: StringFieldUpdateOperationsInput | string
+    contact_name?: StringFieldUpdateOperationsInput | string
+    contact_email?: StringFieldUpdateOperationsInput | string
+    contact_number?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    org_address?: StringFieldUpdateOperationsInput | string
+    charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumCharityApplicationStatusFieldUpdateOperationsInput | $Enums.CharityApplicationStatus
+    reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
+    approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approved_by?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CharitySignupTokensUpdateWithoutCharityInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneWithoutCreated_invitesNestedInput
+  }
+
+  export type CharitySignupTokensUncheckedUpdateWithoutCharityInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type CharitySignupTokensUncheckedUpdateManyWithoutCharityInput = {
+    invite_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    consumed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 
