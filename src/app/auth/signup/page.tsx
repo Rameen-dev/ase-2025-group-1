@@ -5,13 +5,13 @@
 "use client";
 import { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form"; // Here we use RHF to keep form state, run validation, collect errors, and calls your submit handler only if valid.
+import { useRouter } from "next/navigation"; // Import the Next.js App Router hook
 import { zodResolver } from "@hookform/resolvers/zod"; // This bridges Zod to RHF so Zod errors appear in formState.errors.
 import { signUpSchema, type SignUpInput } from "@/lib/validation"; // Zod schema and validation check for Signup
 import { Input } from "@/components/forms/input"; // Our reusable Input (Forwards ref)
 import { PasswordInput } from "@/components/forms/passwordInput"; // Our reusable password input (forwards ref)
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import the Next.js App Router hook
 
 /** Our React Hook Form setup
  * Resolver - Connects Zod to RHF so Zod errors become RHF field errors.
@@ -86,7 +86,7 @@ export default function SignUpPage() {
         if (data?.code && !data?.fieldErrors) { // Here we check if there's a general code
           // Below is a map of known codes to friendly messages
           const map: Record<string, React.ReactNode> = { // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
-            EMAIL_TAKEN: "That email is already registered.", 
+            EMAIL_TAKEN: "That email is already registered.",
             VALIDATION_ERROR: "Please fix the highlighted fields.",
             RATE_LIMITED: "Too many attempts. Try again in a minute.",
             SERVER_ERROR: "Something went wrong.",
@@ -104,7 +104,7 @@ export default function SignUpPage() {
       reset();
       router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`); // We use router.push() here instead of a <Link> so the navigation happens automatically.
       // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded 
-      
+
       setSubmitting(false);
     } catch { // This catch part runs only if something goes wrong in the try block. 
       // For example, the network is down (No internet).

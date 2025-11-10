@@ -25,10 +25,10 @@ export const signUpSchema = z
       .regex(/[A-Z]/, "Must contain at least one uppercase letter") // One Uppercase letter,
       .regex(/[a-z]/, "Must contain at least one lowercase letter") // One lowercase letter,
       .regex(/[0-9]/, "Must contain at least one number") // One number,
-      .regex(/[^A-Za-z0-9]/,"Must contain at least one special character"), // One special character.
+      .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"), // One special character.
 
     // This field will later be compared with 'Password'.
-    confirmPassword: z.string(), 
+    confirmPassword: z.string(),
     // Marketing Opt In:
     // This us a checkbox (True or false); will default to false if user doesn't tick it.
     marketingOptIn: z.boolean().default(false),
@@ -45,5 +45,27 @@ export const signUpSchema = z
     path: ["confirmPassword"],
   });
 
+
+export const charityApplicationSchema = z
+  .object({
+    charityName: z.string().trim().min(1, "Required"),
+    charityWebsite: z.string().url("Enter valid URL"),
+    registrationNumber: z
+      .number()
+      .min(1, "Enter a valid registration number")
+      .nullable(),
+    email: z
+      .string()
+      .trim()
+      .toLowerCase()
+      .email("Invalid email"),
+    phoneNumber: z
+      .string()
+      .trim()
+      .regex(/^[+\d\s()-]{7,20}$/, "Invalid phone number format"),
+    address: z.string().trim()
+  })
+
 // This creates a TS type that matches the schema above
 export type SignUpInput = z.infer<typeof signUpSchema>;
+export type CharityApplication = z.infer<typeof charityApplicationSchema>

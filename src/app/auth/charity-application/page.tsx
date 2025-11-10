@@ -1,81 +1,98 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { charityApplicationSchema, type CharityApplication } from "@/lib/validation";
+import { Input } from "@/components/forms/input";
+
 import Link from "next/link";
+import { nullable } from "zod";
 
 export default function CharityApplicationPage() {
-  const [formData, setFormData] = useState({
-    charityName: "",
-    charityWebsite: "",
-    registrationNumber: "",
-    contactEmail: "",
-    contactNumber: "",
-    charityAddress: "",
+  const {
+    register, // Here we register "fieldName" and wire an input to RHF
+    handleSubmit, // This wraps our onSubmit. Only calls it if the form is valid.
+    formState: { errors }, // Zod/RHF Messages appear here (e.g., errors.email?.message)
+    reset, // Clear the form after successful Signup
+    setError, // To push server-side field errors into RHF (e.g., "email already in use")
+  } = useForm<CharityApplication>({
+    resolver: zodResolver(charityApplicationSchema),
+    mode: "onBlur", // First show an error when you leave a field, then once an error is visible, re-validate as you type to clear it quickly.
+    reValidateMode: "onChange",
+    defaultValues: {
+      charityName: "",
+      charityWebsite: "",
+      registrationNumber: null,
+      email: "",
+      phoneNumber: "",
+      address: "",
+    },
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
-  }>({ type: null, message: "" });
+  const [serverMsg, setServerMsg] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const onSubmit: SubmitHandler<CharityApplication> = async (values) => {
+    // Here we clear any previous messages
+    setServerError(null);
+    setServerMsg(null);
+    setSubmitting(true);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
-
+    // Send the form to our API route.
     try {
-      // Take it away Bogdan
-      const response = await fetch("/api/charity-application", {
+      const res = await fetch("/api/charity-application", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit application");
+      // Try to parse JSON even on error to read { code, fieldErrors }
+      // If it fails, just use an empty object {} instead of crashing.
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        // 1) Field-level errors from server (e.g., { fieldErrors: { email: "Email already in use" } })
+        // This logic uses the parsed object to decide what kind of error it was.
+        if (data?.fieldErrors) { // Here we check if there are any field errors, otherwise skip this.
+          Object.entries(data.fieldErrors).forEach(([name, message]) => { // Here we turn the fieldErrors object into a list of pairs.
+            setError(name as keyof SignUpInput, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
+          });
+        }
+
+        // 2) General server code (shown above the form)
+        if (data?.code && !data?.fieldErrors) { // Here we check if there's a general code
+          // Below is a map of known codes to friendly messages
+          const map: Record<string, React.ReactNode> = { // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
+            EMAIL_TAKEN: "That email is already registered.",
+            VALIDATION_ERROR: "Please fix the highlighted fields.",
+            RATE_LIMITED: "Too many attempts. Try again in a minute.",
+            SERVER_ERROR: "Something went wrong.",
+          };
+          setServerError(map[data.code] ?? "Unexpected error occurred."); // Here we look up data.code in the map. 
+          // If it can't find a match (data.code isn't in the map), we use the default message of "Unexpected error occurred."
+        }
+
+        setSubmitting(false);
+        return; // Don't run success logic
       }
 
-      const result = await response.json();
+      // Successful signup: We tell the user and redirect them to email verification screen
+      setServerMsg("Account created! Check your email to verify.");
+      reset();
+      // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded 
 
-      setSubmitStatus({
-        type: "success",
-        message:
-          "Application submitted successfully! We'll review your application and get back to you soon.",
-      });
-
-      // Reset form after successful submission
-      setFormData({
-        charityName: "",
-        charityWebsite: "",
-        registrationNumber: "",
-        contactEmail: "",
-        contactNumber: "",
-        charityAddress: "",
-      });
-    } catch (error) {
-      setSubmitStatus({
-        type: "error",
-        message:
-          "There was an error submitting your application. Please try again.",
-      });
-      console.error("Submission error:", error);
-    } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
+    } catch { // This catch part runs only if something goes wrong in the try block. 
+      // For example, the network is down (No internet).
+      setServerError("Network error. Please try again."); // 
+      setSubmitting(false);
     }
   };
+
+
 
   return (
     <main>
@@ -106,17 +123,6 @@ export default function CharityApplicationPage() {
             <span className="text-[#2E7D32]">SustainWear</span> platform
           </p>
 
-          {/* Status Messages */}
-          {submitStatus.type && (
-            <div
-              className={`mb-6 p-4 rounded-lg ${
-                submitStatus.type === "success"
-                  ? "bg-green-100 text-green-800 border border-green-300"
-                  : "bg-red-100 text-red-800 border border-red-300"
-              }`}
-            >
-              {submitStatus.message}
-            </div>
           )}
 
           {/* Form */}
@@ -135,14 +141,10 @@ export default function CharityApplicationPage() {
                   <label className="block text-sm text-gray-600 mb-1">
                     Charity Name <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="charityName"
-                    value={formData.charityName}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Enter charity name"
+                  <Input
+                    label="Charity Name"
+                    {...register("org_name")}
+                    error={errors.charityName?.message}
                   />
                 </div>
 
@@ -237,11 +239,10 @@ export default function CharityApplicationPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition ${
-                  isSubmitting
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-green-700"
-                }`}
+                className={`bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition ${isSubmitting
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-green-700"
+                  }`}
               >
                 {isSubmitting ? "Submitting..." : "Submit Application"}
               </button>
