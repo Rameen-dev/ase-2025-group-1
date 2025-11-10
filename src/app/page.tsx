@@ -19,18 +19,18 @@ export default function HomePage() {
                 <li>Contact</li>
               </ul>
               <li>
-              <Link href="/auth/login" className="text-black hover:underline">
-                Log In
-              </Link>
-            </li>
-             <li>
-              <Link
-                href="/auth/signup"
-                className="font-sans bg-[#2E7D32] text-white px-4 py-2 rounded hover:bg-green-800 transition inline-block">
-                Sign Up
-              </Link>
-            </li>
-
+                <Link href="/auth/login" className="text-black hover:underline">
+                  Log In
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/auth/signup"
+                  className="font-sans bg-[#2E7D32] text-white px-4 py-2 rounded hover:bg-green-800 transition inline-block"
+                >
+                  Sign Up
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
@@ -158,9 +158,12 @@ export default function HomePage() {
           <p className="text-[#2E7D32] italic text-2xl font-medium mb-5">
             Are you a Charity?
           </p>
-          <button className="bg-[#C9DECA] rounded-lg border-2 border-[#2E7D32] font-medium text-[#2E7D32] px-8 py-4 hover:bg-[#A7C7AD] transition">
+          <Link
+            href="charity-application"
+            className="bg-[#C9DECA] rounded-lg border-2 border-[#2E7D32] font-medium text-[#2E7D32] px-8 py-4 hover:bg-[#A7C7AD] transition"
+          >
             Click Here!
-          </button>
+          </Link>
         </div>
       </section>
 
