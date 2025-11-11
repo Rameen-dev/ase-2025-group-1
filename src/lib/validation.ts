@@ -49,10 +49,12 @@ export const signUpSchema = z
 export const charityApplicationSchema = z
   .object({
     charityName: z.string().trim().min(1, "Required"),
+    contactName: z.string().trim().min(1, "Required"),
     charityWebsite: z.string().url("Enter valid URL"),
     registrationNumber: z
-      .number()
-      .min(1, "Enter a valid registration number"),
+      .string()
+      .trim()
+      .regex(/^[+\d\s()-]{1,20}$/, "Invalid number, please enter numeric characters only"),
     email: z
       .string()
       .trim()
@@ -61,7 +63,7 @@ export const charityApplicationSchema = z
     phoneNumber: z
       .string()
       .trim()
-      .regex(/^[+\d\s()-]{7,20}$/, "Invalid phone number format"),
+      .regex(/^[+\d\s()-]{11,11}$/, "Invalid phone number format"),
     address: z.string().trim().min(1, "Address is required"),
   })
 

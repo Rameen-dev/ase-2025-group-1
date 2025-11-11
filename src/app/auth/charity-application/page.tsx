@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { charityApplicationSchema, type CharityApplication } from "@/lib/validation";
@@ -10,20 +10,22 @@ import { Input } from "@/components/forms/input";
 import Link from "next/link";
 
 export default function CharityApplicationPage() {
+  const router = useRouter();
+
   const {
-    register, // Here we register "fieldName" and wire an input to RHF
-    handleSubmit, // This wraps our onSubmit. Only calls it if the form is valid.
-    formState: { errors }, // Zod/RHF Messages appear here (e.g., errors.email?.message)
-    reset, // Clear the form after successful Signup
-    setError, // To push server-side field errors into RHF (e.g., "email already in use")
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setError,
   } = useForm<CharityApplication>({
     resolver: zodResolver(charityApplicationSchema),
-    mode: "onBlur", // First show an error when you leave a field, then once an error is visible, re-validate as you type to clear it quickly.
+    mode: "onBlur",
     reValidateMode: "onChange",
     defaultValues: {
       charityName: "",
       charityWebsite: "",
-      registrationNumber: null,
+      registrationNumber: "",
       email: "",
       phoneNumber: "",
       address: "",
@@ -35,12 +37,12 @@ export default function CharityApplicationPage() {
   const [serverError, setServerError] = useState<React.ReactNode | null>(null);
 
   const onSubmit: SubmitHandler<CharityApplication> = async (values) => {
-    // Here we clear any previous messages
+
     setServerError(null);
     setServerMsg(null);
     setSubmitting(true);
 
-    // Send the form to our API route.
+
     try {
       const res = await fetch("/api/charity-application", {
         method: "POST",
@@ -48,31 +50,38 @@ export default function CharityApplicationPage() {
         body: JSON.stringify(values),
       });
 
-      // Try to parse JSON even on error to read { code, fieldErrors }
-      // If it fails, just use an empty object {} instead of crashing.
+
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        // 1) Field-level errors from server (e.g., { fieldErrors: { email: "Email already in use" } })
-        // This logic uses the parsed object to decide what kind of error it was.
-        if (data?.fieldErrors) { // Here we check if there are any field errors, otherwise skip this.
-          Object.entries(data.fieldErrors).forEach(([name, message]) => { // Here we turn the fieldErrors object into a list of pairs.
-            setError(name as keyof CharityApplication, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
+        if (data?.fieldErrors) {
+          Object.entries(data.fieldErrors).forEach(([name, message]) => {
+            setError(name as keyof CharityApplication, { type: "server", message: String(message) });
           });
         }
 
+        if (data?.code && !data?.fieldErrors) {
+          const map: Record<string, React.ReactNode> = {
+            EMAIL_TAKEN: "That email is already registered.",
+            VALIDATION_ERROR: "Please fix the highlighted fields.",
+            RATE_LIMITED: "Too many attempts. Try again in a minute.",
+            SERVER_ERROR: "Something went wrong.",
+          };
+          setServerError(map[data.code] ?? "Unexpected error occurred.");
+        }
+
+
+
         setSubmitting(false);
-        return; // Don't run success logic
+        return;
       }
 
-      // Successful signup: We tell the user and redirect them to email verification screen
       setServerMsg("Account created! Check your email to verify.");
       reset();
-      // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded 
+      router.push(`/auth/charity-application/application-successful`);
 
       setSubmitting(false);
-    } catch { // This catch part runs only if something goes wrong in the try block. 
-      // For example, the network is down (No internet).
+    } catch {
       setServerError("Network error. Please try again."); // 
       setSubmitting(false);
     }
@@ -129,6 +138,7 @@ export default function CharityApplicationPage() {
                   />
                 </div>
 
+
                 <div>
                   <Input
                     label="Charity Website"
@@ -159,6 +169,14 @@ export default function CharityApplicationPage() {
                     label="Charity email"
                     {...register("email")}
                     error={errors.email?.message}
+                  />
+                </div>
+
+                <div>
+                  <Input
+                    label="Contact Name"
+                    {...register("contactName")}
+                    error={errors.contactName?.message}
                   />
                 </div>
 

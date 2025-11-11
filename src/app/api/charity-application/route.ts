@@ -6,32 +6,29 @@ export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
     try {
-        // First, we read the JSON body sent by the frontend (signup/page.tsx)
         const body = await req.json();
 
-        // Here we validate the body using Zod. If validation failed, success if false
         const parsed = charityApplicationSchema.safeParse(body);
         if (!parsed.success) {
 
             const flat = parsed.error.flatten();
             const fieldErrors = Object.fromEntries(
-                // Here we map each field to only the first message 
                 Object.entries(flat.fieldErrors).map(([k, v]) => [k, v?.[0] ?? "Invalid"])
             );
 
-            // Respond with 400 (Bad Request) with machine-readable error codes + field errors.
             return NextResponse.json(
                 { code: "VALIDATION_ERROR", fieldErrors },
                 { status: 400 }
             );
         }
 
-        const { charityName, charityWebsite, registrationNumber, email, phoneNumber, address } = parsed.data;
+        const { charityName, charityWebsite, registrationNumber, email, phoneNumber, address, contactName } = parsed.data;
 
-        const application = await prisma.application.create({
+        const application = await prisma.charityApplications.create({
             data: {
                 org_name: charityName,
                 contact_email: email,
+                contact_name: contactName,
                 contact_number: phoneNumber,
                 website: charityWebsite,
                 org_address: address,
@@ -48,23 +45,18 @@ export async function POST(req: NextRequest) {
             { status: 201 }
         );
     } catch (err: any) {
+        console.error("application failed:", err);
 
-        // If anything goes wrong above, we end up here (e.g., DB error, email send failure, bad JSON)
-        console.error("signup error:", err); // We also log it in the console to help debug the error
+        if (err?.code === "P2002") {
 
-        // Here we have the Prisma unique constraint error (Email already registered)
-        if (err?.code === "P2002") { // Prisma throws an error with code: P2002, when a unique constraint is violated, in this case, the email field.
-
-            // We translate that into a Conflict response with a clear, machine-readable code: "EMAIL_TAKEN"
             return NextResponse.json(
                 { code: "EMAIL_TAKEN", message: "Email already registered." },
-                { status: 409 } // The request could not be completed because it conflicts with the current state of the server
-                // In our case, it can't be performed because it would break a uniqueness rule or cause a data conflict
+                { status: 409 }
             );
         }
         return NextResponse.json(
             { code: "SERVER_ERROR", message: "Signup failed." },
-            { status: 500 } // Developer/ server mistake 
+            { status: 500 }
         );
     }
 }

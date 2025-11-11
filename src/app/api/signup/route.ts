@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
 
     // If anything goes wrong above, we end up here (e.g., DB error, email send failure, bad JSON)
