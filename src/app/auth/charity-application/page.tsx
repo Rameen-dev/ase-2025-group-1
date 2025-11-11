@@ -8,7 +8,6 @@ import { charityApplicationSchema, type CharityApplication } from "@/lib/validat
 import { Input } from "@/components/forms/input";
 
 import Link from "next/link";
-import { nullable } from "zod";
 
 export default function CharityApplicationPage() {
   const {
@@ -58,21 +57,8 @@ export default function CharityApplicationPage() {
         // This logic uses the parsed object to decide what kind of error it was.
         if (data?.fieldErrors) { // Here we check if there are any field errors, otherwise skip this.
           Object.entries(data.fieldErrors).forEach(([name, message]) => { // Here we turn the fieldErrors object into a list of pairs.
-            setError(name as keyof SignUpInput, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
+            setError(name as keyof CharityApplication, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
           });
-        }
-
-        // 2) General server code (shown above the form)
-        if (data?.code && !data?.fieldErrors) { // Here we check if there's a general code
-          // Below is a map of known codes to friendly messages
-          const map: Record<string, React.ReactNode> = { // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
-            EMAIL_TAKEN: "That email is already registered.",
-            VALIDATION_ERROR: "Please fix the highlighted fields.",
-            RATE_LIMITED: "Too many attempts. Try again in a minute.",
-            SERVER_ERROR: "Something went wrong.",
-          };
-          setServerError(map[data.code] ?? "Unexpected error occurred."); // Here we look up data.code in the map. 
-          // If it can't find a match (data.code isn't in the map), we use the default message of "Unexpected error occurred."
         }
 
         setSubmitting(false);
@@ -123,11 +109,9 @@ export default function CharityApplicationPage() {
             <span className="text-[#2E7D32]">SustainWear</span> platform
           </p>
 
-          )}
-
           {/* Form */}
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
           >
             {/* Left Side - Charity Information */}
@@ -138,43 +122,26 @@ export default function CharityApplicationPage() {
 
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Charity Name <span className="text-red-500">*</span>
-                  </label>
                   <Input
                     label="Charity Name"
-                    {...register("org_name")}
+                    {...register("charityName")}
                     error={errors.charityName?.message}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Charity Website <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="url"
-                    name="charityWebsite"
-                    value={formData.charityWebsite}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g. https://charity.org"
+                  <Input
+                    label="Charity Website"
+                    {...register("charityWebsite")}
+                    error={errors.charityWebsite?.message}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Registration Number <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="registrationNumber"
-                    value={formData.registrationNumber}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g. 12345678"
+                  <Input
+                    label="Registration Number"
+                    {...register("registrationNumber")}
+                    error={errors.registrationNumber?.message}
                   />
                 </div>
               </div>
@@ -191,14 +158,10 @@ export default function CharityApplicationPage() {
                   <label className="block text-sm text-gray-600 mb-1">
                     Contact Email <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="email"
-                    name="contactEmail"
-                    value={formData.contactEmail}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g. contact@charity.org"
+                  <Input
+                    label="email"
+                    {...register("email")}
+                    error={errors.email?.message}
                   />
                 </div>
 
@@ -206,14 +169,10 @@ export default function CharityApplicationPage() {
                   <label className="block text-sm text-gray-600 mb-1">
                     Contact Number <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="tel"
-                    name="contactNumber"
-                    value={formData.contactNumber}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="e.g. +44 123 456 789"
+                  <Input
+                    label="phoneNumber"
+                    {...register("phoneNumber")}
+                    error={errors.phoneNumber?.message}
                   />
                 </div>
 
@@ -221,15 +180,11 @@ export default function CharityApplicationPage() {
                   <label className="block text-sm text-gray-600 mb-1">
                     Charity Address <span className="text-red-500">*</span>
                   </label>
-                  <textarea
-                    name="charityAddress"
-                    value={formData.charityAddress}
-                    onChange={handleChange}
-                    required
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    placeholder="Street, City, Postcode"
-                    rows={3}
-                  ></textarea>
+                  <Input
+                    label="address"
+                    {...register("address")}
+                    error={errors.address?.message}
+                  />
                 </div>
               </div>
             </div>
@@ -237,14 +192,10 @@ export default function CharityApplicationPage() {
             {/* Submit Button - Spans full width */}
             <div className="md:col-span-2 flex justify-center mt-6">
               <button
-                type="submit"
-                disabled={isSubmitting}
-                className={`bg-green-600 text-white px-8 py-3 rounded-lg font-semibold transition ${isSubmitting
-                  ? "opacity-50 cursor-not-allowed"
-                  : "hover:bg-green-700"
-                  }`}
+                disabled={submitting}
+                className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-900 transition-colors"
               >
-                {isSubmitting ? "Submitting..." : "Submit Application"}
+                {submitting ? "Sending application" : "Apply"}
               </button>
             </div>
           </form>

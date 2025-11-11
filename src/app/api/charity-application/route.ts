@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { charityApplicationSchema } from "@/lib/validation";
-import { Prisma } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 
@@ -26,38 +26,24 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Here we extract validated data from Zod, that's been inputted by a user from the frontend
-        // Here we also normalise the email to avoid duplicates with different cases or spaces
         const { charityName, charityWebsite, registrationNumber, email, phoneNumber, address } = parsed.data;
 
-
-        // Here we then create the user row in the database
-        // If a unique email exists already, Prisma will throw a P2002 error
-        // We only select specific fields to return, never the password_hash
-        const user = await prisma.user.create({
+        const application = await prisma.application.create({
             data: {
-                org_name; charityName,
-                password_hash,
-                first_name: firstName,
-                last_name: lastName,
-                role: "donor", // This is the default role on Sign-Up
-                is_verified: false, // New users will start unverified until they enter OTP.
+                org_name: charityName,
+                contact_email: email,
+                contact_number: phoneNumber,
+                website: charityWebsite,
+                org_address: address,
+                charity_number: registrationNumber,
             },
-            select: { application_id: true, is_verified: true, first_name: true, email: true },
+            select: { application_id: true, contact_email: true, contact_number: true, website: true, charity_number: true },
         });
-
-        // Generate a random 4-digit OTP code for Sign-Up verification (Example: 0491 )
-        const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
-
-        // Here we calculate an expiry time for the OTP code (10 Minutes from now)
-        const TEN_MINUTES = 10 * 60 * 1000;
-        const expiresAt = new Date(Date.now() + TEN_MINUTES);
 
         return NextResponse.json(
             {
-                userId: user.user_id,
-                status: user.is_verified ? "active" : "unverified",
-                message: "Account created. Verification code sent.",
+                application: application.application_id,
+                message: "Application has been sent",
             },
             { status: 201 }
         );
