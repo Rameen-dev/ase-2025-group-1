@@ -159,7 +159,7 @@ export default function HomePage() {
             Are you a Charity?
           </p>
           <Link
-            href="charity-application"
+            href="auth/charity-application"
             className="bg-[#C9DECA] rounded-lg border-2 border-[#2E7D32] font-medium text-[#2E7D32] px-8 py-4 hover:bg-[#A7C7AD] transition"
           >
             Click Here!
