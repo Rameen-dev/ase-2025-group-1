@@ -52,8 +52,7 @@ export const charityApplicationSchema = z
     charityWebsite: z.string().url("Enter valid URL"),
     registrationNumber: z
       .number()
-      .min(1, "Enter a valid registration number")
-      .nullable(),
+      .min(1, "Enter a valid registration number"),
     email: z
       .string()
       .trim()
@@ -63,7 +62,7 @@ export const charityApplicationSchema = z
       .string()
       .trim()
       .regex(/^[+\d\s()-]{7,20}$/, "Invalid phone number format"),
-    address: z.string().trim()
+    address: z.string().trim().min(1, "Address is required"),
   })
 
 // This creates a TS type that matches the schema above

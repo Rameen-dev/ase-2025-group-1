@@ -155,33 +155,24 @@ export default function CharityApplicationPage() {
 
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Contact Email <span className="text-red-500">*</span>
-                  </label>
                   <Input
-                    label="email"
+                    label="Charity email"
                     {...register("email")}
                     error={errors.email?.message}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Contact Number <span className="text-red-500">*</span>
-                  </label>
                   <Input
-                    label="phoneNumber"
+                    label="Contact number"
                     {...register("phoneNumber")}
                     error={errors.phoneNumber?.message}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Charity Address <span className="text-red-500">*</span>
-                  </label>
                   <Input
-                    label="address"
+                    label="Charity address"
                     {...register("address")}
                     error={errors.address?.message}
                   />
