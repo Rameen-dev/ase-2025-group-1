@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
             },
             { status: 201 }
         );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
         console.error("application failed:", err);
 
