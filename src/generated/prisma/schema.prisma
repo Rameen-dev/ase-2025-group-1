@@ -9,19 +9,21 @@ datasource db {
 }
 
 model User {
-  user_id       Int      @id @default(autoincrement())
-  email         String   @unique
-  password_hash String
-  role          String
-  is_verified   Boolean
-  first_name    String
-  last_name     String
-  created_on    DateTime @default(now())
-  updated_on    DateTime @updatedAt
-
-  // RELATIONS:
-  EmailVerificationTokens EmailVerificationTokens[]
-  PasswordResetTokens     PasswordResetTokens[] // ← add this
+  user_id                                                   Int                       @id @default(autoincrement())
+  email                                                     String                    @unique
+  password_hash                                             String
+  role                                                      String
+  is_verified                                               Boolean
+  first_name                                                String
+  last_name                                                 String
+  created_on                                                DateTime                  @default(now())
+  updated_on                                                DateTime                  @updatedAt
+  Charities                                                 Charities?
+  CharityApplications_CharityApplications_approved_byToUser CharityApplications[]     @relation("CharityApplications_approved_byToUser")
+  CharityApplications_CharityApplications_reviewed_byToUser CharityApplications[]     @relation("CharityApplications_reviewed_byToUser")
+  CharitySignupTokens                                       CharitySignupTokens[]
+  EmailVerificationTokens                                   EmailVerificationTokens[]
+  PasswordResetTokens                                       PasswordResetTokens[]
 }
 
 model EmailVerificationTokens {
@@ -31,8 +33,7 @@ model EmailVerificationTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
-
-  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
@@ -40,13 +41,77 @@ model EmailVerificationTokens {
 model PasswordResetTokens {
   pr_token_id Int       @id @default(autoincrement())
   user_id     Int
-  code        String // this will be the 6-digit code we email
-  expires_on  DateTime // e.g. now + 10 mins
-  consumed_on DateTime? // once used, we timestamp it
+  code        String
+  expires_on  DateTime
+  consumed_on DateTime?
   created_on  DateTime  @default(now())
+  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
-  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
-
-  // helpful index so we can quickly find latest valid code by user
   @@index([user_id, created_on])
+}
+
+model Charities {
+  charity_id          Int                   @id @default(autoincrement())
+  name                String
+  email               String                @unique
+  phone               String?
+  address             String
+  website             String
+  verified            Boolean               @default(false)
+  user_id             Int?                  @unique
+  created_on          DateTime              @default(now())
+  updated_on          DateTime
+  User                User?                 @relation(fields: [user_id], references: [user_id])
+  CharityApplications CharityApplications[]
+  CharitySignupTokens CharitySignupTokens[]
+
+  @@index([email])
+  @@index([name])
+}
+
+model CharityApplications {
+  application_id                             Int                      @id @default(autoincrement())
+  org_name                                   String
+  contact_name                               String
+  contact_email                              String
+  contact_number                             String
+  website                                    String
+  org_address                                String
+  charity_number                             String?
+  status                                     CharityApplicationStatus @default(PENDING)
+  reviewed_on                                DateTime?
+  reviewed_by                                Int?
+  approved_on                                DateTime?
+  approved_by                                Int?
+  charity_id                                 Int?
+  created_on                                 DateTime                 @default(now())
+  updated_on                                 DateTime
+  User_CharityApplications_approved_byToUser User?                    @relation("CharityApplications_approved_byToUser", fields: [approved_by], references: [user_id])
+  Charities                                  Charities?               @relation(fields: [charity_id], references: [charity_id])
+  User_CharityApplications_reviewed_byToUser User?                    @relation("CharityApplications_reviewed_byToUser", fields: [reviewed_by], references: [user_id])
+
+  @@index([contact_email])
+  @@index([status, created_on])
+}
+
+model CharitySignupTokens {
+  invite_id   Int       @id @default(autoincrement())
+  charity_id  Int
+  email       String
+  token       String    @unique
+  expires_on  DateTime
+  consumed_on DateTime?
+  created_on  DateTime  @default(now())
+  created_by  Int?
+  Charities   Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+  User        User?     @relation(fields: [created_by], references: [user_id])
+
+  @@index([charity_id, created_on])
+  @@index([email])
+}
+
+enum CharityApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

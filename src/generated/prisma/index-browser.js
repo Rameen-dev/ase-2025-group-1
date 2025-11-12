@@ -150,6 +150,49 @@ exports.Prisma.PasswordResetTokensScalarFieldEnum = {
   created_on: 'created_on'
 };
 
+exports.Prisma.CharitiesScalarFieldEnum = {
+  charity_id: 'charity_id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  website: 'website',
+  verified: 'verified',
+  user_id: 'user_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
+exports.Prisma.CharityApplicationsScalarFieldEnum = {
+  application_id: 'application_id',
+  org_name: 'org_name',
+  contact_name: 'contact_name',
+  contact_email: 'contact_email',
+  contact_number: 'contact_number',
+  website: 'website',
+  org_address: 'org_address',
+  charity_number: 'charity_number',
+  status: 'status',
+  reviewed_on: 'reviewed_on',
+  reviewed_by: 'reviewed_by',
+  approved_on: 'approved_on',
+  approved_by: 'approved_by',
+  charity_id: 'charity_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
+exports.Prisma.CharitySignupTokensScalarFieldEnum = {
+  invite_id: 'invite_id',
+  charity_id: 'charity_id',
+  email: 'email',
+  token: 'token',
+  expires_on: 'expires_on',
+  consumed_on: 'consumed_on',
+  created_on: 'created_on',
+  created_by: 'created_by'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -164,12 +207,19 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
+exports.CharityApplicationStatus = exports.$Enums.CharityApplicationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
 
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
-  PasswordResetTokens: 'PasswordResetTokens'
+  PasswordResetTokens: 'PasswordResetTokens',
+  Charities: 'Charities',
+  CharityApplications: 'CharityApplications',
+  CharitySignupTokens: 'CharitySignupTokens'
 };
 
 /**

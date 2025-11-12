@@ -11,10 +11,12 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@fontsource/kalam": "^5.2.8",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.18.0",
     "bcrypt": "^6.0.0",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.553.0",
     "next": "15.5.4",
     "nodemailer": "^7.0.10",
     "react": "19.1.0",
