@@ -4,118 +4,121 @@ import React, { useEffect, useState } from "react";
 import { User } from "lucide-react";
 import "@fontsource/kalam";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-interface CharityRequest {
-  id: string;
-  charityName: string;
-  applicationId: string;
-  date: string;
-  status: string;
+// Prisma model types
+type CharityStatus = "PENDING" | "APPROVED" | "REJECTED";
 
-  // Add the missing modal fields
-  charityNumber?: string;
-  contactEmail?: string;
-  contactNumber?: string;
-  charityUrl?: string;
-  charityAddress?: string;
+interface CharityApplication {
+  application_id: number;
+  org_name: string;
+  contact_name: string;
+  contact_email: string;
+  contact_number: string;
+  website: string;
+  org_address: string;
+  charity_number: string | null;
+  status: CharityStatus;
 }
 
 export default function AdminPage() {
-  const [selectedTab, setSelectedTab] = useState("Home");
-  const [requests, setRequests] = useState<CharityRequest[]>([]);
+  const [activeTab, setActiveTab] = useState("Requests");
+  const [apps, setApps] = useState<CharityApplication[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [modalOpen, setModalOpen] = useState(false);
-  const [selected, setSelected] = useState<CharityRequest | null>(null);
+  const [selected, setSelected] = useState<CharityApplication | null>(null);
+  const [saving, setSaving] = useState(false);
 
-  const updateStatus = (id: string, newStatus: string) => {
-  setRequests((prev) =>
-    prev.map((req) =>
-      req.id === id ? { ...req, status: newStatus } : req
-    )
-  );
-  setModalOpen(false);
-};
-
+  // Load applications
   useEffect(() => {
-    const fetchRequests = async () => {
+    async function load() {
       try {
-        const res = await fetch(`${API_BASE}/charity-requests`);
-        if (!res.ok) throw new Error();
-        setRequests(await res.json());
-      } catch {
-        setRequests([
-          {
-            id: "3429583",
-            charityName: "Ossy’s Shoulder",
-            applicationId: "3429583",
-            date: "9/11/2025",
-            status: "Pending",
-          },
-        ]);
+        setLoading(true);
+        const res = await fetch(`${API_BASE}/api/charity-applications`);
+        const data = await res.json();
+        setApps(data);
+      } finally {
+        setLoading(false);
       }
-    };
-    fetchRequests();
+    }
+    load();
   }, []);
 
-  const tabs = ["Home", "Requests", "Inventory", "Impact"];
+  function openModal(app: CharityApplication) {
+    setSelected(app);
+    setModalOpen(true);
+  }
+
+  function closeModal() {
+    setModalOpen(false);
+    setSelected(null);
+  }
+
+  // APPROVE or DENY
+  async function handleDecision(action: "APPROVE" | "DENY") {
+    if (!selected) return;
+
+    try {
+      setSaving(true);
+
+      const res = await fetch(
+        `${API_BASE}/api/charity-applications/${selected.application_id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action }),
+        }
+      );
+
+      if (!res.ok) throw new Error();
+
+      window.location.reload(); // reload after DB update
+    } catch (err) {
+      alert("Error updating application");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <div className="flex min-h-screen bg-white relative">
-
       {/* SIDEBAR */}
-<aside className="bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen">
+      <aside className="bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen">
+        <div className="bg-white px-6 py-6">
+          <h1 className="text-3xl font-[Kalam] font-bold">
+            <span className="text-green-600">S</span>ustain
+            <span className="text-green-600">W</span>ear
+          </h1>
+          <p className="text-xs text-gray-600">
+            Give Today. <span className="text-green-600">Sustain Tomorrow.</span>
+          </p>
+        </div>
 
-  {/* Logo */}
-  <div className="bg-white w-full px-6 py-6">
-    <h1 className="text-3xl font-[Kalam] font-bold select-none">
-      <span className="text-green-600">S</span>ustain
-      <span className="text-green-600">W</span>ear
-    </h1>
-    <p className="text-xs text-gray-600 mt-1">
-      Give Today. <span className="text-green-600">Sustain</span><span className="text-xs text-gray-600 mt-1"> Tomorrow.</span>
-    </p>
-  </div>
+        <nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
+          {["Home", "Requests", "Inventory", "Impact"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-8 py-2 text-left ${
+                activeTab === tab
+                  ? "bg-white text-green-700 font-semibold rounded-l-full"
+                  : "text-white"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </nav>
 
-  {/* Navigation - vertically centered */}
-<nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
-
-  {["Home", "Requests", "Inventory", "Impact"].map((tab) => {
-    const active = selectedTab === tab;
-    return (
-      <button
-        key={tab}
-        onClick={() => setSelectedTab(tab)}
-        className={`
-          w-full text-left px-8 py-2 transition-all
-          ${active 
-            ? "bg-white text-green-700 rounded-l-full font-semibold" 
-            : "text-white font-normal"
-          }
-        `}
-      >
-        {tab}
-      </button>
-    );
-  })}
-
-</nav>
-
-
-  {/* Settings / Logout */}
-  <div className="pt-6 border-t border-white/70 flex flex-col items-center gap-3 text-center text-lg font-semibold text-white pb-6">
-    <button className="hover:text-green-200 transition">Settings</button>
-    <button className="hover:text-green-200 transition">Log Out</button>
-  </div>
-
-</aside>
-
-
-
+        <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
+          <div className="hover:opacity-80 cursor-pointer">Settings</div>
+          <div className="hover:opacity-80 cursor-pointer mt-2">Log Out</div>
+        </div>
+      </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 ml-64 p-10 bg-white flex flex-col min-h-screen">
-        
-
+      <main className="ml-64 p-10 flex-1 bg-white min-h-screen">
         <div className="flex justify-between mb-6">
           <h2 className="text-3xl font-semibold">Welcome Back, Admin!</h2>
           <div className="bg-green-100 text-green-700 p-2 rounded-full">
@@ -123,157 +126,111 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* TABLE CONTAINER (fills screen height) */}
+        {/* REQUESTS PAGE */}
         <div className="border rounded-lg shadow-md flex flex-col flex-1">
-          <div className="bg-green-100 px-4 py-3 text-lg font-semibold border-b">
+          <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-b">
             Charity Application Requests
           </div>
 
           <div className="flex-1 overflow-auto">
-            <table className="w-full border-collapse">
-              <thead className="bg-green-50 border-b">
-                <tr>
-                  <th className="p-3 text-left">Charity Name</th>
-                  <th className="p-3">Application ID</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3 text-center"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {requests.length === 0 ? (
+            {loading ? (
+              <div className="py-20 text-center text-gray-500">Loading…</div>
+            ) : (
+              <table className="w-full">
+                <thead className="bg-green-50 border-b">
                   <tr>
-                    <td colSpan={5} className="text-center py-20 text-gray-500">
-                      No Requests Found
-                    </td>
+                    <th className="p-3 text-left">Organisation</th>
+                    <th className="p-3 text-left">Contact Name</th>
+                    <th className="p-3 text-left">Email</th>
+                    <th className="p-3 text-center">Status</th>
+                    <th className="p-3 text-center">Action</th>
                   </tr>
-                ) : (
-                  requests.map((req) => (
-                    <tr key={req.id} className="border-b hover:bg-green-50">
-                      <td className="p-3">{req.charityName}</td>
-                      <td className="p-3 text-center">{req.applicationId}</td>
-                      <td className="p-3 text-center">{req.date}</td>
-                      <td className="p-3 text-center">{req.status}</td>
+                </thead>
+                <tbody>
+                  {apps.map((app) => (
+                    <tr key={app.application_id} className="border-b">
+                      <td className="p-3">{app.org_name}</td>
+                      <td className="p-3">{app.contact_name}</td>
+                      <td className="p-3">{app.contact_email}</td>
+                      <td className="p-3 text-center">{app.status}</td>
                       <td className="p-3 text-center">
                         <button
-                          onClick={() => {
-                            setSelected(req);
-                            setModalOpen(true);
-                          }}
-                          className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-700"
+                          onClick={() => openModal(app)}
+                          className="bg-green-600 text-white px-4 py-1 rounded"
                         >
                           View
                         </button>
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="bg-green-700 text-white text-center py-3 font-semibold cursor-pointer hover:bg-green-800">
-            View All Donations Requests
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </div>
       </main>
 
       {/* MODAL */}
-{modalOpen && selected && (
-  <>
-    <div
-      className="fixed inset-0 bg-black/40 z-40"
-      onClick={() => setModalOpen(false)}
-    />
+      {modalOpen && selected && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={closeModal}
+          />{" "}
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div className="bg-white rounded-lg shadow-2xl w-[650px]">
+              <div className="bg-green-100 py-3 text-center font-semibold border-b">
+                Charity Application
+              </div>
 
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-2xl w-[650px] overflow-hidden">
+              <div className="grid grid-cols-2 gap-6 p-6 text-sm">
+                <Field label="Organisation" value={selected.org_name} />
+                <Field label="Contact Name" value={selected.contact_name} />
+                <Field label="Contact Email" value={selected.contact_email} />
+                <Field label="Contact Number" value={selected.contact_number} />
+                <Field label="Charity Number" value={selected.charity_number || ""} />
+                <Field label="Website" value={selected.website} />
 
-        {/* Header */}
-        <div className="bg-green-100 text-center py-3 border-b text-lg font-semibold">
-          Charity Application
-        </div>
+                <div className="col-span-2">
+                  <label className="font-semibold">Organisation Address</label>
+                  <textarea
+                    className="border w-full rounded px-2 py-1"
+                    readOnly
+                    value={selected.org_address}
+                  />
+                </div>
+              </div>
 
-        {/* Form Content */}
-        <div className="p-6 grid grid-cols-2 gap-6 text-sm">
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Charity Name</label>
-            <input
-              className="border px-2 py-1 rounded"
-              value={selected?.charityName ?? ""}
-              readOnly
-            />
+              <div className="flex justify-center gap-10 py-6 border-t">
+                <button
+                  disabled={saving}
+                  onClick={() => handleDecision("APPROVE")}
+                  className="bg-green-600 text-white px-10 py-2 rounded"
+                >
+                  Approve
+                </button>
+                <button
+                  disabled={saving}
+                  onClick={() => handleDecision("DENY")}
+                  className="bg-red-600 text-white px-10 py-2 rounded"
+                >
+                  Deny
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Contact Email</label>
-            <input
-              className="border px-2 py-1 rounded"
-              value={selected?.contactEmail ?? ""}
-              readOnly
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Charity Number</label>
-            <input
-              className="border px-2 py-1 rounded"
-              value={selected?.charityNumber ?? ""}
-              readOnly
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Contact Number</label>
-            <input
-              className="border px-2 py-1 rounded"
-              value={selected?.contactNumber ?? ""}
-              readOnly
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Charity URL</label>
-            <input
-              className="border px-2 py-1 rounded"
-              value={selected?.charityUrl ?? ""}
-              readOnly
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label className="font-semibold">Charity Address</label>
-            <input
-              className="border px-2 py-1 rounded bg-red-50"
-              value={selected?.charityAddress ?? ""}
-              readOnly
-            />
-          </div>
-
-        </div>
-
-        {/* Buttons */}
-        <div className="flex justify-center gap-10 py-6">
-          <button
-            onClick={() => updateStatus(selected.id, "Approved")}
-            className="bg-green-600 text-white px-10 py-2 rounded hover:bg-green-700"
-          >
-            Approve
-          </button>
-
-          <button
-            onClick={() => updateStatus(selected.id, "Denied")}
-            className="bg-red-600 text-white px-10 py-2 rounded hover:bg-red-700"
-          >
-            Deny
-          </button>
-        </div>
-
-      </div>
+        </>
+      )}
     </div>
-  </>
-)}
+  );
+}
+
+// Small reusable field component
+function Field({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <label className="font-semibold">{label}</label>
+      <input className="border px-2 py-1 rounded" readOnly value={value} />
     </div>
   );
 }
