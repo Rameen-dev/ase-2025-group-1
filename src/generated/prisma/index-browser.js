@@ -150,6 +150,19 @@ exports.Prisma.PasswordResetTokensScalarFieldEnum = {
   created_on: 'created_on'
 };
 
+exports.Prisma.CharitiesScalarFieldEnum = {
+  charity_id: 'charity_id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  website: 'website',
+  verified: 'verified',
+  user_id: 'user_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
 exports.Prisma.CharityApplicationsScalarFieldEnum = {
   application_id: 'application_id',
   org_name: 'org_name',
@@ -165,19 +178,6 @@ exports.Prisma.CharityApplicationsScalarFieldEnum = {
   approved_on: 'approved_on',
   approved_by: 'approved_by',
   charity_id: 'charity_id',
-  created_on: 'created_on',
-  updated_on: 'updated_on'
-};
-
-exports.Prisma.CharitiesScalarFieldEnum = {
-  charity_id: 'charity_id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  address: 'address',
-  website: 'website',
-  verified: 'verified',
-  user_id: 'user_id',
   created_on: 'created_on',
   updated_on: 'updated_on'
 };
@@ -217,8 +217,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
   PasswordResetTokens: 'PasswordResetTokens',
-  CharityApplications: 'CharityApplications',
   Charities: 'Charities',
+  CharityApplications: 'CharityApplications',
   CharitySignupTokens: 'CharitySignupTokens'
 };
 
