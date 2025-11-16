@@ -111,10 +111,15 @@ export default function AdminPage() {
           ))}
         </nav>
 
-        <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
-          <div className="hover:opacity-80 cursor-pointer">Settings</div>
-          <div className="hover:opacity-80 cursor-pointer mt-2">Log Out</div>
-        </div>
+       <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
+      <div className="hover:opacity-80 cursor-pointer transition-opacity duration-150">
+        Settings
+      </div>
+      <div className="hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150">
+        Log Out
+      </div>
+    </div>
+
       </aside>
 
       {/* MAIN CONTENT */}
@@ -154,12 +159,14 @@ export default function AdminPage() {
                       <td className="p-3">{app.contact_email}</td>
                       <td className="p-3 text-center">{app.status}</td>
                       <td className="p-3 text-center">
-                        <button
-                          onClick={() => openModal(app)}
-                          className="bg-green-600 text-white px-4 py-1 rounded"
-                        >
-                          View
-                        </button>
+                       <button
+                        onClick={() => openModal(app)}
+                        className="bg-green-600 text-white px-4 py-1 rounded cursor-pointer
+                                  hover:bg-green-700 transition-colors duration-200"
+                      >
+                        View
+                      </button>
+
                       </td>
                     </tr>
                   ))}
@@ -202,21 +209,26 @@ export default function AdminPage() {
               </div>
 
               <div className="flex justify-center gap-10 py-6 border-t">
-                <button
-                  disabled={saving}
-                  onClick={() => handleDecision("APPROVE")}
-                  className="bg-green-600 text-white px-10 py-2 rounded"
-                >
-                  Approve
-                </button>
-                <button
-                  disabled={saving}
-                  onClick={() => handleDecision("DENY")}
-                  className="bg-red-600 text-white px-10 py-2 rounded"
-                >
-                  Deny
-                </button>
-              </div>
+            <button
+              disabled={saving}
+              onClick={() => handleDecision("APPROVE")}
+              className="bg-green-600 text-white px-10 py-2 rounded cursor-pointer
+                        hover:bg-green-700 transition-colors duration-200
+                        disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              Approve
+            </button>
+            <button
+              disabled={saving}
+              onClick={() => handleDecision("DENY")}
+              className="bg-red-600 text-white px-10 py-2 rounded cursor-pointer
+                        hover:bg-red-700 transition-colors duration-200
+                        disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              Deny
+            </button>
+          </div>
+
             </div>
           </div>
         </>
