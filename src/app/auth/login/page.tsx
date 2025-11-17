@@ -6,14 +6,15 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default function LoginPage() {
-  const router = useRouter();
+
+  const router = useRouter(); // useRouter() lets us programmatically navigate between pages in client components.
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Handle form submit
+  // Handle form submit
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -30,7 +31,8 @@ export default function LoginPage() {
       const data = await res.json();
 
 
-      // ❌ Request failed (e.g. wrong login, not verified, server error, etc.)
+
+      // Request failed (e.g. wrong login, not verified, server error, etc.)
       if (!res.ok) {
         // 1. not verified case
         if (data.code === "NOT_VERIFIED") {
@@ -61,7 +63,7 @@ export default function LoginPage() {
         return;
       }
 
-      // ✅ Success path
+      // Success path
       // data.success === true, code === "LOGIN_OK"
       sessionStorage.setItem("loggedIn", "true");
 
@@ -148,29 +150,22 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Links under form (match signup link style) */}
+          {/* Links under form (match signup link style) - Sign up Link */}
           <p className="mt-4 text-sm">
             Don’t have an account?{" "}
-            <a
-              href="/auth/signup"
-              className="text-blue-500 underline hover:text-blue-800"
-            >
-              Create one
-            </a>
+            <a href="/auth/signup" className="text-blue-500 underline hover:text-blue-800"> Create one </a>
           </p>
 
+          {/* Forgotten password Link */}
           <p className="text-sm">
             Forgot your password?{" "}
-            <a
-              href="/auth/reset/request"
-              className="text-blue-500 underline hover:text-blue-800"
-            >
-              Reset it
-            </a>
+            <a href="/auth/reset/request"
+              className="text-blue-500 underline hover:text-blue-800"> Reset it </a>
           </p>
         </div>
       </section>
 
+      {/* Right side Image for UI Design  */}
       <div className="hidden md:flex md:w-1/2 md:flex-col md:justify-center md:items-center md:bg-green-100">
         <Image
           src="/images/signupShapes.png"
@@ -187,8 +182,6 @@ export default function LoginPage() {
           className="w-auto h-100 object-contain"
         />
       </div>
-      {/* RIGHT SIDE (keep whatever images/decoration you already had) */}
-      {/* <section className="hidden md:flex w-1/2 ..."> ... </section> */}
     </main>
   );
 }

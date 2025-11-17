@@ -18,10 +18,11 @@ export async function POST(
 
   try {
     // 1) Update the application status to REJECTED
-    const application = await prisma.charityApplication.update({
-      where: { application_id: applicationId },
-      data: { status: "REJECTED" }, // must match your Prisma enum exactly
+    const application = await prisma.charityApplications.update({
+    where: { application_id: applicationId },
+    data: { status: "REJECTED" }, // enum value
     });
+
 
     // 2) Send rejection email
     await sendCharityRejectionEmail({

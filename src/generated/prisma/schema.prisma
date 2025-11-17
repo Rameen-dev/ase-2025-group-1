@@ -9,21 +9,21 @@ datasource db {
 }
 
 model User {
-  user_id                                                   Int                       @id @default(autoincrement())
-  email                                                     String                    @unique
-  password_hash                                             String
-  role                                                      String
-  is_verified                                               Boolean
-  first_name                                                String
-  last_name                                                 String
-  created_on                                                DateTime                  @default(now())
-  updated_on                                                DateTime                  @updatedAt
-  Charities                                                 Charities?
-  CharityApplications_CharityApplications_approved_byToUser CharityApplications[]     @relation("CharityApplications_approved_byToUser")
-  CharityApplications_CharityApplications_reviewed_byToUser CharityApplications[]     @relation("CharityApplications_reviewed_byToUser")
-  CharitySignupTokens                                       CharitySignupTokens[]
-  EmailVerificationTokens                                   EmailVerificationTokens[]
-  PasswordResetTokens                                       PasswordResetTokens[]
+  user_id                 Int                       @id @default(autoincrement())
+  email                   String                    @unique
+  password_hash           String
+  role                    String
+  is_verified             Boolean
+  first_name              String
+  last_name               String
+  created_on              DateTime                  @default(now())
+  updated_on              DateTime                  @updatedAt
+  Charity                 Charities?
+  approved_applications   CharityApplications[]     @relation("approved_by_admin")
+  reviewed_applications   CharityApplications[]     @relation("reviewed_by_admin")
+  created_invites         CharitySignupTokens[]     @relation("invites_created_by")
+  EmailVerificationTokens EmailVerificationTokens[]
+  PasswordResetTokens     PasswordResetTokens[]
 }
 
 model EmailVerificationTokens {
@@ -51,47 +51,49 @@ model PasswordResetTokens {
 }
 
 model Charities {
-  charity_id          Int                   @id @default(autoincrement())
-  name                String
-  email               String                @unique
-  phone               String?
-  address             String
-  website             String
-  verified            Boolean               @default(false)
-  user_id             Int?                  @unique
-  created_on          DateTime              @default(now())
-  updated_on          DateTime
-  User                User?                 @relation(fields: [user_id], references: [user_id])
-  CharityApplications CharityApplications[]
-  CharitySignupTokens CharitySignupTokens[]
+  charity_id Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique // each approved charity must have a unique email
+  phone      String?
+  address    String
+  website    String
+  verified   Boolean  @default(false)
+  user_id    Int?     @unique
+  created_on DateTime @default(now())
+  updated_on DateTime @updatedAt
 
-  @@index([email])
+  User          User?                 @relation(fields: [user_id], references: [user_id])
+  applications  CharityApplications[]
+  signup_tokens CharitySignupTokens[]
+
   @@index([name])
+  @@index([email])
 }
 
 model CharityApplications {
-  application_id                             Int                      @id @default(autoincrement())
-  org_name                                   String
-  contact_name                               String
-  contact_email                              String
-  contact_number                             String
-  website                                    String
-  org_address                                String
-  charity_number                             String?
-  status                                     CharityApplicationStatus @default(PENDING)
-  reviewed_on                                DateTime?
-  reviewed_by                                Int?
-  approved_on                                DateTime?
-  approved_by                                Int?
-  charity_id                                 Int?
-  created_on                                 DateTime                 @default(now())
-  updated_on                                 DateTime
-  User_CharityApplications_approved_byToUser User?                    @relation("CharityApplications_approved_byToUser", fields: [approved_by], references: [user_id])
-  Charities                                  Charities?               @relation(fields: [charity_id], references: [charity_id])
-  User_CharityApplications_reviewed_byToUser User?                    @relation("CharityApplications_reviewed_byToUser", fields: [reviewed_by], references: [user_id])
+  application_id Int                      @id @default(autoincrement())
+  org_name       String
+  contact_name   String
+  contact_email  String // ← not unique here
+  contact_number String
+  website        String
+  org_address    String
+  charity_number String?
+  status         CharityApplicationStatus @default(PENDING)
+  reviewed_on    DateTime?
+  reviewed_by    Int?
+  approved_on    DateTime?
+  approved_by    Int?
+  charity_id     Int?
+  created_on     DateTime                 @default(now())
+  updated_on     DateTime                 @updatedAt
 
-  @@index([contact_email])
+  approver User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+  reviewer User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
+  charity  Charities? @relation(fields: [charity_id], references: [charity_id])
+
   @@index([status, created_on])
+  @@index([contact_email])
 }
 
 model CharitySignupTokens {
@@ -103,8 +105,8 @@ model CharitySignupTokens {
   consumed_on DateTime?
   created_on  DateTime  @default(now())
   created_by  Int?
-  Charities   Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
-  User        User?     @relation(fields: [created_by], references: [user_id])
+  charity     Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+  creator     User?     @relation("invites_created_by", fields: [created_by], references: [user_id])
 
   @@index([charity_id, created_on])
   @@index([email])

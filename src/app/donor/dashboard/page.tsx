@@ -28,16 +28,14 @@ export default function DonorDashboardPage() {
         </h1>
 
         <p className="text-gray-600 mb-6">
-          You're in. Your account is active.
+          You are in! Your account is active.
         </p>
 
         <div className="rounded-xl border border-gray-200 p-6 shadow-sm">
           <p className="text-lg font-medium text-gray-900 mb-2">
             Coming soon 🚀
           </p>
-          <p className="text-sm text-gray-600">
-            Here you'll be able to:
-          </p>
+          <p className="text-sm text-gray-600">Here you will be able to:</p>
           <ul className="text-sm text-gray-700 mt-2 space-y-1 text-left list-disc list-inside">
             <li>View your donation activity</li>
             <li>See requests from charities</li>

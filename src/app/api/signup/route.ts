@@ -31,8 +31,8 @@ export async function POST(req: NextRequest) {
       // { email: "Invalid email", password: "Too short" }
       const flat = parsed.error.flatten();
       const fieldErrors = Object.fromEntries(
-      // Here we map each field to only the first message 
-      Object.entries(flat.fieldErrors).map(([k, v]) => [k, v?.[0] ?? "Invalid"])
+        // Here we map each field to only the first message 
+        Object.entries(flat.fieldErrors).map(([k, v]) => [k, v?.[0] ?? "Invalid"])
       );
 
       // Respond with 400 (Bad Request) with machine-readable error codes + field errors.
@@ -91,11 +91,12 @@ export async function POST(req: NextRequest) {
       },
       { status: 201 }
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
 
     // If anything goes wrong above, we end up here (e.g., DB error, email send failure, bad JSON)
     console.error("signup error:", err); // We also log it in the console to help debug the error
-    
+
     // Here we have the Prisma unique constraint error (Email already registered)
     if (err?.code === "P2002") { // Prisma throws an error with code: P2002, when a unique constraint is violated, in this case, the email field.
 
@@ -103,7 +104,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { code: "EMAIL_TAKEN", message: "Email already registered." },
         { status: 409 } // The request could not be completed because it conflicts with the current state of the server
-                        // In our case, it can't be performed because it would break a uniqueness rule or cause a data conflict
+        // In our case, it can't be performed because it would break a uniqueness rule or cause a data conflict
       );
     }
     // This is a generic catch-all error response 
