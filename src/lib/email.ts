@@ -81,3 +81,39 @@ export async function sendResetCodeEmail(
     `,
   });
 }
+
+
+export async function sendCharityRejectionEmail(options: {
+
+toEmail: string;
+orgName: string;
+
+}) {
+  const { toEmail, orgName } = options;
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+  
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM,
+    to: toEmail,
+    subject: "SustainWear – Charity Application Update",
+    html: `
+    <p>Hi ${orgName},</p>
+    <p>Thank you for taking the time to apply to partner with SustainWear.</p>
+    <p>Unfortunately, at this time we won't be moving forward with your Charity application.</p>
+    <p>
+    This doesn’t reflect the value of the work you do – we simply have
+    limited capacity during this phase. You’re very welcome to apply again
+    in the future.
+    </p>
+    <p>Best regards,<br/>The SustainWear Team</p>
+    `,
+  });
+}
