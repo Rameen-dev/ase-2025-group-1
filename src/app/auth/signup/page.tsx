@@ -32,7 +32,8 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
     mode: "onBlur", // First show an error when you leave a field, then once an error is visible, re-validate as you type to clear it quickly.
     reValidateMode: "onChange",
-    defaultValues: { // Signup form values
+    defaultValues: {
+      // Signup form values
       firstName: "",
       lastName: "",
       email: "",
@@ -43,7 +44,7 @@ export default function SignUpPage() {
     },
   });
 
-  // UI Flags/ messages owned by the component (not RHF) 
+  // UI Flags/ messages owned by the component (not RHF)
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<React.ReactNode | null>(null);
@@ -76,22 +77,29 @@ export default function SignUpPage() {
       if (!res.ok) {
         // 1) Field-level errors from server (e.g., { fieldErrors: { email: "Email already in use" } })
         // This logic uses the parsed object to decide what kind of error it was.
-        if (data?.fieldErrors) { // Here we check if there are any field errors, otherwise skip this.
-          Object.entries(data.fieldErrors).forEach(([name, message]) => { // Here we turn the fieldErrors object into a list of pairs.
-            setError(name as keyof SignUpInput, { type: "server", message: String(message) }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
+        if (data?.fieldErrors) {
+          // Here we check if there are any field errors, otherwise skip this.
+          Object.entries(data.fieldErrors).forEach(([name, message]) => {
+            // Here we turn the fieldErrors object into a list of pairs.
+            setError(name as keyof SignUpInput, {
+              type: "server",
+              message: String(message),
+            }); // Send any errors into React Hook Form. setError is a special RHF Function that manually tells RHF that a specific input has an error.
           });
         }
 
         // 2) General server code (shown above the form)
-        if (data?.code && !data?.fieldErrors) { // Here we check if there's a general code
+        if (data?.code && !data?.fieldErrors) {
+          // Here we check if there's a general code
           // Below is a map of known codes to friendly messages
-          const map: Record<string, React.ReactNode> = { // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
+          const map: Record<string, React.ReactNode> = {
+            // This tells TypeScript, this object maps string keys, like "EMAIL_TAKEN" to React-friendly text or JSX.
             EMAIL_TAKEN: "That email is already registered.",
             VALIDATION_ERROR: "Please fix the highlighted fields.",
             RATE_LIMITED: "Too many attempts. Try again in a minute.",
             SERVER_ERROR: "Something went wrong.",
           };
-          setServerError(map[data.code] ?? "Unexpected error occurred."); // Here we look up data.code in the map. 
+          setServerError(map[data.code] ?? "Unexpected error occurred."); // Here we look up data.code in the map.
           // If it can't find a match (data.code isn't in the map), we use the default message of "Unexpected error occurred."
         }
 
@@ -103,12 +111,13 @@ export default function SignUpPage() {
       setServerMsg("Account created! Check your email to verify.");
       reset();
       router.push(`/auth/verify?email=${encodeURIComponent(values.email)}`); // We use router.push() here instead of a <Link> so the navigation happens automatically.
-      // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded 
+      // encodeURIComponent() ensures special characters like "@" are safe in URLs. For example, "r.burdabar@gmail.com", the "@" will be encoded
 
       setSubmitting(false);
-    } catch { // This catch part runs only if something goes wrong in the try block. 
+    } catch {
+      // This catch part runs only if something goes wrong in the try block.
       // For example, the network is down (No internet).
-      setServerError("Network error. Please try again."); // 
+      setServerError("Network error. Please try again."); //
       setSubmitting(false);
     }
   };
