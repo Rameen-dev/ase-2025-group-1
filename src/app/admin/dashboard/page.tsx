@@ -154,6 +154,7 @@ function RequestsTab({
   const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<CharityApplication | null>(null);
   const [saving, setSaving] = useState(false);
+  const isLocked = selected?.status !== "PENDING";
 
   function openModal(app: CharityApplication) {
     setSelected(app);
@@ -166,6 +167,7 @@ function RequestsTab({
   }
 
   async function handleDecision(action: "APPROVE" | "DENY") {
+
     if (!selected) return;
 
     try {
@@ -304,28 +306,32 @@ function RequestsTab({
 
           {/* Footer actions */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-4 border-t bg-gray-50 rounded-xl">
+            
             <button
               onClick={closeModal}
               className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer"
             >
               Close
             </button>
-
             <div className="flex gap-3">
-              <button
-                disabled={saving}
-                onClick={() => handleDecision("DENY")}
-                className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Deny
-              </button>
-              <button
-                disabled={saving}
-                onClick={() => handleDecision("APPROVE")}
-                className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Approve
-              </button>
+          
+           <button
+              disabled={saving || isLocked}
+              onClick={() => handleDecision("DENY")}
+              className={`text-sm border border-red-500 text-red-600 px-5 py-2 rounded 
+              hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
+            >
+              Deny
+            </button>
+            <button
+              disabled={saving || isLocked}
+              onClick={() => handleDecision("APPROVE")}
+              className={`text-sm bg-green-600 text-white px-5 py-2 rounded 
+              hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
+            >
+              Approve
+            </button>
+
             </div>
           </div>
         </div>
