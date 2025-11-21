@@ -71,11 +71,10 @@ export default function AdminPage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${
-                activeTab === tab
+              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${activeTab === tab
                   ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
                   : "text-white hover:bg-green-600/70"
-              }`}
+                }`}
             >
               {tab}
             </button>
@@ -118,7 +117,7 @@ export default function AdminPage() {
         {activeTab === "Home" && <HomeTab />}
 
         {activeTab === "Requests" && (
-        <RequestsTab apps={apps} loading={loading} />
+          <RequestsTab apps={apps} loading={loading} />
         )}
 
         {activeTab === "Inventory" && (
@@ -241,97 +240,97 @@ function RequestsTab({
 
       {/* MODAL, now owned by RequestsTab */}
       {modalOpen && selected && (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/40 z-40"
-        onClick={closeModal}
-      />
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100">
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 bg-green-50 border-b rounded-xl">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                Charity Application
-              </h3>
-              <p className="text-sm text-gray-600">
-                {selected.org_name}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-700 uppercase tracking-wide">
-                {selected.status}
-              </span>
-              <button
-                onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 text-xl leading-none cursor-pointer"
-                aria-label="Close"
-              >
-                ×
-              </button>
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={closeModal}
+          />
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 bg-green-50 border-b rounded-xl">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Charity Application
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {selected.org_name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-700 uppercase tracking-wide">
+                    {selected.status}
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="text-gray-500 hover:text-gray-700 text-xl leading-none cursor-pointer"
+                    aria-label="Close"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              {/* Body */}
+              <div className="px-6 py-5 space-y-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field label="Organisation" value={selected.org_name} />
+                  <Field label="Charity Number" value={selected.charity_number || "N/A"} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field label="Contact Name" value={selected.contact_name} />
+                  <Field label="Contact Email" value={selected.contact_email} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Field label="Contact Number" value={selected.contact_number} />
+                  <Field label="Website" value={selected.website || "N/A"} />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="font-semibold text-sm">Organisation Address</label>
+                  <textarea
+                    className="border rounded px-2 py-1 text-sm bg-gray-50"
+                    readOnly
+                    rows={3}
+                    value={selected.org_address}
+                  />
+                </div>
+              </div>
+
+              {/* Footer actions */}
+              <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-4 border-t bg-gray-50 rounded-xl">
+                <button
+                  onClick={closeModal}
+                  className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer"
+                >
+                  Close
+                </button>
+
+                <div className="flex gap-3">
+                  <button
+                    disabled={saving}
+                    onClick={() => handleDecision("DENY")}
+                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Deny
+                  </button>
+                  <button
+                    disabled={saving}
+                    onClick={() => handleDecision("APPROVE")}
+                    className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Body */}
-          <div className="px-6 py-5 space-y-4 text-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Organisation" value={selected.org_name} />
-              <Field label="Charity Number" value={selected.charity_number || "N/A"} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Contact Name" value={selected.contact_name} />
-              <Field label="Contact Email" value={selected.contact_email} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Contact Number" value={selected.contact_number} />
-              <Field label="Website" value={selected.website || "N/A"} />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold text-sm">Organisation Address</label>
-              <textarea
-                className="border rounded px-2 py-1 text-sm bg-gray-50"
-                readOnly
-                rows={3}
-                value={selected.org_address}
-              />
-            </div>
-          </div>
-
-          {/* Footer actions */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-4 border-t bg-gray-50 rounded-xl">
-            <button
-              onClick={closeModal}
-              className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer"
-            >
-              Close
-            </button>
-
-            <div className="flex gap-3">
-              <button
-                disabled={saving}
-                onClick={() => handleDecision("DENY")}
-                className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Deny
-              </button>
-              <button
-                disabled={saving}
-                onClick={() => handleDecision("APPROVE")}
-                className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
-              >
-                Approve
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )}
+        </>
+      )}
 
     </>
   );
@@ -361,3 +360,5 @@ function PlaceholderTab({ title }: { title: string }) {
     </div>
   );
 }
+
+
