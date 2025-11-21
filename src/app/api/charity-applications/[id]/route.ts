@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 import {
@@ -6,12 +6,15 @@ import {
   sendCharityApprovalEmail,
 } from "@/lib/email";
 
-type Params = {
-  params: { id: string };
+// In Next 15+ route handlers, params is async
+type RouteContext = {
+  params: Promise<{ id: string }>;
 };
 
-export async function PATCH(req: Request, { params }: Params) {
-  const applicationId = Number(params.id);
+export async function PATCH(req: NextRequest, context: RouteContext) {
+  // ✅ Await params before using it
+  const { id } = await context.params;
+  const applicationId = Number(id);
 
   if (Number.isNaN(applicationId)) {
     return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
@@ -28,24 +31,25 @@ export async function PATCH(req: Request, { params }: Params) {
 
   const action = body.action as "APPROVE" | "DENY";
 
-  // TODO: when you have auth, get this from the logged-in admin
-  const adminId = 1;
+  // 🔐 Later: get the real admin user_id from session
+  // const adminId = session.user.id;
 
   try {
+    // ===================== DENY / REJECT FLOW =====================
     if (action === "DENY") {
-      // ========= REJECT FLOW =========
       const updated = await prisma.charityApplications.update({
         where: { application_id: applicationId },
         data: {
           status: "REJECTED",
           reviewed_on: new Date(),
-          reviewed_by: adminId,
+          // ❌ Don't set reviewed_by yet (would FK fail if ID not real)
           approved_on: null,
           approved_by: null,
           updated_on: new Date(),
         },
       });
 
+      // Send rejection email
       try {
         await sendCharityRejectionEmail({
           toEmail: updated.contact_email,
@@ -58,10 +62,9 @@ export async function PATCH(req: Request, { params }: Params) {
       return NextResponse.json(updated);
     }
 
+    // ===================== APPROVE FLOW =====================
     if (action === "APPROVE") {
-      // ========= APPROVE FLOW =========
-
-      // Generate secure token + 48-hour expiry
+      // Generate secure token + 48h expiry
       const token = crypto.randomBytes(32).toString("hex");
       const expiresOn = new Date(Date.now() + 1000 * 60 * 60 * 48); // 48 hours
 
@@ -72,14 +75,14 @@ export async function PATCH(req: Request, { params }: Params) {
           data: {
             status: "APPROVED",
             reviewed_on: new Date(),
-            reviewed_by: adminId,
+            // ❌ reviewed_by: null for now (or leave untouched)
             approved_on: new Date(),
-            approved_by: adminId,
+            // ❌ approved_by: null for now
             updated_on: new Date(),
           },
         });
 
-        // 2) Create Charity row (password_hash stays NULL)
+        // 2) Create Charity row (password_hash remains NULL)
         const charity = await tx.charities.create({
           data: {
             name: app.org_name,
@@ -107,18 +110,20 @@ export async function PATCH(req: Request, { params }: Params) {
             email: charity.email,
             token,
             expires_on: expiresOn,
-            created_on: new Date(),
-            created_by: adminId,
+            // created_on has default now()
+            // created_by: null for now
           },
         });
 
         return { app: linkedApp, charity, invite };
       });
 
+      // Build signup URL with token
       const baseUrl =
         process.env.APP_BASE_URL || process.env.NEXT_PUBLIC_APP_URL || "";
-      const signupUrl = `${baseUrl}/charity/complete-signup?token=${result.invite.token}`;
+        const signupUrl = `${baseUrl}/auth/charity-signup?token=${result.invite.token}`;
 
+      // Send approval email with link
       try {
         await sendCharityApprovalEmail({
           toEmail: result.app.contact_email,
@@ -132,6 +137,7 @@ export async function PATCH(req: Request, { params }: Params) {
       return NextResponse.json(result.app);
     }
 
+    // If someone sends a random action
     return NextResponse.json(
       { error: "Invalid action" },
       { status: 400 }
