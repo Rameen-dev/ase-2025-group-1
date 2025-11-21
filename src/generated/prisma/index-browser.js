@@ -158,9 +158,9 @@ exports.Prisma.CharitiesScalarFieldEnum = {
   address: 'address',
   website: 'website',
   verified: 'verified',
-  user_id: 'user_id',
   created_on: 'created_on',
-  updated_on: 'updated_on'
+  updated_on: 'updated_on',
+  password_hash: 'password_hash'
 };
 
 exports.Prisma.CharityApplicationsScalarFieldEnum = {

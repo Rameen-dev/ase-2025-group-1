@@ -1670,7 +1670,6 @@ export namespace Prisma {
     last_name?: boolean
     created_on?: boolean
     updated_on?: boolean
-    Charity?: boolean | User$CharityArgs<ExtArgs>
     approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
     reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
     created_invites?: boolean | User$created_invitesArgs<ExtArgs>
@@ -1717,7 +1716,6 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"user_id" | "email" | "password_hash" | "role" | "is_verified" | "first_name" | "last_name" | "created_on" | "updated_on", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Charity?: boolean | User$CharityArgs<ExtArgs>
     approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
     reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
     created_invites?: boolean | User$created_invitesArgs<ExtArgs>
@@ -1731,7 +1729,6 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      Charity: Prisma.$CharitiesPayload<ExtArgs> | null
       approved_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
       reviewed_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
       created_invites: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
@@ -2142,7 +2139,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Charity<T extends User$CharityArgs<ExtArgs> = {}>(args?: Subset<T, User$CharityArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     approved_applications<T extends User$approved_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$approved_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewed_applications<T extends User$reviewed_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewed_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     created_invites<T extends User$created_invitesArgs<ExtArgs> = {}>(args?: Subset<T, User$created_invitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2571,25 +2567,6 @@ export namespace Prisma {
      * Limit how many Users to delete.
      */
     limit?: number
-  }
-
-  /**
-   * User.Charity
-   */
-  export type User$CharityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Charities
-     */
-    select?: CharitiesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Charities
-     */
-    omit?: CharitiesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CharitiesInclude<ExtArgs> | null
-    where?: CharitiesWhereInput
   }
 
   /**
@@ -4963,12 +4940,10 @@ export namespace Prisma {
 
   export type CharitiesAvgAggregateOutputType = {
     charity_id: number | null
-    user_id: number | null
   }
 
   export type CharitiesSumAggregateOutputType = {
     charity_id: number | null
-    user_id: number | null
   }
 
   export type CharitiesMinAggregateOutputType = {
@@ -4979,9 +4954,9 @@ export namespace Prisma {
     address: string | null
     website: string | null
     verified: boolean | null
-    user_id: number | null
     created_on: Date | null
     updated_on: Date | null
+    password_hash: string | null
   }
 
   export type CharitiesMaxAggregateOutputType = {
@@ -4992,9 +4967,9 @@ export namespace Prisma {
     address: string | null
     website: string | null
     verified: boolean | null
-    user_id: number | null
     created_on: Date | null
     updated_on: Date | null
+    password_hash: string | null
   }
 
   export type CharitiesCountAggregateOutputType = {
@@ -5005,21 +4980,19 @@ export namespace Prisma {
     address: number
     website: number
     verified: number
-    user_id: number
     created_on: number
     updated_on: number
+    password_hash: number
     _all: number
   }
 
 
   export type CharitiesAvgAggregateInputType = {
     charity_id?: true
-    user_id?: true
   }
 
   export type CharitiesSumAggregateInputType = {
     charity_id?: true
-    user_id?: true
   }
 
   export type CharitiesMinAggregateInputType = {
@@ -5030,9 +5003,9 @@ export namespace Prisma {
     address?: true
     website?: true
     verified?: true
-    user_id?: true
     created_on?: true
     updated_on?: true
+    password_hash?: true
   }
 
   export type CharitiesMaxAggregateInputType = {
@@ -5043,9 +5016,9 @@ export namespace Prisma {
     address?: true
     website?: true
     verified?: true
-    user_id?: true
     created_on?: true
     updated_on?: true
+    password_hash?: true
   }
 
   export type CharitiesCountAggregateInputType = {
@@ -5056,9 +5029,9 @@ export namespace Prisma {
     address?: true
     website?: true
     verified?: true
-    user_id?: true
     created_on?: true
     updated_on?: true
+    password_hash?: true
     _all?: true
   }
 
@@ -5152,13 +5125,13 @@ export namespace Prisma {
     charity_id: number
     name: string
     email: string
-    phone: string | null
+    phone: string
     address: string
     website: string
     verified: boolean
-    user_id: number | null
     created_on: Date
     updated_on: Date
+    password_hash: string | null
     _count: CharitiesCountAggregateOutputType | null
     _avg: CharitiesAvgAggregateOutputType | null
     _sum: CharitiesSumAggregateOutputType | null
@@ -5188,10 +5161,9 @@ export namespace Prisma {
     address?: boolean
     website?: boolean
     verified?: boolean
-    user_id?: boolean
     created_on?: boolean
     updated_on?: boolean
-    User?: boolean | Charities$UserArgs<ExtArgs>
+    password_hash?: boolean
     applications?: boolean | Charities$applicationsArgs<ExtArgs>
     signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
@@ -5205,10 +5177,9 @@ export namespace Prisma {
     address?: boolean
     website?: boolean
     verified?: boolean
-    user_id?: boolean
     created_on?: boolean
     updated_on?: boolean
-    User?: boolean | Charities$UserArgs<ExtArgs>
+    password_hash?: boolean
   }, ExtArgs["result"]["charities"]>
 
   export type CharitiesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5219,10 +5190,9 @@ export namespace Prisma {
     address?: boolean
     website?: boolean
     verified?: boolean
-    user_id?: boolean
     created_on?: boolean
     updated_on?: boolean
-    User?: boolean | Charities$UserArgs<ExtArgs>
+    password_hash?: boolean
   }, ExtArgs["result"]["charities"]>
 
   export type CharitiesSelectScalar = {
@@ -5233,29 +5203,23 @@ export namespace Prisma {
     address?: boolean
     website?: boolean
     verified?: boolean
-    user_id?: boolean
     created_on?: boolean
     updated_on?: boolean
+    password_hash?: boolean
   }
 
-  export type CharitiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"charity_id" | "name" | "email" | "phone" | "address" | "website" | "verified" | "user_id" | "created_on" | "updated_on", ExtArgs["result"]["charities"]>
+  export type CharitiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"charity_id" | "name" | "email" | "phone" | "address" | "website" | "verified" | "created_on" | "updated_on" | "password_hash", ExtArgs["result"]["charities"]>
   export type CharitiesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | Charities$UserArgs<ExtArgs>
     applications?: boolean | Charities$applicationsArgs<ExtArgs>
     signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | Charities$UserArgs<ExtArgs>
-  }
-  export type CharitiesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    User?: boolean | Charities$UserArgs<ExtArgs>
-  }
+  export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CharitiesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $CharitiesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Charities"
     objects: {
-      User: Prisma.$UserPayload<ExtArgs> | null
       applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
       signup_tokens: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
     }
@@ -5263,13 +5227,13 @@ export namespace Prisma {
       charity_id: number
       name: string
       email: string
-      phone: string | null
+      phone: string
       address: string
       website: string
       verified: boolean
-      user_id: number | null
       created_on: Date
       updated_on: Date
+      password_hash: string | null
     }, ExtArgs["result"]["charities"]>
     composites: {}
   }
@@ -5664,7 +5628,6 @@ export namespace Prisma {
    */
   export interface Prisma__CharitiesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    User<T extends Charities$UserArgs<ExtArgs> = {}>(args?: Subset<T, Charities$UserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     applications<T extends Charities$applicationsArgs<ExtArgs> = {}>(args?: Subset<T, Charities$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     signup_tokens<T extends Charities$signup_tokensArgs<ExtArgs> = {}>(args?: Subset<T, Charities$signup_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -5703,9 +5666,9 @@ export namespace Prisma {
     readonly address: FieldRef<"Charities", 'String'>
     readonly website: FieldRef<"Charities", 'String'>
     readonly verified: FieldRef<"Charities", 'Boolean'>
-    readonly user_id: FieldRef<"Charities", 'Int'>
     readonly created_on: FieldRef<"Charities", 'DateTime'>
     readonly updated_on: FieldRef<"Charities", 'DateTime'>
+    readonly password_hash: FieldRef<"Charities", 'String'>
   }
     
 
@@ -5955,10 +5918,6 @@ export namespace Prisma {
      */
     data: CharitiesCreateManyInput | CharitiesCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CharitiesIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6029,10 +5988,6 @@ export namespace Prisma {
      * Limit how many Charities to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CharitiesIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -6099,25 +6054,6 @@ export namespace Prisma {
      * Limit how many Charities to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Charities.User
-   */
-  export type Charities$UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
   }
 
   /**
@@ -8734,9 +8670,9 @@ export namespace Prisma {
     address: 'address',
     website: 'website',
     verified: 'verified',
-    user_id: 'user_id',
     created_on: 'created_on',
-    updated_on: 'updated_on'
+    updated_on: 'updated_on',
+    password_hash: 'password_hash'
   };
 
   export type CharitiesScalarFieldEnum = (typeof CharitiesScalarFieldEnum)[keyof typeof CharitiesScalarFieldEnum]
@@ -8900,7 +8836,6 @@ export namespace Prisma {
     last_name?: StringFilter<"User"> | string
     created_on?: DateTimeFilter<"User"> | Date | string
     updated_on?: DateTimeFilter<"User"> | Date | string
-    Charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
     approved_applications?: CharityApplicationsListRelationFilter
     reviewed_applications?: CharityApplicationsListRelationFilter
     created_invites?: CharitySignupTokensListRelationFilter
@@ -8918,7 +8853,6 @@ export namespace Prisma {
     last_name?: SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
-    Charity?: CharitiesOrderByWithRelationInput
     approved_applications?: CharityApplicationsOrderByRelationAggregateInput
     reviewed_applications?: CharityApplicationsOrderByRelationAggregateInput
     created_invites?: CharitySignupTokensOrderByRelationAggregateInput
@@ -8939,7 +8873,6 @@ export namespace Prisma {
     last_name?: StringFilter<"User"> | string
     created_on?: DateTimeFilter<"User"> | Date | string
     updated_on?: DateTimeFilter<"User"> | Date | string
-    Charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
     approved_applications?: CharityApplicationsListRelationFilter
     reviewed_applications?: CharityApplicationsListRelationFilter
     created_invites?: CharitySignupTokensListRelationFilter
@@ -9110,14 +9043,13 @@ export namespace Prisma {
     charity_id?: IntFilter<"Charities"> | number
     name?: StringFilter<"Charities"> | string
     email?: StringFilter<"Charities"> | string
-    phone?: StringNullableFilter<"Charities"> | string | null
+    phone?: StringFilter<"Charities"> | string
     address?: StringFilter<"Charities"> | string
     website?: StringFilter<"Charities"> | string
     verified?: BoolFilter<"Charities"> | boolean
-    user_id?: IntNullableFilter<"Charities"> | number | null
     created_on?: DateTimeFilter<"Charities"> | Date | string
     updated_on?: DateTimeFilter<"Charities"> | Date | string
-    User?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    password_hash?: StringNullableFilter<"Charities"> | string | null
     applications?: CharityApplicationsListRelationFilter
     signup_tokens?: CharitySignupTokensListRelationFilter
   }
@@ -9126,14 +9058,13 @@ export namespace Prisma {
     charity_id?: SortOrder
     name?: SortOrder
     email?: SortOrder
-    phone?: SortOrderInput | SortOrder
+    phone?: SortOrder
     address?: SortOrder
     website?: SortOrder
     verified?: SortOrder
-    user_id?: SortOrderInput | SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
-    User?: UserOrderByWithRelationInput
+    password_hash?: SortOrderInput | SortOrder
     applications?: CharityApplicationsOrderByRelationAggregateInput
     signup_tokens?: CharitySignupTokensOrderByRelationAggregateInput
   }
@@ -9141,33 +9072,32 @@ export namespace Prisma {
   export type CharitiesWhereUniqueInput = Prisma.AtLeast<{
     charity_id?: number
     email?: string
-    user_id?: number
     AND?: CharitiesWhereInput | CharitiesWhereInput[]
     OR?: CharitiesWhereInput[]
     NOT?: CharitiesWhereInput | CharitiesWhereInput[]
     name?: StringFilter<"Charities"> | string
-    phone?: StringNullableFilter<"Charities"> | string | null
+    phone?: StringFilter<"Charities"> | string
     address?: StringFilter<"Charities"> | string
     website?: StringFilter<"Charities"> | string
     verified?: BoolFilter<"Charities"> | boolean
     created_on?: DateTimeFilter<"Charities"> | Date | string
     updated_on?: DateTimeFilter<"Charities"> | Date | string
-    User?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    password_hash?: StringNullableFilter<"Charities"> | string | null
     applications?: CharityApplicationsListRelationFilter
     signup_tokens?: CharitySignupTokensListRelationFilter
-  }, "charity_id" | "email" | "user_id">
+  }, "charity_id" | "email">
 
   export type CharitiesOrderByWithAggregationInput = {
     charity_id?: SortOrder
     name?: SortOrder
     email?: SortOrder
-    phone?: SortOrderInput | SortOrder
+    phone?: SortOrder
     address?: SortOrder
     website?: SortOrder
     verified?: SortOrder
-    user_id?: SortOrderInput | SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
+    password_hash?: SortOrderInput | SortOrder
     _count?: CharitiesCountOrderByAggregateInput
     _avg?: CharitiesAvgOrderByAggregateInput
     _max?: CharitiesMaxOrderByAggregateInput
@@ -9182,13 +9112,13 @@ export namespace Prisma {
     charity_id?: IntWithAggregatesFilter<"Charities"> | number
     name?: StringWithAggregatesFilter<"Charities"> | string
     email?: StringWithAggregatesFilter<"Charities"> | string
-    phone?: StringNullableWithAggregatesFilter<"Charities"> | string | null
+    phone?: StringWithAggregatesFilter<"Charities"> | string
     address?: StringWithAggregatesFilter<"Charities"> | string
     website?: StringWithAggregatesFilter<"Charities"> | string
     verified?: BoolWithAggregatesFilter<"Charities"> | boolean
-    user_id?: IntNullableWithAggregatesFilter<"Charities"> | number | null
     created_on?: DateTimeWithAggregatesFilter<"Charities"> | Date | string
     updated_on?: DateTimeWithAggregatesFilter<"Charities"> | Date | string
+    password_hash?: StringNullableWithAggregatesFilter<"Charities"> | string | null
   }
 
   export type CharityApplicationsWhereInput = {
@@ -9393,7 +9323,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -9411,7 +9340,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -9428,7 +9356,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -9446,7 +9373,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
@@ -9610,13 +9536,13 @@ export namespace Prisma {
   export type CharitiesCreateInput = {
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
     created_on?: Date | string
     updated_on?: Date | string
-    User?: UserCreateNestedOneWithoutCharityInput
+    password_hash?: string | null
     applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
   }
@@ -9625,13 +9551,13 @@ export namespace Prisma {
     charity_id?: number
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
-    user_id?: number | null
     created_on?: Date | string
     updated_on?: Date | string
+    password_hash?: string | null
     applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -9639,13 +9565,13 @@ export namespace Prisma {
   export type CharitiesUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneWithoutCharityNestedInput
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
   }
@@ -9654,13 +9580,13 @@ export namespace Prisma {
     charity_id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
-    user_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -9669,37 +9595,38 @@ export namespace Prisma {
     charity_id?: number
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
-    user_id?: number | null
     created_on?: Date | string
     updated_on?: Date | string
+    password_hash?: string | null
   }
 
   export type CharitiesUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CharitiesUncheckedUpdateManyInput = {
     charity_id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
-    user_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CharityApplicationsCreateInput = {
@@ -9941,11 +9868,6 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
-  }
-
-  export type CharitiesNullableScalarRelationFilter = {
-    is?: CharitiesWhereInput | null
-    isNot?: CharitiesWhereInput | null
   }
 
   export type CharityApplicationsListRelationFilter = {
@@ -10212,22 +10134,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
-  }
-
   export type CharitiesCountOrderByAggregateInput = {
     charity_id?: SortOrder
     name?: SortOrder
@@ -10236,14 +10142,13 @@ export namespace Prisma {
     address?: SortOrder
     website?: SortOrder
     verified?: SortOrder
-    user_id?: SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
+    password_hash?: SortOrder
   }
 
   export type CharitiesAvgOrderByAggregateInput = {
     charity_id?: SortOrder
-    user_id?: SortOrder
   }
 
   export type CharitiesMaxOrderByAggregateInput = {
@@ -10254,9 +10159,9 @@ export namespace Prisma {
     address?: SortOrder
     website?: SortOrder
     verified?: SortOrder
-    user_id?: SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
+    password_hash?: SortOrder
   }
 
   export type CharitiesMinOrderByAggregateInput = {
@@ -10267,14 +10172,13 @@ export namespace Prisma {
     address?: SortOrder
     website?: SortOrder
     verified?: SortOrder
-    user_id?: SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
+    password_hash?: SortOrder
   }
 
   export type CharitiesSumOrderByAggregateInput = {
     charity_id?: SortOrder
-    user_id?: SortOrder
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10295,7 +10199,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+  export type EnumCharityApplicationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -10303,19 +10214,17 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type EnumCharityApplicationStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type CharitiesNullableScalarRelationFilter = {
+    is?: CharitiesWhereInput | null
+    isNot?: CharitiesWhereInput | null
   }
 
   export type CharityApplicationsCountOrderByAggregateInput = {
@@ -10399,6 +10308,22 @@ export namespace Prisma {
     _max?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
   export type CharitiesScalarRelationFilter = {
     is?: CharitiesWhereInput
     isNot?: CharitiesWhereInput
@@ -10449,12 +10374,6 @@ export namespace Prisma {
     created_by?: SortOrder
   }
 
-  export type CharitiesCreateNestedOneWithoutUserInput = {
-    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
-    connect?: CharitiesWhereUniqueInput
-  }
-
   export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -10488,12 +10407,6 @@ export namespace Prisma {
     connectOrCreate?: PasswordResetTokensCreateOrConnectWithoutUserInput | PasswordResetTokensCreateOrConnectWithoutUserInput[]
     createMany?: PasswordResetTokensCreateManyUserInputEnvelope
     connect?: PasswordResetTokensWhereUniqueInput | PasswordResetTokensWhereUniqueInput[]
-  }
-
-  export type CharitiesUncheckedCreateNestedOneWithoutUserInput = {
-    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
-    connect?: CharitiesWhereUniqueInput
   }
 
   export type CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput = {
@@ -10541,16 +10454,6 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
-  }
-
-  export type CharitiesUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
-    upsert?: CharitiesUpsertWithoutUserInput
-    disconnect?: CharitiesWhereInput | boolean
-    delete?: CharitiesWhereInput | boolean
-    connect?: CharitiesWhereUniqueInput
-    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutUserInput, CharitiesUpdateWithoutUserInput>, CharitiesUncheckedUpdateWithoutUserInput>
   }
 
   export type CharityApplicationsUpdateManyWithoutApproverNestedInput = {
@@ -10629,16 +10532,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type CharitiesUncheckedUpdateOneWithoutUserNestedInput = {
-    create?: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
-    connectOrCreate?: CharitiesCreateOrConnectWithoutUserInput
-    upsert?: CharitiesUpsertWithoutUserInput
-    disconnect?: CharitiesWhereInput | boolean
-    delete?: CharitiesWhereInput | boolean
-    connect?: CharitiesWhereUniqueInput
-    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutUserInput, CharitiesUpdateWithoutUserInput>, CharitiesUncheckedUpdateWithoutUserInput>
   }
 
   export type CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput = {
@@ -10743,12 +10636,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
   }
 
-  export type UserCreateNestedOneWithoutCharityInput = {
-    create?: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCharityInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type CharityApplicationsCreateNestedManyWithoutCharityInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -10781,16 +10668,6 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type UserUpdateOneWithoutCharityNestedInput = {
-    create?: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCharityInput
-    upsert?: UserUpsertWithoutCharityInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCharityInput, UserUpdateWithoutCharityInput>, UserUncheckedUpdateWithoutCharityInput>
-  }
-
   export type CharityApplicationsUpdateManyWithoutCharityNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -10817,14 +10694,6 @@ export namespace Prisma {
     update?: CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput | CharitySignupTokensUpdateWithWhereUniqueWithoutCharityInput[]
     updateMany?: CharitySignupTokensUpdateManyWithWhereWithoutCharityInput | CharitySignupTokensUpdateManyWithWhereWithoutCharityInput[]
     deleteMany?: CharitySignupTokensScalarWhereInput | CharitySignupTokensScalarWhereInput[]
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput = {
@@ -10905,6 +10774,14 @@ export namespace Prisma {
     delete?: CharitiesWhereInput | boolean
     connect?: CharitiesWhereUniqueInput
     update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutApplicationsInput, CharitiesUpdateWithoutApplicationsInput>, CharitiesUncheckedUpdateWithoutApplicationsInput>
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CharitiesCreateNestedOneWithoutSignup_tokensInput = {
@@ -11111,6 +10988,23 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumCharityApplicationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+  }
+
+  export type NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CharityApplicationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+    _max?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
+  }
+
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -11136,55 +11030,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedEnumCharityApplicationStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCharityApplicationStatusFilter<$PrismaModel> | $Enums.CharityApplicationStatus
-  }
-
-  export type NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.CharityApplicationStatus | EnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CharityApplicationStatus[] | ListEnumCharityApplicationStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumCharityApplicationStatusWithAggregatesFilter<$PrismaModel> | $Enums.CharityApplicationStatus
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
-    _max?: NestedEnumCharityApplicationStatusFilter<$PrismaModel>
-  }
-
-  export type CharitiesCreateWithoutUserInput = {
-    name: string
-    email: string
-    phone?: string | null
-    address: string
-    website: string
-    verified?: boolean
-    created_on?: Date | string
-    updated_on?: Date | string
-    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
-    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
-  }
-
-  export type CharitiesUncheckedCreateWithoutUserInput = {
-    charity_id?: number
-    name: string
-    email: string
-    phone?: string | null
-    address: string
-    website: string
-    verified?: boolean
-    created_on?: Date | string
-    updated_on?: Date | string
-    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
-    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
-  }
-
-  export type CharitiesCreateOrConnectWithoutUserInput = {
-    where: CharitiesWhereUniqueInput
-    create: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
   }
 
   export type CharityApplicationsCreateWithoutApproverInput = {
@@ -11356,44 +11201,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CharitiesUpsertWithoutUserInput = {
-    update: XOR<CharitiesUpdateWithoutUserInput, CharitiesUncheckedUpdateWithoutUserInput>
-    create: XOR<CharitiesCreateWithoutUserInput, CharitiesUncheckedCreateWithoutUserInput>
-    where?: CharitiesWhereInput
-  }
-
-  export type CharitiesUpdateToOneWithWhereWithoutUserInput = {
-    where?: CharitiesWhereInput
-    data: XOR<CharitiesUpdateWithoutUserInput, CharitiesUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CharitiesUpdateWithoutUserInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
-    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
-  }
-
-  export type CharitiesUncheckedUpdateWithoutUserInput = {
-    charity_id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    verified?: BoolFieldUpdateOperationsInput | boolean
-    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
-    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
-  }
-
   export type CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput = {
     where: CharityApplicationsWhereUniqueInput
     update: XOR<CharityApplicationsUpdateWithoutApproverInput, CharityApplicationsUncheckedUpdateWithoutApproverInput>
@@ -11543,7 +11350,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -11560,7 +11366,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -11592,7 +11397,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -11609,7 +11413,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
@@ -11625,7 +11428,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -11642,7 +11444,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -11674,7 +11475,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -11691,49 +11491,10 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserCreateWithoutCharityInput = {
-    email: string
-    password_hash: string
-    role: string
-    is_verified: boolean
-    first_name: string
-    last_name: string
-    created_on?: Date | string
-    updated_on?: Date | string
-    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
-    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
-    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
-    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
-    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCharityInput = {
-    user_id?: number
-    email: string
-    password_hash: string
-    role: string
-    is_verified: boolean
-    first_name: string
-    last_name: string
-    created_on?: Date | string
-    updated_on?: Date | string
-    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
-    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
-    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
-    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCharityInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
   }
 
   export type CharityApplicationsCreateWithoutCharityInput = {
@@ -11810,50 +11571,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithoutCharityInput = {
-    update: XOR<UserUpdateWithoutCharityInput, UserUncheckedUpdateWithoutCharityInput>
-    create: XOR<UserCreateWithoutCharityInput, UserUncheckedCreateWithoutCharityInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCharityInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCharityInput, UserUncheckedUpdateWithoutCharityInput>
-  }
-
-  export type UserUpdateWithoutCharityInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    password_hash?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    is_verified?: BoolFieldUpdateOperationsInput | boolean
-    first_name?: StringFieldUpdateOperationsInput | string
-    last_name?: StringFieldUpdateOperationsInput | string
-    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
-    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
-    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
-    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
-    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCharityInput = {
-    user_id?: IntFieldUpdateOperationsInput | number
-    email?: StringFieldUpdateOperationsInput | string
-    password_hash?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    is_verified?: BoolFieldUpdateOperationsInput | boolean
-    first_name?: StringFieldUpdateOperationsInput | string
-    last_name?: StringFieldUpdateOperationsInput | string
-    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
-    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
-    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
-    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
-  }
-
   export type CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput = {
     where: CharityApplicationsWhereUniqueInput
     update: XOR<CharityApplicationsUpdateWithoutCharityInput, CharityApplicationsUncheckedUpdateWithoutCharityInput>
@@ -11895,7 +11612,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
@@ -11912,7 +11628,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
@@ -11933,7 +11648,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
@@ -11950,7 +11664,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
@@ -11965,13 +11678,13 @@ export namespace Prisma {
   export type CharitiesCreateWithoutApplicationsInput = {
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
     created_on?: Date | string
     updated_on?: Date | string
-    User?: UserCreateNestedOneWithoutCharityInput
+    password_hash?: string | null
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
   }
 
@@ -11979,13 +11692,13 @@ export namespace Prisma {
     charity_id?: number
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
-    user_id?: number | null
     created_on?: Date | string
     updated_on?: Date | string
+    password_hash?: string | null
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
   }
 
@@ -12014,7 +11727,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
@@ -12031,7 +11743,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
@@ -12058,7 +11769,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
@@ -12075,7 +11785,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
@@ -12096,13 +11805,13 @@ export namespace Prisma {
   export type CharitiesUpdateWithoutApplicationsInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneWithoutCharityNestedInput
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
   }
 
@@ -12110,26 +11819,26 @@ export namespace Prisma {
     charity_id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
-    user_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesCreateWithoutSignup_tokensInput = {
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
     created_on?: Date | string
     updated_on?: Date | string
-    User?: UserCreateNestedOneWithoutCharityInput
+    password_hash?: string | null
     applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
   }
 
@@ -12137,13 +11846,13 @@ export namespace Prisma {
     charity_id?: number
     name: string
     email: string
-    phone?: string | null
+    phone: string
     address: string
     website: string
     verified?: boolean
-    user_id?: number | null
     created_on?: Date | string
     updated_on?: Date | string
+    password_hash?: string | null
     applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
   }
 
@@ -12161,7 +11870,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
@@ -12178,7 +11886,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-    Charity?: CharitiesUncheckedCreateNestedOneWithoutUserInput
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
@@ -12204,13 +11911,13 @@ export namespace Prisma {
   export type CharitiesUpdateWithoutSignup_tokensInput = {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    User?: UserUpdateOneWithoutCharityNestedInput
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
   }
 
@@ -12218,13 +11925,13 @@ export namespace Prisma {
     charity_id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     website?: StringFieldUpdateOperationsInput | string
     verified?: BoolFieldUpdateOperationsInput | boolean
-    user_id?: NullableIntFieldUpdateOperationsInput | number | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
   }
 
@@ -12248,7 +11955,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
@@ -12265,7 +11971,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-    Charity?: CharitiesUncheckedUpdateOneWithoutUserNestedInput
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
