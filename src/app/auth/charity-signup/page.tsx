@@ -1,53 +1,103 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Input } from "@/components/forms/input";
 import { PasswordInput } from "@/components/forms/passwordInput";
 
 export default function CharitySignupPage() {
-  // Get URL parameters (charity name and email from the application)
   const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // Pre-filled data from the charity application
+  const token = searchParams.get("token") || "";
+
+  // Prefilled charity data from the backend (via token)
   const [charityData, setCharityData] = useState({
     charityName: "",
     email: "",
   });
 
-  // Form data for password fields
+  // Password form state
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<{
     password?: string;
     confirmPassword?: string;
   }>({});
 
-  // Extract charity info from URL parameters when component loads
-  useEffect(() => {
-    const name = searchParams.get("charityName") || "";
-    const email = searchParams.get("email") || "";
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [linkError, setLinkError] = useState<string | null>(null);
 
-    setCharityData({
-      charityName: decodeURIComponent(name),
-      email: decodeURIComponent(email),
-    });
-  }, [searchParams]);
+useEffect(() => {
+  if (!token) {
+    setLinkError("This signup link is invalid.");
+    setLoading(false);
+    return;
+  }
 
-  // Handle password input changes
+  const loadCharityData = async () => {
+    try {
+        const res = await fetch("/api/charity-applications/complete-signup/validate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+
+      // ✅ If the route 404s or errors, don't try to parse JSON
+      if (!res.ok) {
+        const text = await res.text(); // HTML / error body
+        console.error(
+          "Validate API error:",
+          res.status,
+          res.statusText,
+          text.slice(0, 200)
+        );
+        setLinkError("This signup link is invalid or has expired.");
+        setLoading(false);
+        return;
+      }
+
+      const data = await res.json();
+
+      if (!data.valid) {
+        setLinkError(
+          data.message || "This signup link is invalid or has expired."
+        );
+        setLoading(false);
+        return;
+      }
+
+      setCharityData({
+        charityName: data.charity.name,
+        email: data.charity.email,
+      });
+      setLoading(false);
+    } catch (err) {
+      console.error("Validate token error:", err);
+      setLinkError("There was a problem validating your link.");
+      setLoading(false);
+    }
+  };
+
+  loadCharityData();
+}, [token]);
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name as keyof typeof errors]) {
       setErrors((prev) => ({
         ...prev,
@@ -56,7 +106,6 @@ export default function CharitySignupPage() {
     }
   };
 
-  // Validate passwords match
   const validatePasswords = () => {
     const newErrors: typeof errors = {};
 
@@ -72,44 +121,51 @@ export default function CharitySignupPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validatePasswords()) {
+    if (!validatePasswords()) return;
+    if (!token) {
+      setLinkError("Missing signup token.");
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // TODO: Replace with your actual API endpoint
-      const response = await fetch("/api/charity-signup", {
+      const res = await fetch("/api/charity-applications/complete-signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          charityName: charityData.charityName,
-          email: charityData.email,
+          token,
           password: formData.password,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create account");
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to complete signup");
       }
 
-      // Redirect to login or dashboard after successful signup
-      // router.push("/auth/login");
-      alert("Account created successfully!");
-    } catch (error) {
-      console.error("Signup error:", error);
-      alert("There was an error creating your account. Please try again.");
+      // Success – you can redirect to login
+      // or show a success state then redirect
+      alert("Your account has been created successfully.");
+      router.push("/auth/login");
+    } catch (err) {
+      console.error("Complete signup error:", err);
+      alert(
+        "There was an error completing your signup. Your link may have expired."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const isFormDisabled =
+    loading || !!linkError || !charityData.charityName || !charityData.email;
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-[#F8F8F8] text-black p-6">
@@ -131,84 +187,97 @@ export default function CharitySignupPage() {
           Complete your registration to start managing donations
         </p>
 
-        {/* Info Alert */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
-          <p className="text-blue-800 text-sm">
-            ℹ️ Your charity information has been pre-filled and cannot be
-            changed. If you need to update it, please contact support.
+        {/* Link / token errors */}
+        {linkError && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">
+            <p className="text-red-800 text-sm">
+              ⚠️ {linkError}
+            </p>
+          </div>
+        )}
+
+        {!linkError && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-6">
+            <p className="text-blue-800 text-sm">
+              ℹ️ Your charity information has been pre-filled and cannot be
+              changed. If you need to update it, please contact support.
+            </p>
+          </div>
+        )}
+
+        {/* Loading state */}
+        {loading ? (
+          <p className="text-center text-gray-500 text-sm">
+            Validating your signup link...
           </p>
-        </div>
+        ) : !linkError ? (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Pre-filled Charity Name (Disabled) */}
+            <div>
+              <Input
+                label="Charity Name"
+                name="charityName"
+                value={charityData.charityName}
+                disabled
+                className="bg-gray-100 text-gray-600 cursor-not-allowed"
+                placeholder="Loading..."
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                This field is pre-filled from your application
+              </p>
+            </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Pre-filled Charity Name (Disabled) */}
-          <div>
-            <Input
-              label="Charity Name"
-              name="charityName"
-              value={charityData.charityName}
-              disabled
-              className="bg-gray-100 text-gray-600 cursor-not-allowed"
-              placeholder="Loading..."
+            {/* Pre-filled Email (Disabled) */}
+            <div>
+              <Input
+                label="Charity Email"
+                name="email"
+                type="email"
+                value={charityData.email}
+                disabled
+                className="bg-gray-100 text-gray-600 cursor-not-allowed"
+                placeholder="Loading..."
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                This field is pre-filled from your application
+              </p>
+            </div>
+
+            {/* Password */}
+            <PasswordInput
+              label="Password *"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+              required
+              placeholder="Enter password (min. 8 characters)"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              This field is pre-filled from your application
-            </p>
-          </div>
 
-          {/* Pre-filled Email (Disabled) */}
-          <div>
-            <Input
-              label="Charity Email"
-              name="email"
-              type="email"
-              value={charityData.email}
-              disabled
-              className="bg-gray-100 text-gray-600 cursor-not-allowed"
-              placeholder="Loading..."
+            {/* Confirm Password */}
+            <PasswordInput
+              label="Confirm Password *"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+              required
+              placeholder="Confirm password"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              This field is pre-filled from your application
-            </p>
-          </div>
 
-          {/* Password */}
-          <PasswordInput
-            label="Password *"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            error={errors.password}
-            required
-            placeholder="Enter password (min. 8 characters)"
-          />
-
-          {/* Confirm Password */}
-          <PasswordInput
-            label="Confirm Password *"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            error={errors.confirmPassword}
-            required
-            placeholder="Confirm password"
-          />
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={
-              isSubmitting || !charityData.charityName || !charityData.email
-            }
-            className={`w-full py-3 rounded-lg font-semibold transition ${
-              isSubmitting || !charityData.charityName || !charityData.email
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-[#2E7D32] text-white hover:bg-green-800"
-            }`}
-          >
-            {isSubmitting ? "Creating Account..." : "Create Account"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={isSubmitting || isFormDisabled}
+              className={`w-full py-3 rounded-lg font-semibold transition ${
+                isSubmitting || isFormDisabled
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#2E7D32] text-white hover:bg-green-800"
+              }`}
+            >
+              {isSubmitting ? "Creating Account..." : "Create Account"}
+            </button>
+          </form>
+        ) : null}
 
         {/* Login Link */}
         <p className="text-center mt-6 text-sm text-gray-600">

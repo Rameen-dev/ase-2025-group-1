@@ -5,6 +5,7 @@ import { User } from "lucide-react";
 import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
 
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
 // Tabs type
@@ -72,8 +73,8 @@ export default function AdminPage() {
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${activeTab === tab
-                  ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
-                  : "text-white hover:bg-green-600/70"
+                ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
+                : "text-white hover:bg-green-600/70"
                 }`}
             >
               {tab}
@@ -153,6 +154,7 @@ function RequestsTab({
   const [modalOpen, setModalOpen] = useState(false);
   const [selected, setSelected] = useState<CharityApplication | null>(null);
   const [saving, setSaving] = useState(false);
+  const isLocked = selected?.status !== "PENDING";
 
   function openModal(app: CharityApplication) {
     setSelected(app);
@@ -165,6 +167,7 @@ function RequestsTab({
   }
 
   async function handleDecision(action: "APPROVE" | "DENY") {
+
     if (!selected) return;
 
     try {
@@ -303,28 +306,32 @@ function RequestsTab({
 
               {/* Footer actions */}
               <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-4 border-t bg-gray-50 rounded-xl">
+
                 <button
                   onClick={closeModal}
                   className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer"
                 >
                   Close
                 </button>
-
                 <div className="flex gap-3">
+
                   <button
-                    disabled={saving}
+                    disabled={saving || isLocked}
                     onClick={() => handleDecision("DENY")}
-                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    className={`text-sm border border-red-500 text-red-600 px-5 py-2 rounded 
+              hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
                   >
                     Deny
                   </button>
                   <button
-                    disabled={saving}
+                    disabled={saving || isLocked}
                     onClick={() => handleDecision("APPROVE")}
-                    className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    className={`text-sm bg-green-600 text-white px-5 py-2 rounded 
+              hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
                   >
                     Approve
                   </button>
+
                 </div>
               </div>
             </div>
