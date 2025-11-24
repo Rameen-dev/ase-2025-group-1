@@ -18,12 +18,14 @@ model User {
   last_name               String
   created_on              DateTime                  @default(now())
   updated_on              DateTime                  @updatedAt
-  Charity                 Charities?
   approved_applications   CharityApplications[]     @relation("approved_by_admin")
   reviewed_applications   CharityApplications[]     @relation("reviewed_by_admin")
   created_invites         CharitySignupTokens[]     @relation("invites_created_by")
   EmailVerificationTokens EmailVerificationTokens[]
   PasswordResetTokens     PasswordResetTokens[]
+
+  donation_requests DonationRequest[] @relation("donor_request")
+  donation_accepted Donations[]       @relation("donor_donation")
 }
 
 model EmailVerificationTokens {
@@ -51,46 +53,46 @@ model PasswordResetTokens {
 }
 
 model Charities {
-  charity_id Int      @id @default(autoincrement())
-  name       String
-  email      String   @unique // each approved charity must have a unique email
-  phone      String?
-  address    String
-  website    String
-  verified   Boolean  @default(false)
-  user_id    Int?     @unique
-  created_on DateTime @default(now())
-  updated_on DateTime @updatedAt
-
-  User          User?                 @relation(fields: [user_id], references: [user_id])
+  charity_id    Int                   @id @default(autoincrement())
+  name          String
+  email         String                @unique
+  phone         String
+  address       String
+  website       String
+  verified      Boolean               @default(false)
+  created_on    DateTime              @default(now())
+  updated_on    DateTime              @updatedAt
+  password_hash String?
   applications  CharityApplications[]
   signup_tokens CharitySignupTokens[]
+
+  donation_requests_answer DonationRequest[] @relation("charity_answer")
+  donation_accepted_by     Donations[]       @relation("charity_donation")
 
   @@index([name])
   @@index([email])
 }
 
 model CharityApplications {
-  application_id Int                      @id @default(autoincrement())
+  application_id Int        @id @default(autoincrement())
   org_name       String
   contact_name   String
-  contact_email  String // ← not unique here
+  contact_email  String
   contact_number String
   website        String
   org_address    String
   charity_number String?
-  status         CharityApplicationStatus @default(PENDING)
+  status         Status     @default(PENDING)
   reviewed_on    DateTime?
   reviewed_by    Int?
   approved_on    DateTime?
   approved_by    Int?
   charity_id     Int?
-  created_on     DateTime                 @default(now())
-  updated_on     DateTime                 @updatedAt
-
-  approver User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
-  reviewer User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
-  charity  Charities? @relation(fields: [charity_id], references: [charity_id])
+  created_on     DateTime   @default(now())
+  updated_on     DateTime   @updatedAt
+  approver       User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+  charity        Charities? @relation(fields: [charity_id], references: [charity_id])
+  reviewer       User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
 
   @@index([status, created_on])
   @@index([contact_email])
@@ -112,7 +114,33 @@ model CharitySignupTokens {
   @@index([email])
 }
 
-enum CharityApplicationStatus {
+model Donations {
+  donation_id         Int      @id @default(autoincrement())
+  donation_request_id Int      @unique
+  created_by          Int
+  accepted_by         Int
+  accepted_at         DateTime @default(now())
+
+  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
+  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
+  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+}
+
+model DonationRequest {
+  donation_request_id Int      @id @default(autoincrement())
+  created_on          DateTime @default(now())
+  updated_on          DateTime @updatedAt
+  status              Status   @default(PENDING)
+  answered_by         Int?
+  created_by          Int
+
+  accepted_donation Donations?
+
+  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
+  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
+}
+
+enum Status {
   PENDING
   APPROVED
   REJECTED

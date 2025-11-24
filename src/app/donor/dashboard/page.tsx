@@ -10,6 +10,7 @@ export default function DonorDashboard() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const router = useRouter();
 
@@ -23,7 +24,32 @@ export default function DonorDashboard() {
   return (
     <div className="flex min-h-screen bg-white relative">
       {/* SIDEBAR */}
-      <aside className="bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen">
+      <button
+        className={`
+    md:hidden
+    fixed top-4 left-4 z-50
+    p-2 rounded-md border border-gray-300 bg-white
+    transform transition-transform duration-200
+    ${isSidebarOpen ? "translate-x-64" : "translate-x-0"}
+  `}
+        onClick={() => setIsSidebarOpen((prev) => !prev)}
+        aria-label="Toggle menu"
+      >
+        {/* Simple hamburger icon */}
+        <div className="w-5 h-0.5 bg-black mb-1" />
+        <div className="w-5 h-0.5 bg-black mb-1" />
+        <div className="w-5 h-0.5 bg-black" />
+      </button>
+
+      <aside
+        className={`
+    bg-green-700 w-64 flex flex-col justify-between
+    fixed inset-y-0 left-0
+    transform transition-transform duration-200 z-40
+    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0
+  `}
+      >
         <div className="bg-white px-6 py-6">
           <h1 className="text-3xl font-[Kalam] font-bold">
             <span className="text-green-600">S</span>ustain
@@ -131,7 +157,24 @@ function HomeTab() {
 function Donations({ title }: { title: string }) {
   return (
 
-    <h1> Donation page</h1>
+
+    <div className="border rounded-lg shadow-md flex flex-col flex-1">
+      <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-b">
+        Donations history
+      </div>
+
+      <div className="flex-1 overflow-auto">
+        <table className="w-full border border-amber-600 border-dashed">
+          <tbody>
+            <tr>
+              <th className="p-3 text-left">Title</th>
+              <th className="p-3 text-center">Status</th>
+              <th className="p-3 text-center">Action</th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 }
 
