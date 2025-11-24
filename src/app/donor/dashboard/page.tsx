@@ -22,7 +22,7 @@ export default function DonorDashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-white relative">
+    <div className="flex h-screen bg-white overflow-hidden relative">
       {/* SIDEBAR */}
       <button
         className={`
@@ -64,7 +64,7 @@ export default function DonorDashboard() {
           {TABS.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => { setActiveTab(tab); setIsSidebarOpen(false); }}
               className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${activeTab === tab
                 ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
                 : "text-white hover:bg-green-600/70"
@@ -89,7 +89,7 @@ export default function DonorDashboard() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="ml-64 p-10 flex-1 bg-white min-h-screen">
+      <main className="flex-1 bg-white md:ml-64 p-4 md:p-10 overflow-y-auto mt-10 md:mt-0">
         <div className="flex justify-between mb-6">
           <div>
             <h2 className="text-3xl font-semibold">

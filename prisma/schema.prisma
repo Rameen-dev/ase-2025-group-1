@@ -68,19 +68,9 @@ model User {
 
   // All email verification tokens linked to this user
   EmailVerificationTokens EmailVerificationTokens[]
-
-  // All password reset tokens linked to this user
-  PasswordResetTokens PasswordResetTokens[]
-
-  // All donation requests created by this donor
-  donation_requests DonationRequest[] @relation("donor_request")
-
-  // All donations created by this donor
-  donations_created Donations[] @relation("donor_donation")
+  PasswordResetTokens     PasswordResetTokens[]
 }
 
-// EMAIL VERIFICATION TOKENS MODEL
-// This stores tokens that are sent to users to verify their email address after signup.
 model EmailVerificationTokens {
   // Primary key for this token row
   ev_token_id Int @id @default(autoincrement())
@@ -186,20 +176,8 @@ model Charities {
   // Indexes used here again to speed up searching by name and email.
   @@index([name])
   @@index([email])
-
-  // All donation requests answered by this charity
-  donation_requests_answered DonationRequest[] @relation("charity_answer")
-
-  // All donations accepted by this charity
-  donations_received Donations[] @relation("charity_donation")
-
 }
 
-// CHARITY APPLICATIONS MODEL
-
-// This model stores applications submitted by organisations that want to become a charity partner with SustainWear.
-// To become a charity, they must apply and create an application, which is stored in this model.
-// This will exist before they get their own charities row.
 model CharityApplications {
   // Primary key for the application.
   application_id Int @id @default(autoincrement())
@@ -224,48 +202,18 @@ model CharityApplications {
 
   // Official charity registration number (This is optional at the minute)
   charity_number String?
+  status         CharityApplicationStatus @default(PENDING)
+  reviewed_on    DateTime?
+  reviewed_by    Int?
+  approved_on    DateTime?
+  approved_by    Int?
+  charity_id     Int?
+  created_on     DateTime @default(now())
+  updated_on     DateTime @updatedAt
 
-  // Current status of this application: 
-  // - PENDING
-  // - APPROVED
-  // - REJECTED
-  status Status @default(PENDING)
-
-  // When the application was first reviewed by an Admin
-  reviewed_on DateTime?
-
-  // Which Admin reviewed the application (FK -> User.user_id)
-  reviewed_by Int?
-
-  // When the application was approved.
-  approved_on DateTime?
-
-  // Which admin approved the application (FK -> User.user_id)
-  approved_by Int?
-
-  // Link this to the final charities row created.
-  charity_id Int?
-
-  // When the application was created on.
-  created_on DateTime @default(now())
-
-  // Auto-updated when the row changes.
-  updated_on DateTime @updatedAt
-
-  // RELATIONS
-
-  // Admin user who approved this application,
-  // Uses baned relation "approved_by_admin" which matches the 'approved_applications' 
-  // relation in User.
-  approver User? @relation("approved_by_admin", fields: [approved_by], references: [user_id])
-
-  // Admin user who reviewed this application,
-  // Uses named relation "reviewed_by_admin" which matches the 
-  // 'reviewed_applications' relation in User.
-  reviewer User? @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
-
-  // The final charity created from this application, if approved.
-  charity Charities? @relation(fields: [charity_id], references: [charity_id])
+  approver User?     @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+  reviewer User?     @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
+  charity  Charities? @relation(fields: [charity_id], references: [charity_id])
 
   // Index for querying by status + created date,
   // For example, show all pending applications, newest first.
@@ -319,38 +267,8 @@ model CharitySignupTokens {
   @@index([email])
 }
 
-model Donations {
-  donation_id         Int      @id @default(autoincrement())
-  donation_request_id Int      @unique
-  created_by          Int
-  accepted_by         Int
-  accepted_at         DateTime @default(now())
-
-  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
-  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
-  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
-}
-
-model DonationRequest {
-  donation_request_id Int      @id @default(autoincrement())
-  created_on          DateTime @default(now())
-  updated_on          DateTime @updatedAt
-  status              Status   @default(PENDING)
-  answered_by         Int?
-  created_by          Int
-
-  accepted_donation Donations?
-
-  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
-  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
-}
-
-// CHARITY APPLICATION STATUS ENUM
-
-// This defines the allowed states for an application, 
-// this keeps status values consistent and type-safe
-enum Status {
-  PENDING // Waiting for review.
-  APPROVED // Accepted, charity can be onboarded.
-  REJECTED // Not accepted (Can optionally re-apply)
+enum CharityApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
