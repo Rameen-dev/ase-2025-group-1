@@ -85,7 +85,7 @@ export default function DonorDashboard() {
         {activeTab === "Home" && <HomeTab />}
 
         {activeTab === "Donations" && (
-          <PlaceholderTab title="Donations" />
+          <Donations title="Donations" />
         )}
 
         {activeTab === "Inventory" && (
@@ -125,6 +125,13 @@ function HomeTab() {
       </div>
     </div>
 
+  );
+}
+
+function Donations({ title }: { title: string }) {
+  return (
+
+    <h1> Donation page</h1>
   );
 }
 
