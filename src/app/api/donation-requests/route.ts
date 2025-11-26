@@ -5,11 +5,16 @@ export async function GET() {
     try {
         const apps = await prisma.donationRequest.findMany({
             orderBy: { created_on: "desc" },
+            include: {
+                _count: {
+                    select: { clothing_items: true }, // 👈 relation name from your Prisma model
+                },
+            },
         });
 
         return NextResponse.json(apps);
     } catch (error) {
-        console.error("GET /api/donor-dashboard/donation-requests ERROR:", error);
+        console.error("GET /api/donation-requests ERROR:", error);
         return NextResponse.json(
             { error: "Failed to fetch donation requests" },
             { status: 500 }
@@ -20,7 +25,7 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { title } = body;
+        const { title, items } = body;
 
         if (!title || !title.trim()) {
             return NextResponse.json(
@@ -29,16 +34,49 @@ export async function POST(req: Request) {
             );
         }
 
-        // TEMP: hard-coded user_id until you have auth
-        const newRequest = await prisma.donationRequest.create({
-            data: {
-                title: title.trim(),
-                status: "PENDING",
-                created_by: 15, // change this later to session user id
-            },
+        if (!items || !Array.isArray(items) || items.length === 0) {
+            return NextResponse.json(
+                { error: "At least one clothing item is required" },
+                { status: 400 }
+            );
+        }
+
+
+
+
+        const userId = 14 //hardcode userId until we integrate session cookies
+
+        const donationRequest = await prisma.$transaction(async (tx) => {
+
+            const reqRow = await tx.donationRequest.create({
+                data: {
+                    title: title.trim(),
+                    status: "PENDING",
+                    created_by: userId,
+                }
+            });
+
+            await tx.clothingItems.createMany({
+                data: items.map((item) => ({
+                    donation_request_id: reqRow.donation_request_id,
+                    type: item.type,
+                    size: item.size,
+                    condition: item.condition,
+                    donor_id: userId,
+                    donation_id: null,
+                    owned_by: null,
+                    // temp placeholder URLs until you wire image upload
+                    front_image_url: "",
+                    back_image_url: "",
+                })),
+            });
+
+            return reqRow;
         });
 
-        return NextResponse.json(newRequest, { status: 201 });
+
+
+        return NextResponse.json(donationRequest, { status: 201 });
     } catch (error) {
         console.error("POST /api/donor-dashboard/donation-requests ERROR:", error);
         return NextResponse.json(

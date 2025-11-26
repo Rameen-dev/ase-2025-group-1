@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
@@ -26,6 +25,9 @@ interface DonationRequest {
   donation_request_id: number;
   title: string;
   status: DonationRequestStatus;
+  _count: {
+    clothing_items: number;
+  };
 }
 
 type DonationsProps = {
@@ -49,7 +51,7 @@ export default function DonorDashboard() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/api/donor-dashboard`);
+        const res = await fetch(`${API_BASE}/api/donation-requests`);
         const data = await res.json();
         setApps(data);
       } finally {
@@ -228,31 +230,40 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     if (!newTitle.trim()) return;
     if (items.length === 0) return;
 
-    setCreating(true);
+    try {
+      setCreating(true);
 
-    // Frontend-only for now
-    console.log("Creating donation request with:", {
-      title: newTitle,
-      items,
-    });
+      const res = await fetch(`${API_BASE}/api/donation-requests`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newTitle,
+          items: items.map(({ id, ...rest }) => rest), // strip frontend-only id
+        }),
+      });
 
-    const fakeReq: DonationRequest = {
-      donation_request_id: Date.now(),
-      title: newTitle.trim(),
-      status: "PENDING",
-    };
+      if (!res.ok) throw new Error("Failed to create");
 
-    onCreated(fakeReq); // update table
+      const created: DonationRequest = await res.json();
 
-    setNewTitle("");
-    setItems([{
-      id: Date.now(),
-      type: "JACKET",
-      size: "M",
-      condition: "GOOD",
-    }]);
-    setCreateOpen(false);
-    setCreating(false);
+      onCreated(created); // updates the Donation Requests table (title, status)
+
+      // reset form
+      setNewTitle("");
+      setItems([
+        {
+          id: Date.now(),
+          type: "JACKET",
+          size: "M",
+          condition: "GOOD",
+        },
+      ]);
+      setCreateOpen(false);
+    } catch (err) {
+      alert("Error creating donation request");
+    } finally {
+      setCreating(false);
+    }
   }
 
   async function handleRemove(app: DonationRequest) {
@@ -263,7 +274,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/donation-requests${app.donation_request_id}`,
+        `${API_BASE}/api/donation-requests/${app.donation_request_id}`,
         { method: "DELETE" }
       );
 
@@ -330,7 +341,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
           <tbody>
             {loading && (
               <tr>
-                <td colSpan={3} className="p-3 text-center">
+                <td colSpan={4} className="p-3 text-center">
                   Loading...
                 </td>
               </tr>
@@ -340,12 +351,12 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
               apps.map((app) => (
                 <tr key={app.donation_request_id}>
                   <td className="p-3">{app.title}</td>
-                  <td className="p-3 text-center">Items</td>
+                  <td className="p-3 text-center">{app._count?.clothing_items ?? 0} </td>
                   <td className="p-3 text-center">{app.status}</td>
                   <td className="p-3 text-center">
                     <button
                       onClick={() => handleRemove(app)}
-                      className="text-sm text-red-600 underline"
+                      className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
                     >
                       Remove
                     </button>
