@@ -193,6 +193,24 @@ exports.Prisma.CharitySignupTokensScalarFieldEnum = {
   created_by: 'created_by'
 };
 
+exports.Prisma.DonationsScalarFieldEnum = {
+  donation_id: 'donation_id',
+  donation_request_id: 'donation_request_id',
+  created_by: 'created_by',
+  accepted_by: 'accepted_by',
+  accepted_at: 'accepted_at'
+};
+
+exports.Prisma.DonationRequestScalarFieldEnum = {
+  donation_request_id: 'donation_request_id',
+  title: 'title',
+  created_on: 'created_on',
+  updated_on: 'updated_on',
+  status: 'status',
+  answered_by: 'answered_by',
+  created_by: 'created_by'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -207,7 +225,7 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-exports.CharityApplicationStatus = exports.$Enums.CharityApplicationStatus = {
+exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
@@ -219,7 +237,9 @@ exports.Prisma.ModelName = {
   PasswordResetTokens: 'PasswordResetTokens',
   Charities: 'Charities',
   CharityApplications: 'CharityApplications',
-  CharitySignupTokens: 'CharitySignupTokens'
+  CharitySignupTokens: 'CharitySignupTokens',
+  Donations: 'Donations',
+  DonationRequest: 'DonationRequest'
 };
 
 /**

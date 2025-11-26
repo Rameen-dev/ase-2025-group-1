@@ -71,6 +71,12 @@ model User {
 
   // All password reset tokens linked to this user
   PasswordResetTokens PasswordResetTokens[]
+
+  // All donation requests created by this donor
+  donation_requests DonationRequest[] @relation("donor_request")
+
+  // All donations created by this donor
+  donations_created Donations[] @relation("donor_donation")
 }
 
 // EMAIL VERIFICATION TOKENS MODEL
@@ -177,6 +183,12 @@ model Charities {
   // All one-time signup tokens created for this charity, so they can coomplete registration.
   signup_tokens CharitySignupTokens[]
 
+  // All donation requests answered by this charity
+  donation_requests_answered DonationRequest[] @relation("charity_answer")
+
+  // All donations accepted by this charity
+  donations_received Donations[] @relation("charity_donation")
+
   // Indexes used here again to speed up searching by name and email.
   @@index([name])
   @@index([email])
@@ -216,7 +228,7 @@ model CharityApplications {
   // - PENDING
   // - APPROVED
   // - REJECTED
-  status CharityApplicationStatus @default(PENDING)
+  status Status @default(PENDING)
 
   // When the application was first reviewed by an Admin
   reviewed_on DateTime?
@@ -306,11 +318,38 @@ model CharitySignupTokens {
   @@index([email])
 }
 
+model Donations {
+  donation_id         Int      @id @default(autoincrement())
+  donation_request_id Int      @unique
+  created_by          Int
+  accepted_by         Int
+  accepted_at         DateTime @default(now())
+
+  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
+  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
+  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+}
+
+model DonationRequest {
+  donation_request_id Int      @id @default(autoincrement())
+  title               String
+  created_on          DateTime @default(now())
+  updated_on          DateTime @updatedAt
+  status              Status   @default(PENDING)
+  answered_by         Int?
+  created_by          Int
+
+  accepted_donation Donations?
+
+  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
+  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
+}
+
 // CHARITY APPLICATION STATUS ENUM
 
 // This defines the allowed states for an application, 
 // this keeps status values consistent and type-safe
-enum CharityApplicationStatus {
+enum Status {
   PENDING // Waiting for review.
   APPROVED // Accepted, charity can be onboarded.
   REJECTED // Not accepted (Can optionally re-apply)
