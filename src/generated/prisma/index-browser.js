@@ -203,6 +203,7 @@ exports.Prisma.DonationsScalarFieldEnum = {
 
 exports.Prisma.DonationRequestScalarFieldEnum = {
   donation_request_id: 'donation_request_id',
+  title: 'title',
   created_on: 'created_on',
   updated_on: 'updated_on',
   status: 'status',
