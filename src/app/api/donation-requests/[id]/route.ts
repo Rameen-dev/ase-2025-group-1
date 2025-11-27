@@ -3,20 +3,27 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
-    try {
-        const id = Number(params.id);
-        if (Number.isNaN(id)) {
-            return NextResponse.json(
-                { error: "Invalid id" },
-                { status: 400 }
-            );
-        }
+    const { id } = await context.params;
+    const numericId = Number(id);
 
-        await prisma.donationRequest.delete({
-            where: { donation_request_id: id },
-        });
+    if (Number.isNaN(numericId)) {
+        return NextResponse.json(
+            { error: "Invalid id" },
+            { status: 400 }
+        );
+    }
+
+    try {
+        await prisma.$transaction([
+            prisma.clothingItems.deleteMany({
+                where: { donation_request_id: numericId },
+            }),
+            prisma.donationRequest.delete({
+                where: { donation_request_id: numericId },
+            }),
+        ]);
 
         return NextResponse.json({ success: true });
     } catch (error) {

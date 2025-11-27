@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { DashboardLayout } from "@/components/UI/dashboard-layout";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-type TabName = "Home" | "Donations" | "Inventory" | "Impact";
-const TABS: TabName[] = ["Home", "Donations", "Inventory", "Impact"];
+type TabName = "Home" | "Donations" | "Inventory";
+const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
 type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
-
 type ClothingType = "JACKET" | "PANTS" | "SHIRT" | "SHOES" | "OTHER";
 type ClothingSize = "XS" | "S" | "M" | "L" | "XL";
 type ClothingCondition = "NEW" | "GOOD" | "WORN";
@@ -65,118 +65,46 @@ export default function DonorDashboard() {
     router.push("/"); // redirect to Landing page for Logout function.
   }
 
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Donations"
+        ? "Donations"
+        : activeTab === "Inventory"
+          ? "Inventory"
+          : "Impact & Reports";
+
   return (
-    <div className="flex h-screen bg-white overflow-hidden relative">
-      {/* SIDEBAR */}
-      <button
-        className={`
-    md:hidden
-    fixed top-4 left-4 z-50
-    p-2 rounded-md border border-gray-300 bg-white
-    transform transition-transform duration-200
-    ${isSidebarOpen ? "translate-x-64" : "translate-x-0"}
-  `}
-        onClick={() => setIsSidebarOpen((prev) => !prev)}
-        aria-label="Toggle menu"
-      >
-        {/* Simple hamburger icon */}
-        <div className="w-5 h-0.5 bg-black mb-1" />
-        <div className="w-5 h-0.5 bg-black mb-1" />
-        <div className="w-5 h-0.5 bg-black" />
-      </button>
+    <DashboardLayout
+      tabs={TABS}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onSignOut={handleSignOut}
+      roleLabel="Donor"
+      headerTitle={headerTitle}
+    >
+      {activeTab === "Home" && <HomeTab />}
 
-      <aside
-        className={`
-    bg-green-700 w-64 flex flex-col justify-between
-    fixed inset-y-0 left-0
-    transform transition-transform duration-200 z-40
-    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-    md:translate-x-0
-  `}
-      >
-        <div className="bg-white px-6 py-6">
-          <h1 className="text-3xl font-[Kalam] font-bold">
-            <span className="text-green-600">S</span>ustain
-            <span className="text-green-600">W</span>ear
-          </h1>
-          <p className="text-xs text-gray-600">
-            Give Today. <span className="text-green-600">Sustain Tomorrow.</span>
-          </p>
-        </div>
+      {activeTab === "Donations" && (
+        <Donations
+          title="Donations"
+          apps={apps}
+          loading={loading}
+          onCreated={(newReq) =>
+            setApps((prev) => [newReq, ...prev])
+          }
+          onDelete={(id) =>
+            setApps((prev) =>
+              prev.filter((a) => a.donation_request_id !== id)
+            )
+          }
+        />
+      )}
 
-        <nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => { setActiveTab(tab); setIsSidebarOpen(false); }}
-              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${activeTab === tab
-                ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
-                : "text-white hover:bg-green-600/70"
-                }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
-          <div className="hover:opacity-80 cursor-pointer transition-opacity duration-150">
-            Settings
-          </div>
-          <button
-            onClick={handleSignOut}
-            className="hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150"
-          >
-            Log Out
-          </button>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <main className="flex-1 bg-white md:ml-64 p-4 md:p-10 overflow-y-auto mt-10 md:mt-0">
-        <div className="flex justify-between mb-6">
-          <div>
-            <h2 className="text-3xl font-semibold">
-              {activeTab === "Home" && "Dashboard Overview"}
-              {activeTab === "Donations" && "Donations"}
-              {activeTab === "Inventory" && "Inventory"}
-              {activeTab === "Impact" && "Impact & Reports"}
-            </h2>
-            <p className="text-sm text-gray-500">
-              Welcome back, Donor. Manage your SustainWear from here.
-            </p>
-          </div>
-
-          <div className="bg-green-100 text-green-700 p-2 rounded-full">
-
-          </div>
-        </div>
-
-        {activeTab === "Home" && <HomeTab />}
-
-        {activeTab === "Donations" && (
-          <Donations
-            title="Donations"
-            apps={apps}
-            loading={loading}
-            onCreated={(newReq) =>
-              setApps((prev) => [newReq, ...prev]) // add new one at top
-            }
-            onDelete={(id) =>
-              setApps(prev => prev.filter(a => a.donation_request_id !== id))
-            }
-          />
-        )}
-
-        {activeTab === "Inventory" && (
-          <PlaceholderTab title="Inventory" />
-        )}
-
-        {activeTab === "Impact" && (
-          <PlaceholderTab title="Impact & Reports" />
-        )}
-      </main>
-    </div>
+      {activeTab === "Inventory" && (
+        <PlaceholderTab title="Inventory" />
+      )}
+    </DashboardLayout>
   );
 }
 
@@ -200,8 +128,6 @@ function HomeTab() {
         <div className="w-full border border-dashed border-red-300  rounded-xl p-8 text-center text-gray-500">
 
         </div>
-
-
       </div>
     </div>
 
@@ -211,6 +137,13 @@ function HomeTab() {
 function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps) {         // existing (view)
   const [selected, setSelected] = useState<DonationRequest | null>(null);
   const isLocked = selected?.status !== "PENDING";
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<DonationRequest | null>(null);
+
+  const [viewOpen, setViewOpen] = useState(false);
+  const [viewLoading, setViewLoading] = useState(false);
+  const [viewRequest, setViewRequest] = useState<DonationRequest | null>(null);
+  const [viewItems, setViewItems] = useState<ClothingItemView[]>([]);
 
   const [createOpen, setCreateOpen] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -224,6 +157,13 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       condition: "GOOD",
     },
   ]);
+
+  type ClothingItemView = {
+    clothing_id: number;
+    type: string;
+    size: string;
+    condition: string;
+  };
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -266,27 +206,50 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     }
   }
 
-  async function handleRemove(app: DonationRequest) {
-    const confirmed = window.confirm(
-      "Are you sure you want to remove this donation request?"
-    );
-    if (!confirmed) return;
+  async function handleOpenView(app: DonationRequest) {
+    setViewRequest(app);
+    setViewOpen(true);
+    setViewLoading(true);
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/donation-requests/${app.donation_request_id}`,
+        `${API_BASE}/api/donation-requests/${app.donation_request_id}/items`
+      );
+
+      if (!res.ok) throw new Error("Failed to load items");
+
+      const data: ClothingItemView[] = await res.json();
+      setViewItems(data);
+    } catch (err) {
+      alert("Error loading items for this request");
+      setViewItems([]);
+    } finally {
+      setViewLoading(false);
+    }
+  }
+
+  async function handleDeleteConfirm() {
+    if (!itemToDelete) return;
+
+    try {
+      const res = await fetch(
+        `${API_BASE}/api/donation-requests/${itemToDelete.donation_request_id}`,
         { method: "DELETE" }
       );
 
-      if (!res.ok) throw new Error("Failed to delete");
+      if (!res.ok) throw new Error();
 
-      onDelete(app.donation_request_id); // update UI
+      onDelete(itemToDelete.donation_request_id); // update UI locally
+
+      setDeleteOpen(false);
+      setItemToDelete(null);
     } catch (err) {
       alert("Error deleting donation request");
     }
   }
-
   function addItemRow() {
+    if (items.length >= 5) return;
+
     setItems(prev => [
       ...prev,
       {
@@ -297,11 +260,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       },
     ]);
   }
-
-  function removeItemRow(id: number) {
-    setItems(prev => prev.filter(item => item.id !== id));
-  }
-
   function updateItem(
     id: number,
     field: "type" | "size" | "condition",
@@ -313,195 +271,322 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       )
     );
   }
-
+  function removeItemRow(id: number) {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  }
   return (
-    <div className="border rounded-lg shadow-md flex flex-col flex-1">
-      {/* HEADER WITH BUTTON */}
-      <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-b flex items-center justify-between">
-        <span>{title}</span>
-        <button
-          onClick={() => setCreateOpen(true)}
-          className="text-sm px-3 py-1 rounded-md bg-green-700 text-white hover:bg-green-800"
-        >
-          + New Request
-        </button>
+    <div className="flex flex-col h-full">
+
+      {/* TOP HALF: TABLE */}
+      <div className="h-[400px] mb-4">
+        <div className="border rounded-lg shadow-md flex flex-col h-full">
+
+          {/* HEADER WITH BUTTON */}
+          <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-1 flex items-center justify-between">
+            <span>{title}</span>
+            <button
+              onClick={() => setCreateOpen(true)}
+              className="text-sm px-3 py-1 rounded-md bg-green-700 text-white hover:bg-green-800"
+            >
+              + New Request
+            </button>
+          </div>
+
+          {/* TABLE */}
+          <div className="flex-1 overflow-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-green-50 border rounded-lg">
+                  <th className="p-3 text-center">Title</th>
+                  <th className="p-3 text-center">Items</th>
+                  <th className="p-3 text-center">Status</th>
+                  <th className="p-3 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {loading && (
+                  <tr>
+                    <td colSpan={4} className="p-3 text-center">
+                      Loading...
+                    </td>
+                  </tr>
+                )}
+
+                {!loading &&
+                  apps.map((app) => (
+                    <tr key={app.donation_request_id} className="border">
+                      <td className="p-3 text-center">{app.title}</td>
+                      <td className="p-3 text-center">
+                        {app._count?.clothing_items ?? 0}
+                      </td>
+                      <td className="p-3 text-center">{app.status}</td>
+
+                      {/* ACTION BUTTON */}
+                      <td className="p-3 text-center flex justify-center gap-2">
+
+                        {/* VIEW button always visible */}
+                        <button
+                          onClick={() => handleOpenView(app)}
+                          className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
+                        >
+                          View
+                        </button>
+
+                        {/* REMOVE button only when PENDING */}
+                        {app.status === "PENDING" && (
+                          <button
+                            onClick={() => {
+                              setItemToDelete(app);
+                              setDeleteOpen(true);
+                            }}
+                            className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                          >
+                            Remove
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+
+                {!loading && apps.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="p-3 text-center">
+                      No donation requests yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
       </div>
 
-      {/* TABLE */}
-      <div className="flex-1 overflow-auto">
-        <table className="w-full border border-amber-600 border-dashed">
-          <thead>
-            <tr>
-              <th className="p-3 text-left">Title</th>
-              <th className="p-3 text-center">Items</th>
-              <th className="p-3 text-center">Status</th>
-              <th className="p-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading && (
-              <tr>
-                <td colSpan={4} className="p-3 text-center">
-                  Loading...
-                </td>
-              </tr>
-            )}
+      {/* BOTTOM HALF: TWO BOXES */}
+      <div className="flex-1 flex gap-4">
 
-            {!loading &&
-              apps.map((app) => (
-                <tr key={app.donation_request_id}>
-                  <td className="p-3">{app.title}</td>
-                  <td className="p-3 text-center">{app._count?.clothing_items ?? 0} </td>
-                  <td className="p-3 text-center">{app.status}</td>
-                  <td className="p-3 text-center">
-                    <button
-                      onClick={() => handleRemove(app)}
-                      className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              ))}
+        <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
+          *TOTAL ITEMS DONATED*
+        </div>
 
-            {!loading && apps.length === 0 && (
-              <tr>
-                <td colSpan={3} className="p-3 text-center">
-                  No donation requests yet.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
+          *TO BE DECIDED*
+        </div>
+
       </div>
 
       {/* CREATE MODAL */}
-      {createOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-            <h3 className="text-lg font-semibold mb-4">
-              Create Donation Request
-            </h3>
+      {
+        createOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+              <h3 className="text-lg font-semibold mb-4">
+                Create Donation Request
+              </h3>
 
-            <form onSubmit={handleCreate} className="space-y-4">
-              {/* TITLE - full width */}
-              <div>
-                <label className="block text-sm mb-1">Title</label>
-                <input
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  className="w-full border rounded-md px-3 py-2 text-sm"
-                  placeholder="e.g. Winter jackets for kids"
-                />
-              </div>
-
-              {/* ITEMS */}
-              <div className="mt-2">
-                <label className="block text-sm mb-2">Items</label>
-
-                <div className="space-y-3">
-                  {items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex flex-col md:flex-row gap-4 items-end"
-                    >
-                      {/* Type */}
-                      <div className="flex-1">
-                        <label className="block text-xs mb-1">Type</label>
-                        <select
-                          value={item.type}
-                          onChange={(e) =>
-                            updateItem(item.id, "type", e.target.value)
-                          }
-                          className="border rounded-md px-3 py-2 text-sm bg-white"
-                        >
-                          <option value="JACKET">Jacket</option>
-                          <option value="PANTS">Pants</option>
-                          <option value="SHIRT">Shirt</option>
-                          <option value="SHOES">Shoes</option>
-                          <option value="OTHER">Other</option>
-                        </select>
-                      </div>
-
-                      {/* Size */}
-                      <div className="flex-1">
-                        <label className="block text-xs mb-1">Size</label>
-                        <select
-                          value={item.size}
-                          onChange={(e) =>
-                            updateItem(item.id, "size", e.target.value)
-                          }
-                          className="border rounded-md px-3 py-2 text-sm bg-white"
-                        >
-                          <option value="XS">XS</option>
-                          <option value="S">S</option>
-                          <option value="M">M</option>
-                          <option value="L">L</option>
-                          <option value="XL">XL</option>
-                        </select>
-                      </div>
-
-                      {/* Condition */}
-                      <div className="flex-1">
-                        <label className="block text-xs mb-1">Condition</label>
-                        <select
-                          value={item.condition}
-                          onChange={(e) =>
-                            updateItem(item.id, "condition", e.target.value)
-                          }
-                          className="border rounded-md px-3 py-2 text-sm bg-white"
-                        >
-                          <option value="NEW">New</option>
-                          <option value="GOOD">Good</option>
-                          <option value="WORN">Worn</option>
-                        </select>
-                      </div>
-
-                      {/* Remove button on same row */}
-                      <button
-                        type="button"
-                        onClick={() => removeItemRow(item.id)}
-                        className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
+              <form onSubmit={handleCreate} className="space-y-4">
+                {/* TITLE - full width */}
+                <div>
+                  <label className="block text-sm mb-1">Title</label>
+                  <input
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    className="w-full border rounded-md px-3 py-2 text-sm"
+                    placeholder="e.g. Winter jackets for kids"
+                  />
                 </div>
 
-                {/* Add item button */}
-                <button
-                  type="button"
-                  onClick={addItemRow}
-                  className="mt-3 text-sm px-3 py-1 rounded-md border border-dashed border-gray-400 hover:bg-gray-50"
-                >
-                  + Add item
-                </button>
-              </div>
+                {/* ITEMS */}
+                <div className="mt-2">
+                  <label className="block text-sm mb-2">Items</label>
 
-              {/* Footer buttons */}
-              <div className="flex justify-end gap-2 pt-2">
+                  <div className="space-y-3">
+                    {items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex flex-col md:flex-row gap-4 items-end"
+                      >
+                        {/* Type */}
+                        <div className="flex-1">
+                          <label className="block text-xs mb-1">Type</label>
+                          <select
+                            value={item.type}
+                            onChange={(e) =>
+                              updateItem(item.id, "type", e.target.value)
+                            }
+                            className="border rounded-md px-3 py-2 text-sm bg-white"
+                          >
+                            <option value="JACKET">Jacket</option>
+                            <option value="PANTS">Pants</option>
+                            <option value="SHIRT">Shirt</option>
+                            <option value="SHOES">Shoes</option>
+                            <option value="OTHER">Other</option>
+                          </select>
+                        </div>
+
+                        {/* Size */}
+                        <div className="flex-1">
+                          <label className="block text-xs mb-1">Size</label>
+                          <select
+                            value={item.size}
+                            onChange={(e) =>
+                              updateItem(item.id, "size", e.target.value)
+                            }
+                            className="border rounded-md px-3 py-2 text-sm bg-white"
+                          >
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                          </select>
+                        </div>
+
+                        {/* Condition */}
+                        <div className="flex-1">
+                          <label className="block text-xs mb-1">Condition</label>
+                          <select
+                            value={item.condition}
+                            onChange={(e) =>
+                              updateItem(item.id, "condition", e.target.value)
+                            }
+                            className="border rounded-md px-3 py-2 text-sm bg-white"
+                          >
+                            <option value="NEW">New</option>
+                            <option value="GOOD">Good</option>
+                            <option value="WORN">Worn</option>
+                          </select>
+                        </div>
+
+                        {/* Remove button on same row */}
+                        <button
+                          type="button"
+                          onClick={() => removeItemRow(item.id)}
+                          className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add item button */}
+                  <button
+                    type="button"
+                    onClick={addItemRow}
+                    className="mt-3 text-sm px-3 py-1 rounded-md border border-dashed border-gray-400 hover:bg-gray-50"
+                  >
+                    + Add item
+                  </button>
+                </div>
+
+                {/* Footer buttons */}
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setCreateOpen(false)}
+                    className="px-3 py-1 text-sm rounded-md border"
+                    disabled={creating}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
+                    disabled={creating}
+                  >
+                    {creating ? "Creating..." : "Create"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )
+      }
+
+      {
+        deleteOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
+              <h2 className="text-lg font-semibold mb-2 text-red-600">
+                Remove Donation Request
+              </h2>
+
+              <p className="text-sm text-gray-700 mb-4">
+                Are you sure you want to delete{" "}
+                <strong>{itemToDelete?.title}</strong>?
+                <br />
+                This action cannot be undone.
+              </p>
+
+              <div className="flex justify-end gap-2">
                 <button
-                  type="button"
-                  onClick={() => setCreateOpen(false)}
-                  className="px-3 py-1 text-sm rounded-md border"
-                  disabled={creating}
+                  className="px-3 py-1 border rounded-md text-sm"
+                  onClick={() => setDeleteOpen(false)}
                 >
                   Cancel
                 </button>
+
                 <button
-                  type="submit"
-                  className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
-                  disabled={creating}
+                  className="px-3 py-1 bg-red-600 text-white rounded-md text-sm hover:bg-red-700"
+                  onClick={handleDeleteConfirm}
                 >
-                  {creating ? "Creating..." : "Create"}
+                  Delete
                 </button>
               </div>
-            </form>
+            </div>
+          </div>
+        )
+      }
+
+      {viewOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg">
+            <h2 className="text-lg font-semibold mb-3">
+              Items in {viewRequest?.title}
+            </h2>
+
+            {viewLoading ? (
+              <p className="text-sm text-gray-500">Loading items...</p>
+            ) : viewItems.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                No clothing items found for this request.
+              </p>
+            ) : (
+              <table className="w-full text-sm border border-gray-200 rounded-md overflow-hidden">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="p-2 text-left">Type</th>
+                    <th className="p-2 text-left">Size</th>
+                    <th className="p-2 text-left">Condition</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {viewItems.map((item) => (
+                    <tr key={item.clothing_id} className="border-t">
+                      <td className="p-2">{item.type}</td>
+                      <td className="p-2">{item.size}</td>
+                      <td className="p-2">{item.condition}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+
+            <div className="flex justify-end mt-4">
+              <button
+                className="px-3 py-1 border rounded-md text-sm"
+                onClick={() => setViewOpen(false)}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+
+
+    </div >
   );
 }
 
