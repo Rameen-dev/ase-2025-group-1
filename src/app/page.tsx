@@ -1,22 +1,68 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
 // This is the main page (Landing Page) of our SustainWear Web-application.
 // Next.js treats this as the route: '/'.
 export default function HomePage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setMobileMenuOpen(false);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Form submission logic here
+  };
+
   return (
     <main className="w-full text-black text-center">
       <header className="w-full fixed top-0 left-0 bg-white shadow-md z-50">
-        <div className=" px-12 py-4 flex items-center justify-between">
-          <h1 className="font-kalam mt-2 pd-4 text-5xl md:text-4xl">
+        <div className="px-4 sm:px-8 md:px-12 py-4 flex items-center justify-between">
+          <h1 className="font-kalam mt-2 text-3xl sm:text-4xl md:text-5xl">
             <span className="text-[#2E7D32]">S</span>ustain
             <span className="text-[#2E7D32]">W</span>ear
           </h1>
-          <nav>
-            <ul className="flex items-center gap-6 ">
+
+          {/* Mobile hamburger menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-[#2E7D32] p-2"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+
+          {/* Desktop navigation */}
+          <nav className="hidden md:block">
+            <ul className="flex items-center gap-6">
               <ul className="flex gap-4 px-4">
-                <li>About</li>
-                <li>How it Works</li>
-                <li>Contact</li>
+                <li
+                  className="cursor-pointer hover:text-[#2E7D32] transition"
+                  onClick={() => scrollToSection("how-it-works")}
+                >
+                  How it Works
+                </li>
+                <li
+                  className="cursor-pointer hover:text-[#2E7D32] transition"
+                  onClick={() => scrollToSection("about")}
+                >
+                  About
+                </li>
+                <li
+                  className="cursor-pointer hover:text-[#2E7D32] transition"
+                  onClick={() => scrollToSection("contact")}
+                >
+                  Contact
+                </li>
               </ul>
               <li>
                 <Link href="/auth/login" className="text-black hover:underline">
@@ -34,30 +80,71 @@ export default function HomePage() {
             </ul>
           </nav>
         </div>
+
+        {/* Mobile navigation menu */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden bg-white border-t border-gray-200 shadow-lg">
+            <ul className="flex flex-col py-4">
+              <li
+                className="px-6 py-3 hover:bg-gray-50 cursor-pointer transition"
+                onClick={() => scrollToSection("about")}
+              >
+                About
+              </li>
+              <li
+                className="px-6 py-3 hover:bg-gray-50 cursor-pointer transition"
+                onClick={() => scrollToSection("how-it-works")}
+              >
+                How it Works
+              </li>
+              <li
+                className="px-6 py-3 hover:bg-gray-50 cursor-pointer transition"
+                onClick={() => scrollToSection("contact")}
+              >
+                Contact
+              </li>
+              <li className="px-6 py-3 hover:bg-gray-50">
+                <Link href="/auth/login" className="text-black hover:underline">
+                  Log In
+                </Link>
+              </li>
+              <li className="px-6 py-3">
+                <Link
+                  href="/auth/signup"
+                  className="font-sans bg-[#2E7D32] text-white px-4 py-2 rounded hover:bg-green-800 transition inline-block"
+                >
+                  Sign Up
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        )}
       </header>
-      {/* Hero Section Wallahi */}
-      <section className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-[#2E7D32] to-[#C9DECA] pt-24 px-8 md:px-40">
-        <div className="flex-1 flex justify-center md:justify-end ">
+
+      {/* Hero Section */}
+      <section className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-[#2E7D32] to-[#C9DECA] pt-24 px-4 sm:px-8 md:px-40">
+        <div className="flex-1 flex justify-center md:justify-end mb-8 md:mb-0">
           <Image
             src="/illustrations/hero.svg"
             alt="Welcome"
             width={700}
             height={0}
-            className="mx-auto md:-translate-x-10"
+            className="w-full max-w-md md:max-w-none md:-translate-x-10"
             priority
           />
         </div>
-        <div className="flex-1 flex flex-col md:self-center text-center  space-y-6">
+        <div className="flex-1 flex flex-col md:self-center text-center space-y-4 sm:space-y-6">
           <div className="flex justify-center">
-            <h1 className=" italic text-5xl leading-tight md:text-5xl font-medium md:text-left mb-5">
+            <h1 className="italic text-3xl sm:text-4xl md:text-5xl leading-tight font-medium md:text-left mb-5">
               Give Today. <br /> <span className="text-[#2E7D32]">Sustain</span>{" "}
               Tomorrow.
             </h1>
           </div>
 
-          <p className="font-medium md:text-xl">
+          <p className="font-medium text-base sm:text-lg md:text-xl px-4 md:px-0">
             A streamlined platform that makes{" "}
-            <span className="text-[#2E7D32]">Sustaining Tommorow</span> <br />
+            <span className="text-[#2E7D32]">Sustaining Tommorow</span>{" "}
+            <br className="hidden sm:block" />
             easier than ever through smarter clothing donations.
           </p>
           <button className="self-center w-auto px-6 py-2 bg-[#2E7D32] text-white rounded-lg font-semibold hover:bg-white hover:text-[#2E7D32] transition drop-shadow">
@@ -67,100 +154,112 @@ export default function HomePage() {
       </section>
 
       {/* How it works Section */}
-      <section className=" bg-[#F8F8F8] text-black ">
+      <section id="how-it-works" className="bg-[#F8F8F8] text-black">
         <div className="flex flex-col md:flex-row items-center justify-center">
-          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-20">
+          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-12 sm:py-16 md:py-20 px-4">
             <Image
               src="/illustrations/step1.svg"
               alt="Step 1"
               width={500}
               height={300}
-              className="mx-auto"
+              className="w-full max-w-xs sm:max-w-md"
             />
           </div>
-          <div className="flex-1 text-center ">
-            <h3 className="italic text-5xl leading-tight md:text-5xl font-regular  mb-5 text-[#2E7D32]">
-              Take some Pictures
-            </h3>
-            <p className="text-3xl text-gray-700">
-              Take a few pictures of your clothes so charities know the
-              condition of your clothing
-            </p>
+          <div className="flex-1 flex items-center justify-center text-center py-12 sm:py-16 md:py-20 px-4">
+            <div className="max-w-md">
+              <h3 className="italic text-2xl sm:text-3xl md:text-3xl lg:text-4xl leading-tight font-regular mb-3 sm:mb-5 text-[#2E7D32]">
+                Take some Pictures
+              </h3>
+              <p className="text-lg sm:text-xl md:text-xl text-gray-700">
+                Take a few pictures of your clothes so charities know the
+                condition of your clothing
+              </p>
+            </div>
           </div>
         </div>
+
         <div className="flex flex-col md:flex-row items-center justify-center">
-          <div className="flex-1 text-center ">
-            <h3 className="italic text-5xl leading-tight md:text-5xl font-regular  mb-5 text-[#2E7D32]">
-              Upload your Clothes{" "}
-            </h3>
-            <p className="text-3xl text-gray-700">
-              Fill in details and upload all important information of your
-              clothes
-            </p>
+          <div className="flex-1 flex items-center justify-center text-center py-12 sm:py-16 md:py-20 px-4 order-2 md:order-1">
+            <div className="max-w-md">
+              <h3 className="italic text-2xl sm:text-3xl md:text-3xl lg:text-4xl leading-tight font-regular mb-3 sm:mb-5 text-[#2E7D32]">
+                Upload your Clothes{" "}
+              </h3>
+              <p className="text-lg sm:text-xl md:text-xl text-gray-700">
+                Fill in details and upload all important information of your
+                clothes
+              </p>
+            </div>
           </div>
-          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-20">
+          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-12 sm:py-16 md:py-20 px-4 order-1 md:order-2">
             <Image
               src="/illustrations/step2.svg"
-              alt="Step 1"
+              alt="Step 2"
               width={500}
               height={300}
-              className="mx-auto"
+              className="w-full max-w-xs sm:max-w-md"
             />
           </div>
         </div>
+
         <div className="flex flex-col md:flex-row items-center justify-center">
-          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-20">
+          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-12 sm:py-16 md:py-20 px-4">
             <Image
               src="/illustrations/step3.svg"
-              alt="Step 1"
+              alt="Step 3"
               width={500}
               height={300}
-              className="mx-auto"
+              className="w-full max-w-xs sm:max-w-md"
             />
           </div>
-          <div className="flex-1 text-center ">
-            <h3 className="italic text-5xl leading-tight md:text-5xl font-regular  mb-5 text-[#2E7D32]">
-              Send off your clothes{" "}
-            </h3>
-            <p className="text-3xl text-gray-700">
-              Send your clothes to our partnered charities to give them a 2nd
-              life
-            </p>
+          <div className="flex-1 flex items-center justify-center text-center py-12 sm:py-16 md:py-20 px-4">
+            <div className="max-w-md">
+              <h3 className="italic text-2xl sm:text-3xl md:text-3xl lg:text-4xl leading-tight font-regular mb-3 sm:mb-5 text-[#2E7D32]">
+                Send off your clothes{" "}
+              </h3>
+              <p className="text-lg sm:text-xl md:text-xl text-gray-700">
+                Send your clothes to our partnered charities to give them a 2nd
+                life
+              </p>
+            </div>
           </div>
         </div>
+
         <div className="flex flex-col md:flex-row items-center justify-center">
-          <div className="flex-1 text-center ">
-            <h3 className="italic text-5xl leading-tight md:text-5xl font-regular  mb-5 text-[#2E7D32]">
-              Track Your Impact
-            </h3>
-            <p className="text-3xl text-gray-700">
-              Take a few pictures of your clothes so charities know the
-              condition of your clothing
-            </p>
+          <div className="flex-1 flex items-center justify-center text-center py-12 sm:py-16 md:py-20 px-4 order-2 md:order-1">
+            <div className="max-w-md">
+              <h3 className="italic text-2xl sm:text-3xl md:text-3xl lg:text-4xl leading-tight font-regular mb-3 sm:mb-5 text-[#2E7D32]">
+                Track Your Impact
+              </h3>
+              <p className="text-lg sm:text-xl md:text-xl text-gray-700">
+                Take a few pictures of your clothes so charities know the
+                condition of your clothing
+              </p>
+            </div>
           </div>
-          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-20">
+          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center py-12 sm:py-16 md:py-20 px-4 order-1 md:order-2">
             <Image
               src="/illustrations/step4.svg"
-              alt="Step 1"
+              alt="Step 4"
               width={500}
               height={300}
-              className="mx-auto"
+              className="w-full max-w-xs sm:max-w-md"
             />
           </div>
         </div>
-        <div className="w-full text-white py-20 text-center flex flex-col items-center justify-center">
-          <h2 className="text-3xl font-medium italic mb-10 text-[#2E7D32]">
+
+        <div className="w-full text-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4">
+          <h2 className="text-2xl sm:text-3xl font-medium italic mb-6 sm:mb-10 text-[#2E7D32]">
             Ready to Sustain Tomorrow?
           </h2>
-          <button className="bg-[#2E7D32] px-12 py-4 rounded-lg text-2xl  font-regular hover:bg-green-800 transition mb-10">
+          <button className="bg-[#2E7D32] px-8 sm:px-12 py-3 sm:py-4 rounded-lg text-xl sm:text-2xl font-regular hover:bg-green-800 transition mb-6 sm:mb-10">
             Give Today
           </button>
-          <p className="text-[#2E7D32] italic text-2xl font-medium mb-5">
+          <p className="text-[#2E7D32] italic text-xl sm:text-2xl font-medium mb-3 sm:mb-5">
             Are you a Charity?
           </p>
           <Link
             href="auth/charity-application"
-            className="bg-[#C9DECA] rounded-lg border-2 border-[#2E7D32] font-medium text-[#2E7D32] px-8 py-4 hover:bg-[#A7C7AD] transition"
+            className="bg-[#C9DECA] rounded-lg border-2 border-[#2E7D32] font-medium text-[#2E7D32] px-6 sm:px-8 py-3 sm:py-4 hover:bg-[#A7C7AD] transition"
           >
             Click Here!
           </Link>
@@ -168,14 +267,14 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section>
+      <section id="about">
         <div className="flex flex-col md:flex-row items-stretch justify-center">
-          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center flex-col py-20">
-            <p className="font-kalam text-5xl mb-10 ">
+          <div className="flex-1 bg-[#C9DECA] flex justify-center items-center flex-col py-12 sm:py-16 md:py-20 px-4 sm:px-8">
+            <p className="font-kalam text-3xl sm:text-4xl md:text-5xl mb-6 sm:mb-10">
               About <span className="text-[#2E7D32]">S</span>ustain
               <span className="text-[#2E7D32]">W</span>ear
             </p>
-            <div className="max-w-[600px] md:text-left space-y-6 ml-10 text-lg leading-relaxed text-gray-800">
+            <div className="max-w-[600px] text-left space-y-4 sm:space-y-6 text-base sm:text-lg leading-relaxed text-gray-800 px-4">
               <p>
                 SustainWear is a smart clothing donation platform that connects
                 donors and charities to make giving back simpler, smarter, and
@@ -195,7 +294,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <div className="flex-1 relative min-h-[60vh] md:min-h-[500px]">
+          <div className="flex-1 relative min-h-[300px] sm:min-h-[400px] md:min-h-[500px]">
             <Image
               src="/illustrations/eye-pic.jpg"
               alt="About SustainWear"
@@ -208,18 +307,20 @@ export default function HomePage() {
       </section>
 
       {/* Contact Us */}
-      <section>
-        <div className="w-full bg-white py-20 text-center flex flex-col items-center justify-center">
-          <p className="font-medium text-3xl">
+      <section id="contact">
+        <div className="w-full bg-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4">
+          <p className="font-medium text-2xl sm:text-3xl mb-6 sm:mb-8">
             Have any questions?{" "}
             <span className="italic text-[#2E7D32]">Contact Us</span>
           </p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-12 mt-10 w-full max-w-6xl">
-            <div className="flex-1 w-full md:w-1/2">
-              {" "}
-              <form className="space-y-6">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 mt-6 sm:mt-10 w-full max-w-6xl">
+            <div className="flex-1 w-full">
+              <div className="space-y-4 sm:space-y-6">
                 <div>
-                  <label htmlFor="name" className="block font-medium mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block font-medium mb-2 text-left"
+                  >
                     Name
                   </label>
                   <input
@@ -231,7 +332,10 @@ export default function HomePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block font-medium mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block font-medium mb-2 text-left"
+                  >
                     Email
                   </label>
                   <input
@@ -243,7 +347,10 @@ export default function HomePage() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block font-medium mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block font-medium mb-2 text-left"
+                  >
                     Message
                   </label>
                   <textarea
@@ -251,18 +358,18 @@ export default function HomePage() {
                     placeholder="Tell us how you'd like to get involved"
                     rows={4}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
-                  ></textarea>
+                  />
                 </div>
 
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   className="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1e5723] transition"
                 >
                   Submit
                 </button>
-              </form>
+              </div>
             </div>
-            <div className="flex-1 w-full md:w-1/2 flex justify-center items-center relative min-h-[400px]">
+            <div className="flex-1 w-full hidden md:flex justify-center items-center relative min-h-[400px]">
               <Image
                 src="/illustrations/contact-us.svg"
                 alt="About SustainWear"

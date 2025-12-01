@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { User } from "lucide-react";
+import { User, Menu, X } from "lucide-react";
 import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
-
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -31,6 +30,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [apps, setApps] = useState<CharityApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const router = useRouter();
 
@@ -50,20 +50,46 @@ export default function AdminPage() {
   }, []);
 
   function handleSignOut() {
-    router.push("/"); // redirect to Landing page for Logout function.
+    router.push("/");
+  }
+
+  function handleTabChange(tab: TabName) {
+    setActiveTab(tab);
+    setMobileMenuOpen(false);
   }
 
   return (
     <div className="flex min-h-screen bg-white relative">
+      {/* Mobile hamburger menu - positioned at top right to avoid overlapping heading */}
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        className="lg:hidden fixed top-4 right-4 z-50 bg-green-700 text-white p-2 rounded-lg shadow-lg"
+        aria-label="Toggle menu"
+      >
+        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Mobile menu backdrop */}
+      {mobileMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/40 z-30"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
       {/* SIDEBAR */}
-      <aside className="bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen">
+      <aside
+        className={`bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen z-40 transition-transform duration-300 ease-in-out
+          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
+      >
         <div className="bg-white px-6 py-6">
           <h1 className="text-3xl font-[Kalam] font-bold">
             <span className="text-green-600">S</span>ustain
             <span className="text-green-600">W</span>ear
           </h1>
           <p className="text-xs text-gray-600">
-            Give Today. <span className="text-green-600">Sustain Tomorrow.</span>
+            Give Today.{" "}
+            <span className="text-green-600">Sustain Tomorrow.</span>
           </p>
         </div>
 
@@ -71,7 +97,7 @@ export default function AdminPage() {
           {TABS.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => handleTabChange(tab)}
               className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${
                 activeTab === tab
                   ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
@@ -97,16 +123,16 @@ export default function AdminPage() {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="ml-64 p-10 flex-1 bg-white min-h-screen">
-        <div className="flex justify-between mb-6">
+      <main className="ml-0 lg:ml-64 p-4 sm:p-6 md:p-10 flex-1 bg-white min-h-screen w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
-            <h2 className="text-3xl font-semibold">
+            <h2 className="text-2xl md:text-3xl font-semibold">
               {activeTab === "Home" && "Dashboard Overview"}
               {activeTab === "Requests" && "Charity Requests"}
               {activeTab === "Inventory" && "Inventory"}
               {activeTab === "Impact" && "Impact & Reports"}
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-xs sm:text-sm text-gray-500">
               Welcome back, Admin. Manage your SustainWear from here.
             </p>
           </div>
@@ -119,16 +145,12 @@ export default function AdminPage() {
         {activeTab === "Home" && <HomeTab />}
 
         {activeTab === "Requests" && (
-        <RequestsTab apps={apps} loading={loading} />
+          <RequestsTab apps={apps} loading={loading} />
         )}
 
-        {activeTab === "Inventory" && (
-          <PlaceholderTab title="Inventory" />
-        )}
+        {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
 
-        {activeTab === "Impact" && (
-          <PlaceholderTab title="Impact & Reports" />
-        )}
+        {activeTab === "Impact" && <PlaceholderTab title="Impact & Reports" />}
       </main>
     </div>
   );
@@ -139,8 +161,12 @@ export default function AdminPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-1">
-      <label className="font-semibold">{label}</label>
-      <input className="border px-2 py-1 rounded" readOnly value={value} />
+      <label className="font-semibold text-sm">{label}</label>
+      <input
+        className="border px-2 py-1 rounded text-sm"
+        readOnly
+        value={value}
+      />
     </div>
   );
 }
@@ -168,7 +194,6 @@ function RequestsTab({
   }
 
   async function handleDecision(action: "APPROVE" | "DENY") {
-
     if (!selected) return;
 
     try {
@@ -185,7 +210,7 @@ function RequestsTab({
 
       if (!res.ok) throw new Error();
 
-      window.location.reload(); // can later be replaced with state update
+      window.location.reload();
     } catch (err) {
       alert("Error updating application");
     } finally {
@@ -195,8 +220,8 @@ function RequestsTab({
 
   return (
     <>
-      <div className="border rounded-lg shadow-md flex flex-col flex-1">
-        <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-b">
+      <div className="border rounded-lg shadow-md flex flex-col flex-1 overflow-hidden">
+        <div className="bg-green-100 px-3 sm:px-4 py-2 sm:py-3 font-semibold text-base sm:text-lg border-b">
           Charity Application Requests
         </div>
 
@@ -208,151 +233,160 @@ function RequestsTab({
               No applications found yet.
             </div>
           ) : (
-            <table className="w-full">
-              <thead className="bg-green-50 border-b">
-                <tr>
-                  <th className="p-3 text-left">Organisation</th>
-                  <th className="p-3 text-left">Contact Name</th>
-                  <th className="p-3 text-left">Email</th>
-                  <th className="p-3 text-center">Status</th>
-                  <th className="p-3 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {apps.map((app) => (
-                  <tr key={app.application_id} className="border-b">
-                    <td className="p-3">{app.org_name}</td>
-                    <td className="p-3">{app.contact_name}</td>
-                    <td className="p-3">{app.contact_email}</td>
-                    <td className="p-3 text-center">{app.status}</td>
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => openModal(app)}
-                        className="bg-green-600 text-white px-4 py-1 rounded cursor-pointer
-                                   hover:bg-green-700 transition-colors duration-200"
-                      >
-                        View
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[640px]">
+                <thead className="bg-green-50 border-b">
+                  <tr>
+                    <th className="p-2 sm:p-3 text-left text-sm">
+                      Organisation
+                    </th>
+                    <th className="p-2 sm:p-3 text-left text-sm">
+                      Contact Name
+                    </th>
+                    <th className="p-2 sm:p-3 text-left text-sm">Email</th>
+                    <th className="p-2 sm:p-3 text-center text-sm">Status</th>
+                    <th className="p-2 sm:p-3 text-center text-sm">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {apps.map((app) => (
+                    <tr key={app.application_id} className="border-b">
+                      <td className="p-2 sm:p-3 text-sm">{app.org_name}</td>
+                      <td className="p-2 sm:p-3 text-sm">{app.contact_name}</td>
+                      <td className="p-2 sm:p-3 text-sm break-all">
+                        {app.contact_email}
+                      </td>
+                      <td className="p-2 sm:p-3 text-center text-sm">
+                        {app.status}
+                      </td>
+                      <td className="p-2 sm:p-3 text-center">
+                        <button
+                          onClick={() => openModal(app)}
+                          className="bg-green-600 text-white px-3 sm:px-4 py-1 rounded cursor-pointer text-sm
+                                     hover:bg-green-700 transition-colors duration-200"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>
 
-      {/* MODAL, now owned by RequestsTab */}
+      {/* MODAL */}
       {modalOpen && selected && (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/40 z-40"
-        onClick={closeModal}
-      />
-      {/* Modal */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-        <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100">
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 bg-green-50 border-b rounded-xl">
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                Charity Application
-              </h3>
-              <p className="text-sm text-gray-600">
-                {selected.org_name}
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-xs px-3 py-1 rounded-full bg-gray-100 text-gray-700 uppercase tracking-wide">
-                {selected.status}
-              </span>
-              <button
-                onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 text-xl leading-none cursor-pointer"
-                aria-label="Close"
-              >
-                ×
-              </button>
+        <>
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={closeModal}
+          />
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100 max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-green-50 border-b rounded-t-xl">
+                <div>
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                    Charity Application
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    {selected.org_name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <span className="text-xs px-2 sm:px-3 py-1 rounded-full bg-gray-100 text-gray-700 uppercase tracking-wide">
+                    {selected.status}
+                  </span>
+                  <button
+                    onClick={closeModal}
+                    className="text-gray-500 hover:text-gray-700 text-2xl leading-none cursor-pointer"
+                    aria-label="Close"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+
+              <div className="px-4 sm:px-6 py-4 sm:py-5 space-y-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <Field label="Organisation" value={selected.org_name} />
+                  <Field
+                    label="Charity Number"
+                    value={selected.charity_number || "N/A"}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <Field label="Contact Name" value={selected.contact_name} />
+                  <Field label="Contact Email" value={selected.contact_email} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <Field
+                    label="Contact Number"
+                    value={selected.contact_number}
+                  />
+                  <Field label="Website" value={selected.website || "N/A"} />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="font-semibold text-sm">
+                    Organisation Address
+                  </label>
+                  <textarea
+                    className="border rounded px-2 py-1 text-sm bg-gray-50"
+                    readOnly
+                    rows={3}
+                    value={selected.org_address}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 border-t bg-gray-50 rounded-b-xl">
+                <button
+                  onClick={closeModal}
+                  className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer text-center sm:text-left"
+                >
+                  Close
+                </button>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
+                  <button
+                    disabled={saving || isLocked}
+                    onClick={() => handleDecision("DENY")}
+                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded 
+                    hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                  >
+                    Deny
+                  </button>
+                  <button
+                    disabled={saving || isLocked}
+                    onClick={() => handleDecision("APPROVE")}
+                    className="text-sm bg-green-600 text-white px-5 py-2 rounded 
+                    hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Body */}
-          <div className="px-6 py-5 space-y-4 text-sm">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Organisation" value={selected.org_name} />
-              <Field label="Charity Number" value={selected.charity_number || "N/A"} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Contact Name" value={selected.contact_name} />
-              <Field label="Contact Email" value={selected.contact_email} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Contact Number" value={selected.contact_number} />
-              <Field label="Website" value={selected.website || "N/A"} />
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <label className="font-semibold text-sm">Organisation Address</label>
-              <textarea
-                className="border rounded px-2 py-1 text-sm bg-gray-50"
-                readOnly
-                rows={3}
-                value={selected.org_address}
-              />
-            </div>
-          </div>
-
-          {/* Footer actions */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-3 px-6 py-4 border-t bg-gray-50 rounded-xl">
-            
-            <button
-              onClick={closeModal}
-              className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer"
-            >
-              Close
-            </button>
-            <div className="flex gap-3">
-          
-           <button
-              disabled={saving || isLocked}
-              onClick={() => handleDecision("DENY")}
-              className={`text-sm border border-red-500 text-red-600 px-5 py-2 rounded 
-              hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
-            >
-              Deny
-            </button>
-            <button
-              disabled={saving || isLocked}
-              onClick={() => handleDecision("APPROVE")}
-              className={`text-sm bg-green-600 text-white px-5 py-2 rounded 
-              hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer`}
-            >
-              Approve
-            </button>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )}
-
+        </>
+      )}
     </>
   );
 }
 
-
 function HomeTab() {
   return (
-    <div className="border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
-      <h3 className="text-lg font-semibold text-gray-700 mb-2">
+    <div className="border border-dashed border-gray-300 rounded-xl p-6 sm:p-8 text-center text-gray-500">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
         Dashboard Overview (Coming Soon)
       </h3>
-      <p className="text-sm">
-        Here you can later show stats like total charities, donations, and impact.
+      <p className="text-xs sm:text-sm">
+        Here you can later show stats like total charities, donations, and
+        impact.
       </p>
     </div>
   );
@@ -360,10 +394,13 @@ function HomeTab() {
 
 function PlaceholderTab({ title }: { title: string }) {
   return (
-    <div className="border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
-      <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-      <p className="text-sm">
-        This section is not built yet. You can describe what will go here in your documentation.
+    <div className="border border-dashed border-gray-300 rounded-xl p-6 sm:p-8 text-center text-gray-500">
+      <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
+        {title}
+      </h3>
+      <p className="text-xs sm:text-sm">
+        This section is not built yet. You can describe what will go here in
+        your documentation.
       </p>
     </div>
   );
