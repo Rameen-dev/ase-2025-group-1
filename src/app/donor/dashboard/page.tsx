@@ -247,6 +247,9 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       alert("Error deleting donation request");
     }
   }
+
+  //In create donation request modal, when pressing "Add item" button
+  //Insert new row
   function addItemRow() {
     if (items.length >= 5) return;
 
@@ -260,6 +263,8 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       },
     ]);
   }
+
+
   function updateItem(
     id: number,
     field: "type" | "size" | "condition",
@@ -271,6 +276,8 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
       )
     );
   }
+
+
   function removeItemRow(id: number) {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }
