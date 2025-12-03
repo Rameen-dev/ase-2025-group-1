@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
+import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -329,51 +330,13 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
         )
       }
 
-      {viewOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg">
-            <h2 className="text-lg font-semibold mb-3">
-              Items in {viewRequest?.title}
-            </h2>
-
-            {viewLoading ? (
-              <p className="text-sm text-gray-500">Loading items...</p>
-            ) : viewItems.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                No clothing items found for this request.
-              </p>
-            ) : (
-              <table className="w-full text-sm border border-gray-200 rounded-md overflow-hidden">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="p-2 text-left">Type</th>
-                    <th className="p-2 text-left">Size</th>
-                    <th className="p-2 text-left">Condition</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {viewItems.map((item) => (
-                    <tr key={item.clothing_id} className="border-t">
-                      <td className="p-2">{item.type}</td>
-                      <td className="p-2">{item.size}</td>
-                      <td className="p-2">{item.condition}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                className="px-3 py-1 border rounded-md text-sm"
-                onClick={() => setViewOpen(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ViewDonationItemsModal
+        isOpen={viewOpen}
+        onClose={() => setViewOpen(false)}
+        requestTitle={viewRequest?.title}
+        loading={viewLoading}
+        items={viewItems}
+      />
 
 
     </div >
