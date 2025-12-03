@@ -1,15 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";  //ID used for React list rendering, not shown in front end
 import uploadImageToCloud from "@/lib/cloud/cloudClient";
 
-
+//represents the clothing item row 
 type ItemState = {
+  //unique ID for React list rendering
   id: string;
+
+  //dropdowns which represent the clothing item (type, size, condition)
   type: string;
   size: string;
   condition: string;
+
+  //selected files for front and back of the clothing item
+  //URLs are saved in the database, not shown in the donation request
   frontFile?: File | null;
   backFile?: File | null;
   front_image_url?: string | null;
@@ -25,9 +31,12 @@ export default function CreateDonationRequestModal({
   onClose: () => void;
   onCreated: (req: unknown) => void;
 }) {
+  //title of the donation request
   const [title, setTitle] = useState("");
+  //used for disabling submit button and showing "Loading" to user
   const [creating, setCreating] = useState(false);
 
+  //list of clothing item
   const [items, setItems] = useState<ItemState[]>([
     {
       id: uuidv4(),
@@ -39,7 +48,11 @@ export default function CreateDonationRequestModal({
     },
   ]);
 
+  //function used in "Add item" button
+  //Creating a new row
   function addItemRow() {
+
+    //Ensures maximum of 5 items per donation request
     if (items.length >= 5) {
       alert("You can only add up to 5 items per donation request.");
       return;
@@ -48,8 +61,8 @@ export default function CreateDonationRequestModal({
     setItems((prev) => [
       ...prev,
       {
-        id: uuidv4(),
-        type: "JACKET",
+        id: uuidv4(), //random unique ID
+        type: "JACKET",  //default selections upon row creation, user is free to change them
         size: "M",
         condition: "GOOD",
         frontFile: null,
@@ -60,6 +73,7 @@ export default function CreateDonationRequestModal({
     ]);
   }
 
+  //removes item row using it's ID
   function removeItemRow(id: string) {
     setItems((prev) => prev.filter((it) => it.id !== id));
   }
@@ -70,6 +84,7 @@ export default function CreateDonationRequestModal({
     );
   }
 
+  //called when user uploads a file in one of the two inputs Front/Back
   function handleFileChange(
     e: React.ChangeEvent<HTMLInputElement>,
     id: string,
@@ -84,20 +99,24 @@ export default function CreateDonationRequestModal({
     }
   }
 
+  //function used in "Create" button in donation request
+  //Upon clicking Create, send images to the cloud and data to the API
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
 
+    //ensures user enters a title
     if (!title.trim()) return alert("Title is required.");
 
     try {
       setCreating(true);
 
-      // Upload all item images
       const itemsWithUrls = await Promise.all(
         items.map(async (item) => {
           let frontUrl = null;
           let backUrl = null;
 
+          //calls function in cloudClient.ts in lib
+          //uploads file to cloud and returns a URL
           if (item.frontFile)
             frontUrl = await uploadImageToCloud(item.frontFile);
           if (item.backFile)
@@ -113,6 +132,8 @@ export default function CreateDonationRequestModal({
         })
       );
 
+      //calls API
+      //sends final data (title and items with the URLs) to API
       const res = await fetch("/api/donation-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,9 +145,10 @@ export default function CreateDonationRequestModal({
 
       if (!res.ok) throw new Error("Failed to create request");
 
+      // parse response and notify parent component
       const created = await res.json();
       onCreated(created);
-      onClose();
+      onClose(); //close modal on success
     } catch (err) {
       alert("Error creating donation request");
       console.error(err);
@@ -137,6 +159,7 @@ export default function CreateDonationRequestModal({
 
   if (!isOpen) return null;
 
+  //modal content
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
@@ -211,30 +234,34 @@ export default function CreateDonationRequestModal({
                     </select>
                   </div>
 
-                  {/* FRONT IMAGE */}
-                  <div className="flex flex-col gap-1">
-                    <label className="block text-xs mb-1">Front image</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleFileChange(e, item.id, "front")
-                      }
-                      className="text-xs"
-                    />
+                  <div className="flex flex-col gap-1 min-w-[100px]">
+
+                    <label className="inline-flex items-center justify-center px-3 py-2 max-h-10 text-xs border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                      Front
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleFileChange(e, item.id, "front")
+                        }
+                        className="hidden"
+                      />
+                    </label>
                   </div>
 
-                  {/* BACK IMAGE */}
-                  <div className="flex flex-col gap-1">
-                    <label className="block text-xs mb-1">Back image</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleFileChange(e, item.id, "back")
-                      }
-                      className="text-xs"
-                    />
+                  <div className="flex flex-col gap-1 min-w-[100px]">
+
+                    <label className="inline-flex items-center justify-center px-3 py-2 max-h-10 text-xs border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer">
+                      Back
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleFileChange(e, item.id, "back")
+                        }
+                        className="hidden"
+                      />
+                    </label>
                   </div>
 
                   <button
