@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+//fetches all clothing items inside a donation request
+//used in the view donation request modal
 export async function GET(
     req: Request,
     context: { params: Promise<{ id: string }> }
@@ -8,6 +10,7 @@ export async function GET(
     const { id } = await context.params;
     const numericId = Number(id);
 
+    //ensure ID is a valid number
     if (Number.isNaN(numericId)) {
         return NextResponse.json(
             { error: "Invalid id" },
@@ -15,6 +18,8 @@ export async function GET(
         );
     }
 
+    //fetch clothing items linked to the donation request
+    //only selected the needed fields about the item to display to user
     try {
         const items = await prisma.clothingItems.findMany({
             where: { donation_request_id: numericId },
