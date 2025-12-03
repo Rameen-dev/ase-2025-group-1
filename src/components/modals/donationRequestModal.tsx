@@ -35,6 +35,8 @@ export default function CreateDonationRequestModal({
   const [title, setTitle] = useState("");
   //used for disabling submit button and showing "Loading" to user
   const [creating, setCreating] = useState(false);
+  //uploaded boolean, to show the user they have uploaded a file successfully
+  const [uploaded, setUploaded] = useState<Record<string, boolean>>({});
 
   //list of clothing item
   const [items, setItems] = useState<ItemState[]>([
@@ -92,11 +94,18 @@ export default function CreateDonationRequestModal({
   ) {
     const file = e.target.files?.[0] ?? null;
 
+    //update the correct image field, depening on whether user uploaded a front or back image
     if (which === "front") {
       updateItem(id, "frontFile", file);
     } else {
       updateItem(id, "backFile", file);
     }
+
+    //when uploading, set value to true
+    setUploaded(prev => ({
+      ...prev,
+      [`${id}-${which}`]: true,
+    }));
   }
 
   //function used in "Create" button in donation request
@@ -236,6 +245,11 @@ export default function CreateDonationRequestModal({
 
                   <div className="flex flex-col gap-1 min-w-[100px]">
 
+                    {uploaded[`${item.id}-front`] && (
+                      <span className="text-[10px] text-green-600 font-medium">
+                        File uploaded
+                      </span>
+                    )}
                     <label className="inline-flex items-center justify-center px-3 py-2 max-h-10 text-xs border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer">
                       Front
                       <input
@@ -251,6 +265,11 @@ export default function CreateDonationRequestModal({
 
                   <div className="flex flex-col gap-1 min-w-[100px]">
 
+                    {uploaded[`${item.id}-back`] && (
+                      <span className="text-[10px] text-green-600 font-medium">
+                        File uploaded
+                      </span>
+                    )}
                     <label className="inline-flex items-center justify-center px-3 py-2 max-h-10 text-xs border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 cursor-pointer">
                       Back
                       <input
