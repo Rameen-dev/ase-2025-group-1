@@ -5,14 +5,22 @@ import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
+import DeleteDonationRequestModal from "@/components/modals/donationDeleteMessageModal";
 
+// base URL for API requests, allowing the client to switch from dev/staging/prod
+// if missing, it falls back to " ", which prevents code to crash
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
+// sidebar tabs
 type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
+// status of donation request (Default: Pending)
 type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
+// defines the structure of a donation request returned by the API.
+// the backend also includes `_count.clothing_items`, which tells us how many
+// clothing items are linked to this request so the dashboard can display it.
 interface DonationRequest {
   donation_request_id: number;
   title: string;
@@ -22,6 +30,9 @@ interface DonationRequest {
   };
 }
 
+// properties required by the Donations tab/component. Includes the list of
+// donation requests to display, loading state, and callbacks that the parent
+// provides for handling create/delete actions.
 type DonationsProps = {
   title: string;
   apps: DonationRequest[];
@@ -31,31 +42,33 @@ type DonationsProps = {
 };
 
 export default function DonorDashboard() {
-  const [activeTab, setActiveTab] = useState<TabName>("Home");
-  const [apps, setApps] = useState<DonationRequest[]>([]);
+  const [activeTab, setActiveTab] = useState<TabName>("Home"); //tracks which dashboard is currently selected, always "Home" by default
+  const [apps, setApps] = useState<DonationRequest[]>([]); //holds list of donation requests fetched by the API
   const [loading, setLoading] = useState(true);
 
 
   const router = useRouter();
 
+  //fetch all donation requests
   useEffect(() => {
     async function load() {
       try {
-        setLoading(true);
+        setLoading(true); //while fetching show loading state
         const res = await fetch(`${API_BASE}/api/donation-requests`);
         const data = await res.json();
-        setApps(data);
+        setApps(data); //stores fetched donation requests in "apps"
       } finally {
-        setLoading(false);
+        setLoading(false); //stop loading state
       }
     }
     load();
   }, []);
 
   function handleSignOut() {
-    router.push("/"); // redirect to Landing page for Logout function.
+    router.push("/"); // redirect user to landing page when logging out
   }
 
+  //sets title of the header bar based on active tab
   const headerTitle =
     activeTab === "Home"
       ? "Dashboard Overview"
@@ -66,6 +79,7 @@ export default function DonorDashboard() {
           : "Impact & Reports";
 
   return (
+    //dashboard lauout component inside components/UI
     <DashboardLayout
       tabs={TABS}
       activeTab={activeTab}
@@ -191,11 +205,9 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
   return (
     <div className="flex flex-col h-full">
 
-      {/* TOP HALF: TABLE */}
+      {/* top row of the table */}
       <div className="h-[400px] mb-4">
         <div className="border rounded-lg shadow-md flex flex-col h-full">
-
-          {/* HEADER WITH BUTTON */}
           <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-1 flex items-center justify-between">
             <span>{title}</span>
             <button
@@ -206,7 +218,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
             </button>
           </div>
 
-          {/* TABLE */}
+          {/* donation reqeusts table */}
           <div className="flex-1 overflow-auto">
             <table className="w-full">
               <thead>
@@ -234,11 +246,9 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                         {app._count?.clothing_items ?? 0}
                       </td>
                       <td className="p-3 text-center">{app.status}</td>
-
-                      {/* ACTION BUTTON */}
                       <td className="p-3 text-center flex justify-center gap-2">
 
-                        {/* VIEW button always visible */}
+                        {/* view button to display items in the donation */}
                         <button
                           onClick={() => handleOpenView(app)}
                           className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
@@ -246,7 +256,8 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                           View
                         </button>
 
-                        {/* REMOVE button only when PENDING */}
+                        {/* if donation request is in pending, display a remove button
+                            when donation request is accepted, remove button doesn't show*/}
                         {app.status === "PENDING" && (
                           <button
                             onClick={() => {
@@ -276,7 +287,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
         </div>
       </div>
 
-      {/* BOTTOM HALF: TWO BOXES */}
+      {/* bottom half of the dashboard */}
       <div className="flex-1 flex gap-4">
 
         <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
@@ -289,47 +300,14 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       </div>
 
+      {/* create donation request modal */}
       <CreateDonationRequestModal
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
         onCreated={(req) => onCreated(req)}
       />
 
-      {
-        deleteOpen && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-              <h2 className="text-lg font-semibold mb-2 text-red-600">
-                Remove Donation Request
-              </h2>
-
-              <p className="text-sm text-gray-700 mb-4">
-                Are you sure you want to delete{" "}
-                <strong>{itemToDelete?.title}</strong>?
-                <br />
-                This action cannot be undone.
-              </p>
-
-              <div className="flex justify-end gap-2">
-                <button
-                  className="px-3 py-1 border rounded-md text-sm"
-                  onClick={() => setDeleteOpen(false)}
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="px-3 py-1 bg-red-600 text-white rounded-md text-sm hover:bg-red-700"
-                  onClick={handleDeleteConfirm}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        )
-      }
-
+      {/* displays items of a donation request */}
       <ViewDonationItemsModal
         isOpen={viewOpen}
         onClose={() => setViewOpen(false)}
@@ -338,7 +316,13 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
         items={viewItems}
       />
 
-
+      {/* confirm delete donation message */}
+      <DeleteDonationRequestModal
+        isOpen={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title={itemToDelete?.title}
+      />
     </div >
   );
 }
