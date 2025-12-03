@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
+import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -10,16 +11,6 @@ type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
 type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
-type ClothingType = "JACKET" | "PANTS" | "SHIRT" | "SHOES" | "OTHER";
-type ClothingSize = "XS" | "S" | "M" | "L" | "XL";
-type ClothingCondition = "NEW" | "GOOD" | "WORN";
-
-type ClothingItemRow = {
-  id: number;
-  type: ClothingType;
-  size: ClothingSize;
-  condition: ClothingCondition;
-};
 
 interface DonationRequest {
   donation_request_id: number;
@@ -42,7 +33,6 @@ export default function DonorDashboard() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [apps, setApps] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
   const router = useRouter();
@@ -146,17 +136,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
   const [viewItems, setViewItems] = useState<ClothingItemView[]>([]);
 
   const [createOpen, setCreateOpen] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [creating, setCreating] = useState(false);
-
-  const [items, setItems] = useState<ClothingItemRow[]>([
-    {
-      id: Date.now(),
-      type: "JACKET",
-      size: "M",
-      condition: "GOOD",
-    },
-  ]);
 
   type ClothingItemView = {
     clothing_id: number;
@@ -165,46 +144,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     condition: string;
   };
 
-  async function handleCreate(e: React.FormEvent) {
-    e.preventDefault();
-    if (!newTitle.trim()) return;
-    if (items.length === 0) return;
-
-    try {
-      setCreating(true);
-
-      const res = await fetch(`${API_BASE}/api/donation-requests`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: newTitle,
-          items: items.map(({ id, ...rest }) => rest), // strip frontend-only id
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed to create");
-
-      const created: DonationRequest = await res.json();
-
-      onCreated(created); // updates the Donation Requests table (title, status)
-
-      // reset form
-      setNewTitle("");
-      setItems([
-        {
-          id: Date.now(),
-          type: "JACKET",
-          size: "M",
-          condition: "GOOD",
-        },
-      ]);
-      setCreateOpen(false);
-    } catch (err) {
-      alert("Error creating donation request");
-    } finally {
-      setCreating(false);
-    }
-  }
 
   async function handleOpenView(app: DonationRequest) {
     setViewRequest(app);
@@ -248,39 +187,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     }
   }
 
-  //In create donation request modal, when pressing "Add item" button
-  //Insert new row
-  function addItemRow() {
-    if (items.length >= 5) return;
-
-    setItems(prev => [
-      ...prev,
-      {
-        id: Date.now() + Math.random(), // just to make id unique
-        type: "JACKET",
-        size: "M",
-        condition: "GOOD",
-      },
-    ]);
-  }
-
-
-  function updateItem(
-    id: number,
-    field: "type" | "size" | "condition",
-    value: string
-  ) {
-    setItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, [field]: value } : item
-      )
-    );
-  }
-
-
-  function removeItemRow(id: number) {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  }
   return (
     <div className="flex flex-col h-full">
 
@@ -382,134 +288,11 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       </div>
 
-      {/* CREATE MODAL */}
-      {
-        createOpen && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
-              <h3 className="text-lg font-semibold mb-4">
-                Create Donation Request
-              </h3>
-
-              <form onSubmit={handleCreate} className="space-y-4">
-                {/* TITLE - full width */}
-                <div>
-                  <label className="block text-sm mb-1">Title</label>
-                  <input
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full border rounded-md px-3 py-2 text-sm"
-                    placeholder="e.g. Winter jackets for kids"
-                  />
-                </div>
-
-                {/* ITEMS */}
-                <div className="mt-2">
-                  <label className="block text-sm mb-2">Items</label>
-
-                  <div className="space-y-3">
-                    {items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex flex-col md:flex-row gap-4 items-end"
-                      >
-                        {/* Type */}
-                        <div className="flex-1">
-                          <label className="block text-xs mb-1">Type</label>
-                          <select
-                            value={item.type}
-                            onChange={(e) =>
-                              updateItem(item.id, "type", e.target.value)
-                            }
-                            className="border rounded-md px-3 py-2 text-sm bg-white"
-                          >
-                            <option value="JACKET">Jacket</option>
-                            <option value="PANTS">Pants</option>
-                            <option value="SHIRT">Shirt</option>
-                            <option value="SHOES">Shoes</option>
-                            <option value="OTHER">Other</option>
-                          </select>
-                        </div>
-
-                        {/* Size */}
-                        <div className="flex-1">
-                          <label className="block text-xs mb-1">Size</label>
-                          <select
-                            value={item.size}
-                            onChange={(e) =>
-                              updateItem(item.id, "size", e.target.value)
-                            }
-                            className="border rounded-md px-3 py-2 text-sm bg-white"
-                          >
-                            <option value="XS">XS</option>
-                            <option value="S">S</option>
-                            <option value="M">M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                          </select>
-                        </div>
-
-                        {/* Condition */}
-                        <div className="flex-1">
-                          <label className="block text-xs mb-1">Condition</label>
-                          <select
-                            value={item.condition}
-                            onChange={(e) =>
-                              updateItem(item.id, "condition", e.target.value)
-                            }
-                            className="border rounded-md px-3 py-2 text-sm bg-white"
-                          >
-                            <option value="NEW">New</option>
-                            <option value="GOOD">Good</option>
-                            <option value="WORN">Worn</option>
-                          </select>
-                        </div>
-
-                        {/* Remove button on same row */}
-                        <button
-                          type="button"
-                          onClick={() => removeItemRow(item.id)}
-                          className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Add item button */}
-                  <button
-                    type="button"
-                    onClick={addItemRow}
-                    className="mt-3 text-sm px-3 py-1 rounded-md border border-dashed border-gray-400 hover:bg-gray-50"
-                  >
-                    + Add item
-                  </button>
-                </div>
-
-                {/* Footer buttons */}
-                <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setCreateOpen(false)}
-                    className="px-3 py-1 text-sm rounded-md border"
-                    disabled={creating}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
-                    disabled={creating}
-                  >
-                    {creating ? "Creating..." : "Create"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )
-      }
+      <CreateDonationRequestModal
+        isOpen={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onCreated={(req) => onCreated(req)}
+      />
 
       {
         deleteOpen && (

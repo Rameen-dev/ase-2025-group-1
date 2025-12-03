@@ -1,4 +1,4 @@
-export async function uploadImageToCloudinary(file: File): Promise<string> {
+export default async function uploadImageToCloud(file: File): Promise<string> {
     const form = new FormData();
     form.append("file", file);
     form.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);

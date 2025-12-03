@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { INSPECT_MAX_BYTES } from "buffer";
 
 export async function GET() {
     try {
@@ -41,7 +42,14 @@ export async function POST(req: Request) {
             );
         }
 
-
+        for (const [index, item] of items.entries()) {
+            if (!item.front_image_url || !item.back_image_url) {
+                return NextResponse.json(
+                    { error: "Clothing item at index ${index} is missing front/back image URLs" },
+                    { status: 400 }
+                );
+            }
+        }
 
 
         const userId = 14 //hardcode userId until we integrate session cookies
@@ -65,9 +73,8 @@ export async function POST(req: Request) {
                     donor_id: userId,
                     donation_id: null,
                     owned_by: null,
-                    // temp placeholder URLs until you wire image upload
-                    front_image_url: "",
-                    back_image_url: "",
+                    front_image_url: item.front_image_url,
+                    back_image_url: item.back_image_url,
                 })),
             });
 
