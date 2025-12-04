@@ -1,40 +1,30 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"; // keep this path if correct
 
+// GET /api/donation-requests/:id/items
 export async function GET(
-    req: Request,
-    context: { params: Promise<{ id: string }> }
+  req: Request,
+  { params }: { params: { id: string } }
 ) {
-    const { id } = await context.params;
-    const numericId = Number(id);
+  try {
+    const items = await prisma.clothingItems.findMany({
+      where: { donation_request_id: Number(params.id) },
+      select: {
+        clothing_id: true,
+        type: true,
+        size: true,
+        condition: true,
+        front_image_url: true, // MUST be returned
+        back_image_url: true,  // MUST be returned
+      },
+    });
 
-    if (Number.isNaN(numericId)) {
-        return NextResponse.json(
-            { error: "Invalid id" },
-            { status: 400 }
-        );
-    }
-
-    try {
-        const items = await prisma.clothingItems.findMany({
-            where: { donation_request_id: numericId },
-            select: {
-                clothing_id: true,
-                type: true,
-                size: true,
-                condition: true,
-            },
-        });
-
-        return NextResponse.json(items);
-    } catch (error) {
-        console.error(
-            "GET /api/donation-requests/[id]/items ERROR:",
-            error
-        );
-        return NextResponse.json(
-            { error: "Failed to load clothing items" },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(items);
+  } catch (error) {
+    console.error("Error loading clothing items:", error);
+    return NextResponse.json(
+      { error: "Failed to load items" },
+      { status: 500 }
+    );
+  }
 }
