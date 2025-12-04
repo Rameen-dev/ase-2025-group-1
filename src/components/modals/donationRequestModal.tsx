@@ -3,6 +3,12 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import uploadImageToCloud from "@/lib/cloud/cloudClient";
+import type { DonationRequest } from "@/types/donation";
+
+
+/* ---------------------------------------
+   TYPES
+---------------------------------------- */
 
 
 type ItemState = {
@@ -16,6 +22,9 @@ type ItemState = {
   back_image_url?: string | null;
 };
 
+/* ---------------------------------------
+   COMPONENT
+---------------------------------------- */
 export default function CreateDonationRequestModal({
   isOpen,
   onClose,
@@ -23,7 +32,9 @@ export default function CreateDonationRequestModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onCreated: (req: unknown) => void;
+
+  // FIXED: must match parent dashboard
+  onCreated: (req: DonationRequest) => void;
 }) {
   const [title, setTitle] = useState("");
   const [creating, setCreating] = useState(false);
@@ -39,6 +50,9 @@ export default function CreateDonationRequestModal({
     },
   ]);
 
+  /* ---------------------------------------
+     ITEM MODIFICATION HELPERS
+  ---------------------------------------- */
   function addItemRow() {
     if (items.length >= 5) {
       alert("You can only add up to 5 items per donation request.");
@@ -54,8 +68,6 @@ export default function CreateDonationRequestModal({
         condition: "GOOD",
         frontFile: null,
         backFile: null,
-        frontPreview: null,
-        backPreview: null,
       },
     ]);
   }
@@ -64,7 +76,7 @@ export default function CreateDonationRequestModal({
     setItems((prev) => prev.filter((it) => it.id !== id));
   }
 
-  function updateItem(id: string, field: keyof ItemState, value: unknown) {
+  function updateItem(id: string, field: keyof ItemState, value: any) {
     setItems((prev) =>
       prev.map((it) => (it.id === id ? { ...it, [field]: value } : it))
     );
@@ -77,22 +89,21 @@ export default function CreateDonationRequestModal({
   ) {
     const file = e.target.files?.[0] ?? null;
 
-    if (which === "front") {
-      updateItem(id, "frontFile", file);
-    } else {
-      updateItem(id, "backFile", file);
-    }
+    if (which === "front") updateItem(id, "frontFile", file);
+    else updateItem(id, "backFile", file);
   }
 
+  /* ---------------------------------------
+     CREATE REQUEST HANDLER
+  ---------------------------------------- */
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
-
     if (!title.trim()) return alert("Title is required.");
 
     try {
       setCreating(true);
 
-      // Upload all item images
+      // Upload images and prepare item objects
       const itemsWithUrls = await Promise.all(
         items.map(async (item) => {
           let frontUrl = null;
@@ -113,6 +124,7 @@ export default function CreateDonationRequestModal({
         })
       );
 
+      // Send to API
       const res = await fetch("/api/donation-requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -124,8 +136,11 @@ export default function CreateDonationRequestModal({
 
       if (!res.ok) throw new Error("Failed to create request");
 
-      const created = await res.json();
+      const created: DonationRequest = await res.json();
+
+      // FIX: no more unknown type
       onCreated(created);
+
       onClose();
     } catch (err) {
       alert("Error creating donation request");
@@ -137,12 +152,16 @@ export default function CreateDonationRequestModal({
 
   if (!isOpen) return null;
 
+  /* ---------------------------------------
+     MODAL UI
+  ---------------------------------------- */
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
         <h3 className="text-lg font-semibold mb-4">Create Donation Request</h3>
 
         <form onSubmit={handleCreate} className="space-y-4">
+          {/* TITLE */}
           <div>
             <label className="block text-sm mb-1">Title</label>
             <input
@@ -153,6 +172,7 @@ export default function CreateDonationRequestModal({
             />
           </div>
 
+          {/* ITEMS */}
           <div>
             <label className="block text-sm mb-2">Items</label>
 
@@ -160,15 +180,14 @@ export default function CreateDonationRequestModal({
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col md:flex-row gap-3 items-end"
+                  className="flex flex-col md:flex-row gap-3 items-end border rounded-md p-3"
                 >
+                  {/* TYPE */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Type</label>
                     <select
                       value={item.type}
-                      onChange={(e) =>
-                        updateItem(item.id, "type", e.target.value)
-                      }
+                      onChange={(e) => updateItem(item.id, "type", e.target.value)}
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
                       <option value="JACKET">Jacket</option>
@@ -179,13 +198,12 @@ export default function CreateDonationRequestModal({
                     </select>
                   </div>
 
+                  {/* SIZE */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Size</label>
                     <select
                       value={item.size}
-                      onChange={(e) =>
-                        updateItem(item.id, "size", e.target.value)
-                      }
+                      onChange={(e) => updateItem(item.id, "size", e.target.value)}
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
                       <option value="XS">XS</option>
@@ -196,6 +214,7 @@ export default function CreateDonationRequestModal({
                     </select>
                   </div>
 
+                  {/* CONDITION */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Condition</label>
                     <select
@@ -212,27 +231,23 @@ export default function CreateDonationRequestModal({
                   </div>
 
                   {/* FRONT IMAGE */}
-                  <div className="flex flex-col gap-1">
-                    <label className="block text-xs mb-1">Front image</label>
+                  <div>
+                    <label className="block text-xs mb-1">Front Image</label>
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) =>
-                        handleFileChange(e, item.id, "front")
-                      }
+                      onChange={(e) => handleFileChange(e, item.id, "front")}
                       className="text-xs"
                     />
                   </div>
 
                   {/* BACK IMAGE */}
-                  <div className="flex flex-col gap-1">
-                    <label className="block text-xs mb-1">Back image</label>
+                  <div>
+                    <label className="block text-xs mb-1">Back Image</label>
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) =>
-                        handleFileChange(e, item.id, "back")
-                      }
+                      onChange={(e) => handleFileChange(e, item.id, "back")}
                       className="text-xs"
                     />
                   </div>
@@ -253,10 +268,11 @@ export default function CreateDonationRequestModal({
               onClick={addItemRow}
               className="mt-3 text-sm px-3 py-1 rounded-md border border-dashed border-gray-400 hover:bg-gray-50"
             >
-              + Add item
+              + Add Item
             </button>
           </div>
 
+          {/* ACTION BUTTONS */}
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
@@ -265,10 +281,11 @@ export default function CreateDonationRequestModal({
             >
               Cancel
             </button>
+
             <button
               type="submit"
-              className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
               disabled={creating}
+              className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
             >
               {creating ? "Creating..." : "Create"}
             </button>
