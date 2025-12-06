@@ -55,8 +55,25 @@ export default function DonorDashboard() {
       try {
         setLoading(true); //while fetching show loading state
         const res = await fetch(`${API_BASE}/api/donation-requests`);
+
+        if (!res.ok) {
+          console.error("Failed to fetch donation requests: ", res.status);
+          setApps([]);
+          return;
+        }
+
         const data = await res.json();
+
+        if (!Array.isArray(data)) {
+
+          console.error("Expected array of donation requests, got:", data);
+          setApps([]);
+          return;
+        }
         setApps(data); //stores fetched donation requests in "apps"
+      } catch (err) {
+        console.error("Error loading donation requests:", err);
+        setApps([]);
       } finally {
         setLoading(false); //stop loading state
       }
