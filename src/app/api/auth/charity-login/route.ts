@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
+import { SessionActorType } from "@/generated/prisma";
 
 export const runtime = "nodejs"; // bcrypt needs Node
+
+function generateSessionToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -83,7 +89,21 @@ export async function POST(req: NextRequest) {
     }
 
     // 6) Success – return charity info
-    return NextResponse.json(
+    const sessionToken = generateSessionToken();
+    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+
+    await prisma.session.create({
+      data: {
+        session_token: sessionToken,
+        actor_type: SessionActorType.CHARITY,
+        charity_id: charity.charity_id,
+        expires_on: expires,
+      },
+    });
+
+
+
+    const res = NextResponse.json(
       {
         success: true,
         code: "CHARITY_LOGIN_OK",
@@ -95,6 +115,18 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 }
     );
+
+
+    res.cookies.set("session", sessionToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+
+    return res;
+
   } catch (err) {
     console.error("Charity login error:", err);
     return NextResponse.json(

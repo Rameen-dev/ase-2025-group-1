@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";
 import { sendVerificationEmail } from "@/lib/email";
+import crypto from "crypto";
+import { SessionActorType } from "@/generated/prisma";
 
 export const runtime = "nodejs"; // bcrypt requires Node.js runtime
 
@@ -9,6 +11,10 @@ export const runtime = "nodejs"; // bcrypt requires Node.js runtime
 function generateOtp() {
   const n = Math.floor(Math.random() * 10000); // 0..9999
   return n.toString().padStart(4, "0");
+}
+
+function generateSessionToken() {
+  return crypto.randomBytes(32).toString("hex");
 }
 
 export async function POST(req: NextRequest) {
@@ -139,8 +145,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 6️) If all checks pass → return success
-    return NextResponse.json(
+    const roleStr = (user.role || "").toUpperCase();
+    const actorType: SessionActorType =
+      roleStr === "ADMIN" ? SessionActorType.ADMIN : SessionActorType.DONOR;
+
+    const sessionToken = generateSessionToken();
+    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+
+    await prisma.session.create({
+      data: {
+        session_token: sessionToken,
+        actor_type: actorType,
+        user_id: user.user_id,
+        expires_on: expires,
+      },
+    });
+
+
+    const res = NextResponse.json(
       {
         success: true,
         code: "LOGIN_OK",
@@ -153,6 +175,16 @@ export async function POST(req: NextRequest) {
       },
       { status: 200 }
     );
+
+    res.cookies.set("session", sessionToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+
+    return res;
   } catch (err) {
     console.error("Login error:", err);
     return NextResponse.json(
