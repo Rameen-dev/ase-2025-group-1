@@ -2,6 +2,7 @@
 import Link from "next/link";
 
 export function SignUpButton() {
+  
   return (
     <Link
       href="/auth/signup"

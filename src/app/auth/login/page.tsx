@@ -2,25 +2,34 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 
 export default function LoginPage() {
-  const router = useRouter();
+  const router = useRouter(); // lets us navigate after login
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Handle form submit
+  // NEW: account type state
+  // "user"  = donor/admin (User table)
+  // "charity" = charities (Charities table)
+  const [accountType, setAccountType] = useState<"user" | "charity">("user");
+
+  // Handle form submit
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
 
     try {
-      // Call backend API route
-      const res = await fetch("/api/login", {
+      // Decide which backend route to call based on account type
+      const endpoint =
+        accountType === "charity" ? "/api/auth/charity-login" : "/api/login";
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -28,11 +37,19 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      // ❌ Request failed (e.g. wrong login, not verified, server error, etc.)
+      // ---------------------------
+      // ERROR HANDLING (both types)
+      // ---------------------------
       if (!res.ok) {
-        // 1. not verified case
+        // Shared invalid login case: wrong email/password
+        if (data.code === "INVALID_LOGIN") {
+          setErrorMsg("Invalid email or password.");
+          setLoading(false);
+          return;
+        }
+
+        // Only for normal users (donor/admin) - NOT_VERIFIED
         if (data.code === "NOT_VERIFIED") {
-          // show message above form
           setErrorMsg(
             "Your email is not verified yet. We've sent you a new code."
           );
@@ -46,24 +63,72 @@ export default function LoginPage() {
           return;
         }
 
-        // 2. invalid login (bad password / no such user)
-        if (data.code === "INVALID_LOGIN") {
-          setErrorMsg("Invalid email or password.");
+        // Only for charity logins – examples from charity-login route
+        if (data.code === "NO_PASSWORD_SET") {
+          setErrorMsg(
+            "Your charity has not completed signup yet. Please use your invite link to set a password."
+          );
           setLoading(false);
           return;
         }
 
-        // 3. fallback / server error
+        if (data.code === "CHARITY_NOT_VERIFIED") {
+          setErrorMsg(
+            "Your charity account is not fully verified yet. Please contact SustainWear support."
+          );
+          setLoading(false);
+          return;
+        }
+
+        // Fallback / server error
         setErrorMsg(data.message || "Login failed. Please try again.");
         setLoading(false);
         return;
       }
 
-      // ✅ Success path
-      // data.success === true, code === "LOGIN_OK"
-      sessionStorage.setItem("loggedIn", "true");
+      // ---------------------------
+      // SUCCESS HANDLING
+      // ---------------------------
+      if (accountType === "charity") {
+        // We just called /api/auth/charity-login
+        if (data.code === "CHARITY_LOGIN_OK") {
+          // Optional: store flag so navbar / other components know you're logged in as a charity
+          sessionStorage.setItem("charityLoggedIn", "true");
 
-      router.push("/donor/dashboard");
+          router.push("/charity/dashboard");
+          return;
+        }
+
+        // Safety fallback: unexpected success format
+        console.warn("Unexpected charity login response:", data);
+        setErrorMsg("Unexpected response. Please try again.");
+        setLoading(false);
+        return;
+      } else {
+        // accountType === "user"
+        // We just called /api/login (User table)
+        if (data.code === "LOGIN_OK" && data.user) {
+          sessionStorage.setItem("loggedIn", "true");
+
+          // Normalise role in case DB stores "ADMIN"/"DONOR"
+          const role = (data.user.role || "").toLowerCase();
+
+          if (role === "admin") {
+            router.push("/admin/dashboard");
+          } else if (role === "donor") {
+            router.push("/donor/dashboard");
+          } else {
+            // Unknown role: just send to home for now
+            router.push("/");
+          }
+          return;
+        }
+
+        console.warn("Unexpected user login response:", data);
+        setErrorMsg("Unexpected response. Please try again.");
+        setLoading(false);
+        return;
+      }
     } catch (err) {
       console.error("Login error:", err);
       setErrorMsg("Network error. Please try again.");
@@ -73,123 +138,137 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex bg-white border border-black">
+      <Link href="/">
+        <Image
+          src="/images/logo.png"
+          alt="SustainWear"
+          width={600}
+          height={600}
+          className="absolute top-6 left-1/2 -translate-x-1/2 md:left-30 w-48 md:h-auto cursor-pointer"
+        />
+      </Link>
+
       {/* LEFT SIDE */}
-      <section className="w-full md:w-1/2 flex flex-col p-8 md:p-12">
-        {/* Brand / Logo */}
-        <header className="mb-10">
-          <h1 className="text-3xl font-semibold leading-tight text-gray-900 font-serif">
-            <span className="text-green-800 italic">Sustain</span>
-            <span className="text-gray-900 italic">Wear</span>
-          </h1>
-          <p className="text-sm text-gray-800 leading-snug">
-            <span className="block">
-              Give Today.{" "}
-              <span className="text-green-800 font-medium">Sustain</span>{" "}
-              Tomorrow.
-            </span>
-          </p>
-        </header>
+      <section className="flex flex-col justify-center items-center w-full md:w-1/2 px-6 pt-6">
+        <div className="flex flex-col justify-center items-center w-2/3 mx-auto max-w-md">
+          <h2 className="mb-4 text-2xl font-semibold">Sign in</h2>
 
-        {/* Welcome copy */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Welcome Back
-          </h2>
-          <p className="text-gray-700">
-            Please enter your{" "}
-            <span className="text-green-800 font-medium">SW</span> account
-            details
-          </p>
-        </div>
+          {/* Error message */}
+          {errorMsg && (
+            <div className="mb-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {errorMsg}
+            </div>
+          )}
 
-        {/* Error message */}
-        {errorMsg && (
-          <div className="mb-4 max-w-sm rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {errorMsg}
+          {/* NEW: Account type toggle */}
+          <div className="mb-4 w-full">
+            <p className="text-sm mb-2 font-medium">Sign in as:</p>
+            <div className="flex gap-4 text-sm">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="user"
+                  checked={accountType === "user"}
+                  onChange={() => setAccountType("user")}
+                />
+                Donor / Admin
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="accountType"
+                  value="charity"
+                  checked={accountType === "charity"}
+                  onChange={() => setAccountType("charity")}
+                />
+                Charity
+              </label>
+            </div>
           </div>
-        )}
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="max-w-sm space-y-5">
-          {/* Email */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="email"
-              className="text-gray-900 font-medium mb-2"
+          {/* Form */}
+          <form onSubmit={handleSubmit} noValidate className="w-full space-y-3">
+            {/* Email */}
+            <div className="flex flex-col">
+              <label htmlFor="email" className="text-sm mb-1">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full border border-gray-400 rounded px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-700"
+              />
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col">
+              <label htmlFor="password" className="text-sm mb-1">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full border border-gray-400 rounded px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-700"
+              />
+            </div>
+
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded bg-green-700 py-2 border border-black text-white disabled:opacity-50 cursor-pointer hover:bg-green-800 transition-colors"
             >
-              Email Address
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-400 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-700"
-            />
-          </div>
+              {loading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
 
-          {/* Password */}
-          <div className="flex flex-col">
-            <label
-              htmlFor="password"
-              className="text-gray-900 font-medium mb-2"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-400 rounded-md px-3 py-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-700"
-            />
-          </div>
-
-          {/* Sign in button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-fit bg-green-800 text-white font-medium px-6 py-2 rounded-md border border-black shadow-[0_2px_0_0_rgba(0,0,0,1)] hover:bg-green-700 active:translate-y-[1px] active:shadow-none transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
-
-        {/* Links under form */}
-        <div className="max-w-sm mt-8 text-[15px] leading-relaxed text-gray-800 space-y-4">
-          <p>
-            Don’t have a{" "}
-            <span className="text-green-800 font-medium">SW</span> account?{" "}
+          {/* Links under form */}
+          <p className="mt-4 text-sm">
+            Don’t have an account?{" "}
             <a
               href="/auth/signup"
-              className="text-green-800 font-medium hover:underline"
+              className="text-blue-500 underline hover:text-blue-800"
             >
-              Sign Up
+              Create one
             </a>
           </p>
 
-          <p>
-            Forgotten your Password?{" "}
+          <p className="text-sm">
+            Forgot your password?{" "}
             <a
               href="/auth/reset/request"
-              className="text-green-800 font-medium hover:underline"
+              className="text-blue-500 underline hover:text-blue-800"
             >
-              Click Here
+              Reset it
             </a>
           </p>
         </div>
       </section>
 
-      {/* RIGHT SIDE */}
-      <section className="hidden md:flex w-1/2 bg-[#d8e5d3] border-l border-black items-center justify-center relative">
-        <div className="flex flex-col items-center text-center p-8">
-          <div className="w-[320px] h-[240px] bg-white/60 border border-green-800 rounded-md flex items-center justify-center text-green-800 text-sm">
-            Illustration / SVG goes here
-          </div>
-        </div>
-      </section>
+      {/* Right side image */}
+      <div className="hidden md:flex md:w-1/2 md:flex-col md:justify-center md:items-center md:bg-green-100">
+        <Image
+          src="/images/signupShapes.png"
+          alt="shapes"
+          width={750}
+          height={750}
+          className="w-auto h-100 object-contain"
+        />
+        <Image
+          src="\illustrations\undraw_web-shopping_xd5k.svg"
+          alt="signupLady"
+          width={500}
+          height={500}
+          className="w-auto h-100 object-contain"
+        />
+      </div>
     </main>
   );
 }

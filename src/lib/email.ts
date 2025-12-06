@@ -81,3 +81,82 @@ export async function sendResetCodeEmail(
     `,
   });
 }
+
+
+export async function sendCharityRejectionEmail(options: {
+
+toEmail: string;
+orgName: string;
+
+}) {
+  const { toEmail, orgName } = options;
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+  
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM,
+    to: toEmail,
+    subject: "SustainWear – Charity Application Update",
+    html: `
+    <p>Hi ${orgName},</p>
+    <p>Thank you for taking the time to apply to partner with SustainWear.</p>
+    <p>Unfortunately, at this time we won't be moving forward with your Charity application.</p>
+    <p>
+    This doesn’t reflect the value of the work you do – we simply have
+    limited capacity during this phase. You’re very welcome to apply again
+    in the future.
+    </p>
+    <p>Best regards,<br/>The SustainWear Team</p>
+    `,
+  });
+}
+
+export async function sendCharityApprovalEmail(options: {
+  toEmail: string;
+  orgName: string;
+  signupUrl: string;
+}) {
+  const { toEmail, orgName, signupUrl } = options;
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM,
+    to: toEmail,
+    subject: "SustainWear – Charity Application Approved",
+    html: `
+      <p>Hi ${orgName},</p>
+      <p>
+        We're pleased to let you know that your application to partner with
+        <strong>SustainWear</strong> has been <strong>approved</strong>.
+      </p>
+      <p>
+        To complete your onboarding and activate your charity account,
+        please click the link below to set your password:
+      </p>
+      <p>
+        <a href="${signupUrl}">Complete your SustainWear charity signup</a>
+      </p>
+      <p>
+        This link is one-time use and will expire after a short period,
+        so please complete your signup as soon as possible.
+      </p>
+      <p>Best regards,<br/>The SustainWear Team</p>
+    `,
+  });
+}

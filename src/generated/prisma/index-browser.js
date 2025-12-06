@@ -20,12 +20,21 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
+<<<<<<< HEAD
  * Prisma Client JS version: 6.17.1
  * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
  */
 Prisma.prismaVersion = {
   client: "6.17.1",
   engine: "272a37d34178c2894197e17273bf937f25acdeac"
+=======
+ * Prisma Client JS version: 6.18.0
+ * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
+ */
+Prisma.prismaVersion = {
+  client: "6.18.0",
+  engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
+>>>>>>> main
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -150,6 +159,70 @@ exports.Prisma.PasswordResetTokensScalarFieldEnum = {
   created_on: 'created_on'
 };
 
+<<<<<<< HEAD
+=======
+exports.Prisma.CharitiesScalarFieldEnum = {
+  charity_id: 'charity_id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  website: 'website',
+  verified: 'verified',
+  created_on: 'created_on',
+  updated_on: 'updated_on',
+  password_hash: 'password_hash'
+};
+
+exports.Prisma.CharityApplicationsScalarFieldEnum = {
+  application_id: 'application_id',
+  org_name: 'org_name',
+  contact_name: 'contact_name',
+  contact_email: 'contact_email',
+  contact_number: 'contact_number',
+  website: 'website',
+  org_address: 'org_address',
+  charity_number: 'charity_number',
+  status: 'status',
+  reviewed_on: 'reviewed_on',
+  reviewed_by: 'reviewed_by',
+  approved_on: 'approved_on',
+  approved_by: 'approved_by',
+  charity_id: 'charity_id',
+  created_on: 'created_on',
+  updated_on: 'updated_on'
+};
+
+exports.Prisma.CharitySignupTokensScalarFieldEnum = {
+  invite_id: 'invite_id',
+  charity_id: 'charity_id',
+  email: 'email',
+  token: 'token',
+  expires_on: 'expires_on',
+  consumed_on: 'consumed_on',
+  created_on: 'created_on',
+  created_by: 'created_by'
+};
+
+exports.Prisma.DonationsScalarFieldEnum = {
+  donation_id: 'donation_id',
+  donation_request_id: 'donation_request_id',
+  created_by: 'created_by',
+  accepted_by: 'accepted_by',
+  accepted_at: 'accepted_at'
+};
+
+exports.Prisma.DonationRequestScalarFieldEnum = {
+  donation_request_id: 'donation_request_id',
+  title: 'title',
+  created_on: 'created_on',
+  updated_on: 'updated_on',
+  status: 'status',
+  answered_by: 'answered_by',
+  created_by: 'created_by'
+};
+
+>>>>>>> main
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -164,12 +237,29 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+<<<<<<< HEAD
 
+=======
+exports.Status = exports.$Enums.Status = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+>>>>>>> main
 
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
+<<<<<<< HEAD
   PasswordResetTokens: 'PasswordResetTokens'
+=======
+  PasswordResetTokens: 'PasswordResetTokens',
+  Charities: 'Charities',
+  CharityApplications: 'CharityApplications',
+  CharitySignupTokens: 'CharitySignupTokens',
+  Donations: 'Donations',
+  DonationRequest: 'DonationRequest'
+>>>>>>> main
 };
 
 /**

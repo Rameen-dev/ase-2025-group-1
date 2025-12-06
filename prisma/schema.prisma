@@ -1,52 +1,356 @@
+// Prisma Client Generator
+
+// This tells Prisma to generate a JavaScript/TypeScript client.
+// We then import and use the client in our Next.js backend.
+
+// The output is where the client will live relative to this file.
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
+// Database Connection 
+
+// This defines the database we connect to.
+// Provider: which SQL engine we use (PostGreSQL).
+// URL: connection string read from the .env (DATABASE_URL)
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// USER MODEL 
+// This stores 
+// Donor Accounts 
+// Admin Accounts
+// Charities have their own login in charities table
+
 model User {
-  user_id                 Int                       @id @default(autoincrement())
-  email                   String                    @unique
-  password_hash           String
-  role                    String
-  is_verified             Boolean
-  first_name              String
-  last_name               String
-  created_on              DateTime                  @default(now())
-  updated_on              DateTime                  @updatedAt
+  // Primary key for each user
+  user_id Int @id @default(autoincrement())
 
-  // RELATIONS:
+  // Unique email used to login
+  email String @unique
+
+  // Hashed password (won't store plaintext)
+  password_hash String
+
+  // Role of the user (Donor/Admin)
+  role String
+
+  // Has the user verified their email account? 
+  is_verified Boolean
+
+  // Basic personal information (First name + Last name)
+  first_name String
+  last_name  String
+
+  // When this user row was created
+  created_on DateTime @default(now())
+
+  // Automatically updated whenever this row changes
+  updated_on DateTime @updatedAt
+
+  // RELATIONS 
+
+  // All charity applications this user has approved as an Admin
+  // We have mapped this via CharityApplications.approved_by using the named relation "approved_by_admin"
+  approved_applications CharityApplications[] @relation("approved_by_admin")
+
+  // All charity applications this user has reviewed as an admin.
+  // Mapped via CharityApplications.reviewed_by using the named relation "reviewed_by_admin"
+  reviewed_applications CharityApplications[] @relation("reviewed_by_admin")
+
+  // All charity SignUp invites this user has created as an admin.
+  // Mapped via CharitySignupTokens.created_by using the named relation "invites_created_by"
+  created_invites CharitySignupTokens[] @relation("invites_created_by")
+
+  // All email verification tokens linked to this user
   EmailVerificationTokens EmailVerificationTokens[]
-  PasswordResetTokens     PasswordResetTokens[]     // ← add this
+
+  // All password reset tokens linked to this user
+  PasswordResetTokens PasswordResetTokens[]
+
+  // All donation requests created by this donor
+  donation_requests DonationRequest[] @relation("donor_request")
+
+  // All donations created by this donor
+  donations_created Donations[] @relation("donor_donation")
 }
 
+// EMAIL VERIFICATION TOKENS MODEL
+// This stores tokens that are sent to users to verify their email address after signup.
 model EmailVerificationTokens {
-  ev_token_id Int       @id @default(autoincrement())
-  user_id     Int
-  token       String    @unique
-  expires_on  DateTime
-  consumed_on DateTime?
-  created_on  DateTime  @default(now())
+  // Primary key for this token row
+  ev_token_id Int @id @default(autoincrement())
 
-  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  // Forign key: which user this token belongs to
+  user_id Int
+
+  // This is the unique token string sent to the user via email
+  token String @unique
+
+  // When this token expires (We have set it to expire after 10 minutes)
+  expires_on DateTime
+
+  // Here we stamp the date and time for when the token was used by the user. If it isn't used, Null = unused.
+  consumed_on DateTime?
+
+  // When this token was created.
+  created_on DateTime @default(now())
+
+  // Relations to the user: 
+  // - Fields: local forign key field
+  // - References: primary key in user
+  // - onDelete: Cascade - if a user is deleted, delete their tokens as well.
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  // Index to speed up queries by (user_id, created_on),
 
   @@index([user_id, created_on])
 }
 
+// PASSWORD RESET TOKENS
+// Stores reset codes used when a user forgets their password
 model PasswordResetTokens {
-  pr_token_id Int       @id @default(autoincrement())
-  user_id     Int
-  code        String     // this will be the 6-digit code we email
-  expires_on  DateTime   // e.g. now + 10 mins
-  consumed_on DateTime?  // once used, we timestamp it
-  created_on  DateTime   @default(now())
+  // Primary key for this reset token
+  pr_token_id Int @id @default(autoincrement())
 
-  User        User       @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  // Foreign key: which user requested the reset
+  user_id Int
 
-  // helpful index so we can quickly find latest valid code by user
+  // Reset code (This is a 6 digit digit)
+  code String
+
+  // When the reset code expires 
+  expires_on DateTime
+
+  // When the code was used by the user. Null = unused.
+  consumed_on DateTime?
+
+  // When this reseet token was created
+  created_on DateTime @default(now())
+
+  // Relation to User, cascades on delete like above
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  // This is an index that quickly finds tokens by user and date.
   @@index([user_id, created_on])
+}
+
+// CHARITIES MODEL
+
+// Stores approved charity organisation with their own login.
+// This is created after a charity application is approved.
+// A charity logs in using the 'email' + 'password_hash' here.
+model Charities {
+  // Primary key for the charity
+  charity_id Int @id @default(autoincrement())
+
+  // Official charity name
+  name String
+
+  // Charity login / contact email, which must be unique per charity
+  email String @unique // each approved charity must have a unique email
+
+  // Charity phone number is stored here.
+  phone String
+
+  // Charity address is stored here.
+  address String
+
+  // Charity Website URL is stored here.
+  website String
+
+  // Has this charity been fully verified/ onboarded?
+  verified Boolean @default(false)
+
+  // When this charity row was created (Once being approved by SustainWear Admins)
+  created_on DateTime @default(now())
+
+  // Automatically updated whenever this row changes
+  updated_on DateTime @updatedAt
+
+  // Here we store the password for charity login (hashed).
+  // We keep it NULL until the charity completes its official signup, after getting approved.
+  // Here they must set a password to complete signup.
+  password_hash String? // Null until the charity finishes their signup and sets a password
+
+  // All applications linked with this charity, like the original application that got approved.
+  applications CharityApplications[]
+
+  // All one-time signup tokens created for this charity, so they can coomplete registration.
+  signup_tokens CharitySignupTokens[]
+
+  // All donation requests answered by this charity
+  donation_requests_answered DonationRequest[] @relation("charity_answer")
+
+  // All donations accepted by this charity
+  donations_received Donations[] @relation("charity_donation")
+
+  // Indexes used here again to speed up searching by name and email.
+  @@index([name])
+  @@index([email])
+}
+
+// CHARITY APPLICATIONS MODEL
+
+// This model stores applications submitted by organisations that want to become a charity partner with SustainWear.
+// To become a charity, they must apply and create an application, which is stored in this model.
+// This will exist before they get their own charities row.
+model CharityApplications {
+  // Primary key for the application.
+  application_id Int @id @default(autoincrement())
+
+  // Organisation name as submitted
+  org_name String
+
+  // Contact person's name from the charity (Admin/ CEO)
+  contact_name String
+
+  // Contact email used to apply by the charity
+  contact_email String // ← not unique here
+
+  // Contact phone number of the charity
+  contact_number String
+
+  // Website entered during application.
+  website String
+
+  // Charity address entered during application
+  org_address String
+
+  // Official charity registration number (This is optional at the minute)
+  charity_number String?
+
+  // Current status of this application: 
+  // - PENDING
+  // - APPROVED
+  // - REJECTED
+  status Status @default(PENDING)
+
+  // When the application was first reviewed by an Admin
+  reviewed_on DateTime?
+
+  // Which Admin reviewed the application (FK -> User.user_id)
+  reviewed_by Int?
+
+  // When the application was approved.
+  approved_on DateTime?
+
+  // Which admin approved the application (FK -> User.user_id)
+  approved_by Int?
+
+  // Link this to the final charities row created.
+  charity_id Int?
+
+  // When the application was created on.
+  created_on DateTime @default(now())
+
+  // Auto-updated when the row changes.
+  updated_on DateTime @updatedAt
+
+  // RELATIONS
+
+  // Admin user who approved this application,
+  // Uses baned relation "approved_by_admin" which matches the 'approved_applications' 
+  // relation in User.
+  approver User? @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+
+  // Admin user who reviewed this application,
+  // Uses named relation "reviewed_by_admin" which matches the 
+  // 'reviewed_applications' relation in User.
+  reviewer User? @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
+
+  // The final charity created from this application, if approved.
+  charity Charities? @relation(fields: [charity_id], references: [charity_id])
+
+  // Index for querying by status + created date,
+  // For example, show all pending applications, newest first.
+  @@index([status, created_on])
+  // Index for finding all applications from the same contact email.
+  @@index([contact_email])
+}
+
+// CHARITIES SIGNUP TOKENS
+
+// Stores one-time invite tokens that let an approved charity complete thier 
+// official signup (Which is once a charity sets up their password)
+model CharitySignupTokens {
+  // Primary key for this invite token.
+  invite_id Int @id @default(autoincrement())
+
+  // Which charity this invite belongs to (FK -> Charities.charity_id)
+  charity_id Int
+
+  // Email this invite was sent to the charities email (Only those charities that get approved)
+  email String
+
+  // Unique token string included in the invite URL
+  token String @unique
+
+  // When this invite expires (Cannot be used after this)
+  expires_on DateTime
+
+  // When this invite was used. NULL = unused.
+  consumed_on DateTime?
+
+  // Wehn this invite token was created.
+  created_on DateTime @default(now())
+
+  // Which admin user created this invite (When they approve, the email will automatically be sent)
+  created_by Int?
+
+  // Relation to the Charities table.
+  // onDelete: Cascade - if a charity is deleted,
+  // All its signup tokens are removed too.
+  charity Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+
+  // Relation to the admin User who created this invite,
+  // Uses named relation "invites_created_by", matched by 
+  // 'created_invites' in the User model.
+  creator User? @relation("invites_created_by", fields: [created_by], references: [user_id])
+
+  // Index for listing invites by charity and date
+  @@index([charity_id, created_on])
+  // Index for quickly looking up invites by email
+  @@index([email])
+}
+
+model Donations {
+  donation_id         Int      @id @default(autoincrement())
+  donation_request_id Int      @unique
+  created_by          Int
+  accepted_by         Int
+  accepted_at         DateTime @default(now())
+
+  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
+  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
+  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+}
+
+model DonationRequest {
+  donation_request_id Int      @id @default(autoincrement())
+  title               String
+  created_on          DateTime @default(now())
+  updated_on          DateTime @updatedAt
+  status              Status   @default(PENDING)
+  answered_by         Int?
+  created_by          Int
+
+  accepted_donation Donations?
+
+  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
+  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
+}
+
+// CHARITY APPLICATION STATUS ENUM
+
+// This defines the allowed states for an application, 
+// this keeps status values consistent and type-safe
+enum Status {
+  PENDING // Waiting for review.
+  APPROVED // Accepted, charity can be onboarded.
+  REJECTED // Not accepted (Can optionally re-apply)
 }
