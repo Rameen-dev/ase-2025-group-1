@@ -77,6 +77,7 @@ model User {
 
   // All donations created by this donor
   donations_created Donations[] @relation("donor_donation")
+  Session           Session[]
 }
 
 // EMAIL VERIFICATION TOKENS MODEL
@@ -188,6 +189,7 @@ model Charities {
 
   // All donations accepted by this charity
   donations_received Donations[] @relation("charity_donation")
+  Session            Session[]
 
   // Indexes used here again to speed up searching by name and email.
   @@index([name])
@@ -343,6 +345,34 @@ model DonationRequest {
 
   creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
   answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
+}
+
+model Session {
+  session_id    Int    @id @default(autoincrement())
+  session_token String @unique
+
+  actor_type SessionActorType
+
+  // If it's a donor/admin user
+  user_id Int?
+  user    User? @relation(fields: [user_id], references: [user_id])
+
+  // If it's a charity account
+  charity_id Int?
+  charity    Charities? @relation(fields: [charity_id], references: [charity_id])
+
+  created_on DateTime  @default(now())
+  expires_on DateTime
+  revoked_on DateTime?
+
+  @@index([user_id])
+  @@index([charity_id])
+}
+
+enum SessionActorType {
+  DONOR
+  CHARITY
+  ADMIN
 }
 
 // CHARITY APPLICATION STATUS ENUM

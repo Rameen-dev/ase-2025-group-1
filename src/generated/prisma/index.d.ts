@@ -53,12 +53,26 @@ export type Donations = $Result.DefaultSelection<Prisma.$DonationsPayload>
  * 
  */
 export type DonationRequest = $Result.DefaultSelection<Prisma.$DonationRequestPayload>
+/**
+ * Model Session
+ * 
+ */
+export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Status: {
+  export const SessionActorType: {
+  DONOR: 'DONOR',
+  CHARITY: 'CHARITY',
+  ADMIN: 'ADMIN'
+};
+
+export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
+
+
+export const Status: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
@@ -67,6 +81,10 @@ export namespace $Enums {
 export type Status = (typeof Status)[keyof typeof Status]
 
 }
+
+export type SessionActorType = $Enums.SessionActorType
+
+export const SessionActorType: typeof $Enums.SessionActorType
 
 export type Status = $Enums.Status
 
@@ -269,6 +287,16 @@ export class PrismaClient<
     * ```
     */
   get donationRequest(): Prisma.DonationRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.session`: Exposes CRUD operations for the **Session** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sessions
+    * const sessions = await prisma.session.findMany()
+    * ```
+    */
+  get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -717,7 +745,8 @@ export namespace Prisma {
     CharityApplications: 'CharityApplications',
     CharitySignupTokens: 'CharitySignupTokens',
     Donations: 'Donations',
-    DonationRequest: 'DonationRequest'
+    DonationRequest: 'DonationRequest',
+    Session: 'Session'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -736,7 +765,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest"
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1332,6 +1361,80 @@ export namespace Prisma {
           }
         }
       }
+      Session: {
+        payload: Prisma.$SessionPayload<ExtArgs>
+        fields: Prisma.SessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findMany: {
+            args: Prisma.SessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          create: {
+            args: Prisma.SessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          createMany: {
+            args: Prisma.SessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          update: {
+            args: Prisma.SessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSession>
+          }
+          groupBy: {
+            args: Prisma.SessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1436,6 +1539,7 @@ export namespace Prisma {
     charitySignupTokens?: CharitySignupTokensOmit
     donations?: DonationsOmit
     donationRequest?: DonationRequestOmit
+    session?: SessionOmit
   }
 
   /* Types for Logging */
@@ -1523,6 +1627,7 @@ export namespace Prisma {
     PasswordResetTokens: number
     donation_requests: number
     donations_created: number
+    Session: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1533,6 +1638,7 @@ export namespace Prisma {
     PasswordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
     donation_requests?: boolean | UserCountOutputTypeCountDonation_requestsArgs
     donations_created?: boolean | UserCountOutputTypeCountDonations_createdArgs
+    Session?: boolean | UserCountOutputTypeCountSessionArgs
   }
 
   // Custom InputTypes
@@ -1595,6 +1701,13 @@ export namespace Prisma {
     where?: DonationsWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+  }
+
 
   /**
    * Count Type CharitiesCountOutputType
@@ -1605,6 +1718,7 @@ export namespace Prisma {
     signup_tokens: number
     donation_requests_answered: number
     donations_received: number
+    Session: number
   }
 
   export type CharitiesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1612,6 +1726,7 @@ export namespace Prisma {
     signup_tokens?: boolean | CharitiesCountOutputTypeCountSignup_tokensArgs
     donation_requests_answered?: boolean | CharitiesCountOutputTypeCountDonation_requests_answeredArgs
     donations_received?: boolean | CharitiesCountOutputTypeCountDonations_receivedArgs
+    Session?: boolean | CharitiesCountOutputTypeCountSessionArgs
   }
 
   // Custom InputTypes
@@ -1651,6 +1766,13 @@ export namespace Prisma {
    */
   export type CharitiesCountOutputTypeCountDonations_receivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DonationsWhereInput
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
   }
 
 
@@ -1895,6 +2017,7 @@ export namespace Prisma {
     PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
     donation_requests?: boolean | User$donation_requestsArgs<ExtArgs>
     donations_created?: boolean | User$donations_createdArgs<ExtArgs>
+    Session?: boolean | User$SessionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1943,6 +2066,7 @@ export namespace Prisma {
     PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
     donation_requests?: boolean | User$donation_requestsArgs<ExtArgs>
     donations_created?: boolean | User$donations_createdArgs<ExtArgs>
+    Session?: boolean | User$SessionArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1958,6 +2082,7 @@ export namespace Prisma {
       PasswordResetTokens: Prisma.$PasswordResetTokensPayload<ExtArgs>[]
       donation_requests: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_created: Prisma.$DonationsPayload<ExtArgs>[]
+      Session: Prisma.$SessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       user_id: number
@@ -2370,6 +2495,7 @@ export namespace Prisma {
     PasswordResetTokens<T extends User$PasswordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$PasswordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donation_requests<T extends User$donation_requestsArgs<ExtArgs> = {}>(args?: Subset<T, User$donation_requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_created<T extends User$donations_createdArgs<ExtArgs> = {}>(args?: Subset<T, User$donations_createdArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Session<T extends User$SessionArgs<ExtArgs> = {}>(args?: Subset<T, User$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2961,6 +3087,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DonationsScalarFieldEnum | DonationsScalarFieldEnum[]
+  }
+
+  /**
+   * User.Session
+   */
+  export type User$SessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -5442,6 +5592,7 @@ export namespace Prisma {
     signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
+    Session?: boolean | Charities$SessionArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["charities"]>
 
@@ -5490,6 +5641,7 @@ export namespace Prisma {
     signup_tokens?: boolean | Charities$signup_tokensArgs<ExtArgs>
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
+    Session?: boolean | Charities$SessionArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5502,6 +5654,7 @@ export namespace Prisma {
       signup_tokens: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
       donation_requests_answered: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_received: Prisma.$DonationsPayload<ExtArgs>[]
+      Session: Prisma.$SessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       charity_id: number
@@ -5912,6 +6065,7 @@ export namespace Prisma {
     signup_tokens<T extends Charities$signup_tokensArgs<ExtArgs> = {}>(args?: Subset<T, Charities$signup_tokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donation_requests_answered<T extends Charities$donation_requests_answeredArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donation_requests_answeredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_received<T extends Charities$donations_receivedArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donations_receivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Session<T extends Charities$SessionArgs<ExtArgs> = {}>(args?: Subset<T, Charities$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6432,6 +6586,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DonationsScalarFieldEnum | DonationsScalarFieldEnum[]
+  }
+
+  /**
+   * Charities.Session
+   */
+  export type Charities$SessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
   }
 
   /**
@@ -11236,6 +11414,1191 @@ export namespace Prisma {
 
 
   /**
+   * Model Session
+   */
+
+  export type AggregateSession = {
+    _count: SessionCountAggregateOutputType | null
+    _avg: SessionAvgAggregateOutputType | null
+    _sum: SessionSumAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  export type SessionAvgAggregateOutputType = {
+    session_id: number | null
+    user_id: number | null
+    charity_id: number | null
+  }
+
+  export type SessionSumAggregateOutputType = {
+    session_id: number | null
+    user_id: number | null
+    charity_id: number | null
+  }
+
+  export type SessionMinAggregateOutputType = {
+    session_id: number | null
+    session_token: string | null
+    actor_type: $Enums.SessionActorType | null
+    user_id: number | null
+    charity_id: number | null
+    created_on: Date | null
+    expires_on: Date | null
+    revoked_on: Date | null
+  }
+
+  export type SessionMaxAggregateOutputType = {
+    session_id: number | null
+    session_token: string | null
+    actor_type: $Enums.SessionActorType | null
+    user_id: number | null
+    charity_id: number | null
+    created_on: Date | null
+    expires_on: Date | null
+    revoked_on: Date | null
+  }
+
+  export type SessionCountAggregateOutputType = {
+    session_id: number
+    session_token: number
+    actor_type: number
+    user_id: number
+    charity_id: number
+    created_on: number
+    expires_on: number
+    revoked_on: number
+    _all: number
+  }
+
+
+  export type SessionAvgAggregateInputType = {
+    session_id?: true
+    user_id?: true
+    charity_id?: true
+  }
+
+  export type SessionSumAggregateInputType = {
+    session_id?: true
+    user_id?: true
+    charity_id?: true
+  }
+
+  export type SessionMinAggregateInputType = {
+    session_id?: true
+    session_token?: true
+    actor_type?: true
+    user_id?: true
+    charity_id?: true
+    created_on?: true
+    expires_on?: true
+    revoked_on?: true
+  }
+
+  export type SessionMaxAggregateInputType = {
+    session_id?: true
+    session_token?: true
+    actor_type?: true
+    user_id?: true
+    charity_id?: true
+    created_on?: true
+    expires_on?: true
+    revoked_on?: true
+  }
+
+  export type SessionCountAggregateInputType = {
+    session_id?: true
+    session_token?: true
+    actor_type?: true
+    user_id?: true
+    charity_id?: true
+    created_on?: true
+    expires_on?: true
+    revoked_on?: true
+    _all?: true
+  }
+
+  export type SessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Session to aggregate.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sessions
+    **/
+    _count?: true | SessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SessionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SessionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSession[P]>
+      : GetScalarType<T[P], AggregateSession[P]>
+  }
+
+
+
+
+  export type SessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithAggregationInput | SessionOrderByWithAggregationInput[]
+    by: SessionScalarFieldEnum[] | SessionScalarFieldEnum
+    having?: SessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionCountAggregateInputType | true
+    _avg?: SessionAvgAggregateInputType
+    _sum?: SessionSumAggregateInputType
+    _min?: SessionMinAggregateInputType
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type SessionGroupByOutputType = {
+    session_id: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    user_id: number | null
+    charity_id: number | null
+    created_on: Date
+    expires_on: Date
+    revoked_on: Date | null
+    _count: SessionCountAggregateOutputType | null
+    _avg: SessionAvgAggregateOutputType | null
+    _sum: SessionSumAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    session_id?: boolean
+    session_token?: boolean
+    actor_type?: boolean
+    user_id?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    expires_on?: boolean
+    revoked_on?: boolean
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    session_id?: boolean
+    session_token?: boolean
+    actor_type?: boolean
+    user_id?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    expires_on?: boolean
+    revoked_on?: boolean
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    session_id?: boolean
+    session_token?: boolean
+    actor_type?: boolean
+    user_id?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    expires_on?: boolean
+    revoked_on?: boolean
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectScalar = {
+    session_id?: boolean
+    session_token?: boolean
+    actor_type?: boolean
+    user_id?: boolean
+    charity_id?: boolean
+    created_on?: boolean
+    expires_on?: boolean
+    revoked_on?: boolean
+  }
+
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"session_id" | "session_token" | "actor_type" | "user_id" | "charity_id" | "created_on" | "expires_on" | "revoked_on", ExtArgs["result"]["session"]>
+  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }
+  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }
+  export type SessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | Session$userArgs<ExtArgs>
+    charity?: boolean | Session$charityArgs<ExtArgs>
+  }
+
+  export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Session"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs> | null
+      charity: Prisma.$CharitiesPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      session_id: number
+      session_token: string
+      actor_type: $Enums.SessionActorType
+      user_id: number | null
+      charity_id: number | null
+      created_on: Date
+      expires_on: Date
+      revoked_on: Date | null
+    }, ExtArgs["result"]["session"]>
+    composites: {}
+  }
+
+  type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
+
+  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionCountAggregateInputType | true
+    }
+
+  export interface SessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Session'], meta: { name: 'Session' } }
+    /**
+     * Find zero or one Session that matches the filter.
+     * @param {SessionFindUniqueArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionFindUniqueArgs>(args: SelectSubset<T, SessionFindUniqueArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Session that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionFindUniqueOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionFindFirstArgs>(args?: SelectSubset<T, SessionFindFirstArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sessions
+     * const sessions = await prisma.session.findMany()
+     * 
+     * // Get first 10 Sessions
+     * const sessions = await prisma.session.findMany({ take: 10 })
+     * 
+     * // Only select the `session_id`
+     * const sessionWithSession_idOnly = await prisma.session.findMany({ select: { session_id: true } })
+     * 
+     */
+    findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Session.
+     * @param {SessionCreateArgs} args - Arguments to create a Session.
+     * @example
+     * // Create one Session
+     * const Session = await prisma.session.create({
+     *   data: {
+     *     // ... data to create a Session
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sessions.
+     * @param {SessionCreateManyArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sessions and returns the data saved in the database.
+     * @param {SessionCreateManyAndReturnArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sessions and only return the `session_id`
+     * const sessionWithSession_idOnly = await prisma.session.createManyAndReturn({
+     *   select: { session_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Session.
+     * @param {SessionDeleteArgs} args - Arguments to delete one Session.
+     * @example
+     * // Delete one Session
+     * const Session = await prisma.session.delete({
+     *   where: {
+     *     // ... filter to delete one Session
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Session.
+     * @param {SessionUpdateArgs} args - Arguments to update one Session.
+     * @example
+     * // Update one Session
+     * const session = await prisma.session.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sessions.
+     * @param {SessionDeleteManyArgs} args - Arguments to filter Sessions to delete.
+     * @example
+     * // Delete a few Sessions
+     * const { count } = await prisma.session.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions and returns the data updated in the database.
+     * @param {SessionUpdateManyAndReturnArgs} args - Arguments to update many Sessions.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sessions and only return the `session_id`
+     * const sessionWithSession_idOnly = await prisma.session.updateManyAndReturn({
+     *   select: { session_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Session.
+     * @param {SessionUpsertArgs} args - Arguments to update or create a Session.
+     * @example
+     * // Update or create a Session
+     * const session = await prisma.session.upsert({
+     *   create: {
+     *     // ... data to create a Session
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Session we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionUpsertArgs>(args: SelectSubset<T, SessionUpsertArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionCountArgs} args - Arguments to filter Sessions to count.
+     * @example
+     * // Count the number of Sessions
+     * const count = await prisma.session.count({
+     *   where: {
+     *     // ... the filter for the Sessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionCountArgs>(
+      args?: Subset<T, SessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionAggregateArgs>(args: Subset<T, SessionAggregateArgs>): Prisma.PrismaPromise<GetSessionAggregateType<T>>
+
+    /**
+     * Group by Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Session model
+   */
+  readonly fields: SessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Session.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends Session$userArgs<ExtArgs> = {}>(args?: Subset<T, Session$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    charity<T extends Session$charityArgs<ExtArgs> = {}>(args?: Subset<T, Session$charityArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Session model
+   */
+  interface SessionFieldRefs {
+    readonly session_id: FieldRef<"Session", 'Int'>
+    readonly session_token: FieldRef<"Session", 'String'>
+    readonly actor_type: FieldRef<"Session", 'SessionActorType'>
+    readonly user_id: FieldRef<"Session", 'Int'>
+    readonly charity_id: FieldRef<"Session", 'Int'>
+    readonly created_on: FieldRef<"Session", 'DateTime'>
+    readonly expires_on: FieldRef<"Session", 'DateTime'>
+    readonly revoked_on: FieldRef<"Session", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Session findUnique
+   */
+  export type SessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findUniqueOrThrow
+   */
+  export type SessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findFirst
+   */
+  export type SessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findFirstOrThrow
+   */
+  export type SessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findMany
+   */
+  export type SessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Sessions to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session create
+   */
+  export type SessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Session.
+     */
+    data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+  }
+
+  /**
+   * Session createMany
+   */
+  export type SessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Session createManyAndReturn
+   */
+  export type SessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session update
+   */
+  export type SessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Session.
+     */
+    data: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+    /**
+     * Choose, which Session to update.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session updateMany
+   */
+  export type SessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session updateManyAndReturn
+   */
+  export type SessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session upsert
+   */
+  export type SessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Session to update in case it exists.
+     */
+    where: SessionWhereUniqueInput
+    /**
+     * In case the Session found by the `where` argument doesn't exist, create a new Session with this data.
+     */
+    create: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+    /**
+     * In case the Session was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+  }
+
+  /**
+   * Session delete
+   */
+  export type SessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter which Session to delete.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session deleteMany
+   */
+  export type SessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sessions to delete
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session.user
+   */
+  export type Session$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Session.charity
+   */
+  export type Session$charityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    where?: CharitiesWhereInput
+  }
+
+  /**
+   * Session without action
+   */
+  export type SessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11364,6 +12727,20 @@ export namespace Prisma {
   export type DonationRequestScalarFieldEnum = (typeof DonationRequestScalarFieldEnum)[keyof typeof DonationRequestScalarFieldEnum]
 
 
+  export const SessionScalarFieldEnum: {
+    session_id: 'session_id',
+    session_token: 'session_token',
+    actor_type: 'actor_type',
+    user_id: 'user_id',
+    charity_id: 'charity_id',
+    created_on: 'created_on',
+    expires_on: 'expires_on',
+    revoked_on: 'revoked_on'
+  };
+
+  export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -11457,6 +12834,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'SessionActorType'
+   */
+  export type EnumSessionActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionActorType'>
+    
+
+
+  /**
+   * Reference to a field of type 'SessionActorType[]'
+   */
+  export type ListEnumSessionActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionActorType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -11493,6 +12884,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensListRelationFilter
     donation_requests?: DonationRequestListRelationFilter
     donations_created?: DonationsListRelationFilter
+    Session?: SessionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11512,6 +12904,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensOrderByRelationAggregateInput
     donation_requests?: DonationRequestOrderByRelationAggregateInput
     donations_created?: DonationsOrderByRelationAggregateInput
+    Session?: SessionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11534,6 +12927,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensListRelationFilter
     donation_requests?: DonationRequestListRelationFilter
     donations_created?: DonationsListRelationFilter
+    Session?: SessionListRelationFilter
   }, "user_id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11710,6 +13104,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensListRelationFilter
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
+    Session?: SessionListRelationFilter
   }
 
   export type CharitiesOrderByWithRelationInput = {
@@ -11727,6 +13122,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensOrderByRelationAggregateInput
     donation_requests_answered?: DonationRequestOrderByRelationAggregateInput
     donations_received?: DonationsOrderByRelationAggregateInput
+    Session?: SessionOrderByRelationAggregateInput
   }
 
   export type CharitiesWhereUniqueInput = Prisma.AtLeast<{
@@ -11747,6 +13143,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensListRelationFilter
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
+    Session?: SessionListRelationFilter
   }, "charity_id" | "email">
 
   export type CharitiesOrderByWithAggregationInput = {
@@ -12112,6 +13509,81 @@ export namespace Prisma {
     created_by?: IntWithAggregatesFilter<"DonationRequest"> | number
   }
 
+  export type SessionWhereInput = {
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    session_id?: IntFilter<"Session"> | number
+    session_token?: StringFilter<"Session"> | string
+    actor_type?: EnumSessionActorTypeFilter<"Session"> | $Enums.SessionActorType
+    user_id?: IntNullableFilter<"Session"> | number | null
+    charity_id?: IntNullableFilter<"Session"> | number | null
+    created_on?: DateTimeFilter<"Session"> | Date | string
+    expires_on?: DateTimeFilter<"Session"> | Date | string
+    revoked_on?: DateTimeNullableFilter<"Session"> | Date | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+  }
+
+  export type SessionOrderByWithRelationInput = {
+    session_id?: SortOrder
+    session_token?: SortOrder
+    actor_type?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    charity_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    expires_on?: SortOrder
+    revoked_on?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    charity?: CharitiesOrderByWithRelationInput
+  }
+
+  export type SessionWhereUniqueInput = Prisma.AtLeast<{
+    session_id?: number
+    session_token?: string
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    actor_type?: EnumSessionActorTypeFilter<"Session"> | $Enums.SessionActorType
+    user_id?: IntNullableFilter<"Session"> | number | null
+    charity_id?: IntNullableFilter<"Session"> | number | null
+    created_on?: DateTimeFilter<"Session"> | Date | string
+    expires_on?: DateTimeFilter<"Session"> | Date | string
+    revoked_on?: DateTimeNullableFilter<"Session"> | Date | string | null
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+  }, "session_id" | "session_token">
+
+  export type SessionOrderByWithAggregationInput = {
+    session_id?: SortOrder
+    session_token?: SortOrder
+    actor_type?: SortOrder
+    user_id?: SortOrderInput | SortOrder
+    charity_id?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    expires_on?: SortOrder
+    revoked_on?: SortOrderInput | SortOrder
+    _count?: SessionCountOrderByAggregateInput
+    _avg?: SessionAvgOrderByAggregateInput
+    _max?: SessionMaxOrderByAggregateInput
+    _min?: SessionMinOrderByAggregateInput
+    _sum?: SessionSumOrderByAggregateInput
+  }
+
+  export type SessionScalarWhereWithAggregatesInput = {
+    AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    OR?: SessionScalarWhereWithAggregatesInput[]
+    NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    session_id?: IntWithAggregatesFilter<"Session"> | number
+    session_token?: StringWithAggregatesFilter<"Session"> | string
+    actor_type?: EnumSessionActorTypeWithAggregatesFilter<"Session"> | $Enums.SessionActorType
+    user_id?: IntNullableWithAggregatesFilter<"Session"> | number | null
+    charity_id?: IntNullableWithAggregatesFilter<"Session"> | number | null
+    created_on?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    expires_on?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    revoked_on?: DateTimeNullableWithAggregatesFilter<"Session"> | Date | string | null
+  }
+
   export type UserCreateInput = {
     email: string
     password_hash: string
@@ -12128,6 +13600,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12147,6 +13620,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -12165,6 +13639,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12184,6 +13659,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12353,6 +13829,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateInput = {
@@ -12370,6 +13847,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUpdateInput = {
@@ -12386,6 +13864,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateInput = {
@@ -12403,6 +13882,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesCreateManyInput = {
@@ -12761,6 +14241,78 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
   }
 
+  export type SessionCreateInput = {
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+    user?: UserCreateNestedOneWithoutSessionInput
+    charity?: CharitiesCreateNestedOneWithoutSessionInput
+  }
+
+  export type SessionUncheckedCreateInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    user_id?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+  }
+
+  export type SessionUpdateInput = {
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneWithoutSessionNestedInput
+    charity?: CharitiesUpdateOneWithoutSessionNestedInput
+  }
+
+  export type SessionUncheckedUpdateInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionCreateManyInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    user_id?: number | null
+    charity_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+  }
+
+  export type SessionUpdateManyMutationInput = {
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionUncheckedUpdateManyInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -12839,6 +14391,12 @@ export namespace Prisma {
     none?: DonationsWhereInput
   }
 
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
+  }
+
   export type CharityApplicationsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -12860,6 +14418,10 @@ export namespace Prisma {
   }
 
   export type DonationsOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13417,6 +14979,68 @@ export namespace Prisma {
     created_by?: SortOrder
   }
 
+  export type EnumSessionActorTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionActorType | EnumSessionActorTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionActorTypeFilter<$PrismaModel> | $Enums.SessionActorType
+  }
+
+  export type SessionCountOrderByAggregateInput = {
+    session_id?: SortOrder
+    session_token?: SortOrder
+    actor_type?: SortOrder
+    user_id?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    expires_on?: SortOrder
+    revoked_on?: SortOrder
+  }
+
+  export type SessionAvgOrderByAggregateInput = {
+    session_id?: SortOrder
+    user_id?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type SessionMaxOrderByAggregateInput = {
+    session_id?: SortOrder
+    session_token?: SortOrder
+    actor_type?: SortOrder
+    user_id?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    expires_on?: SortOrder
+    revoked_on?: SortOrder
+  }
+
+  export type SessionMinOrderByAggregateInput = {
+    session_id?: SortOrder
+    session_token?: SortOrder
+    actor_type?: SortOrder
+    user_id?: SortOrder
+    charity_id?: SortOrder
+    created_on?: SortOrder
+    expires_on?: SortOrder
+    revoked_on?: SortOrder
+  }
+
+  export type SessionSumOrderByAggregateInput = {
+    session_id?: SortOrder
+    user_id?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type EnumSessionActorTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionActorType | EnumSessionActorTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionActorTypeWithAggregatesFilter<$PrismaModel> | $Enums.SessionActorType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSessionActorTypeFilter<$PrismaModel>
+    _max?: NestedEnumSessionActorTypeFilter<$PrismaModel>
+  }
+
   export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -13466,6 +15090,13 @@ export namespace Prisma {
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
   }
 
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -13513,6 +15144,13 @@ export namespace Prisma {
     connectOrCreate?: DonationsCreateOrConnectWithoutCreatorInput | DonationsCreateOrConnectWithoutCreatorInput[]
     createMany?: DonationsCreateManyCreatorInputEnvelope
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -13625,6 +15263,20 @@ export namespace Prisma {
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
   }
 
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -13731,6 +15383,20 @@ export namespace Prisma {
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
   }
 
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutEmailVerificationTokensInput = {
     create?: XOR<UserCreateWithoutEmailVerificationTokensInput, UserUncheckedCreateWithoutEmailVerificationTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutEmailVerificationTokensInput
@@ -13791,6 +15457,13 @@ export namespace Prisma {
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
   }
 
+  export type SessionCreateNestedManyWithoutCharityInput = {
+    create?: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput> | SessionCreateWithoutCharityInput[] | SessionUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
+    createMany?: SessionCreateManyCharityInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -13817,6 +15490,13 @@ export namespace Prisma {
     connectOrCreate?: DonationsCreateOrConnectWithoutAcceptedInput | DonationsCreateOrConnectWithoutAcceptedInput[]
     createMany?: DonationsCreateManyAcceptedInputEnvelope
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutCharityInput = {
+    create?: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput> | SessionCreateWithoutCharityInput[] | SessionUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
+    createMany?: SessionCreateManyCharityInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -13879,6 +15559,20 @@ export namespace Prisma {
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
   }
 
+  export type SessionUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput> | SessionCreateWithoutCharityInput[] | SessionUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutCharityInput | SessionUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: SessionCreateManyCharityInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutCharityInput | SessionUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutCharityInput | SessionUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
   export type CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -13933,6 +15627,20 @@ export namespace Prisma {
     update?: DonationsUpdateWithWhereUniqueWithoutAcceptedInput | DonationsUpdateWithWhereUniqueWithoutAcceptedInput[]
     updateMany?: DonationsUpdateManyWithWhereWithoutAcceptedInput | DonationsUpdateManyWithWhereWithoutAcceptedInput[]
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput> | SessionCreateWithoutCharityInput[] | SessionUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutCharityInput | SessionUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: SessionCreateManyCharityInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutCharityInput | SessionUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutCharityInput | SessionUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutApproved_applicationsInput = {
@@ -14127,6 +15835,42 @@ export namespace Prisma {
     delete?: DonationsWhereInput | boolean
     connect?: DonationsWhereUniqueInput
     update?: XOR<XOR<DonationsUpdateToOneWithWhereWithoutRequestInput, DonationsUpdateWithoutRequestInput>, DonationsUncheckedUpdateWithoutRequestInput>
+  }
+
+  export type UserCreateNestedOneWithoutSessionInput = {
+    create?: XOR<UserCreateWithoutSessionInput, UserUncheckedCreateWithoutSessionInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CharitiesCreateNestedOneWithoutSessionInput = {
+    create?: XOR<CharitiesCreateWithoutSessionInput, CharitiesUncheckedCreateWithoutSessionInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutSessionInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
+  export type EnumSessionActorTypeFieldUpdateOperationsInput = {
+    set?: $Enums.SessionActorType
+  }
+
+  export type UserUpdateOneWithoutSessionNestedInput = {
+    create?: XOR<UserCreateWithoutSessionInput, UserUncheckedCreateWithoutSessionInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionInput
+    upsert?: UserUpsertWithoutSessionInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionInput, UserUpdateWithoutSessionInput>, UserUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type CharitiesUpdateOneWithoutSessionNestedInput = {
+    create?: XOR<CharitiesCreateWithoutSessionInput, CharitiesUncheckedCreateWithoutSessionInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutSessionInput
+    upsert?: CharitiesUpsertWithoutSessionInput
+    disconnect?: CharitiesWhereInput | boolean
+    delete?: CharitiesWhereInput | boolean
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutSessionInput, CharitiesUpdateWithoutSessionInput>, CharitiesUncheckedUpdateWithoutSessionInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -14345,6 +16089,23 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumSessionActorTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionActorType | EnumSessionActorTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionActorTypeFilter<$PrismaModel> | $Enums.SessionActorType
+  }
+
+  export type NestedEnumSessionActorTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SessionActorType | EnumSessionActorTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSessionActorTypeWithAggregatesFilter<$PrismaModel> | $Enums.SessionActorType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSessionActorTypeFilter<$PrismaModel>
+    _max?: NestedEnumSessionActorTypeFilter<$PrismaModel>
   }
 
   export type CharityApplicationsCreateWithoutApproverInput = {
@@ -14568,6 +16329,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessionCreateWithoutUserInput = {
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+    charity?: CharitiesCreateNestedOneWithoutSessionInput
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    charity_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CharityApplicationsUpsertWithWhereUniqueWithoutApproverInput = {
     where: CharityApplicationsWhereUniqueInput
     update: XOR<CharityApplicationsUpdateWithoutApproverInput, CharityApplicationsUncheckedUpdateWithoutApproverInput>
@@ -14764,6 +16554,36 @@ export namespace Prisma {
     accepted_at?: DateTimeFilter<"Donations"> | Date | string
   }
 
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    session_id?: IntFilter<"Session"> | number
+    session_token?: StringFilter<"Session"> | string
+    actor_type?: EnumSessionActorTypeFilter<"Session"> | $Enums.SessionActorType
+    user_id?: IntNullableFilter<"Session"> | number | null
+    charity_id?: IntNullableFilter<"Session"> | number | null
+    created_on?: DateTimeFilter<"Session"> | Date | string
+    expires_on?: DateTimeFilter<"Session"> | Date | string
+    revoked_on?: DateTimeNullableFilter<"Session"> | Date | string | null
+  }
+
   export type UserCreateWithoutEmailVerificationTokensInput = {
     email: string
     password_hash: string
@@ -14779,6 +16599,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
@@ -14797,6 +16618,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
@@ -14830,6 +16652,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
@@ -14848,6 +16671,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -14865,6 +16689,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -14883,6 +16708,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -14916,6 +16742,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -14934,6 +16761,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CharityApplicationsCreateWithoutCharityInput = {
@@ -15062,6 +16890,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SessionCreateWithoutCharityInput = {
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+    user?: UserCreateNestedOneWithoutSessionInput
+  }
+
+  export type SessionUncheckedCreateWithoutCharityInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    user_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
+  }
+
+  export type SessionCreateOrConnectWithoutCharityInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput>
+  }
+
+  export type SessionCreateManyCharityInputEnvelope = {
+    data: SessionCreateManyCharityInput | SessionCreateManyCharityInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CharityApplicationsUpsertWithWhereUniqueWithoutCharityInput = {
     where: CharityApplicationsWhereUniqueInput
     update: XOR<CharityApplicationsUpdateWithoutCharityInput, CharityApplicationsUncheckedUpdateWithoutCharityInput>
@@ -15126,6 +16983,22 @@ export namespace Prisma {
     data: XOR<DonationsUpdateManyMutationInput, DonationsUncheckedUpdateManyWithoutAcceptedInput>
   }
 
+  export type SessionUpsertWithWhereUniqueWithoutCharityInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutCharityInput, SessionUncheckedUpdateWithoutCharityInput>
+    create: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutCharityInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutCharityInput, SessionUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutCharityInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutCharityInput>
+  }
+
   export type UserCreateWithoutApproved_applicationsInput = {
     email: string
     password_hash: string
@@ -15141,6 +17014,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApproved_applicationsInput = {
@@ -15159,6 +17033,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApproved_applicationsInput = {
@@ -15181,6 +17056,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReviewed_applicationsInput = {
@@ -15199,6 +17075,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReviewed_applicationsInput = {
@@ -15219,6 +17096,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutApplicationsInput = {
@@ -15235,6 +17113,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutApplicationsInput = {
@@ -15268,6 +17147,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApproved_applicationsInput = {
@@ -15286,6 +17166,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReviewed_applicationsInput = {
@@ -15314,6 +17195,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewed_applicationsInput = {
@@ -15332,6 +17214,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CharitiesUpsertWithoutApplicationsInput = {
@@ -15358,6 +17241,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutApplicationsInput = {
@@ -15374,6 +17258,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesCreateWithoutSignup_tokensInput = {
@@ -15389,6 +17274,7 @@ export namespace Prisma {
     applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutSignup_tokensInput = {
@@ -15405,6 +17291,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutSignup_tokensInput = {
@@ -15427,6 +17314,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreated_invitesInput = {
@@ -15445,6 +17333,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreated_invitesInput = {
@@ -15476,6 +17365,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutSignup_tokensInput = {
@@ -15492,6 +17382,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutCreated_invitesInput = {
@@ -15520,6 +17411,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreated_invitesInput = {
@@ -15538,6 +17430,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutDonations_createdInput = {
@@ -15555,6 +17448,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDonations_createdInput = {
@@ -15573,6 +17467,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDonations_createdInput = {
@@ -15593,6 +17488,7 @@ export namespace Prisma {
     applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonations_receivedInput = {
@@ -15609,6 +17505,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonations_receivedInput = {
@@ -15666,6 +17563,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonations_createdInput = {
@@ -15684,6 +17582,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CharitiesUpsertWithoutDonations_receivedInput = {
@@ -15710,6 +17609,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonations_receivedInput = {
@@ -15726,6 +17626,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type DonationRequestUpsertWithoutAccepted_donationInput = {
@@ -15791,6 +17692,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDonation_requestsInput = {
@@ -15809,6 +17711,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDonation_requestsInput = {
@@ -15829,6 +17732,7 @@ export namespace Prisma {
     applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonation_requests_answeredInput = {
@@ -15845,6 +17749,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonation_requests_answeredInput = {
@@ -15902,6 +17807,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonation_requestsInput = {
@@ -15920,6 +17826,7 @@ export namespace Prisma {
     EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type CharitiesUpsertWithoutDonation_requests_answeredInput = {
@@ -15946,6 +17853,7 @@ export namespace Prisma {
     applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonation_requests_answeredInput = {
@@ -15961,6 +17869,179 @@ export namespace Prisma {
     password_hash?: NullableStringFieldUpdateOperationsInput | string | null
     applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+    donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type UserCreateWithoutSessionInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
+    donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserUncheckedCreateWithoutSessionInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
+    donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type UserCreateOrConnectWithoutSessionInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSessionInput, UserUncheckedCreateWithoutSessionInput>
+  }
+
+  export type CharitiesCreateWithoutSessionInput = {
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+    donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutSessionInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+    donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutSessionInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutSessionInput, CharitiesUncheckedCreateWithoutSessionInput>
+  }
+
+  export type UserUpsertWithoutSessionInput = {
+    update: XOR<UserUpdateWithoutSessionInput, UserUncheckedUpdateWithoutSessionInput>
+    create: XOR<UserCreateWithoutSessionInput, UserUncheckedCreateWithoutSessionInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSessionInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSessionInput, UserUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type UserUpdateWithoutSessionInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
+    donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSessionInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
+    donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type CharitiesUpsertWithoutSessionInput = {
+    update: XOR<CharitiesUpdateWithoutSessionInput, CharitiesUncheckedUpdateWithoutSessionInput>
+    create: XOR<CharitiesCreateWithoutSessionInput, CharitiesUncheckedCreateWithoutSessionInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutSessionInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutSessionInput, CharitiesUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type CharitiesUpdateWithoutSessionInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+    donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
+    donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutSessionInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+    donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
   }
 
@@ -16040,6 +18121,16 @@ export namespace Prisma {
     donation_request_id: number
     accepted_by: number
     accepted_at?: Date | string
+  }
+
+  export type SessionCreateManyUserInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    charity_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
   }
 
   export type CharityApplicationsUpdateWithoutApproverInput = {
@@ -16271,6 +18362,35 @@ export namespace Prisma {
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SessionUpdateWithoutUserInput = {
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    charity?: CharitiesUpdateOneWithoutSessionNestedInput
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type CharityApplicationsCreateManyCharityInput = {
     application_id?: number
     org_name: string
@@ -16313,6 +18433,16 @@ export namespace Prisma {
     donation_request_id: number
     created_by: number
     accepted_at?: Date | string
+  }
+
+  export type SessionCreateManyCharityInput = {
+    session_id?: number
+    session_token: string
+    actor_type: $Enums.SessionActorType
+    user_id?: number | null
+    created_on?: Date | string
+    expires_on: Date | string
+    revoked_on?: Date | string | null
   }
 
   export type CharityApplicationsUpdateWithoutCharityInput = {
@@ -16443,6 +18573,35 @@ export namespace Prisma {
     donation_request_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUpdateWithoutCharityInput = {
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user?: UserUpdateOneWithoutSessionNestedInput
+  }
+
+  export type SessionUncheckedUpdateWithoutCharityInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SessionUncheckedUpdateManyWithoutCharityInput = {
+    session_id?: IntFieldUpdateOperationsInput | number
+    session_token?: StringFieldUpdateOperationsInput | string
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
 
