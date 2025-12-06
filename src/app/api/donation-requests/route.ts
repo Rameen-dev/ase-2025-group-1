@@ -9,7 +9,7 @@ export async function GET() {
             orderBy: { created_on: "desc" },
             include: {
                 _count: {
-                    select: { clothing_items: true },
+                    select: { ClothingItems: true },
                 },
             },
         });
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         }
 
 
-        const userId = 14 //hardcode userId until we integrate session cookies
+        const userId = 1 //hardcode userId until we integrate session cookies
 
         //wrap donation request and clothing items in a transaction
         //ensuring data base is not partially filled and there are no key values missing
