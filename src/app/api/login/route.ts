@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
       roleStr === "ADMIN" ? SessionActorType.ADMIN : SessionActorType.DONOR;
 
     const sessionToken = generateSessionToken();
-    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+    const expires = new Date(Date.now() + 1000 * 60 * 30);
 
     await prisma.session.create({
       data: {
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 30,
     });
 
     return res;
