@@ -54,6 +54,11 @@ export type Donations = $Result.DefaultSelection<Prisma.$DonationsPayload>
  */
 export type DonationRequest = $Result.DefaultSelection<Prisma.$DonationRequestPayload>
 /**
+ * Model ClothingItems
+ * 
+ */
+export type ClothingItems = $Result.DefaultSelection<Prisma.$ClothingItemsPayload>
+/**
  * Model Session
  * 
  */
@@ -63,16 +68,7 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * Enums
  */
 export namespace $Enums {
-  export const SessionActorType: {
-  DONOR: 'DONOR',
-  CHARITY: 'CHARITY',
-  ADMIN: 'ADMIN'
-};
-
-export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
-
-
-export const Status: {
+  export const Status: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
@@ -90,10 +86,6 @@ export const SessionActorType: {
 export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
 
 }
-
-export type SessionActorType = $Enums.SessionActorType
-
-export const SessionActorType: typeof $Enums.SessionActorType
 
 export type Status = $Enums.Status
 
@@ -300,6 +292,16 @@ export class PrismaClient<
     * ```
     */
   get donationRequest(): Prisma.DonationRequestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.clothingItems`: Exposes CRUD operations for the **ClothingItems** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ClothingItems
+    * const clothingItems = await prisma.clothingItems.findMany()
+    * ```
+    */
+  get clothingItems(): Prisma.ClothingItemsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.session`: Exposes CRUD operations for the **Session** model.
@@ -759,6 +761,7 @@ export namespace Prisma {
     CharitySignupTokens: 'CharitySignupTokens',
     Donations: 'Donations',
     DonationRequest: 'DonationRequest',
+    ClothingItems: 'ClothingItems',
     Session: 'Session'
   };
 
@@ -778,7 +781,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session"
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "clothingItems" | "session"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1374,6 +1377,80 @@ export namespace Prisma {
           }
         }
       }
+      ClothingItems: {
+        payload: Prisma.$ClothingItemsPayload<ExtArgs>
+        fields: Prisma.ClothingItemsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ClothingItemsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ClothingItemsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          findFirst: {
+            args: Prisma.ClothingItemsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ClothingItemsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          findMany: {
+            args: Prisma.ClothingItemsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>[]
+          }
+          create: {
+            args: Prisma.ClothingItemsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          createMany: {
+            args: Prisma.ClothingItemsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ClothingItemsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>[]
+          }
+          delete: {
+            args: Prisma.ClothingItemsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          update: {
+            args: Prisma.ClothingItemsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          deleteMany: {
+            args: Prisma.ClothingItemsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ClothingItemsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ClothingItemsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>[]
+          }
+          upsert: {
+            args: Prisma.ClothingItemsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ClothingItemsPayload>
+          }
+          aggregate: {
+            args: Prisma.ClothingItemsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateClothingItems>
+          }
+          groupBy: {
+            args: Prisma.ClothingItemsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ClothingItemsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ClothingItemsCountArgs<ExtArgs>
+            result: $Utils.Optional<ClothingItemsCountAggregateOutputType> | number
+          }
+        }
+      }
       Session: {
         payload: Prisma.$SessionPayload<ExtArgs>
         fields: Prisma.SessionFieldRefs
@@ -1552,6 +1629,7 @@ export namespace Prisma {
     charitySignupTokens?: CharitySignupTokensOmit
     donations?: DonationsOmit
     donationRequest?: DonationRequestOmit
+    clothingItems?: ClothingItemsOmit
     session?: SessionOmit
   }
 
@@ -1641,6 +1719,7 @@ export namespace Prisma {
     donation_requests: number
     donations_created: number
     Session: number
+    ClothingItems: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1652,6 +1731,7 @@ export namespace Prisma {
     donation_requests?: boolean | UserCountOutputTypeCountDonation_requestsArgs
     donations_created?: boolean | UserCountOutputTypeCountDonations_createdArgs
     Session?: boolean | UserCountOutputTypeCountSessionArgs
+    ClothingItems?: boolean | UserCountOutputTypeCountClothingItemsArgs
   }
 
   // Custom InputTypes
@@ -1721,6 +1801,13 @@ export namespace Prisma {
     where?: SessionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClothingItemsWhereInput
+  }
+
 
   /**
    * Count Type CharitiesCountOutputType
@@ -1732,6 +1819,7 @@ export namespace Prisma {
     donation_requests_answered: number
     donations_received: number
     Session: number
+    ClothingItems: number
   }
 
   export type CharitiesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1740,6 +1828,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | CharitiesCountOutputTypeCountDonation_requests_answeredArgs
     donations_received?: boolean | CharitiesCountOutputTypeCountDonations_receivedArgs
     Session?: boolean | CharitiesCountOutputTypeCountSessionArgs
+    ClothingItems?: boolean | CharitiesCountOutputTypeCountClothingItemsArgs
   }
 
   // Custom InputTypes
@@ -1786,6 +1875,75 @@ export namespace Prisma {
    */
   export type CharitiesCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClothingItemsWhereInput
+  }
+
+
+  /**
+   * Count Type DonationsCountOutputType
+   */
+
+  export type DonationsCountOutputType = {
+    ClothingItems: number
+  }
+
+  export type DonationsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ClothingItems?: boolean | DonationsCountOutputTypeCountClothingItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DonationsCountOutputType without action
+   */
+  export type DonationsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DonationsCountOutputType
+     */
+    select?: DonationsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DonationsCountOutputType without action
+   */
+  export type DonationsCountOutputTypeCountClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClothingItemsWhereInput
+  }
+
+
+  /**
+   * Count Type DonationRequestCountOutputType
+   */
+
+  export type DonationRequestCountOutputType = {
+    ClothingItems: number
+  }
+
+  export type DonationRequestCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    ClothingItems?: boolean | DonationRequestCountOutputTypeCountClothingItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DonationRequestCountOutputType without action
+   */
+  export type DonationRequestCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DonationRequestCountOutputType
+     */
+    select?: DonationRequestCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DonationRequestCountOutputType without action
+   */
+  export type DonationRequestCountOutputTypeCountClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClothingItemsWhereInput
   }
 
 
@@ -2031,6 +2189,7 @@ export namespace Prisma {
     donation_requests?: boolean | User$donation_requestsArgs<ExtArgs>
     donations_created?: boolean | User$donations_createdArgs<ExtArgs>
     Session?: boolean | User$SessionArgs<ExtArgs>
+    ClothingItems?: boolean | User$ClothingItemsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2080,6 +2239,7 @@ export namespace Prisma {
     donation_requests?: boolean | User$donation_requestsArgs<ExtArgs>
     donations_created?: boolean | User$donations_createdArgs<ExtArgs>
     Session?: boolean | User$SessionArgs<ExtArgs>
+    ClothingItems?: boolean | User$ClothingItemsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2096,6 +2256,7 @@ export namespace Prisma {
       donation_requests: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_created: Prisma.$DonationsPayload<ExtArgs>[]
       Session: Prisma.$SessionPayload<ExtArgs>[]
+      ClothingItems: Prisma.$ClothingItemsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       user_id: number
@@ -2509,6 +2670,7 @@ export namespace Prisma {
     donation_requests<T extends User$donation_requestsArgs<ExtArgs> = {}>(args?: Subset<T, User$donation_requestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_created<T extends User$donations_createdArgs<ExtArgs> = {}>(args?: Subset<T, User$donations_createdArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Session<T extends User$SessionArgs<ExtArgs> = {}>(args?: Subset<T, User$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ClothingItems<T extends User$ClothingItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$ClothingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3124,6 +3286,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * User.ClothingItems
+   */
+  export type User$ClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    where?: ClothingItemsWhereInput
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    cursor?: ClothingItemsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
   }
 
   /**
@@ -5606,6 +5792,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
+    ClothingItems?: boolean | Charities$ClothingItemsArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["charities"]>
 
@@ -5655,6 +5842,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
+    ClothingItems?: boolean | Charities$ClothingItemsArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5668,6 +5856,7 @@ export namespace Prisma {
       donation_requests_answered: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_received: Prisma.$DonationsPayload<ExtArgs>[]
       Session: Prisma.$SessionPayload<ExtArgs>[]
+      ClothingItems: Prisma.$ClothingItemsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       charity_id: number
@@ -6079,6 +6268,7 @@ export namespace Prisma {
     donation_requests_answered<T extends Charities$donation_requests_answeredArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donation_requests_answeredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_received<T extends Charities$donations_receivedArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donations_receivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Session<T extends Charities$SessionArgs<ExtArgs> = {}>(args?: Subset<T, Charities$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ClothingItems<T extends Charities$ClothingItemsArgs<ExtArgs> = {}>(args?: Subset<T, Charities$ClothingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6623,6 +6813,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Charities.ClothingItems
+   */
+  export type Charities$ClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    where?: ClothingItemsWhereInput
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    cursor?: ClothingItemsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
   }
 
   /**
@@ -9343,6 +9557,8 @@ export namespace Prisma {
     creator?: boolean | UserDefaultArgs<ExtArgs>
     accepted?: boolean | CharitiesDefaultArgs<ExtArgs>
     request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    ClothingItems?: boolean | Donations$ClothingItemsArgs<ExtArgs>
+    _count?: boolean | DonationsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["donations"]>
 
   export type DonationsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9380,6 +9596,8 @@ export namespace Prisma {
     creator?: boolean | UserDefaultArgs<ExtArgs>
     accepted?: boolean | CharitiesDefaultArgs<ExtArgs>
     request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    ClothingItems?: boolean | Donations$ClothingItemsArgs<ExtArgs>
+    _count?: boolean | DonationsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DonationsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -9398,6 +9616,7 @@ export namespace Prisma {
       creator: Prisma.$UserPayload<ExtArgs>
       accepted: Prisma.$CharitiesPayload<ExtArgs>
       request: Prisma.$DonationRequestPayload<ExtArgs>
+      ClothingItems: Prisma.$ClothingItemsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       donation_id: number
@@ -9802,6 +10021,7 @@ export namespace Prisma {
     creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     accepted<T extends CharitiesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CharitiesDefaultArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     request<T extends DonationRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequestDefaultArgs<ExtArgs>>): Prisma__DonationRequestClient<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ClothingItems<T extends Donations$ClothingItemsArgs<ExtArgs> = {}>(args?: Subset<T, Donations$ClothingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10232,6 +10452,30 @@ export namespace Prisma {
   }
 
   /**
+   * Donations.ClothingItems
+   */
+  export type Donations$ClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    where?: ClothingItemsWhereInput
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    cursor?: ClothingItemsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
+  }
+
+  /**
    * Donations without action
    */
   export type DonationsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10475,6 +10719,8 @@ export namespace Prisma {
     accepted_donation?: boolean | DonationRequest$accepted_donationArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
     answering_charity?: boolean | DonationRequest$answering_charityArgs<ExtArgs>
+    ClothingItems?: boolean | DonationRequest$ClothingItemsArgs<ExtArgs>
+    _count?: boolean | DonationRequestCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["donationRequest"]>
 
   export type DonationRequestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10516,6 +10762,8 @@ export namespace Prisma {
     accepted_donation?: boolean | DonationRequest$accepted_donationArgs<ExtArgs>
     creator?: boolean | UserDefaultArgs<ExtArgs>
     answering_charity?: boolean | DonationRequest$answering_charityArgs<ExtArgs>
+    ClothingItems?: boolean | DonationRequest$ClothingItemsArgs<ExtArgs>
+    _count?: boolean | DonationRequestCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DonationRequestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     creator?: boolean | UserDefaultArgs<ExtArgs>
@@ -10532,6 +10780,7 @@ export namespace Prisma {
       accepted_donation: Prisma.$DonationsPayload<ExtArgs> | null
       creator: Prisma.$UserPayload<ExtArgs>
       answering_charity: Prisma.$CharitiesPayload<ExtArgs> | null
+      ClothingItems: Prisma.$ClothingItemsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       donation_request_id: number
@@ -10938,6 +11187,7 @@ export namespace Prisma {
     accepted_donation<T extends DonationRequest$accepted_donationArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequest$accepted_donationArgs<ExtArgs>>): Prisma__DonationsClient<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     creator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     answering_charity<T extends DonationRequest$answering_charityArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequest$answering_charityArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    ClothingItems<T extends DonationRequest$ClothingItemsArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequest$ClothingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -11408,6 +11658,30 @@ export namespace Prisma {
   }
 
   /**
+   * DonationRequest.ClothingItems
+   */
+  export type DonationRequest$ClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    where?: ClothingItemsWhereInput
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    cursor?: ClothingItemsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
+  }
+
+  /**
    * DonationRequest without action
    */
   export type DonationRequestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11423,6 +11697,1241 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DonationRequestInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ClothingItems
+   */
+
+  export type AggregateClothingItems = {
+    _count: ClothingItemsCountAggregateOutputType | null
+    _avg: ClothingItemsAvgAggregateOutputType | null
+    _sum: ClothingItemsSumAggregateOutputType | null
+    _min: ClothingItemsMinAggregateOutputType | null
+    _max: ClothingItemsMaxAggregateOutputType | null
+  }
+
+  export type ClothingItemsAvgAggregateOutputType = {
+    clothing_id: number | null
+    donation_request_id: number | null
+    donor_id: number | null
+    donation_id: number | null
+    owned_by: number | null
+  }
+
+  export type ClothingItemsSumAggregateOutputType = {
+    clothing_id: number | null
+    donation_request_id: number | null
+    donor_id: number | null
+    donation_id: number | null
+    owned_by: number | null
+  }
+
+  export type ClothingItemsMinAggregateOutputType = {
+    clothing_id: number | null
+    donation_request_id: number | null
+    type: string | null
+    size: string | null
+    condition: string | null
+    donor_id: number | null
+    donation_id: number | null
+    owned_by: number | null
+    front_image_url: string | null
+    back_image_url: string | null
+  }
+
+  export type ClothingItemsMaxAggregateOutputType = {
+    clothing_id: number | null
+    donation_request_id: number | null
+    type: string | null
+    size: string | null
+    condition: string | null
+    donor_id: number | null
+    donation_id: number | null
+    owned_by: number | null
+    front_image_url: string | null
+    back_image_url: string | null
+  }
+
+  export type ClothingItemsCountAggregateOutputType = {
+    clothing_id: number
+    donation_request_id: number
+    type: number
+    size: number
+    condition: number
+    donor_id: number
+    donation_id: number
+    owned_by: number
+    front_image_url: number
+    back_image_url: number
+    _all: number
+  }
+
+
+  export type ClothingItemsAvgAggregateInputType = {
+    clothing_id?: true
+    donation_request_id?: true
+    donor_id?: true
+    donation_id?: true
+    owned_by?: true
+  }
+
+  export type ClothingItemsSumAggregateInputType = {
+    clothing_id?: true
+    donation_request_id?: true
+    donor_id?: true
+    donation_id?: true
+    owned_by?: true
+  }
+
+  export type ClothingItemsMinAggregateInputType = {
+    clothing_id?: true
+    donation_request_id?: true
+    type?: true
+    size?: true
+    condition?: true
+    donor_id?: true
+    donation_id?: true
+    owned_by?: true
+    front_image_url?: true
+    back_image_url?: true
+  }
+
+  export type ClothingItemsMaxAggregateInputType = {
+    clothing_id?: true
+    donation_request_id?: true
+    type?: true
+    size?: true
+    condition?: true
+    donor_id?: true
+    donation_id?: true
+    owned_by?: true
+    front_image_url?: true
+    back_image_url?: true
+  }
+
+  export type ClothingItemsCountAggregateInputType = {
+    clothing_id?: true
+    donation_request_id?: true
+    type?: true
+    size?: true
+    condition?: true
+    donor_id?: true
+    donation_id?: true
+    owned_by?: true
+    front_image_url?: true
+    back_image_url?: true
+    _all?: true
+  }
+
+  export type ClothingItemsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ClothingItems to aggregate.
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClothingItems to fetch.
+     */
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ClothingItemsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClothingItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClothingItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ClothingItems
+    **/
+    _count?: true | ClothingItemsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ClothingItemsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ClothingItemsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClothingItemsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClothingItemsMaxAggregateInputType
+  }
+
+  export type GetClothingItemsAggregateType<T extends ClothingItemsAggregateArgs> = {
+        [P in keyof T & keyof AggregateClothingItems]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClothingItems[P]>
+      : GetScalarType<T[P], AggregateClothingItems[P]>
+  }
+
+
+
+
+  export type ClothingItemsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClothingItemsWhereInput
+    orderBy?: ClothingItemsOrderByWithAggregationInput | ClothingItemsOrderByWithAggregationInput[]
+    by: ClothingItemsScalarFieldEnum[] | ClothingItemsScalarFieldEnum
+    having?: ClothingItemsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClothingItemsCountAggregateInputType | true
+    _avg?: ClothingItemsAvgAggregateInputType
+    _sum?: ClothingItemsSumAggregateInputType
+    _min?: ClothingItemsMinAggregateInputType
+    _max?: ClothingItemsMaxAggregateInputType
+  }
+
+  export type ClothingItemsGroupByOutputType = {
+    clothing_id: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id: number | null
+    owned_by: number | null
+    front_image_url: string
+    back_image_url: string
+    _count: ClothingItemsCountAggregateOutputType | null
+    _avg: ClothingItemsAvgAggregateOutputType | null
+    _sum: ClothingItemsSumAggregateOutputType | null
+    _min: ClothingItemsMinAggregateOutputType | null
+    _max: ClothingItemsMaxAggregateOutputType | null
+  }
+
+  type GetClothingItemsGroupByPayload<T extends ClothingItemsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ClothingItemsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClothingItemsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
+            : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClothingItemsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    clothing_id?: boolean
+    donation_request_id?: boolean
+    type?: boolean
+    size?: boolean
+    condition?: boolean
+    donor_id?: boolean
+    donation_id?: boolean
+    owned_by?: boolean
+    front_image_url?: boolean
+    back_image_url?: boolean
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }, ExtArgs["result"]["clothingItems"]>
+
+  export type ClothingItemsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    clothing_id?: boolean
+    donation_request_id?: boolean
+    type?: boolean
+    size?: boolean
+    condition?: boolean
+    donor_id?: boolean
+    donation_id?: boolean
+    owned_by?: boolean
+    front_image_url?: boolean
+    back_image_url?: boolean
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }, ExtArgs["result"]["clothingItems"]>
+
+  export type ClothingItemsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    clothing_id?: boolean
+    donation_request_id?: boolean
+    type?: boolean
+    size?: boolean
+    condition?: boolean
+    donor_id?: boolean
+    donation_id?: boolean
+    owned_by?: boolean
+    front_image_url?: boolean
+    back_image_url?: boolean
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }, ExtArgs["result"]["clothingItems"]>
+
+  export type ClothingItemsSelectScalar = {
+    clothing_id?: boolean
+    donation_request_id?: boolean
+    type?: boolean
+    size?: boolean
+    condition?: boolean
+    donor_id?: boolean
+    donation_id?: boolean
+    owned_by?: boolean
+    front_image_url?: boolean
+    back_image_url?: boolean
+  }
+
+  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url", ExtArgs["result"]["clothingItems"]>
+  export type ClothingItemsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }
+  export type ClothingItemsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }
+  export type ClothingItemsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
+    donor?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
+    donation?: boolean | ClothingItems$donationArgs<ExtArgs>
+  }
+
+  export type $ClothingItemsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ClothingItems"
+    objects: {
+      donation_request: Prisma.$DonationRequestPayload<ExtArgs>
+      donor: Prisma.$UserPayload<ExtArgs>
+      owner: Prisma.$CharitiesPayload<ExtArgs> | null
+      donation: Prisma.$DonationsPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      clothing_id: number
+      donation_request_id: number
+      type: string
+      size: string
+      condition: string
+      donor_id: number
+      donation_id: number | null
+      owned_by: number | null
+      front_image_url: string
+      back_image_url: string
+    }, ExtArgs["result"]["clothingItems"]>
+    composites: {}
+  }
+
+  type ClothingItemsGetPayload<S extends boolean | null | undefined | ClothingItemsDefaultArgs> = $Result.GetResult<Prisma.$ClothingItemsPayload, S>
+
+  type ClothingItemsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ClothingItemsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ClothingItemsCountAggregateInputType | true
+    }
+
+  export interface ClothingItemsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ClothingItems'], meta: { name: 'ClothingItems' } }
+    /**
+     * Find zero or one ClothingItems that matches the filter.
+     * @param {ClothingItemsFindUniqueArgs} args - Arguments to find a ClothingItems
+     * @example
+     * // Get one ClothingItems
+     * const clothingItems = await prisma.clothingItems.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ClothingItemsFindUniqueArgs>(args: SelectSubset<T, ClothingItemsFindUniqueArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ClothingItems that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ClothingItemsFindUniqueOrThrowArgs} args - Arguments to find a ClothingItems
+     * @example
+     * // Get one ClothingItems
+     * const clothingItems = await prisma.clothingItems.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ClothingItemsFindUniqueOrThrowArgs>(args: SelectSubset<T, ClothingItemsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ClothingItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsFindFirstArgs} args - Arguments to find a ClothingItems
+     * @example
+     * // Get one ClothingItems
+     * const clothingItems = await prisma.clothingItems.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ClothingItemsFindFirstArgs>(args?: SelectSubset<T, ClothingItemsFindFirstArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ClothingItems that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsFindFirstOrThrowArgs} args - Arguments to find a ClothingItems
+     * @example
+     * // Get one ClothingItems
+     * const clothingItems = await prisma.clothingItems.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ClothingItemsFindFirstOrThrowArgs>(args?: SelectSubset<T, ClothingItemsFindFirstOrThrowArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ClothingItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ClothingItems
+     * const clothingItems = await prisma.clothingItems.findMany()
+     * 
+     * // Get first 10 ClothingItems
+     * const clothingItems = await prisma.clothingItems.findMany({ take: 10 })
+     * 
+     * // Only select the `clothing_id`
+     * const clothingItemsWithClothing_idOnly = await prisma.clothingItems.findMany({ select: { clothing_id: true } })
+     * 
+     */
+    findMany<T extends ClothingItemsFindManyArgs>(args?: SelectSubset<T, ClothingItemsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ClothingItems.
+     * @param {ClothingItemsCreateArgs} args - Arguments to create a ClothingItems.
+     * @example
+     * // Create one ClothingItems
+     * const ClothingItems = await prisma.clothingItems.create({
+     *   data: {
+     *     // ... data to create a ClothingItems
+     *   }
+     * })
+     * 
+     */
+    create<T extends ClothingItemsCreateArgs>(args: SelectSubset<T, ClothingItemsCreateArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ClothingItems.
+     * @param {ClothingItemsCreateManyArgs} args - Arguments to create many ClothingItems.
+     * @example
+     * // Create many ClothingItems
+     * const clothingItems = await prisma.clothingItems.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ClothingItemsCreateManyArgs>(args?: SelectSubset<T, ClothingItemsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ClothingItems and returns the data saved in the database.
+     * @param {ClothingItemsCreateManyAndReturnArgs} args - Arguments to create many ClothingItems.
+     * @example
+     * // Create many ClothingItems
+     * const clothingItems = await prisma.clothingItems.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ClothingItems and only return the `clothing_id`
+     * const clothingItemsWithClothing_idOnly = await prisma.clothingItems.createManyAndReturn({
+     *   select: { clothing_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ClothingItemsCreateManyAndReturnArgs>(args?: SelectSubset<T, ClothingItemsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ClothingItems.
+     * @param {ClothingItemsDeleteArgs} args - Arguments to delete one ClothingItems.
+     * @example
+     * // Delete one ClothingItems
+     * const ClothingItems = await prisma.clothingItems.delete({
+     *   where: {
+     *     // ... filter to delete one ClothingItems
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ClothingItemsDeleteArgs>(args: SelectSubset<T, ClothingItemsDeleteArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ClothingItems.
+     * @param {ClothingItemsUpdateArgs} args - Arguments to update one ClothingItems.
+     * @example
+     * // Update one ClothingItems
+     * const clothingItems = await prisma.clothingItems.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ClothingItemsUpdateArgs>(args: SelectSubset<T, ClothingItemsUpdateArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ClothingItems.
+     * @param {ClothingItemsDeleteManyArgs} args - Arguments to filter ClothingItems to delete.
+     * @example
+     * // Delete a few ClothingItems
+     * const { count } = await prisma.clothingItems.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ClothingItemsDeleteManyArgs>(args?: SelectSubset<T, ClothingItemsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ClothingItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ClothingItems
+     * const clothingItems = await prisma.clothingItems.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ClothingItemsUpdateManyArgs>(args: SelectSubset<T, ClothingItemsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ClothingItems and returns the data updated in the database.
+     * @param {ClothingItemsUpdateManyAndReturnArgs} args - Arguments to update many ClothingItems.
+     * @example
+     * // Update many ClothingItems
+     * const clothingItems = await prisma.clothingItems.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ClothingItems and only return the `clothing_id`
+     * const clothingItemsWithClothing_idOnly = await prisma.clothingItems.updateManyAndReturn({
+     *   select: { clothing_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ClothingItemsUpdateManyAndReturnArgs>(args: SelectSubset<T, ClothingItemsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ClothingItems.
+     * @param {ClothingItemsUpsertArgs} args - Arguments to update or create a ClothingItems.
+     * @example
+     * // Update or create a ClothingItems
+     * const clothingItems = await prisma.clothingItems.upsert({
+     *   create: {
+     *     // ... data to create a ClothingItems
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ClothingItems we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ClothingItemsUpsertArgs>(args: SelectSubset<T, ClothingItemsUpsertArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ClothingItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsCountArgs} args - Arguments to filter ClothingItems to count.
+     * @example
+     * // Count the number of ClothingItems
+     * const count = await prisma.clothingItems.count({
+     *   where: {
+     *     // ... the filter for the ClothingItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClothingItemsCountArgs>(
+      args?: Subset<T, ClothingItemsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClothingItemsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ClothingItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClothingItemsAggregateArgs>(args: Subset<T, ClothingItemsAggregateArgs>): Prisma.PrismaPromise<GetClothingItemsAggregateType<T>>
+
+    /**
+     * Group by ClothingItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClothingItemsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClothingItemsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClothingItemsGroupByArgs['orderBy'] }
+        : { orderBy?: ClothingItemsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClothingItemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClothingItemsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ClothingItems model
+   */
+  readonly fields: ClothingItemsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ClothingItems.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ClothingItemsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    donation_request<T extends DonationRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequestDefaultArgs<ExtArgs>>): Prisma__DonationRequestClient<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    donor<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    owner<T extends ClothingItems$ownerArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$ownerArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    donation<T extends ClothingItems$donationArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$donationArgs<ExtArgs>>): Prisma__DonationsClient<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ClothingItems model
+   */
+  interface ClothingItemsFieldRefs {
+    readonly clothing_id: FieldRef<"ClothingItems", 'Int'>
+    readonly donation_request_id: FieldRef<"ClothingItems", 'Int'>
+    readonly type: FieldRef<"ClothingItems", 'String'>
+    readonly size: FieldRef<"ClothingItems", 'String'>
+    readonly condition: FieldRef<"ClothingItems", 'String'>
+    readonly donor_id: FieldRef<"ClothingItems", 'Int'>
+    readonly donation_id: FieldRef<"ClothingItems", 'Int'>
+    readonly owned_by: FieldRef<"ClothingItems", 'Int'>
+    readonly front_image_url: FieldRef<"ClothingItems", 'String'>
+    readonly back_image_url: FieldRef<"ClothingItems", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ClothingItems findUnique
+   */
+  export type ClothingItemsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter, which ClothingItems to fetch.
+     */
+    where: ClothingItemsWhereUniqueInput
+  }
+
+  /**
+   * ClothingItems findUniqueOrThrow
+   */
+  export type ClothingItemsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter, which ClothingItems to fetch.
+     */
+    where: ClothingItemsWhereUniqueInput
+  }
+
+  /**
+   * ClothingItems findFirst
+   */
+  export type ClothingItemsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter, which ClothingItems to fetch.
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClothingItems to fetch.
+     */
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ClothingItems.
+     */
+    cursor?: ClothingItemsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClothingItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClothingItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ClothingItems.
+     */
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
+  }
+
+  /**
+   * ClothingItems findFirstOrThrow
+   */
+  export type ClothingItemsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter, which ClothingItems to fetch.
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClothingItems to fetch.
+     */
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ClothingItems.
+     */
+    cursor?: ClothingItemsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClothingItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClothingItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ClothingItems.
+     */
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
+  }
+
+  /**
+   * ClothingItems findMany
+   */
+  export type ClothingItemsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter, which ClothingItems to fetch.
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ClothingItems to fetch.
+     */
+    orderBy?: ClothingItemsOrderByWithRelationInput | ClothingItemsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ClothingItems.
+     */
+    cursor?: ClothingItemsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ClothingItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ClothingItems.
+     */
+    skip?: number
+    distinct?: ClothingItemsScalarFieldEnum | ClothingItemsScalarFieldEnum[]
+  }
+
+  /**
+   * ClothingItems create
+   */
+  export type ClothingItemsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ClothingItems.
+     */
+    data: XOR<ClothingItemsCreateInput, ClothingItemsUncheckedCreateInput>
+  }
+
+  /**
+   * ClothingItems createMany
+   */
+  export type ClothingItemsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ClothingItems.
+     */
+    data: ClothingItemsCreateManyInput | ClothingItemsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ClothingItems createManyAndReturn
+   */
+  export type ClothingItemsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * The data used to create many ClothingItems.
+     */
+    data: ClothingItemsCreateManyInput | ClothingItemsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ClothingItems update
+   */
+  export type ClothingItemsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ClothingItems.
+     */
+    data: XOR<ClothingItemsUpdateInput, ClothingItemsUncheckedUpdateInput>
+    /**
+     * Choose, which ClothingItems to update.
+     */
+    where: ClothingItemsWhereUniqueInput
+  }
+
+  /**
+   * ClothingItems updateMany
+   */
+  export type ClothingItemsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ClothingItems.
+     */
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyInput>
+    /**
+     * Filter which ClothingItems to update
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * Limit how many ClothingItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ClothingItems updateManyAndReturn
+   */
+  export type ClothingItemsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * The data used to update ClothingItems.
+     */
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyInput>
+    /**
+     * Filter which ClothingItems to update
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * Limit how many ClothingItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ClothingItems upsert
+   */
+  export type ClothingItemsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ClothingItems to update in case it exists.
+     */
+    where: ClothingItemsWhereUniqueInput
+    /**
+     * In case the ClothingItems found by the `where` argument doesn't exist, create a new ClothingItems with this data.
+     */
+    create: XOR<ClothingItemsCreateInput, ClothingItemsUncheckedCreateInput>
+    /**
+     * In case the ClothingItems was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ClothingItemsUpdateInput, ClothingItemsUncheckedUpdateInput>
+  }
+
+  /**
+   * ClothingItems delete
+   */
+  export type ClothingItemsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
+    /**
+     * Filter which ClothingItems to delete.
+     */
+    where: ClothingItemsWhereUniqueInput
+  }
+
+  /**
+   * ClothingItems deleteMany
+   */
+  export type ClothingItemsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ClothingItems to delete
+     */
+    where?: ClothingItemsWhereInput
+    /**
+     * Limit how many ClothingItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ClothingItems.owner
+   */
+  export type ClothingItems$ownerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Charities
+     */
+    select?: CharitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Charities
+     */
+    omit?: CharitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CharitiesInclude<ExtArgs> | null
+    where?: CharitiesWhereInput
+  }
+
+  /**
+   * ClothingItems.donation
+   */
+  export type ClothingItems$donationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Donations
+     */
+    select?: DonationsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Donations
+     */
+    omit?: DonationsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DonationsInclude<ExtArgs> | null
+    where?: DonationsWhereInput
+  }
+
+  /**
+   * ClothingItems without action
+   */
+  export type ClothingItemsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItems
+     */
+    select?: ClothingItemsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ClothingItems
+     */
+    omit?: ClothingItemsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClothingItemsInclude<ExtArgs> | null
   }
 
 
@@ -12740,6 +14249,22 @@ export namespace Prisma {
   export type DonationRequestScalarFieldEnum = (typeof DonationRequestScalarFieldEnum)[keyof typeof DonationRequestScalarFieldEnum]
 
 
+  export const ClothingItemsScalarFieldEnum: {
+    clothing_id: 'clothing_id',
+    donation_request_id: 'donation_request_id',
+    type: 'type',
+    size: 'size',
+    condition: 'condition',
+    donor_id: 'donor_id',
+    donation_id: 'donation_id',
+    owned_by: 'owned_by',
+    front_image_url: 'front_image_url',
+    back_image_url: 'back_image_url'
+  };
+
+  export type ClothingItemsScalarFieldEnum = (typeof ClothingItemsScalarFieldEnum)[keyof typeof ClothingItemsScalarFieldEnum]
+
+
   export const SessionScalarFieldEnum: {
     session_id: 'session_id',
     session_token: 'session_token',
@@ -12898,6 +14423,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestListRelationFilter
     donations_created?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    ClothingItems?: ClothingItemsListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -12918,6 +14444,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestOrderByRelationAggregateInput
     donations_created?: DonationsOrderByRelationAggregateInput
     Session?: SessionOrderByRelationAggregateInput
+    ClothingItems?: ClothingItemsOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12941,6 +14468,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestListRelationFilter
     donations_created?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    ClothingItems?: ClothingItemsListRelationFilter
   }, "user_id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13118,6 +14646,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    ClothingItems?: ClothingItemsListRelationFilter
   }
 
   export type CharitiesOrderByWithRelationInput = {
@@ -13136,6 +14665,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestOrderByRelationAggregateInput
     donations_received?: DonationsOrderByRelationAggregateInput
     Session?: SessionOrderByRelationAggregateInput
+    ClothingItems?: ClothingItemsOrderByRelationAggregateInput
   }
 
   export type CharitiesWhereUniqueInput = Prisma.AtLeast<{
@@ -13157,6 +14687,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    ClothingItems?: ClothingItemsListRelationFilter
   }, "charity_id" | "email">
 
   export type CharitiesOrderByWithAggregationInput = {
@@ -13398,6 +14929,7 @@ export namespace Prisma {
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     accepted?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
     request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
+    ClothingItems?: ClothingItemsListRelationFilter
   }
 
   export type DonationsOrderByWithRelationInput = {
@@ -13409,6 +14941,7 @@ export namespace Prisma {
     creator?: UserOrderByWithRelationInput
     accepted?: CharitiesOrderByWithRelationInput
     request?: DonationRequestOrderByWithRelationInput
+    ClothingItems?: ClothingItemsOrderByRelationAggregateInput
   }
 
   export type DonationsWhereUniqueInput = Prisma.AtLeast<{
@@ -13423,6 +14956,7 @@ export namespace Prisma {
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     accepted?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
     request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
+    ClothingItems?: ClothingItemsListRelationFilter
   }, "donation_id" | "donation_request_id">
 
   export type DonationsOrderByWithAggregationInput = {
@@ -13463,6 +14997,7 @@ export namespace Prisma {
     accepted_donation?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     answering_charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    ClothingItems?: ClothingItemsListRelationFilter
   }
 
   export type DonationRequestOrderByWithRelationInput = {
@@ -13476,6 +15011,7 @@ export namespace Prisma {
     accepted_donation?: DonationsOrderByWithRelationInput
     creator?: UserOrderByWithRelationInput
     answering_charity?: CharitiesOrderByWithRelationInput
+    ClothingItems?: ClothingItemsOrderByRelationAggregateInput
   }
 
   export type DonationRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -13492,6 +15028,7 @@ export namespace Prisma {
     accepted_donation?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     creator?: XOR<UserScalarRelationFilter, UserWhereInput>
     answering_charity?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    ClothingItems?: ClothingItemsListRelationFilter
   }, "donation_request_id">
 
   export type DonationRequestOrderByWithAggregationInput = {
@@ -13520,6 +15057,97 @@ export namespace Prisma {
     status?: EnumStatusWithAggregatesFilter<"DonationRequest"> | $Enums.Status
     answered_by?: IntNullableWithAggregatesFilter<"DonationRequest"> | number | null
     created_by?: IntWithAggregatesFilter<"DonationRequest"> | number
+  }
+
+  export type ClothingItemsWhereInput = {
+    AND?: ClothingItemsWhereInput | ClothingItemsWhereInput[]
+    OR?: ClothingItemsWhereInput[]
+    NOT?: ClothingItemsWhereInput | ClothingItemsWhereInput[]
+    clothing_id?: IntFilter<"ClothingItems"> | number
+    donation_request_id?: IntFilter<"ClothingItems"> | number
+    type?: StringFilter<"ClothingItems"> | string
+    size?: StringFilter<"ClothingItems"> | string
+    condition?: StringFilter<"ClothingItems"> | string
+    donor_id?: IntFilter<"ClothingItems"> | number
+    donation_id?: IntNullableFilter<"ClothingItems"> | number | null
+    owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    front_image_url?: StringFilter<"ClothingItems"> | string
+    back_image_url?: StringFilter<"ClothingItems"> | string
+    donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
+    donor?: XOR<UserScalarRelationFilter, UserWhereInput>
+    owner?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    donation?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
+  }
+
+  export type ClothingItemsOrderByWithRelationInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    type?: SortOrder
+    size?: SortOrder
+    condition?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrderInput | SortOrder
+    owned_by?: SortOrderInput | SortOrder
+    front_image_url?: SortOrder
+    back_image_url?: SortOrder
+    donation_request?: DonationRequestOrderByWithRelationInput
+    donor?: UserOrderByWithRelationInput
+    owner?: CharitiesOrderByWithRelationInput
+    donation?: DonationsOrderByWithRelationInput
+  }
+
+  export type ClothingItemsWhereUniqueInput = Prisma.AtLeast<{
+    clothing_id?: number
+    AND?: ClothingItemsWhereInput | ClothingItemsWhereInput[]
+    OR?: ClothingItemsWhereInput[]
+    NOT?: ClothingItemsWhereInput | ClothingItemsWhereInput[]
+    donation_request_id?: IntFilter<"ClothingItems"> | number
+    type?: StringFilter<"ClothingItems"> | string
+    size?: StringFilter<"ClothingItems"> | string
+    condition?: StringFilter<"ClothingItems"> | string
+    donor_id?: IntFilter<"ClothingItems"> | number
+    donation_id?: IntNullableFilter<"ClothingItems"> | number | null
+    owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    front_image_url?: StringFilter<"ClothingItems"> | string
+    back_image_url?: StringFilter<"ClothingItems"> | string
+    donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
+    donor?: XOR<UserScalarRelationFilter, UserWhereInput>
+    owner?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    donation?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
+  }, "clothing_id">
+
+  export type ClothingItemsOrderByWithAggregationInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    type?: SortOrder
+    size?: SortOrder
+    condition?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrderInput | SortOrder
+    owned_by?: SortOrderInput | SortOrder
+    front_image_url?: SortOrder
+    back_image_url?: SortOrder
+    _count?: ClothingItemsCountOrderByAggregateInput
+    _avg?: ClothingItemsAvgOrderByAggregateInput
+    _max?: ClothingItemsMaxOrderByAggregateInput
+    _min?: ClothingItemsMinOrderByAggregateInput
+    _sum?: ClothingItemsSumOrderByAggregateInput
+  }
+
+  export type ClothingItemsScalarWhereWithAggregatesInput = {
+    AND?: ClothingItemsScalarWhereWithAggregatesInput | ClothingItemsScalarWhereWithAggregatesInput[]
+    OR?: ClothingItemsScalarWhereWithAggregatesInput[]
+    NOT?: ClothingItemsScalarWhereWithAggregatesInput | ClothingItemsScalarWhereWithAggregatesInput[]
+    clothing_id?: IntWithAggregatesFilter<"ClothingItems"> | number
+    donation_request_id?: IntWithAggregatesFilter<"ClothingItems"> | number
+    type?: StringWithAggregatesFilter<"ClothingItems"> | string
+    size?: StringWithAggregatesFilter<"ClothingItems"> | string
+    condition?: StringWithAggregatesFilter<"ClothingItems"> | string
+    donor_id?: IntWithAggregatesFilter<"ClothingItems"> | number
+    donation_id?: IntNullableWithAggregatesFilter<"ClothingItems"> | number | null
+    owned_by?: IntNullableWithAggregatesFilter<"ClothingItems"> | number | null
+    front_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
+    back_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
   }
 
   export type SessionWhereInput = {
@@ -13614,6 +15242,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -13634,6 +15263,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserUpdateInput = {
@@ -13653,6 +15283,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -13673,6 +15304,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -13843,6 +15475,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateInput = {
@@ -13861,6 +15494,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUpdateInput = {
@@ -13878,6 +15512,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateInput = {
@@ -13896,6 +15531,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesCreateManyInput = {
@@ -14140,6 +15776,7 @@ export namespace Prisma {
     creator: UserCreateNestedOneWithoutDonations_createdInput
     accepted: CharitiesCreateNestedOneWithoutDonations_receivedInput
     request: DonationRequestCreateNestedOneWithoutAccepted_donationInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsUncheckedCreateInput = {
@@ -14148,6 +15785,7 @@ export namespace Prisma {
     created_by: number
     accepted_by: number
     accepted_at?: Date | string
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsUpdateInput = {
@@ -14155,6 +15793,7 @@ export namespace Prisma {
     creator?: UserUpdateOneRequiredWithoutDonations_createdNestedInput
     accepted?: CharitiesUpdateOneRequiredWithoutDonations_receivedNestedInput
     request?: DonationRequestUpdateOneRequiredWithoutAccepted_donationNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateInput = {
@@ -14163,6 +15802,7 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsCreateManyInput = {
@@ -14193,6 +15833,7 @@ export namespace Prisma {
     accepted_donation?: DonationsCreateNestedOneWithoutRequestInput
     creator: UserCreateNestedOneWithoutDonation_requestsInput
     answering_charity?: CharitiesCreateNestedOneWithoutDonation_requests_answeredInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestUncheckedCreateInput = {
@@ -14204,6 +15845,7 @@ export namespace Prisma {
     answered_by?: number | null
     created_by: number
     accepted_donation?: DonationsUncheckedCreateNestedOneWithoutRequestInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestUpdateInput = {
@@ -14214,6 +15856,7 @@ export namespace Prisma {
     accepted_donation?: DonationsUpdateOneWithoutRequestNestedInput
     creator?: UserUpdateOneRequiredWithoutDonation_requestsNestedInput
     answering_charity?: CharitiesUpdateOneWithoutDonation_requests_answeredNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateInput = {
@@ -14225,6 +15868,7 @@ export namespace Prisma {
     answered_by?: NullableIntFieldUpdateOperationsInput | number | null
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_donation?: DonationsUncheckedUpdateOneWithoutRequestNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestCreateManyInput = {
@@ -14252,6 +15896,90 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     answered_by?: NullableIntFieldUpdateOperationsInput | number | null
     created_by?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ClothingItemsCreateInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
+    donor: UserCreateNestedOneWithoutClothingItemsInput
+    owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    donation?: DonationsCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsUpdateInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
+    donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsCreateManyInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsUpdateManyMutationInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsUncheckedUpdateManyInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionCreateInput = {
@@ -14410,6 +16138,12 @@ export namespace Prisma {
     none?: SessionWhereInput
   }
 
+  export type ClothingItemsListRelationFilter = {
+    every?: ClothingItemsWhereInput
+    some?: ClothingItemsWhereInput
+    none?: ClothingItemsWhereInput
+  }
+
   export type CharityApplicationsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -14435,6 +16169,10 @@ export namespace Prisma {
   }
 
   export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ClothingItemsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14992,6 +16730,61 @@ export namespace Prisma {
     created_by?: SortOrder
   }
 
+  export type ClothingItemsCountOrderByAggregateInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    type?: SortOrder
+    size?: SortOrder
+    condition?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrder
+    owned_by?: SortOrder
+    front_image_url?: SortOrder
+    back_image_url?: SortOrder
+  }
+
+  export type ClothingItemsAvgOrderByAggregateInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrder
+    owned_by?: SortOrder
+  }
+
+  export type ClothingItemsMaxOrderByAggregateInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    type?: SortOrder
+    size?: SortOrder
+    condition?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrder
+    owned_by?: SortOrder
+    front_image_url?: SortOrder
+    back_image_url?: SortOrder
+  }
+
+  export type ClothingItemsMinOrderByAggregateInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    type?: SortOrder
+    size?: SortOrder
+    condition?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrder
+    owned_by?: SortOrder
+    front_image_url?: SortOrder
+    back_image_url?: SortOrder
+  }
+
+  export type ClothingItemsSumOrderByAggregateInput = {
+    clothing_id?: SortOrder
+    donation_request_id?: SortOrder
+    donor_id?: SortOrder
+    donation_id?: SortOrder
+    owned_by?: SortOrder
+  }
+
   export type EnumSessionActorTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.SessionActorType | EnumSessionActorTypeFieldRefInput<$PrismaModel>
     in?: $Enums.SessionActorType[] | ListEnumSessionActorTypeFieldRefInput<$PrismaModel>
@@ -15110,6 +16903,13 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
+  export type ClothingItemsCreateNestedManyWithoutDonorInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput> | ClothingItemsCreateWithoutDonorInput[] | ClothingItemsUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonorInput | ClothingItemsCreateOrConnectWithoutDonorInput[]
+    createMany?: ClothingItemsCreateManyDonorInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+  }
+
   export type CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -15164,6 +16964,13 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     createMany?: SessionCreateManyUserInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type ClothingItemsUncheckedCreateNestedManyWithoutDonorInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput> | ClothingItemsCreateWithoutDonorInput[] | ClothingItemsUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonorInput | ClothingItemsCreateOrConnectWithoutDonorInput[]
+    createMany?: ClothingItemsCreateManyDonorInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15290,6 +17097,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type ClothingItemsUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput> | ClothingItemsCreateWithoutDonorInput[] | ClothingItemsUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonorInput | ClothingItemsCreateOrConnectWithoutDonorInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonorInput | ClothingItemsUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: ClothingItemsCreateManyDonorInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonorInput | ClothingItemsUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonorInput | ClothingItemsUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -15410,6 +17231,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput> | ClothingItemsCreateWithoutDonorInput[] | ClothingItemsUncheckedCreateWithoutDonorInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonorInput | ClothingItemsCreateOrConnectWithoutDonorInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonorInput | ClothingItemsUpsertWithWhereUniqueWithoutDonorInput[]
+    createMany?: ClothingItemsCreateManyDonorInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonorInput | ClothingItemsUpdateWithWhereUniqueWithoutDonorInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonorInput | ClothingItemsUpdateManyWithWhereWithoutDonorInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutEmailVerificationTokensInput = {
     create?: XOR<UserCreateWithoutEmailVerificationTokensInput, UserUncheckedCreateWithoutEmailVerificationTokensInput>
     connectOrCreate?: UserCreateOrConnectWithoutEmailVerificationTokensInput
@@ -15477,6 +17312,13 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
+  export type ClothingItemsCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput> | ClothingItemsCreateWithoutOwnerInput[] | ClothingItemsUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutOwnerInput | ClothingItemsCreateOrConnectWithoutOwnerInput[]
+    createMany?: ClothingItemsCreateManyOwnerInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+  }
+
   export type CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -15510,6 +17352,13 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
     createMany?: SessionCreateManyCharityInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput> | ClothingItemsCreateWithoutOwnerInput[] | ClothingItemsUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutOwnerInput | ClothingItemsCreateOrConnectWithoutOwnerInput[]
+    createMany?: ClothingItemsCreateManyOwnerInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -15586,6 +17435,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type ClothingItemsUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput> | ClothingItemsCreateWithoutOwnerInput[] | ClothingItemsUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutOwnerInput | ClothingItemsCreateOrConnectWithoutOwnerInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutOwnerInput | ClothingItemsUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ClothingItemsCreateManyOwnerInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutOwnerInput | ClothingItemsUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutOwnerInput | ClothingItemsUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
   export type CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -15654,6 +17517,20 @@ export namespace Prisma {
     update?: SessionUpdateWithWhereUniqueWithoutCharityInput | SessionUpdateWithWhereUniqueWithoutCharityInput[]
     updateMany?: SessionUpdateManyWithWhereWithoutCharityInput | SessionUpdateManyWithWhereWithoutCharityInput[]
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput> | ClothingItemsCreateWithoutOwnerInput[] | ClothingItemsUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutOwnerInput | ClothingItemsCreateOrConnectWithoutOwnerInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutOwnerInput | ClothingItemsUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ClothingItemsCreateManyOwnerInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutOwnerInput | ClothingItemsUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutOwnerInput | ClothingItemsUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutApproved_applicationsInput = {
@@ -15764,6 +17641,20 @@ export namespace Prisma {
     connect?: DonationRequestWhereUniqueInput
   }
 
+  export type ClothingItemsCreateNestedManyWithoutDonationInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput> | ClothingItemsCreateWithoutDonationInput[] | ClothingItemsUncheckedCreateWithoutDonationInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonationInput | ClothingItemsCreateOrConnectWithoutDonationInput[]
+    createMany?: ClothingItemsCreateManyDonationInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+  }
+
+  export type ClothingItemsUncheckedCreateNestedManyWithoutDonationInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput> | ClothingItemsCreateWithoutDonationInput[] | ClothingItemsUncheckedCreateWithoutDonationInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonationInput | ClothingItemsCreateOrConnectWithoutDonationInput[]
+    createMany?: ClothingItemsCreateManyDonationInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+  }
+
   export type UserUpdateOneRequiredWithoutDonations_createdNestedInput = {
     create?: XOR<UserCreateWithoutDonations_createdInput, UserUncheckedCreateWithoutDonations_createdInput>
     connectOrCreate?: UserCreateOrConnectWithoutDonations_createdInput
@@ -15788,6 +17679,34 @@ export namespace Prisma {
     update?: XOR<XOR<DonationRequestUpdateToOneWithWhereWithoutAccepted_donationInput, DonationRequestUpdateWithoutAccepted_donationInput>, DonationRequestUncheckedUpdateWithoutAccepted_donationInput>
   }
 
+  export type ClothingItemsUpdateManyWithoutDonationNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput> | ClothingItemsCreateWithoutDonationInput[] | ClothingItemsUncheckedCreateWithoutDonationInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonationInput | ClothingItemsCreateOrConnectWithoutDonationInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonationInput | ClothingItemsUpsertWithWhereUniqueWithoutDonationInput[]
+    createMany?: ClothingItemsCreateManyDonationInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonationInput | ClothingItemsUpdateWithWhereUniqueWithoutDonationInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonationInput | ClothingItemsUpdateManyWithWhereWithoutDonationInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutDonationNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput> | ClothingItemsCreateWithoutDonationInput[] | ClothingItemsUncheckedCreateWithoutDonationInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonationInput | ClothingItemsCreateOrConnectWithoutDonationInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonationInput | ClothingItemsUpsertWithWhereUniqueWithoutDonationInput[]
+    createMany?: ClothingItemsCreateManyDonationInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonationInput | ClothingItemsUpdateWithWhereUniqueWithoutDonationInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonationInput | ClothingItemsUpdateManyWithWhereWithoutDonationInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
   export type DonationsCreateNestedOneWithoutRequestInput = {
     create?: XOR<DonationsCreateWithoutRequestInput, DonationsUncheckedCreateWithoutRequestInput>
     connectOrCreate?: DonationsCreateOrConnectWithoutRequestInput
@@ -15806,10 +17725,24 @@ export namespace Prisma {
     connect?: CharitiesWhereUniqueInput
   }
 
+  export type ClothingItemsCreateNestedManyWithoutDonation_requestInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput> | ClothingItemsCreateWithoutDonation_requestInput[] | ClothingItemsUncheckedCreateWithoutDonation_requestInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonation_requestInput | ClothingItemsCreateOrConnectWithoutDonation_requestInput[]
+    createMany?: ClothingItemsCreateManyDonation_requestInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+  }
+
   export type DonationsUncheckedCreateNestedOneWithoutRequestInput = {
     create?: XOR<DonationsCreateWithoutRequestInput, DonationsUncheckedCreateWithoutRequestInput>
     connectOrCreate?: DonationsCreateOrConnectWithoutRequestInput
     connect?: DonationsWhereUniqueInput
+  }
+
+  export type ClothingItemsUncheckedCreateNestedManyWithoutDonation_requestInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput> | ClothingItemsCreateWithoutDonation_requestInput[] | ClothingItemsUncheckedCreateWithoutDonation_requestInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonation_requestInput | ClothingItemsCreateOrConnectWithoutDonation_requestInput[]
+    createMany?: ClothingItemsCreateManyDonation_requestInputEnvelope
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
   }
 
   export type DonationsUpdateOneWithoutRequestNestedInput = {
@@ -15840,6 +17773,20 @@ export namespace Prisma {
     update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutDonation_requests_answeredInput, CharitiesUpdateWithoutDonation_requests_answeredInput>, CharitiesUncheckedUpdateWithoutDonation_requests_answeredInput>
   }
 
+  export type ClothingItemsUpdateManyWithoutDonation_requestNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput> | ClothingItemsCreateWithoutDonation_requestInput[] | ClothingItemsUncheckedCreateWithoutDonation_requestInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonation_requestInput | ClothingItemsCreateOrConnectWithoutDonation_requestInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonation_requestInput | ClothingItemsUpsertWithWhereUniqueWithoutDonation_requestInput[]
+    createMany?: ClothingItemsCreateManyDonation_requestInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonation_requestInput | ClothingItemsUpdateWithWhereUniqueWithoutDonation_requestInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonation_requestInput | ClothingItemsUpdateManyWithWhereWithoutDonation_requestInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
   export type DonationsUncheckedUpdateOneWithoutRequestNestedInput = {
     create?: XOR<DonationsCreateWithoutRequestInput, DonationsUncheckedCreateWithoutRequestInput>
     connectOrCreate?: DonationsCreateOrConnectWithoutRequestInput
@@ -15848,6 +17795,80 @@ export namespace Prisma {
     delete?: DonationsWhereInput | boolean
     connect?: DonationsWhereUniqueInput
     update?: XOR<XOR<DonationsUpdateToOneWithWhereWithoutRequestInput, DonationsUpdateWithoutRequestInput>, DonationsUncheckedUpdateWithoutRequestInput>
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutDonation_requestNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput> | ClothingItemsCreateWithoutDonation_requestInput[] | ClothingItemsUncheckedCreateWithoutDonation_requestInput[]
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDonation_requestInput | ClothingItemsCreateOrConnectWithoutDonation_requestInput[]
+    upsert?: ClothingItemsUpsertWithWhereUniqueWithoutDonation_requestInput | ClothingItemsUpsertWithWhereUniqueWithoutDonation_requestInput[]
+    createMany?: ClothingItemsCreateManyDonation_requestInputEnvelope
+    set?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    disconnect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    delete?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
+    update?: ClothingItemsUpdateWithWhereUniqueWithoutDonation_requestInput | ClothingItemsUpdateWithWhereUniqueWithoutDonation_requestInput[]
+    updateMany?: ClothingItemsUpdateManyWithWhereWithoutDonation_requestInput | ClothingItemsUpdateManyWithWhereWithoutDonation_requestInput[]
+    deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+  }
+
+  export type DonationRequestCreateNestedOneWithoutClothingItemsInput = {
+    create?: XOR<DonationRequestCreateWithoutClothingItemsInput, DonationRequestUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: DonationRequestCreateOrConnectWithoutClothingItemsInput
+    connect?: DonationRequestWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutClothingItemsInput = {
+    create?: XOR<UserCreateWithoutClothingItemsInput, UserUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClothingItemsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type CharitiesCreateNestedOneWithoutClothingItemsInput = {
+    create?: XOR<CharitiesCreateWithoutClothingItemsInput, CharitiesUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutClothingItemsInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
+  export type DonationsCreateNestedOneWithoutClothingItemsInput = {
+    create?: XOR<DonationsCreateWithoutClothingItemsInput, DonationsUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: DonationsCreateOrConnectWithoutClothingItemsInput
+    connect?: DonationsWhereUniqueInput
+  }
+
+  export type DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput = {
+    create?: XOR<DonationRequestCreateWithoutClothingItemsInput, DonationRequestUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: DonationRequestCreateOrConnectWithoutClothingItemsInput
+    upsert?: DonationRequestUpsertWithoutClothingItemsInput
+    connect?: DonationRequestWhereUniqueInput
+    update?: XOR<XOR<DonationRequestUpdateToOneWithWhereWithoutClothingItemsInput, DonationRequestUpdateWithoutClothingItemsInput>, DonationRequestUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutClothingItemsNestedInput = {
+    create?: XOR<UserCreateWithoutClothingItemsInput, UserUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutClothingItemsInput
+    upsert?: UserUpsertWithoutClothingItemsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutClothingItemsInput, UserUpdateWithoutClothingItemsInput>, UserUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type CharitiesUpdateOneWithoutClothingItemsNestedInput = {
+    create?: XOR<CharitiesCreateWithoutClothingItemsInput, CharitiesUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutClothingItemsInput
+    upsert?: CharitiesUpsertWithoutClothingItemsInput
+    disconnect?: CharitiesWhereInput | boolean
+    delete?: CharitiesWhereInput | boolean
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutClothingItemsInput, CharitiesUpdateWithoutClothingItemsInput>, CharitiesUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type DonationsUpdateOneWithoutClothingItemsNestedInput = {
+    create?: XOR<DonationsCreateWithoutClothingItemsInput, DonationsUncheckedCreateWithoutClothingItemsInput>
+    connectOrCreate?: DonationsCreateOrConnectWithoutClothingItemsInput
+    upsert?: DonationsUpsertWithoutClothingItemsInput
+    disconnect?: DonationsWhereInput | boolean
+    delete?: DonationsWhereInput | boolean
+    connect?: DonationsWhereUniqueInput
+    update?: XOR<XOR<DonationsUpdateToOneWithWhereWithoutClothingItemsInput, DonationsUpdateWithoutClothingItemsInput>, DonationsUncheckedUpdateWithoutClothingItemsInput>
   }
 
   export type UserCreateNestedOneWithoutSessionInput = {
@@ -16297,6 +18318,7 @@ export namespace Prisma {
     status?: $Enums.Status
     accepted_donation?: DonationsCreateNestedOneWithoutRequestInput
     answering_charity?: CharitiesCreateNestedOneWithoutDonation_requests_answeredInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestUncheckedCreateWithoutCreatorInput = {
@@ -16307,6 +18329,7 @@ export namespace Prisma {
     status?: $Enums.Status
     answered_by?: number | null
     accepted_donation?: DonationsUncheckedCreateNestedOneWithoutRequestInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestCreateOrConnectWithoutCreatorInput = {
@@ -16323,6 +18346,7 @@ export namespace Prisma {
     accepted_at?: Date | string
     accepted: CharitiesCreateNestedOneWithoutDonations_receivedInput
     request: DonationRequestCreateNestedOneWithoutAccepted_donationInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsUncheckedCreateWithoutCreatorInput = {
@@ -16330,6 +18354,7 @@ export namespace Prisma {
     donation_request_id: number
     accepted_by: number
     accepted_at?: Date | string
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsCreateOrConnectWithoutCreatorInput = {
@@ -16368,6 +18393,39 @@ export namespace Prisma {
 
   export type SessionCreateManyUserInputEnvelope = {
     data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClothingItemsCreateWithoutDonorInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
+    owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    donation?: DonationsCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateWithoutDonorInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsCreateOrConnectWithoutDonorInput = {
+    where: ClothingItemsWhereUniqueInput
+    create: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput>
+  }
+
+  export type ClothingItemsCreateManyDonorInputEnvelope = {
+    data: ClothingItemsCreateManyDonorInput | ClothingItemsCreateManyDonorInput[]
     skipDuplicates?: boolean
   }
 
@@ -16597,6 +18655,38 @@ export namespace Prisma {
     revoked_on?: DateTimeNullableFilter<"Session"> | Date | string | null
   }
 
+  export type ClothingItemsUpsertWithWhereUniqueWithoutDonorInput = {
+    where: ClothingItemsWhereUniqueInput
+    update: XOR<ClothingItemsUpdateWithoutDonorInput, ClothingItemsUncheckedUpdateWithoutDonorInput>
+    create: XOR<ClothingItemsCreateWithoutDonorInput, ClothingItemsUncheckedCreateWithoutDonorInput>
+  }
+
+  export type ClothingItemsUpdateWithWhereUniqueWithoutDonorInput = {
+    where: ClothingItemsWhereUniqueInput
+    data: XOR<ClothingItemsUpdateWithoutDonorInput, ClothingItemsUncheckedUpdateWithoutDonorInput>
+  }
+
+  export type ClothingItemsUpdateManyWithWhereWithoutDonorInput = {
+    where: ClothingItemsScalarWhereInput
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyWithoutDonorInput>
+  }
+
+  export type ClothingItemsScalarWhereInput = {
+    AND?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+    OR?: ClothingItemsScalarWhereInput[]
+    NOT?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
+    clothing_id?: IntFilter<"ClothingItems"> | number
+    donation_request_id?: IntFilter<"ClothingItems"> | number
+    type?: StringFilter<"ClothingItems"> | string
+    size?: StringFilter<"ClothingItems"> | string
+    condition?: StringFilter<"ClothingItems"> | string
+    donor_id?: IntFilter<"ClothingItems"> | number
+    donation_id?: IntNullableFilter<"ClothingItems"> | number | null
+    owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    front_image_url?: StringFilter<"ClothingItems"> | string
+    back_image_url?: StringFilter<"ClothingItems"> | string
+  }
+
   export type UserCreateWithoutEmailVerificationTokensInput = {
     email: string
     password_hash: string
@@ -16613,6 +18703,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutEmailVerificationTokensInput = {
@@ -16632,6 +18723,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutEmailVerificationTokensInput = {
@@ -16666,6 +18758,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEmailVerificationTokensInput = {
@@ -16685,6 +18778,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type UserCreateWithoutPasswordResetTokensInput = {
@@ -16703,6 +18797,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
@@ -16722,6 +18817,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
@@ -16756,6 +18852,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
@@ -16775,6 +18872,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type CharityApplicationsCreateWithoutCharityInput = {
@@ -16858,6 +18956,7 @@ export namespace Prisma {
     status?: $Enums.Status
     accepted_donation?: DonationsCreateNestedOneWithoutRequestInput
     creator: UserCreateNestedOneWithoutDonation_requestsInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestUncheckedCreateWithoutAnswering_charityInput = {
@@ -16868,6 +18967,7 @@ export namespace Prisma {
     status?: $Enums.Status
     created_by: number
     accepted_donation?: DonationsUncheckedCreateNestedOneWithoutRequestInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestCreateOrConnectWithoutAnswering_charityInput = {
@@ -16884,6 +18984,7 @@ export namespace Prisma {
     accepted_at?: Date | string
     creator: UserCreateNestedOneWithoutDonations_createdInput
     request: DonationRequestCreateNestedOneWithoutAccepted_donationInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsUncheckedCreateWithoutAcceptedInput = {
@@ -16891,6 +18992,7 @@ export namespace Prisma {
     donation_request_id: number
     created_by: number
     accepted_at?: Date | string
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsCreateOrConnectWithoutAcceptedInput = {
@@ -16929,6 +19031,39 @@ export namespace Prisma {
 
   export type SessionCreateManyCharityInputEnvelope = {
     data: SessionCreateManyCharityInput | SessionCreateManyCharityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClothingItemsCreateWithoutOwnerInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
+    donor: UserCreateNestedOneWithoutClothingItemsInput
+    donation?: DonationsCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateWithoutOwnerInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsCreateOrConnectWithoutOwnerInput = {
+    where: ClothingItemsWhereUniqueInput
+    create: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type ClothingItemsCreateManyOwnerInputEnvelope = {
+    data: ClothingItemsCreateManyOwnerInput | ClothingItemsCreateManyOwnerInput[]
     skipDuplicates?: boolean
   }
 
@@ -17012,6 +19147,22 @@ export namespace Prisma {
     data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutCharityInput>
   }
 
+  export type ClothingItemsUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: ClothingItemsWhereUniqueInput
+    update: XOR<ClothingItemsUpdateWithoutOwnerInput, ClothingItemsUncheckedUpdateWithoutOwnerInput>
+    create: XOR<ClothingItemsCreateWithoutOwnerInput, ClothingItemsUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type ClothingItemsUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: ClothingItemsWhereUniqueInput
+    data: XOR<ClothingItemsUpdateWithoutOwnerInput, ClothingItemsUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type ClothingItemsUpdateManyWithWhereWithoutOwnerInput = {
+    where: ClothingItemsScalarWhereInput
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyWithoutOwnerInput>
+  }
+
   export type UserCreateWithoutApproved_applicationsInput = {
     email: string
     password_hash: string
@@ -17028,6 +19179,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutApproved_applicationsInput = {
@@ -17047,6 +19199,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutApproved_applicationsInput = {
@@ -17070,6 +19223,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutReviewed_applicationsInput = {
@@ -17089,6 +19243,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutReviewed_applicationsInput = {
@@ -17110,6 +19265,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateWithoutApplicationsInput = {
@@ -17127,6 +19283,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesCreateOrConnectWithoutApplicationsInput = {
@@ -17161,6 +19318,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApproved_applicationsInput = {
@@ -17180,6 +19338,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUpsertWithoutReviewed_applicationsInput = {
@@ -17209,6 +19368,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReviewed_applicationsInput = {
@@ -17228,6 +19388,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type CharitiesUpsertWithoutApplicationsInput = {
@@ -17255,6 +19416,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutApplicationsInput = {
@@ -17272,6 +19434,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesCreateWithoutSignup_tokensInput = {
@@ -17288,6 +19451,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateWithoutSignup_tokensInput = {
@@ -17305,6 +19469,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesCreateOrConnectWithoutSignup_tokensInput = {
@@ -17328,6 +19493,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutCreated_invitesInput = {
@@ -17347,6 +19513,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutCreated_invitesInput = {
@@ -17379,6 +19546,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutSignup_tokensInput = {
@@ -17396,6 +19564,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type UserUpsertWithoutCreated_invitesInput = {
@@ -17425,6 +19594,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreated_invitesInput = {
@@ -17444,6 +19614,7 @@ export namespace Prisma {
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type UserCreateWithoutDonations_createdInput = {
@@ -17462,6 +19633,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutDonations_createdInput = {
@@ -17481,6 +19653,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutDonations_createdInput = {
@@ -17502,6 +19675,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonations_receivedInput = {
@@ -17519,6 +19693,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonations_receivedInput = {
@@ -17533,6 +19708,7 @@ export namespace Prisma {
     status?: $Enums.Status
     creator: UserCreateNestedOneWithoutDonation_requestsInput
     answering_charity?: CharitiesCreateNestedOneWithoutDonation_requests_answeredInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestUncheckedCreateWithoutAccepted_donationInput = {
@@ -17543,11 +19719,45 @@ export namespace Prisma {
     status?: $Enums.Status
     answered_by?: number | null
     created_by: number
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonation_requestInput
   }
 
   export type DonationRequestCreateOrConnectWithoutAccepted_donationInput = {
     where: DonationRequestWhereUniqueInput
     create: XOR<DonationRequestCreateWithoutAccepted_donationInput, DonationRequestUncheckedCreateWithoutAccepted_donationInput>
+  }
+
+  export type ClothingItemsCreateWithoutDonationInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
+    donor: UserCreateNestedOneWithoutClothingItemsInput
+    owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateWithoutDonationInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsCreateOrConnectWithoutDonationInput = {
+    where: ClothingItemsWhereUniqueInput
+    create: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput>
+  }
+
+  export type ClothingItemsCreateManyDonationInputEnvelope = {
+    data: ClothingItemsCreateManyDonationInput | ClothingItemsCreateManyDonationInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutDonations_createdInput = {
@@ -17577,6 +19787,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonations_createdInput = {
@@ -17596,6 +19807,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type CharitiesUpsertWithoutDonations_receivedInput = {
@@ -17623,6 +19835,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonations_receivedInput = {
@@ -17640,6 +19853,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type DonationRequestUpsertWithoutAccepted_donationInput = {
@@ -17660,6 +19874,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     creator?: UserUpdateOneRequiredWithoutDonation_requestsNestedInput
     answering_charity?: CharitiesUpdateOneWithoutDonation_requests_answeredNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateWithoutAccepted_donationInput = {
@@ -17670,12 +19885,30 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     answered_by?: NullableIntFieldUpdateOperationsInput | number | null
     created_by?: IntFieldUpdateOperationsInput | number
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonation_requestNestedInput
+  }
+
+  export type ClothingItemsUpsertWithWhereUniqueWithoutDonationInput = {
+    where: ClothingItemsWhereUniqueInput
+    update: XOR<ClothingItemsUpdateWithoutDonationInput, ClothingItemsUncheckedUpdateWithoutDonationInput>
+    create: XOR<ClothingItemsCreateWithoutDonationInput, ClothingItemsUncheckedCreateWithoutDonationInput>
+  }
+
+  export type ClothingItemsUpdateWithWhereUniqueWithoutDonationInput = {
+    where: ClothingItemsWhereUniqueInput
+    data: XOR<ClothingItemsUpdateWithoutDonationInput, ClothingItemsUncheckedUpdateWithoutDonationInput>
+  }
+
+  export type ClothingItemsUpdateManyWithWhereWithoutDonationInput = {
+    where: ClothingItemsScalarWhereInput
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyWithoutDonationInput>
   }
 
   export type DonationsCreateWithoutRequestInput = {
     accepted_at?: Date | string
     creator: UserCreateNestedOneWithoutDonations_createdInput
     accepted: CharitiesCreateNestedOneWithoutDonations_receivedInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsUncheckedCreateWithoutRequestInput = {
@@ -17683,6 +19916,7 @@ export namespace Prisma {
     created_by: number
     accepted_by: number
     accepted_at?: Date | string
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonationInput
   }
 
   export type DonationsCreateOrConnectWithoutRequestInput = {
@@ -17706,6 +19940,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
     Session?: SessionCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutDonation_requestsInput = {
@@ -17725,6 +19960,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
     Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutDonation_requestsInput = {
@@ -17746,6 +19982,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonation_requests_answeredInput = {
@@ -17763,11 +20000,45 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonation_requests_answeredInput = {
     where: CharitiesWhereUniqueInput
     create: XOR<CharitiesCreateWithoutDonation_requests_answeredInput, CharitiesUncheckedCreateWithoutDonation_requests_answeredInput>
+  }
+
+  export type ClothingItemsCreateWithoutDonation_requestInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    donor: UserCreateNestedOneWithoutClothingItemsInput
+    owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    donation?: DonationsCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateWithoutDonation_requestInput = {
+    clothing_id?: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsCreateOrConnectWithoutDonation_requestInput = {
+    where: ClothingItemsWhereUniqueInput
+    create: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput>
+  }
+
+  export type ClothingItemsCreateManyDonation_requestInputEnvelope = {
+    data: ClothingItemsCreateManyDonation_requestInput | ClothingItemsCreateManyDonation_requestInput[]
+    skipDuplicates?: boolean
   }
 
   export type DonationsUpsertWithoutRequestInput = {
@@ -17785,6 +20056,7 @@ export namespace Prisma {
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutDonations_createdNestedInput
     accepted?: CharitiesUpdateOneRequiredWithoutDonations_receivedNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateWithoutRequestInput = {
@@ -17792,6 +20064,7 @@ export namespace Prisma {
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonationNestedInput
   }
 
   export type UserUpsertWithoutDonation_requestsInput = {
@@ -17821,6 +20094,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
     Session?: SessionUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDonation_requestsInput = {
@@ -17840,6 +20114,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
     Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type CharitiesUpsertWithoutDonation_requests_answeredInput = {
@@ -17867,6 +20142,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonation_requests_answeredInput = {
@@ -17884,6 +20160,307 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type ClothingItemsUpsertWithWhereUniqueWithoutDonation_requestInput = {
+    where: ClothingItemsWhereUniqueInput
+    update: XOR<ClothingItemsUpdateWithoutDonation_requestInput, ClothingItemsUncheckedUpdateWithoutDonation_requestInput>
+    create: XOR<ClothingItemsCreateWithoutDonation_requestInput, ClothingItemsUncheckedCreateWithoutDonation_requestInput>
+  }
+
+  export type ClothingItemsUpdateWithWhereUniqueWithoutDonation_requestInput = {
+    where: ClothingItemsWhereUniqueInput
+    data: XOR<ClothingItemsUpdateWithoutDonation_requestInput, ClothingItemsUncheckedUpdateWithoutDonation_requestInput>
+  }
+
+  export type ClothingItemsUpdateManyWithWhereWithoutDonation_requestInput = {
+    where: ClothingItemsScalarWhereInput
+    data: XOR<ClothingItemsUpdateManyMutationInput, ClothingItemsUncheckedUpdateManyWithoutDonation_requestInput>
+  }
+
+  export type DonationRequestCreateWithoutClothingItemsInput = {
+    title: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    status?: $Enums.Status
+    accepted_donation?: DonationsCreateNestedOneWithoutRequestInput
+    creator: UserCreateNestedOneWithoutDonation_requestsInput
+    answering_charity?: CharitiesCreateNestedOneWithoutDonation_requests_answeredInput
+  }
+
+  export type DonationRequestUncheckedCreateWithoutClothingItemsInput = {
+    donation_request_id?: number
+    title: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    status?: $Enums.Status
+    answered_by?: number | null
+    created_by: number
+    accepted_donation?: DonationsUncheckedCreateNestedOneWithoutRequestInput
+  }
+
+  export type DonationRequestCreateOrConnectWithoutClothingItemsInput = {
+    where: DonationRequestWhereUniqueInput
+    create: XOR<DonationRequestCreateWithoutClothingItemsInput, DonationRequestUncheckedCreateWithoutClothingItemsInput>
+  }
+
+  export type UserCreateWithoutClothingItemsInput = {
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
+    reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
+    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
+    donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
+    donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    Session?: SessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutClothingItemsInput = {
+    user_id?: number
+    email: string
+    password_hash: string
+    role: string
+    is_verified: boolean
+    first_name: string
+    last_name: string
+    created_on?: Date | string
+    updated_on?: Date | string
+    approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
+    reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
+    created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
+    donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
+    donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    Session?: SessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutClothingItemsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutClothingItemsInput, UserUncheckedCreateWithoutClothingItemsInput>
+  }
+
+  export type CharitiesCreateWithoutClothingItemsInput = {
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+    donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutClothingItemsInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+    donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutClothingItemsInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutClothingItemsInput, CharitiesUncheckedCreateWithoutClothingItemsInput>
+  }
+
+  export type DonationsCreateWithoutClothingItemsInput = {
+    accepted_at?: Date | string
+    creator: UserCreateNestedOneWithoutDonations_createdInput
+    accepted: CharitiesCreateNestedOneWithoutDonations_receivedInput
+    request: DonationRequestCreateNestedOneWithoutAccepted_donationInput
+  }
+
+  export type DonationsUncheckedCreateWithoutClothingItemsInput = {
+    donation_id?: number
+    donation_request_id: number
+    created_by: number
+    accepted_by: number
+    accepted_at?: Date | string
+  }
+
+  export type DonationsCreateOrConnectWithoutClothingItemsInput = {
+    where: DonationsWhereUniqueInput
+    create: XOR<DonationsCreateWithoutClothingItemsInput, DonationsUncheckedCreateWithoutClothingItemsInput>
+  }
+
+  export type DonationRequestUpsertWithoutClothingItemsInput = {
+    update: XOR<DonationRequestUpdateWithoutClothingItemsInput, DonationRequestUncheckedUpdateWithoutClothingItemsInput>
+    create: XOR<DonationRequestCreateWithoutClothingItemsInput, DonationRequestUncheckedCreateWithoutClothingItemsInput>
+    where?: DonationRequestWhereInput
+  }
+
+  export type DonationRequestUpdateToOneWithWhereWithoutClothingItemsInput = {
+    where?: DonationRequestWhereInput
+    data: XOR<DonationRequestUpdateWithoutClothingItemsInput, DonationRequestUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type DonationRequestUpdateWithoutClothingItemsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    accepted_donation?: DonationsUpdateOneWithoutRequestNestedInput
+    creator?: UserUpdateOneRequiredWithoutDonation_requestsNestedInput
+    answering_charity?: CharitiesUpdateOneWithoutDonation_requests_answeredNestedInput
+  }
+
+  export type DonationRequestUncheckedUpdateWithoutClothingItemsInput = {
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    answered_by?: NullableIntFieldUpdateOperationsInput | number | null
+    created_by?: IntFieldUpdateOperationsInput | number
+    accepted_donation?: DonationsUncheckedUpdateOneWithoutRequestNestedInput
+  }
+
+  export type UserUpsertWithoutClothingItemsInput = {
+    update: XOR<UserUpdateWithoutClothingItemsInput, UserUncheckedUpdateWithoutClothingItemsInput>
+    create: XOR<UserCreateWithoutClothingItemsInput, UserUncheckedCreateWithoutClothingItemsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutClothingItemsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutClothingItemsInput, UserUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type UserUpdateWithoutClothingItemsInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
+    reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
+    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
+    donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
+    donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutClothingItemsInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    password_hash?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    is_verified?: BoolFieldUpdateOperationsInput | boolean
+    first_name?: StringFieldUpdateOperationsInput | string
+    last_name?: StringFieldUpdateOperationsInput | string
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
+    reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
+    created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
+    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
+    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
+    donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
+    donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CharitiesUpsertWithoutClothingItemsInput = {
+    update: XOR<CharitiesUpdateWithoutClothingItemsInput, CharitiesUncheckedUpdateWithoutClothingItemsInput>
+    create: XOR<CharitiesCreateWithoutClothingItemsInput, CharitiesUncheckedCreateWithoutClothingItemsInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutClothingItemsInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutClothingItemsInput, CharitiesUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type CharitiesUpdateWithoutClothingItemsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+    donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
+    donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutClothingItemsInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+    donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
+    donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type DonationsUpsertWithoutClothingItemsInput = {
+    update: XOR<DonationsUpdateWithoutClothingItemsInput, DonationsUncheckedUpdateWithoutClothingItemsInput>
+    create: XOR<DonationsCreateWithoutClothingItemsInput, DonationsUncheckedCreateWithoutClothingItemsInput>
+    where?: DonationsWhereInput
+  }
+
+  export type DonationsUpdateToOneWithWhereWithoutClothingItemsInput = {
+    where?: DonationsWhereInput
+    data: XOR<DonationsUpdateWithoutClothingItemsInput, DonationsUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type DonationsUpdateWithoutClothingItemsInput = {
+    accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    creator?: UserUpdateOneRequiredWithoutDonations_createdNestedInput
+    accepted?: CharitiesUpdateOneRequiredWithoutDonations_receivedNestedInput
+    request?: DonationRequestUpdateOneRequiredWithoutAccepted_donationNestedInput
+  }
+
+  export type DonationsUncheckedUpdateWithoutClothingItemsInput = {
+    donation_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    created_by?: IntFieldUpdateOperationsInput | number
+    accepted_by?: IntFieldUpdateOperationsInput | number
+    accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutSessionInput = {
@@ -17902,6 +20479,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsCreateNestedManyWithoutCreatorInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutDonorInput
   }
 
   export type UserUncheckedCreateWithoutSessionInput = {
@@ -17921,6 +20499,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
     donation_requests?: DonationRequestUncheckedCreateNestedManyWithoutCreatorInput
     donations_created?: DonationsUncheckedCreateNestedManyWithoutCreatorInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutDonorInput
   }
 
   export type UserCreateOrConnectWithoutSessionInput = {
@@ -17942,6 +20521,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesUncheckedCreateWithoutSessionInput = {
@@ -17959,6 +20539,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutOwnerInput
   }
 
   export type CharitiesCreateOrConnectWithoutSessionInput = {
@@ -17993,6 +20574,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUpdateManyWithoutCreatorNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionInput = {
@@ -18012,6 +20594,7 @@ export namespace Prisma {
     PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
     donation_requests?: DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput
     donations_created?: DonationsUncheckedUpdateManyWithoutCreatorNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonorNestedInput
   }
 
   export type CharitiesUpsertWithoutSessionInput = {
@@ -18039,6 +20622,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutSessionInput = {
@@ -18056,6 +20640,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type CharityApplicationsCreateManyApproverInput = {
@@ -18144,6 +20729,18 @@ export namespace Prisma {
     created_on?: Date | string
     expires_on: Date | string
     revoked_on?: Date | string | null
+  }
+
+  export type ClothingItemsCreateManyDonorInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
   }
 
   export type CharityApplicationsUpdateWithoutApproverInput = {
@@ -18334,6 +20931,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     accepted_donation?: DonationsUpdateOneWithoutRequestNestedInput
     answering_charity?: CharitiesUpdateOneWithoutDonation_requests_answeredNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateWithoutCreatorInput = {
@@ -18344,6 +20942,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     answered_by?: NullableIntFieldUpdateOperationsInput | number | null
     accepted_donation?: DonationsUncheckedUpdateOneWithoutRequestNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateManyWithoutCreatorInput = {
@@ -18359,6 +20958,7 @@ export namespace Prisma {
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
     accepted?: CharitiesUpdateOneRequiredWithoutDonations_receivedNestedInput
     request?: DonationRequestUpdateOneRequiredWithoutAccepted_donationNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateWithoutCreatorInput = {
@@ -18366,6 +20966,7 @@ export namespace Prisma {
     donation_request_id?: IntFieldUpdateOperationsInput | number
     accepted_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateManyWithoutCreatorInput = {
@@ -18402,6 +21003,41 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
     revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClothingItemsUpdateWithoutDonorInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
+    owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateWithoutDonorInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutDonorInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
   }
 
   export type CharityApplicationsCreateManyCharityInput = {
@@ -18456,6 +21092,18 @@ export namespace Prisma {
     created_on?: Date | string
     expires_on: Date | string
     revoked_on?: Date | string | null
+  }
+
+  export type ClothingItemsCreateManyOwnerInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    front_image_url: string
+    back_image_url: string
   }
 
   export type CharityApplicationsUpdateWithoutCharityInput = {
@@ -18547,6 +21195,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     accepted_donation?: DonationsUpdateOneWithoutRequestNestedInput
     creator?: UserUpdateOneRequiredWithoutDonation_requestsNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateWithoutAnswering_charityInput = {
@@ -18557,6 +21206,7 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_donation?: DonationsUncheckedUpdateOneWithoutRequestNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonation_requestNestedInput
   }
 
   export type DonationRequestUncheckedUpdateManyWithoutAnswering_charityInput = {
@@ -18572,6 +21222,7 @@ export namespace Prisma {
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
     creator?: UserUpdateOneRequiredWithoutDonations_createdNestedInput
     request?: DonationRequestUpdateOneRequiredWithoutAccepted_donationNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateWithoutAcceptedInput = {
@@ -18579,6 +21230,7 @@ export namespace Prisma {
     donation_request_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutDonationNestedInput
   }
 
   export type DonationsUncheckedUpdateManyWithoutAcceptedInput = {
@@ -18615,6 +21267,135 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     expires_on?: DateTimeFieldUpdateOperationsInput | Date | string
     revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClothingItemsUpdateWithoutOwnerInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
+    donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateWithoutOwnerInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutOwnerInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsCreateManyDonationInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsUpdateWithoutDonationInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
+    donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateWithoutDonationInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutDonationInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsCreateManyDonation_requestInput = {
+    clothing_id?: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+  }
+
+  export type ClothingItemsUpdateWithoutDonation_requestInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateWithoutDonation_requestInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClothingItemsUncheckedUpdateManyWithoutDonation_requestInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
   }
 
 

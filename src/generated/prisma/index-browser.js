@@ -211,6 +211,19 @@ exports.Prisma.DonationRequestScalarFieldEnum = {
   created_by: 'created_by'
 };
 
+exports.Prisma.ClothingItemsScalarFieldEnum = {
+  clothing_id: 'clothing_id',
+  donation_request_id: 'donation_request_id',
+  type: 'type',
+  size: 'size',
+  condition: 'condition',
+  donor_id: 'donor_id',
+  donation_id: 'donation_id',
+  owned_by: 'owned_by',
+  front_image_url: 'front_image_url',
+  back_image_url: 'back_image_url'
+};
+
 exports.Prisma.SessionScalarFieldEnum = {
   session_id: 'session_id',
   session_token: 'session_token',
@@ -257,6 +270,7 @@ exports.Prisma.ModelName = {
   CharitySignupTokens: 'CharitySignupTokens',
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
+  ClothingItems: 'ClothingItems',
   Session: 'Session'
 };
 
