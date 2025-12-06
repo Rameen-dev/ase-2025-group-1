@@ -194,6 +194,17 @@ exports.Prisma.SessionScalarFieldEnum = {
   revoked_on: 'revoked_on'
 };
 
+exports.Prisma.SessionScalarFieldEnum = {
+  session_id: 'session_id',
+  session_token: 'session_token',
+  actor_type: 'actor_type',
+  user_id: 'user_id',
+  charity_id: 'charity_id',
+  created_on: 'created_on',
+  expires_on: 'expires_on',
+  revoked_on: 'revoked_on'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -220,6 +231,12 @@ exports.Status = exports.$Enums.Status = {
   REJECTED: 'REJECTED'
 };
 
+exports.SessionActorType = exports.$Enums.SessionActorType = {
+  DONOR: 'DONOR',
+  CHARITY: 'CHARITY',
+  ADMIN: 'ADMIN'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
@@ -242,7 +259,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -256,7 +273,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -270,6 +287,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

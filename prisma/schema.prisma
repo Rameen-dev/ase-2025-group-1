@@ -190,6 +190,7 @@ model Charities {
   // All donations accepted by this charity
   donations_received Donations[] @relation("charity_donation")
   Session            Session[]
+  Session            Session[]
 
   // Indexes used here again to speed up searching by name and email.
   @@index([name])
@@ -379,8 +380,15 @@ enum SessionActorType {
 
 // This defines the allowed states for an application, 
 // this keeps status values consistent and type-safe
+
 enum Status {
   PENDING // Waiting for review.
   APPROVED // Accepted, charity can be onboarded.
   REJECTED // Not accepted (Can optionally re-apply)
+}
+
+enum SessionActorType {
+  DONOR
+  CHARITY
+  ADMIN
 }

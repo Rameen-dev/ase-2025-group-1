@@ -80,6 +80,15 @@ export const Status: {
 
 export type Status = (typeof Status)[keyof typeof Status]
 
+
+export const SessionActorType: {
+  DONOR: 'DONOR',
+  CHARITY: 'CHARITY',
+  ADMIN: 'ADMIN'
+};
+
+export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
+
 }
 
 export type SessionActorType = $Enums.SessionActorType
@@ -89,6 +98,10 @@ export const SessionActorType: typeof $Enums.SessionActorType
 export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
+
+export type SessionActorType = $Enums.SessionActorType
+
+export const SessionActorType: typeof $Enums.SessionActorType
 
 /**
  * ##  Prisma Client ʲˢ

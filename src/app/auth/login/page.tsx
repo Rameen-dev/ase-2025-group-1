@@ -33,6 +33,7 @@ export default function LoginPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -92,8 +93,6 @@ export default function LoginPage() {
       if (accountType === "charity") {
         // We just called /api/auth/charity-login
         if (data.code === "CHARITY_LOGIN_OK") {
-          // Optional: store flag so navbar / other components know you're logged in as a charity
-          sessionStorage.setItem("charityLoggedIn", "true");
 
           router.push("/charity/dashboard");
           return;
@@ -108,7 +107,6 @@ export default function LoginPage() {
         // accountType === "user"
         // We just called /api/login (User table)
         if (data.code === "LOGIN_OK" && data.user) {
-          sessionStorage.setItem("loggedIn", "true");
 
           // Normalise role in case DB stores "ADMIN"/"DONOR"
           const role = (data.user.role || "").toLowerCase();

@@ -369,18 +369,28 @@ model Session {
   @@index([charity_id])
 }
 
+<<<<<<< HEAD
 enum SessionActorType {
   DONOR
   CHARITY
   ADMIN
 }
 
+=======
+>>>>>>> abbbca5ab25422e54163bca53543164138e73083
 // CHARITY APPLICATION STATUS ENUM
 
 // This defines the allowed states for an application, 
 // this keeps status values consistent and type-safe
+
 enum Status {
   PENDING // Waiting for review.
   APPROVED // Accepted, charity can be onboarded.
   REJECTED // Not accepted (Can optionally re-apply)
+}
+
+enum SessionActorType {
+  DONOR
+  CHARITY
+  ADMIN
 }
