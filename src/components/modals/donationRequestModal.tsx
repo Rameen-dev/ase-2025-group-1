@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";  //ID used for React list rendering, not shown in front end
 import uploadImageToCloud from "@/lib/cloud/cloudClient";
 
@@ -31,12 +31,21 @@ export default function CreateDonationRequestModal({
   onClose: () => void;
   onCreated: (req: unknown) => void;
 }) {
+  //when opening after closing, it resets the modal, calling reset open function when isOpen = true
+  useEffect(() => {
+    if (isOpen) {
+      resetModal();
+    }
+  }, [isOpen]);
+
+
   //title of the donation request
   const [title, setTitle] = useState("");
   //used for disabling submit button and showing "Loading" to user
   const [creating, setCreating] = useState(false);
   //uploaded boolean, to show the user they have uploaded a file successfully
   const [uploaded, setUploaded] = useState<Record<string, boolean>>({});
+  const [error, seterror] = useState<string | null>(null);
 
   //list of clothing item
   const [items, setItems] = useState<ItemState[]>([
@@ -113,9 +122,20 @@ export default function CreateDonationRequestModal({
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
 
-    //ensures user enters a title
-    if (!title.trim()) return alert("Title is required.");
+    seterror(null);
 
+    //ensures user enters a title
+    if (!title.trim()) {
+      seterror("Title is required");
+      return;
+    }
+
+    for (const [index, item] of items.entries()) {
+      if (!item.frontFile || !item.backFile) {
+        seterror(`Item #${index + 1} must have BOTH front and back images.`);
+        return
+      }
+    }
     try {
       setCreating(true);
 
@@ -152,15 +172,19 @@ export default function CreateDonationRequestModal({
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to create request");
+      const data = await res.json();
+
+      if (!res.ok) {
+        seterror(data.error ?? "Failed to create donation request");
+        return;
+      }
 
       // parse response and notify parent component
-      const created = await res.json();
-      onCreated(created);
+      onCreated(data);
       onClose(); //close modal on success
     } catch (err) {
-      alert("Error creating donation request");
       console.error(err);
+      seterror("Error creating donation request");
     } finally {
       setCreating(false);
     }
@@ -168,10 +192,31 @@ export default function CreateDonationRequestModal({
 
   if (!isOpen) return null;
 
+  //reset modal function, when triggered, window opens fresh
+  function resetModal() {
+    setTitle("");
+    setItems([
+      {
+        id: uuidv4(),
+        type: "JACKET",
+        size: "M",
+        condition: "GOOD",
+        frontFile: null,
+        backFile: null,
+      }
+    ]);
+    setUploaded({});
+    seterror(null);
+  }
   //modal content
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded p-2">
+            {error}
+          </p>
+        )}
         <h3 className="text-lg font-semibold mb-4">Create Donation Request</h3>
 
         <form onSubmit={handleCreate} className="space-y-4">

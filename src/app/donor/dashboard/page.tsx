@@ -19,14 +19,14 @@ const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 // defines the structure of a donation request returned by the API.
-// the backend also includes `_count.clothing_items`, which tells us how many
+// the backend also includes `_count.clothingItems`, which tells us how many
 // clothing items are linked to this request so the dashboard can display it.
 interface DonationRequest {
   donation_request_id: number;
   title: string;
   status: DonationRequestStatus;
   _count: {
-    clothing_items: number;
+    ClothingItems: number;
   };
 }
 
@@ -260,7 +260,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                     <tr key={app.donation_request_id} className="border">
                       <td className="p-3 text-center">{app.title}</td>
                       <td className="p-3 text-center">
-                        {app._count?.clothing_items ?? 0}
+                        {app._count?.ClothingItems ?? 0}
                       </td>
                       <td className="p-3 text-center">{app.status}</td>
                       <td className="p-3 text-center flex justify-center gap-2">
