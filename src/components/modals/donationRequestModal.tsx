@@ -51,9 +51,9 @@ export default function CreateDonationRequestModal({
   const [items, setItems] = useState<ItemState[]>([
     {
       id: uuidv4(),
-      type: "JACKET",
-      size: "M",
-      condition: "GOOD",
+      type: "SELECT",
+      size: "SELECT",
+      condition: "SELECT",
       frontFile: null,
       backFile: null,
     },
@@ -73,13 +73,11 @@ export default function CreateDonationRequestModal({
       ...prev,
       {
         id: uuidv4(), //random unique ID
-        type: "JACKET",  //default selections upon row creation, user is free to change them
-        size: "M",
-        condition: "GOOD",
+        type: "SELECT",  //default selections upon row creation, user is free to change them
+        size: "SELECT",
+        condition: "SELECT",
         frontFile: null,
         backFile: null,
-        frontPreview: null,
-        backPreview: null,
       },
     ]);
   }
@@ -130,6 +128,15 @@ export default function CreateDonationRequestModal({
       return;
     }
 
+    //ensures user has selected all fields for all items in donation request
+    const unSelected = items.some((item) => item.type === "SELECTED" || item.size === "SELECT" || item.condition === "SELECT");
+    if (unSelected) {
+      seterror("Please select type, size, and condition for all items.");
+      return;
+    }
+
+
+    //ensures user has uploaded images for all items
     for (const [index, item] of items.entries()) {
       if (!item.frontFile || !item.backFile) {
         seterror(`Item #${index + 1} must have BOTH front and back images.`);
@@ -198,9 +205,9 @@ export default function CreateDonationRequestModal({
     setItems([
       {
         id: uuidv4(),
-        type: "JACKET",
-        size: "M",
-        condition: "GOOD",
+        type: "SELECT",
+        size: "SELECT",
+        condition: "SELECT",
         frontFile: null,
         backFile: null,
       }
@@ -248,6 +255,7 @@ export default function CreateDonationRequestModal({
                       }
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
+                      <option value="SELECT" disabled> SELECT</option>
                       <option value="JACKET">Jacket</option>
                       <option value="PANTS">Pants</option>
                       <option value="SHIRT">Shirt</option>
@@ -265,6 +273,7 @@ export default function CreateDonationRequestModal({
                       }
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
+                      <option value="SELECT" disabled> SELECT</option>
                       <option value="XS">XS</option>
                       <option value="S">S</option>
                       <option value="M">M</option>
@@ -282,6 +291,7 @@ export default function CreateDonationRequestModal({
                       }
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
+                      <option value="SELECT" disabled> SELECT</option>
                       <option value="NEW">New</option>
                       <option value="GOOD">Good</option>
                       <option value="WORN">Worn</option>
