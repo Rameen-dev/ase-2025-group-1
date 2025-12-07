@@ -128,31 +128,54 @@ function DonationsTab({
   }
 
   // Accept entire request
-  async function handleAccept() {
-    if (!viewRequest) return;
+async function handleAccept() {
+  if (!viewRequest) return;
 
-    const res = await fetch(
-      `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/accept`,
-      { method: "POST" }
-    );
-
-    if (!res.ok) {
-      alert("Failed to approve request");
-      return;
-    }
-
-    // Update status in local state
-    setRequests((prev) =>
-      prev.map((r) =>
-        r.donation_request_id === viewRequest.donation_request_id
-          ? { ...r, status: "APPROVED" }
-          : r
-      )
-    );
-
-    alert("Request approved successfully.");
-    setViewOpen(false);
+  if (selectedItems.length === 0) {
+    alert("Select at least one item to approve.");
+    return;
   }
+
+  // 1. Send approved item IDs to API
+  const res = await fetch(
+    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/accept`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ itemIds: selectedItems }), // send selected item IDs
+    }
+  );
+
+  if (!res.ok) {
+    alert("Failed to approve request.");
+    return;
+  }
+
+  // 2. Update status visually in table without removing request
+  setRequests(prev =>
+    prev.map(r =>
+      r.donation_request_id === viewRequest.donation_request_id
+        ? { ...r, status: "APPROVED" }
+        : r
+    )
+  );
+
+  // 3. Refresh full list from server so UI stays consistent
+  const refresh = await fetch(`${API_BASE}/api/donation-requests`);
+  const updatedRequests = await refresh.json();
+  setRequests(updatedRequests);
+
+  // 4. Reload items so only approved ones appear when modal reopens
+  const refreshedItems = await fetch(
+    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/items`
+  );
+  const newItems = await refreshedItems.json();
+  setViewItems(newItems);
+
+  // 5. Close modal and notify user
+  setViewOpen(false);
+  alert("Request approved.");
+}
 
   // Decline and delete request
   async function handleDecline() {

@@ -1,24 +1,33 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const id = Number(params.id);
-
+export async function POST(req: Request, { params }: { params: { id: string } }) {
   try {
-    const updated = await prisma.donationRequest.update({
-      where: { donation_request_id: id },
-      data: { status: "APPROVED" },
+    const { itemIds } = await req.json();
+    const requestId = Number(params.id);
+
+    if (!Array.isArray(itemIds)) {
+      return NextResponse.json({ error: "itemIds must be an array" }, { status: 400 });
+    }
+
+    // 1. Set status to APPROVED
+    await prisma.donationRequest.update({
+      where: { donation_request_id: requestId },
+      data: { status: "APPROVED" }
     });
 
-    return NextResponse.json({ message: "Request approved", updated });
-  } catch (error) {
-    console.error("Accept error:", error);
-    return NextResponse.json(
-      { error: "Failed to approve request" },
-      { status: 500 }
-    );
+    // 2. Delete unselected items
+    await prisma.clothingItems.deleteMany({
+      where: {
+        donation_request_id: requestId,
+        NOT: { clothing_id: { in: itemIds } }
+      }
+    });
+
+    return NextResponse.json({ success: true });
+  } 
+  catch (err) {
+    console.error("ACCEPT ERROR:", err);
+    return NextResponse.json({ error: "Failed to approve" }, { status: 500 });
   }
 }
