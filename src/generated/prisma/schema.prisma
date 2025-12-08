@@ -76,7 +76,8 @@ model User {
   donation_requests DonationRequest[] @relation("donor_request")
 
   // All donations created by this donor
-  donations_created Donations[] @relation("donor_donation")
+  donations_created Donations[]     @relation("donor_donation")
+  ClothingItems     ClothingItems[]
 }
 
 // EMAIL VERIFICATION TOKENS MODEL
@@ -187,7 +188,8 @@ model Charities {
   donation_requests_answered DonationRequest[] @relation("charity_answer")
 
   // All donations accepted by this charity
-  donations_received Donations[] @relation("charity_donation")
+  donations_received Donations[]     @relation("charity_donation")
+  ClothingItems      ClothingItems[]
 
   // Indexes used here again to speed up searching by name and email.
   @@index([name])
@@ -325,9 +327,10 @@ model Donations {
   accepted_by         Int
   accepted_at         DateTime @default(now())
 
-  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
-  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
-  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  creator       User            @relation("donor_donation", fields: [created_by], references: [user_id])
+  accepted      Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
+  request       DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  ClothingItems ClothingItems[]
 }
 
 model DonationRequest {
@@ -341,8 +344,29 @@ model DonationRequest {
 
   accepted_donation Donations?
 
-  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
-  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
+  creator           User            @relation("donor_request", fields: [created_by], references: [user_id])
+  answering_charity Charities?      @relation("charity_answer", fields: [answered_by], references: [charity_id])
+  ClothingItems     ClothingItems[]
+}
+
+model ClothingItems {
+  clothing_id         Int    @id @default(autoincrement())
+  donation_request_id Int
+  type                String
+  size                String
+  condition           String
+  donor_id            Int
+  donation_id         Int?
+  owned_by            Int?
+
+  //images
+  front_image_url String
+  back_image_url  String
+
+  donation_request DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  donor            User            @relation(fields: [donor_id], references: [user_id])
+  owner            Charities?      @relation(fields: [owned_by], references: [charity_id])
+  donation         Donations?      @relation(fields: [donation_id], references: [donation_id])
 }
 
 // CHARITY APPLICATION STATUS ENUM

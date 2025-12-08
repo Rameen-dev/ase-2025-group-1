@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
-    let allUsers: any[] = [];
+    const allUsers: any[] = [];
     let totalCount = 0;
 
     // If filtering by charity or all, fetch charities
