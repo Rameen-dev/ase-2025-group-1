@@ -32,6 +32,10 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Logout confirmation modal state
+  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
   const router = useRouter();
 
   // Load applications
@@ -50,7 +54,14 @@ export default function AdminPage() {
   }, []);
 
   function handleSignOut() {
+    try {
+    setLogoutModalOpen(true);
+
     router.push("/");
+    } finally {
+    setIsSigningOut(false);
+    setLogoutModalOpen(false);
+    }
   }
 
   function handleTabChange(tab: TabName) {
@@ -152,9 +163,55 @@ export default function AdminPage() {
 
         {activeTab === "Impact" && <PlaceholderTab title="Impact & Reports" />}
       </main>
+
+      {/* LOGOUT CONFIRMATION MODAL */}
+      {logoutModalOpen && (
+        <>
+          {/* Dark backdrop */}
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => !isSigningOut && setLogoutModalOpen(false)}
+          />
+
+          {/* Modal card */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md border border-gray-100">
+              <div className="px-5 py-4 border-b bg-green-50 rounded-t-xl">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Confirm logout
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                  You are about to log out of your SustainWear admin account.
+                  Make sure any changes have been saved before you continue.
+                </p>
+              </div>
+
+              <div className="px-5 py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end">
+                <button
+                  type="button"
+                  disabled={isSigningOut}
+                  onClick={() => setLogoutModalOpen(false)}
+                  className="text-sm px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={isSigningOut}
+                  onClick={confirmSignOut}
+                  className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isSigningOut ? "Logging out…" : "Log Out"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+  
 
 /* ---------- SMALL REUSABLE COMPONENTS ---------- */
 
