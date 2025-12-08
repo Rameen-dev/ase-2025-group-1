@@ -4,12 +4,13 @@ import React, { useEffect, useState } from "react";
 import { User, Menu, X } from "lucide-react";
 import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
+import UsersTab from "./components/UsersTab";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
 // Tabs type
-type TabName = "Home" | "Requests" | "Inventory" | "Impact";
-const TABS: TabName[] = ["Home", "Requests", "Inventory", "Impact"];
+type TabName = "Home" | "Requests" | "Users" | "Inventory" | "Impact";
+const TABS: TabName[] = ["Home", "Requests", "Users", "Inventory", "Impact"];
 
 // Prisma model types
 type CharityStatus = "PENDING" | "APPROVED" | "REJECTED";
@@ -129,6 +130,7 @@ export default function AdminPage() {
             <h2 className="text-2xl md:text-3xl font-semibold">
               {activeTab === "Home" && "Dashboard Overview"}
               {activeTab === "Requests" && "Charity Requests"}
+              {activeTab === "Users" && "User Management"}
               {activeTab === "Inventory" && "Inventory"}
               {activeTab === "Impact" && "Impact & Reports"}
             </h2>
@@ -147,6 +149,8 @@ export default function AdminPage() {
         {activeTab === "Requests" && (
           <RequestsTab apps={apps} loading={loading} />
         )}
+
+        {activeTab === "Users" && <UsersTab />}
 
         {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
 

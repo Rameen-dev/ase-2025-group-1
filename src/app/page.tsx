@@ -381,6 +381,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/*   Footer */}
+      <section>
+        <footer></footer>
+      </section>
     </main>
   );
 }
