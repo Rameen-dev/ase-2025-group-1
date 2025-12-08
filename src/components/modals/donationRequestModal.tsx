@@ -22,9 +22,6 @@ type ItemState = {
   back_image_url?: string | null;
 };
 
-/* ---------------------------------------
-   COMPONENT
----------------------------------------- */
 export default function CreateDonationRequestModal({
   isOpen,
   onClose,
@@ -32,9 +29,7 @@ export default function CreateDonationRequestModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-
-  // FIXED: must match parent dashboard
-  onCreated: (req: DonationRequest) => void;
+  onCreated: (req: unknown) => void;
 }) {
   //when opening after closing, it resets the modal, calling reset open function when isOpen = true
   useEffect(() => {
@@ -92,7 +87,7 @@ export default function CreateDonationRequestModal({
     setItems((prev) => prev.filter((it) => it.id !== id));
   }
 
-  function updateItem(id: string, field: keyof ItemState, value: any) {
+  function updateItem(id: string, field: keyof ItemState, value: unknown) {
     setItems((prev) =>
       prev.map((it) => (it.id === id ? { ...it, [field]: value } : it))
     );
@@ -232,7 +227,6 @@ export default function CreateDonationRequestModal({
         <h3 className="text-lg font-semibold mb-4">Create Donation Request</h3>
 
         <form onSubmit={handleCreate} className="space-y-4">
-          {/* TITLE */}
           <div>
             <label className="block text-sm mb-1">Title</label>
             <input
@@ -243,7 +237,6 @@ export default function CreateDonationRequestModal({
             />
           </div>
 
-          {/* ITEMS */}
           <div>
             <label className="block text-sm mb-2">Items</label>
 
@@ -251,14 +244,15 @@ export default function CreateDonationRequestModal({
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col md:flex-row gap-3 items-end border rounded-md p-3"
+                  className="flex flex-col md:flex-row gap-3 items-end"
                 >
-                  {/* TYPE */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Type</label>
                     <select
                       value={item.type}
-                      onChange={(e) => updateItem(item.id, "type", e.target.value)}
+                      onChange={(e) =>
+                        updateItem(item.id, "type", e.target.value)
+                      }
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
                       <option value="SELECT" disabled> SELECT</option>
@@ -270,12 +264,13 @@ export default function CreateDonationRequestModal({
                     </select>
                   </div>
 
-                  {/* SIZE */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Size</label>
                     <select
                       value={item.size}
-                      onChange={(e) => updateItem(item.id, "size", e.target.value)}
+                      onChange={(e) =>
+                        updateItem(item.id, "size", e.target.value)
+                      }
                       className="border rounded-md px-3 py-2 text-sm bg-white"
                     >
                       <option value="SELECT" disabled> SELECT</option>
@@ -287,7 +282,6 @@ export default function CreateDonationRequestModal({
                     </select>
                   </div>
 
-                  {/* CONDITION */}
                   <div className="flex-1">
                     <label className="block text-xs mb-1">Condition</label>
                     <select
@@ -360,11 +354,10 @@ export default function CreateDonationRequestModal({
               onClick={addItemRow}
               className="mt-3 text-sm px-3 py-1 rounded-md border border-dashed border-gray-400 hover:bg-gray-50"
             >
-              + Add Item
+              + Add item
             </button>
           </div>
 
-          {/* ACTION BUTTONS */}
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
@@ -373,11 +366,10 @@ export default function CreateDonationRequestModal({
             >
               Cancel
             </button>
-
             <button
               type="submit"
-              disabled={creating}
               className="px-3 py-1 text-sm rounded-md bg-green-700 text-white disabled:opacity-60"
+              disabled={creating}
             >
               {creating ? "Creating..." : "Create"}
             </button>
