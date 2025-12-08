@@ -232,6 +232,7 @@ model CharityApplications {
   // - APPROVED
   // - REJECTED
   status Status @default(PENDING)
+  status Status @default(PENDING)
 
   // When the application was first reviewed by an Admin
   reviewed_on DateTime?
@@ -374,6 +375,7 @@ model ClothingItems {
 
 // This defines the allowed states for an application, 
 // this keeps status values consistent and type-safe
+enum Status {
 enum Status {
   PENDING // Waiting for review.
   APPROVED // Accepted, charity can be onboarded.

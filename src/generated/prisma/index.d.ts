@@ -64,17 +64,21 @@ export type ClothingItems = $Result.DefaultSelection<Prisma.$ClothingItemsPayloa
  */
 export namespace $Enums {
   export const Status: {
+  export const Status: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
 };
 
 export type Status = (typeof Status)[keyof typeof Status]
+export type Status = (typeof Status)[keyof typeof Status]
 
 }
 
 export type Status = $Enums.Status
+export type Status = $Enums.Status
 
+export const Status: typeof $Enums.Status
 export const Status: typeof $Enums.Status
 
 /**
@@ -6716,6 +6720,7 @@ export namespace Prisma {
     org_address: string | null
     charity_number: string | null
     status: $Enums.Status | null
+    status: $Enums.Status | null
     reviewed_on: Date | null
     reviewed_by: number | null
     approved_on: Date | null
@@ -6734,6 +6739,7 @@ export namespace Prisma {
     website: string | null
     org_address: string | null
     charity_number: string | null
+    status: $Enums.Status | null
     status: $Enums.Status | null
     reviewed_on: Date | null
     reviewed_by: number | null
@@ -6933,6 +6939,7 @@ export namespace Prisma {
     org_address: string
     charity_number: string | null
     status: $Enums.Status
+    status: $Enums.Status
     reviewed_on: Date | null
     reviewed_by: number | null
     approved_on: Date | null
@@ -7079,6 +7086,7 @@ export namespace Prisma {
       website: string
       org_address: string
       charity_number: string | null
+      status: $Enums.Status
       status: $Enums.Status
       reviewed_on: Date | null
       reviewed_by: number | null
@@ -7521,6 +7529,7 @@ export namespace Prisma {
     readonly website: FieldRef<"CharityApplications", 'String'>
     readonly org_address: FieldRef<"CharityApplications", 'String'>
     readonly charity_number: FieldRef<"CharityApplications", 'String'>
+    readonly status: FieldRef<"CharityApplications", 'Status'>
     readonly status: FieldRef<"CharityApplications", 'Status'>
     readonly reviewed_on: FieldRef<"CharityApplications", 'DateTime'>
     readonly reviewed_by: FieldRef<"CharityApplications", 'Int'>
@@ -12982,14 +12991,18 @@ export namespace Prisma {
 
   /**
    * Reference to a field of type 'Status'
+   * Reference to a field of type 'Status'
    */
+  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
     
 
 
   /**
    * Reference to a field of type 'Status[]'
+   * Reference to a field of type 'Status[]'
    */
+  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
   export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
     
 
@@ -13340,6 +13353,7 @@ export namespace Prisma {
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
+    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
     approved_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
@@ -13386,6 +13400,7 @@ export namespace Prisma {
     website?: StringFilter<"CharityApplications"> | string
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
+    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
@@ -13435,6 +13450,7 @@ export namespace Prisma {
     website?: StringWithAggregatesFilter<"CharityApplications"> | string
     org_address?: StringWithAggregatesFilter<"CharityApplications"> | string
     charity_number?: StringNullableWithAggregatesFilter<"CharityApplications"> | string | null
+    status?: EnumStatusWithAggregatesFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusWithAggregatesFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableWithAggregatesFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableWithAggregatesFilter<"CharityApplications"> | number | null
@@ -14101,6 +14117,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -14120,6 +14137,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -14137,6 +14155,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14157,6 +14176,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14176,6 +14196,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -14194,6 +14215,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14209,6 +14231,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14908,6 +14931,11 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  export type EnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -15007,7 +15035,14 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
     _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
     _min?: NestedEnumStatusFilter<$PrismaModel>
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
@@ -15845,6 +15880,8 @@ export namespace Prisma {
 
   export type EnumStatusFieldUpdateOperationsInput = {
     set?: $Enums.Status
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
   }
 
   export type UserUpdateOneWithoutApproved_applicationsNestedInput = {
@@ -16342,6 +16379,11 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
   export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -16349,7 +16391,14 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
     _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
     _min?: NestedEnumStatusFilter<$PrismaModel>
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
@@ -16390,6 +16439,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -16407,6 +16457,7 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
+    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
@@ -16435,6 +16486,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -16452,6 +16504,7 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
+    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
@@ -16667,6 +16720,7 @@ export namespace Prisma {
     website?: StringFilter<"CharityApplications"> | string
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
+    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
@@ -17056,6 +17110,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -17073,6 +17128,7 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
+    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
@@ -18556,6 +18612,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -18573,6 +18630,7 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
+    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
@@ -18645,6 +18703,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18662,6 +18721,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18681,6 +18741,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18697,6 +18758,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18716,6 +18778,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18733,6 +18796,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18914,6 +18978,7 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
+    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -18969,6 +19034,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18987,6 +19053,7 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19004,6 +19071,7 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null

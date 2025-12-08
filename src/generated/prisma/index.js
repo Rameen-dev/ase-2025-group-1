@@ -212,6 +212,7 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.Status = exports.$Enums.Status = {
+exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
