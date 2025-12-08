@@ -81,7 +81,7 @@ Prisma.NullTypes = {
 
 
 
-  const path = require('path')
+const path = require('path')
 
 /**
  * Enums
@@ -205,7 +205,9 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   donation_id: 'donation_id',
   owned_by: 'owned_by',
   front_image_url: 'front_image_url',
-  back_image_url: 'back_image_url'
+  back_image_url: 'back_image_url',
+  status: 'status',
+  denial_reason: 'denial_reason'
 };
 
 exports.Prisma.SortOrder = {
@@ -234,6 +236,12 @@ exports.Status = exports.$Enums.Status = {
   REJECTED: 'REJECTED'
 };
 
+exports.ItemStatus = exports.$Enums.ItemStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DENIED: 'DENIED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
@@ -257,7 +265,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -271,11 +279,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -307,7 +315,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
     "src/generated/prisma",
     "generated/prisma",
   ]
-  
+
   const alternativePath = alternativePaths.find((altPath) => {
     return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
   }) ?? alternativePaths[0]
@@ -325,8 +333,8 @@ config.compilerWasm = undefined
 const { warnEnvConflicts } = require('./runtime/library.js')
 
 warnEnvConflicts({
-    rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
-    schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
 })
 
 const PrismaClient = getPrismaClient(config)

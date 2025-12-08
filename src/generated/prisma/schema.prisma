@@ -1,34 +1,46 @@
+// Prisma Client Generator
+
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
+// Database Connection 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// USER MODEL 
 model User {
-  user_id                 Int                       @id @default(autoincrement())
-  email                   String                    @unique
-  password_hash           String
-  role                    String
-  is_verified             Boolean
-  first_name              String
-  last_name               String
-  created_on              DateTime                  @default(now())
-  updated_on              DateTime                  @updatedAt
-  approved_applications   CharityApplications[]     @relation("approved_by_admin")
-  reviewed_applications   CharityApplications[]     @relation("reviewed_by_admin")
-  created_invites         CharitySignupTokens[]     @relation("invites_created_by")
-  ClothingItems           ClothingItems[]
-  donation_requests       DonationRequest[]         @relation("donor_request")
-  donations_created       Donations[]               @relation("donor_donation")
+  user_id       Int      @id @default(autoincrement())
+  email         String   @unique
+  password_hash String
+  role          String
+  is_verified   Boolean
+  first_name    String
+  last_name     String
+  created_on    DateTime @default(now())
+  updated_on    DateTime @updatedAt
+
+  approved_applications CharityApplications[] @relation("approved_by_admin")
+  reviewed_applications CharityApplications[] @relation("reviewed_by_admin")
+  created_invites       CharitySignupTokens[] @relation("invites_created_by")
+
   EmailVerificationTokens EmailVerificationTokens[]
   PasswordResetTokens     PasswordResetTokens[]
-  Session                 Session[]
+
+  // All donation requests created by this donor
+  donation_requests DonationRequest[] @relation("donor_request")
+
+  // All donations created by this donor
+  donations_created Donations[] @relation("donor_donation")
+
+  // Clothing items donated by this user
+  ClothingItems ClothingItems[]
 }
 
+// EMAIL VERIFICATION TOKENS MODEL
 model EmailVerificationTokens {
   ev_token_id Int       @id @default(autoincrement())
   user_id     Int
@@ -36,11 +48,13 @@ model EmailVerificationTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
-  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
 
+// PASSWORD RESET TOKENS
 model PasswordResetTokens {
   pr_token_id Int       @id @default(autoincrement())
   user_id     Int
@@ -48,35 +62,42 @@ model PasswordResetTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
-  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
 
+// CHARITIES MODEL
 model Charities {
-  charity_id                 Int                   @id @default(autoincrement())
-  name                       String
-  email                      String                @unique
-  phone                      String
-  address                    String
-  website                    String
-  verified                   Boolean               @default(false)
-  created_on                 DateTime              @default(now())
-  updated_on                 DateTime              @updatedAt
-  password_hash              String?
+  charity_id    Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  phone         String
+  address       String
+  website       String
+  verified      Boolean  @default(false)
+  created_on    DateTime @default(now())
+  updated_on    DateTime @updatedAt
+  password_hash String?
+
   applications               CharityApplications[]
   signup_tokens              CharitySignupTokens[]
-  ClothingItems              ClothingItems[]
+  // All donation requests answered by this charity
   donation_requests_answered DonationRequest[]     @relation("charity_answer")
+  // All donations accepted by this charity
   donations_received         Donations[]           @relation("charity_donation")
-  Session                    Session[]
+
+  // Clothing items currently owned by this charity
+  ClothingItems ClothingItems[]
 
   @@index([name])
   @@index([email])
 }
 
+// CHARITY APPLICATIONS MODEL
 model CharityApplications {
-  application_id Int        @id @default(autoincrement())
+  application_id Int       @id @default(autoincrement())
   org_name       String
   contact_name   String
   contact_email  String
@@ -84,22 +105,24 @@ model CharityApplications {
   website        String
   org_address    String
   charity_number String?
+  status         Status    @default(PENDING)
   reviewed_on    DateTime?
   reviewed_by    Int?
   approved_on    DateTime?
   approved_by    Int?
   charity_id     Int?
-  created_on     DateTime   @default(now())
-  updated_on     DateTime   @updatedAt
-  status         Status     @default(PENDING)
-  approver       User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
-  charity        Charities? @relation(fields: [charity_id], references: [charity_id])
-  reviewer       User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
+  created_on     DateTime  @default(now())
+  updated_on     DateTime  @updatedAt
+
+  approver User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+  reviewer User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
+  charity  Charities? @relation(fields: [charity_id], references: [charity_id])
 
   @@index([status, created_on])
   @@index([contact_email])
 }
 
+// CHARITIES SIGNUP TOKENS
 model CharitySignupTokens {
   invite_id   Int       @id @default(autoincrement())
   charity_id  Int
@@ -109,55 +132,56 @@ model CharitySignupTokens {
   consumed_on DateTime?
   created_on  DateTime  @default(now())
   created_by  Int?
-  charity     Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
-  creator     User?     @relation("invites_created_by", fields: [created_by], references: [user_id])
+
+  charity Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+  creator User?     @relation("invites_created_by", fields: [created_by], references: [user_id])
 
   @@index([charity_id, created_on])
   @@index([email])
 }
 
+// DONATIONS (Finalised donation per request)
 model Donations {
   donation_id         Int             @id @default(autoincrement())
   donation_request_id Int             @unique
   created_by          Int
   accepted_by         Int
-  accepted_at         DateTime        @default(now())
-  ClothingItems       ClothingItems[]
-  accepted            Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
-  creator             User            @relation("donor_donation", fields: [created_by], references: [user_id])
-  request             DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  accepted_at         DateTime @default(now())
+
+  creator  User            @relation("donor_donation", fields: [created_by], references: [user_id])
+  accepted Charities       @relation("charity_donation", fields: [accepted_by], references: [charity_id])
+  request  DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+
+  // All clothing items included in this final donation
+  ClothingItems ClothingItems[]
 }
 
+// DONATION REQUEST (from donor)
 model DonationRequest {
-  donation_request_id Int             @id @default(autoincrement())
-  created_on          DateTime        @default(now())
-  updated_on          DateTime        @updatedAt
-  status              Status          @default(PENDING)
-  answered_by         Int?
-  created_by          Int
+  donation_request_id Int      @id @default(autoincrement())
   title               String
-  ClothingItems       ClothingItems[]
-  answering_charity   Charities?      @relation("charity_answer", fields: [answered_by], references: [charity_id])
-  creator             User            @relation("donor_request", fields: [created_by], references: [user_id])
-  accepted_donation   Donations?
+  created_on          DateTime @default(now())
+  updated_on          DateTime @updatedAt
+
+  // Overall request status:
+  // PENDING  = waiting for charity decision
+  // APPROVED = accepted (at least some items accepted)
+  // REJECTED = entirely declined
+  status Status @default(PENDING)
+
+  // Charity that answered this request
+  answered_by Int?
+  // Donor who created it
+  created_by  Int
+
+  accepted_donation Donations?
+  clothing_items    ClothingItems[]
+
+  creator           User       @relation("donor_request", fields: [created_by], references: [user_id])
+  answering_charity Charities? @relation("charity_answer", fields: [answered_by], references: [charity_id])
 }
 
-model Session {
-  session_id    Int              @id @default(autoincrement())
-  session_token String           @unique
-  actor_type    SessionActorType
-  user_id       Int?
-  charity_id    Int?
-  created_on    DateTime         @default(now())
-  expires_on    DateTime
-  revoked_on    DateTime?
-  charity       Charities?       @relation(fields: [charity_id], references: [charity_id])
-  user          User?            @relation(fields: [user_id], references: [user_id])
-
-  @@index([user_id])
-  @@index([charity_id])
-}
-
+// INDIVIDUAL CLOTHING ITEMS
 model ClothingItems {
   clothing_id         Int             @id @default(autoincrement())
   donation_request_id Int
@@ -167,22 +191,38 @@ model ClothingItems {
   donor_id            Int
   donation_id         Int?
   owned_by            Int?
-  front_image_url     String
-  back_image_url      String
-  Donations           Donations?      @relation(fields: [donation_id], references: [donation_id])
-  DonationRequest     DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
-  User                User            @relation(fields: [donor_id], references: [user_id])
-  Charities           Charities?      @relation(fields: [owned_by], references: [charity_id])
+
+  // Images
+  front_image_url String
+  back_image_url  String
+
+  // NEW: item-level review state
+  // PENDING = awaiting decision
+  // ACCEPTED = included in final donation
+  // DENIED = rejected by charity
+  status ItemStatus? @default(PENDING)
+
+  // Optional explanation of why this item was denied (if applicable)
+  denial_reason String?
+
+  donation_request DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  donor            User            @relation(fields: [donor_id], references: [user_id])
+
+  // Charity that currently owns this item (if accepted)
+  owner    Charities? @relation(fields: [owned_by], references: [charity_id])
+  donation Donations? @relation(fields: [donation_id], references: [donation_id])
 }
 
-enum SessionActorType {
-  DONOR
-  CHARITY
-  ADMIN
-}
-
+// CHARITY APPLICATION STATUS ENUM
 enum Status {
   PENDING
   APPROVED
   REJECTED
+}
+
+// NEW: Clothing item-level status enum
+enum ItemStatus {
+  PENDING // Not yet reviewed
+  ACCEPTED // Accepted into the charity’s inventory / donation
+  DENIED // Rejected item
 }
