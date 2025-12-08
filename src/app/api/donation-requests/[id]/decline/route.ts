@@ -14,8 +14,9 @@ export async function POST(
     });
 
     // delete donation request
-    await prisma.donationRequest.delete({
+    await prisma.donationRequest.update({
       where: { donation_request_id: id },
+      data: { status: "REJECTED" }
     });
 
     return NextResponse.json({ message: "Donation request deleted" });

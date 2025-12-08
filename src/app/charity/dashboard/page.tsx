@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
+import Image from "next/image"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -27,6 +28,7 @@ export default function CharityDashboard() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [requests, setRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     async function load() {
@@ -103,6 +105,8 @@ function DonationsTab({
   const [viewRequest, setViewRequest] = useState<DonationRequest | null>(null);
   const [viewItems, setViewItems] = useState<ClothingItemView[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [imageModalItem, setImageModalItem] = useState<ClothingItemView | null>(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const allUnchecked = selectedItems.length === 0;
 
   // Open modal and load items for a request
@@ -128,54 +132,54 @@ function DonationsTab({
   }
 
   // Accept entire request
-async function handleAccept() {
-  if (!viewRequest) return;
+  async function handleAccept() {
+    if (!viewRequest) return;
 
-  if (selectedItems.length === 0) {
-    alert("Select at least one item to approve.");
-    return;
-  }
-
-  // 1. Send approved item IDs to API
-  const res = await fetch(
-    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/accept`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemIds: selectedItems }), // send selected item IDs
+    if (selectedItems.length === 0) {
+      alert("Select at least one item to approve.");
+      return;
     }
-  );
 
-  if (!res.ok) {
-    alert("Failed to approve request.");
-    return;
+    // 1. Send approved item IDs to API
+    const res = await fetch(
+      `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/accept`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemIds: selectedItems }), // send selected item IDs
+      }
+    );
+
+    if (!res.ok) {
+      alert("Failed to approve request.");
+      return;
+    }
+
+    // 2. Update status visually in table without removing request
+    setRequests(prev =>
+      prev.map(r =>
+        r.donation_request_id === viewRequest.donation_request_id
+          ? { ...r, status: "APPROVED" }
+          : r
+      )
+    );
+
+    // 3. Refresh full list from server so UI stays consistent
+    const refresh = await fetch(`${API_BASE}/api/donation-requests`);
+    const updatedRequests = await refresh.json();
+    setRequests(updatedRequests);
+
+    // 4. Reload items so only approved ones appear when modal reopens
+    const refreshedItems = await fetch(
+      `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/items`
+    );
+    const newItems = await refreshedItems.json();
+    setViewItems(newItems);
+
+    // 5. Close modal and notify user
+    setViewOpen(false);
+    alert("Request approved.");
   }
-
-  // 2. Update status visually in table without removing request
-  setRequests(prev =>
-    prev.map(r =>
-      r.donation_request_id === viewRequest.donation_request_id
-        ? { ...r, status: "APPROVED" }
-        : r
-    )
-  );
-
-  // 3. Refresh full list from server so UI stays consistent
-  const refresh = await fetch(`${API_BASE}/api/donation-requests`);
-  const updatedRequests = await refresh.json();
-  setRequests(updatedRequests);
-
-  // 4. Reload items so only approved ones appear when modal reopens
-  const refreshedItems = await fetch(
-    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/items`
-  );
-  const newItems = await refreshedItems.json();
-  setViewItems(newItems);
-
-  // 5. Close modal and notify user
-  setViewOpen(false);
-  alert("Request approved.");
-}
 
   // Decline and delete request
   async function handleDecline() {
@@ -207,6 +211,84 @@ async function handleAccept() {
     setViewOpen(false);
   }
 
+
+  function ItemImagesModal({
+    item,
+    isOpen,
+    onClose,
+  }: {
+    item: ClothingItemView | null;
+    isOpen: boolean;
+    onClose: () => void;
+  }) {
+    if (!isOpen || !item) return null;
+
+    //although image URLs will always be in the database
+    //this fixes an error inside next <Image /> where it wouldn't let "src"
+    //store a nullable string
+    if (!item.front_image_url || !item.back_image_url) {
+      return (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60]">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg">
+            <p className="text-sm text-red-600">
+              This item is missing image URLs.
+            </p>
+            <button
+              onClick={onClose}
+              className="mt-4 px-3 py-1 border rounded-md text-sm"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+
+    return (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[999]">
+        <div className="bg-white rounded-lg p-6 max-w-2x1 shadow-lg">
+          <h3 className="text-lg font-semibold mb-4">
+            Images for {item.type}
+          </h3>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="border-2 border-gray-300 rounded-lg p-3">
+              <p className="text-sm font-medium mb-1">Front</p>
+              <Image
+                src={item.front_image_url}
+                alt="Front of item"
+                width={1000}
+                height={1200}
+                className="w-full h-auto max-h-[500px] object-cover border rounded"
+              />
+            </div>
+            <div className="border-2 border-gray-300 rounded-lg p-3">
+              <p className="text-sm font-medium mb-1">Back</p>
+              <Image
+                src={item.back_image_url}
+                alt="Back of item"
+                width={1000}
+                height={1200}
+                className="w-full h-auto max-h-[500px] object-cover border rounded"
+              />
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="mt-4 px-3 py-1 border rounded-md text-sm float-right"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+
+
+
   return (
     <div>
       <h2 className="text-xl mb-2 font-semibold">Donation Requests</h2>
@@ -237,7 +319,7 @@ async function handleAccept() {
                 <tr key={r.donation_request_id} className="border">
                   <td className="p-3 text-center">{r.title}</td>
                   <td className="p-3 text-center">
-                    {r._count?.clothing_items ?? 0}
+                    {r._count?.ClothingItems ?? 0}
                   </td>
                   <td className="p-3 text-center text-blue-700 font-semibold">
                     {r.status}
@@ -276,11 +358,11 @@ async function handleAccept() {
               <table className="w-full border text-sm">
                 <thead>
                   <tr>
-                    <th className="p-2">Pick</th>
-                    <th>Images</th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th>Condition</th>
+                    <th className="p-2 text-center">Pick</th>
+                    <th className="p-2 text-left">Images</th>
+                    <th className="p-2 text-left">Type</th>
+                    <th className="p-2 text-left">Size</th>
+                    <th className="p-2 text-left">Condition</th>
                   </tr>
                 </thead>
 
@@ -300,15 +382,16 @@ async function handleAccept() {
                           }
                         />
                       </td>
-                      <td className="p-2 flex gap-2">
-                        <img
-                          src={item.front_image_url ?? ""}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                        <img
-                          src={item.back_image_url ?? ""}
-                          className="w-12 h-12 object-cover rounded"
-                        />
+                      <td className="p-2">
+                        <button
+                          className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                          onClick={() => {
+                            setImageModalItem(item);
+                            setIsImageModalOpen(true);
+                          }}
+                        >
+                          View item images
+                        </button>
                       </td>
                       <td className="p-2">{item.type}</td>
                       <td className="p-2">{item.size}</td>
@@ -330,9 +413,8 @@ async function handleAccept() {
               <button
                 onClick={handleDecline}
                 disabled={!allUnchecked}
-                className={`px-3 py-1 rounded text-white ${
-                  allUnchecked ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
-                }`}
+                className={`px-3 py-1 rounded text-white ${allUnchecked ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
+                  }`}
               >
                 Decline
               </button>
@@ -347,6 +429,14 @@ async function handleAccept() {
           </div>
         </div>
       )}
+      <ItemImagesModal
+        item={imageModalItem}
+        isOpen={isImageModalOpen}
+        onClose={() => {
+          setIsImageModalOpen(false);
+          setImageModalItem(null);
+        }}
+      />
     </div>
   );
 }

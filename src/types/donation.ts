@@ -5,6 +5,6 @@ export interface DonationRequest {
 
   // FIX: make _count optional so it matches Prisma count behavior
   _count?: {
-    clothing_items: number;
+    ClothingItems: number;
   };
 }

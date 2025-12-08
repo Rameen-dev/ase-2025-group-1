@@ -7,7 +7,7 @@ export async function GET(
   req: Request,
   { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params;
+  const { id } = params;
   const numericId = Number(id);
 
   //ensure ID is a valid number
