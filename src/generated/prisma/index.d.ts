@@ -11737,6 +11737,7 @@ export namespace Prisma {
     donor_id: number | null
     donation_id: number | null
     owned_by: number | null
+    status: $Enums.Status | null
     front_image_url: string | null
     back_image_url: string | null
   }
@@ -11750,6 +11751,7 @@ export namespace Prisma {
     donor_id: number | null
     donation_id: number | null
     owned_by: number | null
+    status: $Enums.Status | null
     front_image_url: string | null
     back_image_url: string | null
   }
@@ -11763,6 +11765,7 @@ export namespace Prisma {
     donor_id: number
     donation_id: number
     owned_by: number
+    status: number
     front_image_url: number
     back_image_url: number
     _all: number
@@ -11794,6 +11797,7 @@ export namespace Prisma {
     donor_id?: true
     donation_id?: true
     owned_by?: true
+    status?: true
     front_image_url?: true
     back_image_url?: true
   }
@@ -11807,6 +11811,7 @@ export namespace Prisma {
     donor_id?: true
     donation_id?: true
     owned_by?: true
+    status?: true
     front_image_url?: true
     back_image_url?: true
   }
@@ -11820,6 +11825,7 @@ export namespace Prisma {
     donor_id?: true
     donation_id?: true
     owned_by?: true
+    status?: true
     front_image_url?: true
     back_image_url?: true
     _all?: true
@@ -11920,6 +11926,7 @@ export namespace Prisma {
     donor_id: number
     donation_id: number | null
     owned_by: number | null
+    status: $Enums.Status
     front_image_url: string
     back_image_url: string
     _count: ClothingItemsCountAggregateOutputType | null
@@ -11952,6 +11959,7 @@ export namespace Prisma {
     donor_id?: boolean
     donation_id?: boolean
     owned_by?: boolean
+    status?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
@@ -11969,6 +11977,7 @@ export namespace Prisma {
     donor_id?: boolean
     donation_id?: boolean
     owned_by?: boolean
+    status?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
@@ -11986,6 +11995,7 @@ export namespace Prisma {
     donor_id?: boolean
     donation_id?: boolean
     owned_by?: boolean
+    status?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
@@ -12003,11 +12013,12 @@ export namespace Prisma {
     donor_id?: boolean
     donation_id?: boolean
     owned_by?: boolean
+    status?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
   }
 
-  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url", ExtArgs["result"]["clothingItems"]>
+  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "status" | "front_image_url" | "back_image_url", ExtArgs["result"]["clothingItems"]>
   export type ClothingItemsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
     donor?: boolean | UserDefaultArgs<ExtArgs>
@@ -12044,6 +12055,7 @@ export namespace Prisma {
       donor_id: number
       donation_id: number | null
       owned_by: number | null
+      status: $Enums.Status
       front_image_url: string
       back_image_url: string
     }, ExtArgs["result"]["clothingItems"]>
@@ -12481,6 +12493,7 @@ export namespace Prisma {
     readonly donor_id: FieldRef<"ClothingItems", 'Int'>
     readonly donation_id: FieldRef<"ClothingItems", 'Int'>
     readonly owned_by: FieldRef<"ClothingItems", 'Int'>
+    readonly status: FieldRef<"ClothingItems", 'Status'>
     readonly front_image_url: FieldRef<"ClothingItems", 'String'>
     readonly back_image_url: FieldRef<"ClothingItems", 'String'>
   }
@@ -14258,6 +14271,7 @@ export namespace Prisma {
     donor_id: 'donor_id',
     donation_id: 'donation_id',
     owned_by: 'owned_by',
+    status: 'status',
     front_image_url: 'front_image_url',
     back_image_url: 'back_image_url'
   };
@@ -15071,6 +15085,7 @@ export namespace Prisma {
     donor_id?: IntFilter<"ClothingItems"> | number
     donation_id?: IntNullableFilter<"ClothingItems"> | number | null
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
@@ -15088,6 +15103,7 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrderInput | SortOrder
     owned_by?: SortOrderInput | SortOrder
+    status?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     donation_request?: DonationRequestOrderByWithRelationInput
@@ -15108,6 +15124,7 @@ export namespace Prisma {
     donor_id?: IntFilter<"ClothingItems"> | number
     donation_id?: IntNullableFilter<"ClothingItems"> | number | null
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
@@ -15125,6 +15142,7 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrderInput | SortOrder
     owned_by?: SortOrderInput | SortOrder
+    status?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     _count?: ClothingItemsCountOrderByAggregateInput
@@ -15146,6 +15164,7 @@ export namespace Prisma {
     donor_id?: IntWithAggregatesFilter<"ClothingItems"> | number
     donation_id?: IntNullableWithAggregatesFilter<"ClothingItems"> | number | null
     owned_by?: IntNullableWithAggregatesFilter<"ClothingItems"> | number | null
+    status?: EnumStatusWithAggregatesFilter<"ClothingItems"> | $Enums.Status
     front_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
     back_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
   }
@@ -15902,6 +15921,7 @@ export namespace Prisma {
     type: string
     size: string
     condition: string
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
     donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
@@ -15919,6 +15939,7 @@ export namespace Prisma {
     donor_id: number
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -15927,6 +15948,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -15944,6 +15966,7 @@ export namespace Prisma {
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -15957,6 +15980,7 @@ export namespace Prisma {
     donor_id: number
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -15965,6 +15989,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -15978,6 +16003,7 @@ export namespace Prisma {
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -16739,6 +16765,7 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+    status?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
   }
@@ -16760,6 +16787,7 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+    status?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
   }
@@ -16773,6 +16801,7 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+    status?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
   }
@@ -18400,6 +18429,7 @@ export namespace Prisma {
     type: string
     size: string
     condition: string
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
     donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
@@ -18415,6 +18445,7 @@ export namespace Prisma {
     condition: string
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -18683,6 +18714,7 @@ export namespace Prisma {
     donor_id?: IntFilter<"ClothingItems"> | number
     donation_id?: IntNullableFilter<"ClothingItems"> | number | null
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
+    status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
   }
@@ -19038,6 +19070,7 @@ export namespace Prisma {
     type: string
     size: string
     condition: string
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
     donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
@@ -19053,6 +19086,7 @@ export namespace Prisma {
     condition: string
     donor_id: number
     donation_id?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -19731,6 +19765,7 @@ export namespace Prisma {
     type: string
     size: string
     condition: string
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
     donation_request: DonationRequestCreateNestedOneWithoutClothingItemsInput
@@ -19746,6 +19781,7 @@ export namespace Prisma {
     condition: string
     donor_id: number
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -20012,6 +20048,7 @@ export namespace Prisma {
     type: string
     size: string
     condition: string
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
     donor: UserCreateNestedOneWithoutClothingItemsInput
@@ -20027,6 +20064,7 @@ export namespace Prisma {
     donor_id: number
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -20739,6 +20777,7 @@ export namespace Prisma {
     condition: string
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -21009,6 +21048,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -21024,6 +21064,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21036,6 +21077,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21102,6 +21144,7 @@ export namespace Prisma {
     condition: string
     donor_id: number
     donation_id?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -21273,6 +21316,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -21288,6 +21332,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21300,6 +21345,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21312,6 +21358,7 @@ export namespace Prisma {
     condition: string
     donor_id: number
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -21320,6 +21367,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -21335,6 +21383,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donor_id?: IntFieldUpdateOperationsInput | number
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21347,6 +21396,7 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     donor_id?: IntFieldUpdateOperationsInput | number
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21359,6 +21409,7 @@ export namespace Prisma {
     donor_id: number
     donation_id?: number | null
     owned_by?: number | null
+    status?: $Enums.Status
     front_image_url: string
     back_image_url: string
   }
@@ -21367,6 +21418,7 @@ export namespace Prisma {
     type?: StringFieldUpdateOperationsInput | string
     size?: StringFieldUpdateOperationsInput | string
     condition?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -21382,6 +21434,7 @@ export namespace Prisma {
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }
@@ -21394,6 +21447,7 @@ export namespace Prisma {
     donor_id?: IntFieldUpdateOperationsInput | number
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
   }

@@ -220,6 +220,7 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   donor_id: 'donor_id',
   donation_id: 'donation_id',
   owned_by: 'owned_by',
+  status: 'status',
   front_image_url: 'front_image_url',
   back_image_url: 'back_image_url'
 };

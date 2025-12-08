@@ -360,6 +360,7 @@ model ClothingItems {
   donor_id            Int
   donation_id         Int?
   owned_by            Int?
+  status              Status @default(PENDING)
 
   //images
   front_image_url String
