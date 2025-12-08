@@ -54,9 +54,14 @@ export default function AdminPage() {
     load();
   }, []);
 
-  function handleSignOut() {
+  async function handleSignOut() {
     try {
     setLogoutModalOpen(true);
+    
+       // Call logout API route (see step 2)
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
 
     router.push("/");
     } finally {
@@ -202,7 +207,7 @@ export default function AdminPage() {
                 <button
                   type="button"
                   disabled={isSigningOut}
-                  onClick={confirmSignOut}
+                  onClick={handleSignOut}
                   className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSigningOut ? "Logging out…" : "Log Out"}
