@@ -47,10 +47,13 @@ export async function DELETE(
     const { id } = await context.params;
     const numericId = Number(id);
 
+    //ensure ID is a valid number
     if (Number.isNaN(numericId)) {
         return NextResponse.json({ error: "Invalid id" }, { status: 400 });
     }
 
+    //place delete request in a transaction
+    //ensuring that request plus all items data is deleted and there is no left over values
     try {
         await prisma.$transaction([
             prisma.clothingItems.deleteMany({
