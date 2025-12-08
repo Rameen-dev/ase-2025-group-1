@@ -221,7 +221,9 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   donation_id: 'donation_id',
   owned_by: 'owned_by',
   front_image_url: 'front_image_url',
-  back_image_url: 'back_image_url'
+  back_image_url: 'back_image_url',
+  status: 'status',
+  denial_reason: 'denial_reason'
 };
 
 exports.Prisma.SortOrder = {
@@ -239,10 +241,15 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 exports.Status = exports.$Enums.Status = {
-exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
+};
+
+exports.ItemStatus = exports.$Enums.ItemStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DENIED: 'DENIED'
 };
 
 exports.Prisma.ModelName = {

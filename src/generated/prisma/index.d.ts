@@ -64,22 +64,31 @@ export type ClothingItems = $Result.DefaultSelection<Prisma.$ClothingItemsPayloa
  */
 export namespace $Enums {
   export const Status: {
-  export const Status: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
 };
 
 export type Status = (typeof Status)[keyof typeof Status]
-export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const ItemStatus: {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DENIED: 'DENIED'
+};
+
+export type ItemStatus = (typeof ItemStatus)[keyof typeof ItemStatus]
 
 }
 
 export type Status = $Enums.Status
-export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
-export const Status: typeof $Enums.Status
+
+export type ItemStatus = $Enums.ItemStatus
+
+export const ItemStatus: typeof $Enums.ItemStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -6720,7 +6729,6 @@ export namespace Prisma {
     org_address: string | null
     charity_number: string | null
     status: $Enums.Status | null
-    status: $Enums.Status | null
     reviewed_on: Date | null
     reviewed_by: number | null
     approved_on: Date | null
@@ -6739,7 +6747,6 @@ export namespace Prisma {
     website: string | null
     org_address: string | null
     charity_number: string | null
-    status: $Enums.Status | null
     status: $Enums.Status | null
     reviewed_on: Date | null
     reviewed_by: number | null
@@ -6939,7 +6946,6 @@ export namespace Prisma {
     org_address: string
     charity_number: string | null
     status: $Enums.Status
-    status: $Enums.Status
     reviewed_on: Date | null
     reviewed_by: number | null
     approved_on: Date | null
@@ -7086,7 +7092,6 @@ export namespace Prisma {
       website: string
       org_address: string
       charity_number: string | null
-      status: $Enums.Status
       status: $Enums.Status
       reviewed_on: Date | null
       reviewed_by: number | null
@@ -7529,7 +7534,6 @@ export namespace Prisma {
     readonly website: FieldRef<"CharityApplications", 'String'>
     readonly org_address: FieldRef<"CharityApplications", 'String'>
     readonly charity_number: FieldRef<"CharityApplications", 'String'>
-    readonly status: FieldRef<"CharityApplications", 'Status'>
     readonly status: FieldRef<"CharityApplications", 'Status'>
     readonly reviewed_on: FieldRef<"CharityApplications", 'DateTime'>
     readonly reviewed_by: FieldRef<"CharityApplications", 'Int'>
@@ -11570,6 +11574,8 @@ export namespace Prisma {
     owned_by: number | null
     front_image_url: string | null
     back_image_url: string | null
+    status: $Enums.ItemStatus | null
+    denial_reason: string | null
   }
 
   export type ClothingItemsMaxAggregateOutputType = {
@@ -11583,6 +11589,8 @@ export namespace Prisma {
     owned_by: number | null
     front_image_url: string | null
     back_image_url: string | null
+    status: $Enums.ItemStatus | null
+    denial_reason: string | null
   }
 
   export type ClothingItemsCountAggregateOutputType = {
@@ -11596,6 +11604,8 @@ export namespace Prisma {
     owned_by: number
     front_image_url: number
     back_image_url: number
+    status: number
+    denial_reason: number
     _all: number
   }
 
@@ -11627,6 +11637,8 @@ export namespace Prisma {
     owned_by?: true
     front_image_url?: true
     back_image_url?: true
+    status?: true
+    denial_reason?: true
   }
 
   export type ClothingItemsMaxAggregateInputType = {
@@ -11640,6 +11652,8 @@ export namespace Prisma {
     owned_by?: true
     front_image_url?: true
     back_image_url?: true
+    status?: true
+    denial_reason?: true
   }
 
   export type ClothingItemsCountAggregateInputType = {
@@ -11653,6 +11667,8 @@ export namespace Prisma {
     owned_by?: true
     front_image_url?: true
     back_image_url?: true
+    status?: true
+    denial_reason?: true
     _all?: true
   }
 
@@ -11753,6 +11769,8 @@ export namespace Prisma {
     owned_by: number | null
     front_image_url: string
     back_image_url: string
+    status: $Enums.ItemStatus | null
+    denial_reason: string | null
     _count: ClothingItemsCountAggregateOutputType | null
     _avg: ClothingItemsAvgAggregateOutputType | null
     _sum: ClothingItemsSumAggregateOutputType | null
@@ -11785,6 +11803,8 @@ export namespace Prisma {
     owned_by?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
+    status?: boolean
+    denial_reason?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
     donor?: boolean | UserDefaultArgs<ExtArgs>
     owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
@@ -11802,6 +11822,8 @@ export namespace Prisma {
     owned_by?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
+    status?: boolean
+    denial_reason?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
     donor?: boolean | UserDefaultArgs<ExtArgs>
     owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
@@ -11819,6 +11841,8 @@ export namespace Prisma {
     owned_by?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
+    status?: boolean
+    denial_reason?: boolean
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
     donor?: boolean | UserDefaultArgs<ExtArgs>
     owner?: boolean | ClothingItems$ownerArgs<ExtArgs>
@@ -11836,9 +11860,11 @@ export namespace Prisma {
     owned_by?: boolean
     front_image_url?: boolean
     back_image_url?: boolean
+    status?: boolean
+    denial_reason?: boolean
   }
 
-  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url", ExtArgs["result"]["clothingItems"]>
+  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url" | "status" | "denial_reason", ExtArgs["result"]["clothingItems"]>
   export type ClothingItemsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     donation_request?: boolean | DonationRequestDefaultArgs<ExtArgs>
     donor?: boolean | UserDefaultArgs<ExtArgs>
@@ -11877,6 +11903,8 @@ export namespace Prisma {
       owned_by: number | null
       front_image_url: string
       back_image_url: string
+      status: $Enums.ItemStatus | null
+      denial_reason: string | null
     }, ExtArgs["result"]["clothingItems"]>
     composites: {}
   }
@@ -12314,6 +12342,8 @@ export namespace Prisma {
     readonly owned_by: FieldRef<"ClothingItems", 'Int'>
     readonly front_image_url: FieldRef<"ClothingItems", 'String'>
     readonly back_image_url: FieldRef<"ClothingItems", 'String'>
+    readonly status: FieldRef<"ClothingItems", 'ItemStatus'>
+    readonly denial_reason: FieldRef<"ClothingItems", 'String'>
   }
     
 
@@ -12905,7 +12935,9 @@ export namespace Prisma {
     donation_id: 'donation_id',
     owned_by: 'owned_by',
     front_image_url: 'front_image_url',
-    back_image_url: 'back_image_url'
+    back_image_url: 'back_image_url',
+    status: 'status',
+    denial_reason: 'denial_reason'
   };
 
   export type ClothingItemsScalarFieldEnum = (typeof ClothingItemsScalarFieldEnum)[keyof typeof ClothingItemsScalarFieldEnum]
@@ -12991,19 +13023,29 @@ export namespace Prisma {
 
   /**
    * Reference to a field of type 'Status'
-   * Reference to a field of type 'Status'
    */
-  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
     
 
 
   /**
    * Reference to a field of type 'Status[]'
-   * Reference to a field of type 'Status[]'
    */
   export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
-  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ItemStatus'
+   */
+  export type EnumItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ItemStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ItemStatus[]'
+   */
+  export type ListEnumItemStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ItemStatus[]'>
     
 
 
@@ -13353,7 +13395,6 @@ export namespace Prisma {
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
-    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
     approved_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
@@ -13400,7 +13441,6 @@ export namespace Prisma {
     website?: StringFilter<"CharityApplications"> | string
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
-    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
@@ -13450,7 +13490,6 @@ export namespace Prisma {
     website?: StringWithAggregatesFilter<"CharityApplications"> | string
     org_address?: StringWithAggregatesFilter<"CharityApplications"> | string
     charity_number?: StringNullableWithAggregatesFilter<"CharityApplications"> | string | null
-    status?: EnumStatusWithAggregatesFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusWithAggregatesFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableWithAggregatesFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableWithAggregatesFilter<"CharityApplications"> | number | null
@@ -13692,6 +13731,8 @@ export namespace Prisma {
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
+    status?: EnumItemStatusNullableFilter<"ClothingItems"> | $Enums.ItemStatus | null
+    denial_reason?: StringNullableFilter<"ClothingItems"> | string | null
     donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     donor?: XOR<UserScalarRelationFilter, UserWhereInput>
     owner?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
@@ -13709,6 +13750,8 @@ export namespace Prisma {
     owned_by?: SortOrderInput | SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
+    status?: SortOrderInput | SortOrder
+    denial_reason?: SortOrderInput | SortOrder
     donation_request?: DonationRequestOrderByWithRelationInput
     donor?: UserOrderByWithRelationInput
     owner?: CharitiesOrderByWithRelationInput
@@ -13729,6 +13772,8 @@ export namespace Prisma {
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
+    status?: EnumItemStatusNullableFilter<"ClothingItems"> | $Enums.ItemStatus | null
+    denial_reason?: StringNullableFilter<"ClothingItems"> | string | null
     donation_request?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     donor?: XOR<UserScalarRelationFilter, UserWhereInput>
     owner?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
@@ -13746,6 +13791,8 @@ export namespace Prisma {
     owned_by?: SortOrderInput | SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
+    status?: SortOrderInput | SortOrder
+    denial_reason?: SortOrderInput | SortOrder
     _count?: ClothingItemsCountOrderByAggregateInput
     _avg?: ClothingItemsAvgOrderByAggregateInput
     _max?: ClothingItemsMaxOrderByAggregateInput
@@ -13767,6 +13814,8 @@ export namespace Prisma {
     owned_by?: IntNullableWithAggregatesFilter<"ClothingItems"> | number | null
     front_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
     back_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
+    status?: EnumItemStatusNullableWithAggregatesFilter<"ClothingItems"> | $Enums.ItemStatus | null
+    denial_reason?: StringNullableWithAggregatesFilter<"ClothingItems"> | string | null
   }
 
   export type UserCreateInput = {
@@ -14117,7 +14166,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -14137,7 +14185,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -14155,7 +14202,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14176,7 +14222,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14196,7 +14241,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -14215,7 +14259,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14231,7 +14274,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -14447,6 +14489,8 @@ export namespace Prisma {
     condition: string
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
     donation_request: DonationRequestCreateNestedOneWithoutClothing_itemsInput
     donor: UserCreateNestedOneWithoutClothingItemsInput
     owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
@@ -14464,6 +14508,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsUpdateInput = {
@@ -14472,6 +14518,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothing_itemsNestedInput
     donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
@@ -14489,6 +14537,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsCreateManyInput = {
@@ -14502,6 +14552,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsUpdateManyMutationInput = {
@@ -14510,6 +14562,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsUncheckedUpdateManyInput = {
@@ -14523,6 +14577,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -14931,11 +14987,6 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
-  export type EnumStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -15035,14 +15086,7 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
-  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumStatusFilter<$PrismaModel>
-    _max?: NestedEnumStatusFilter<$PrismaModel>
     _min?: NestedEnumStatusFilter<$PrismaModel>
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
@@ -15203,6 +15247,13 @@ export namespace Prisma {
     created_by?: SortOrder
   }
 
+  export type EnumItemStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ItemStatus | EnumItemStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumItemStatusNullableFilter<$PrismaModel> | $Enums.ItemStatus | null
+  }
+
   export type ClothingItemsCountOrderByAggregateInput = {
     clothing_id?: SortOrder
     donation_request_id?: SortOrder
@@ -15214,6 +15265,8 @@ export namespace Prisma {
     owned_by?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
+    status?: SortOrder
+    denial_reason?: SortOrder
   }
 
   export type ClothingItemsAvgOrderByAggregateInput = {
@@ -15235,6 +15288,8 @@ export namespace Prisma {
     owned_by?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
+    status?: SortOrder
+    denial_reason?: SortOrder
   }
 
   export type ClothingItemsMinOrderByAggregateInput = {
@@ -15248,6 +15303,8 @@ export namespace Prisma {
     owned_by?: SortOrder
     front_image_url?: SortOrder
     back_image_url?: SortOrder
+    status?: SortOrder
+    denial_reason?: SortOrder
   }
 
   export type ClothingItemsSumOrderByAggregateInput = {
@@ -15256,6 +15313,16 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+  }
+
+  export type EnumItemStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ItemStatus | EnumItemStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumItemStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ItemStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumItemStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumItemStatusNullableFilter<$PrismaModel>
   }
 
   export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
@@ -15880,8 +15947,6 @@ export namespace Prisma {
 
   export type EnumStatusFieldUpdateOperationsInput = {
     set?: $Enums.Status
-  export type EnumStatusFieldUpdateOperationsInput = {
-    set?: $Enums.Status
   }
 
   export type UserUpdateOneWithoutApproved_applicationsNestedInput = {
@@ -16164,6 +16229,10 @@ export namespace Prisma {
     connect?: DonationsWhereUniqueInput
   }
 
+  export type NullableEnumItemStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ItemStatus | null
+  }
+
   export type DonationRequestUpdateOneRequiredWithoutClothing_itemsNestedInput = {
     create?: XOR<DonationRequestCreateWithoutClothing_itemsInput, DonationRequestUncheckedCreateWithoutClothing_itemsInput>
     connectOrCreate?: DonationRequestCreateOrConnectWithoutClothing_itemsInput
@@ -16379,11 +16448,6 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
-  export type NestedEnumStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
   export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -16391,14 +16455,7 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
-  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumStatusFilter<$PrismaModel>
-    _max?: NestedEnumStatusFilter<$PrismaModel>
     _min?: NestedEnumStatusFilter<$PrismaModel>
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
@@ -16430,6 +16487,23 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumItemStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.ItemStatus | EnumItemStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumItemStatusNullableFilter<$PrismaModel> | $Enums.ItemStatus | null
+  }
+
+  export type NestedEnumItemStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ItemStatus | EnumItemStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.ItemStatus[] | ListEnumItemStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumItemStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.ItemStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumItemStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumItemStatusNullableFilter<$PrismaModel>
+  }
+
   export type CharityApplicationsCreateWithoutApproverInput = {
     org_name: string
     contact_name: string
@@ -16438,7 +16512,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
@@ -16457,7 +16530,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
@@ -16486,7 +16558,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -16504,7 +16575,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
@@ -16665,6 +16735,8 @@ export namespace Prisma {
     condition: string
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
     donation_request: DonationRequestCreateNestedOneWithoutClothing_itemsInput
     owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
     donation?: DonationsCreateNestedOneWithoutClothingItemsInput
@@ -16680,6 +16752,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsCreateOrConnectWithoutDonorInput = {
@@ -16720,7 +16794,6 @@ export namespace Prisma {
     website?: StringFilter<"CharityApplications"> | string
     org_address?: StringFilter<"CharityApplications"> | string
     charity_number?: StringNullableFilter<"CharityApplications"> | string | null
-    status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     status?: EnumStatusFilter<"CharityApplications"> | $Enums.Status
     reviewed_on?: DateTimeNullableFilter<"CharityApplications"> | Date | string | null
     reviewed_by?: IntNullableFilter<"CharityApplications"> | number | null
@@ -16919,6 +16992,8 @@ export namespace Prisma {
     owned_by?: IntNullableFilter<"ClothingItems"> | number | null
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
+    status?: EnumItemStatusNullableFilter<"ClothingItems"> | $Enums.ItemStatus | null
+    denial_reason?: StringNullableFilter<"ClothingItems"> | string | null
   }
 
   export type UserCreateWithoutEmailVerificationTokensInput = {
@@ -17110,7 +17185,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
     created_on?: Date | string
@@ -17128,7 +17202,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
@@ -17239,6 +17312,8 @@ export namespace Prisma {
     condition: string
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
     donation_request: DonationRequestCreateNestedOneWithoutClothing_itemsInput
     donor: UserCreateNestedOneWithoutClothingItemsInput
     donation?: DonationsCreateNestedOneWithoutClothingItemsInput
@@ -17254,6 +17329,8 @@ export namespace Prisma {
     donation_id?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsCreateOrConnectWithoutOwnerInput = {
@@ -17892,6 +17969,8 @@ export namespace Prisma {
     condition: string
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
     donation_request: DonationRequestCreateNestedOneWithoutClothing_itemsInput
     donor: UserCreateNestedOneWithoutClothingItemsInput
     owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
@@ -17907,6 +17986,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsCreateOrConnectWithoutDonationInput = {
@@ -18085,6 +18166,8 @@ export namespace Prisma {
     condition: string
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
     donor: UserCreateNestedOneWithoutClothingItemsInput
     owner?: CharitiesCreateNestedOneWithoutClothingItemsInput
     donation?: DonationsCreateNestedOneWithoutClothingItemsInput
@@ -18100,6 +18183,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsCreateOrConnectWithoutDonation_requestInput = {
@@ -18612,7 +18697,6 @@ export namespace Prisma {
     org_address: string
     charity_number?: string | null
     status?: $Enums.Status
-    status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
     approved_on?: Date | string | null
@@ -18630,7 +18714,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     approved_on?: Date | string | null
@@ -18692,6 +18775,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type CharityApplicationsUpdateWithoutApproverInput = {
@@ -18702,7 +18787,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18722,7 +18806,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18741,7 +18824,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18758,7 +18840,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18778,7 +18859,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -18796,7 +18876,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18939,6 +19018,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothing_itemsNestedInput
     owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
     donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
@@ -18954,6 +19035,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutDonorInput = {
@@ -18966,6 +19049,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CharityApplicationsCreateManyCharityInput = {
@@ -18977,7 +19062,6 @@ export namespace Prisma {
     website: string
     org_address: string
     charity_number?: string | null
-    status?: $Enums.Status
     status?: $Enums.Status
     reviewed_on?: Date | string | null
     reviewed_by?: number | null
@@ -19023,6 +19107,8 @@ export namespace Prisma {
     donation_id?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type CharityApplicationsUpdateWithoutCharityInput = {
@@ -19033,7 +19119,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19053,7 +19138,6 @@ export namespace Prisma {
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
     approved_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19071,7 +19155,6 @@ export namespace Prisma {
     website?: StringFieldUpdateOperationsInput | string
     org_address?: StringFieldUpdateOperationsInput | string
     charity_number?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     reviewed_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     reviewed_by?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19168,6 +19251,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothing_itemsNestedInput
     donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
@@ -19183,6 +19268,8 @@ export namespace Prisma {
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutOwnerInput = {
@@ -19195,6 +19282,8 @@ export namespace Prisma {
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsCreateManyDonationInput = {
@@ -19207,6 +19296,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsUpdateWithoutDonationInput = {
@@ -19215,6 +19306,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
     donation_request?: DonationRequestUpdateOneRequiredWithoutClothing_itemsNestedInput
     donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
@@ -19230,6 +19323,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutDonationInput = {
@@ -19242,6 +19337,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsCreateManyDonation_requestInput = {
@@ -19254,6 +19351,8 @@ export namespace Prisma {
     owned_by?: number | null
     front_image_url: string
     back_image_url: string
+    status?: $Enums.ItemStatus | null
+    denial_reason?: string | null
   }
 
   export type ClothingItemsUpdateWithoutDonation_requestInput = {
@@ -19262,6 +19361,8 @@ export namespace Prisma {
     condition?: StringFieldUpdateOperationsInput | string
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
     donor?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     owner?: CharitiesUpdateOneWithoutClothingItemsNestedInput
     donation?: DonationsUpdateOneWithoutClothingItemsNestedInput
@@ -19277,6 +19378,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutDonation_requestInput = {
@@ -19289,6 +19392,8 @@ export namespace Prisma {
     owned_by?: NullableIntFieldUpdateOperationsInput | number | null
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: NullableEnumItemStatusFieldUpdateOperationsInput | $Enums.ItemStatus | null
+    denial_reason?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
