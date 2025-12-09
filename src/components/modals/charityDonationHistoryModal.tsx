@@ -48,12 +48,14 @@ export default function CharityDonationHistoryModal({
                                 <col className="w-1/5" />
                                 <col className="w-1/5" />
                                 <col className="w-1/5" />
+                                <col className="w-1/5" />
                             </colgroup>
                             <thead className="bg-gray-50 border-b">
                                 <tr>
                                     <th className="p-3 text-left">Title</th>
                                     <th className="p-3 text-center">Items</th>
                                     <th className="p-3 text-center">Status</th>
+                                    <th className="p-3 text-center">Created</th>
                                     <th className="p-3 text-center">Request ID</th>
                                 </tr>
                             </thead>
@@ -72,6 +74,9 @@ export default function CharityDonationHistoryModal({
                                             </td>
                                             <td className={`p-3 text-center ${statusClasses}`}>
                                                 {r.status}
+                                            </td>
+                                            <td className="p-3 text-center text-blue-700 font-semibold">
+                                                {r.createdAgo}
                                             </td>
                                             <td className="p-3 text-center text-gray-500 text-xs">
                                                 {r.donation_request_id}

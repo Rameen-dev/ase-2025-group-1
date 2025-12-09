@@ -135,7 +135,7 @@ function DonationsTab({
             <tr>
               <th className="p-3">Title</th>
               <th>Items</th>
-              <th>Status</th>
+              <th>Created</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -167,7 +167,7 @@ function DonationsTab({
                       {r._count?.ClothingItems ?? 0}
                     </td>
                     <td className="p-3 text-center text-blue-700 font-semibold">
-                      {r.status}
+                      {r.createdAgo}
                     </td>
                     <td className="p-3 text-center">
                       <button
