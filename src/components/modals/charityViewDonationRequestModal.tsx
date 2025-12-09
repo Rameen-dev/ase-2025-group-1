@@ -83,7 +83,15 @@ export default function CharityViewDonationRequest({
         );
 
         if (!res.ok) {
-            alert("Failed to approve request.");
+            let msg = "Failed to approve request.";
+            try {
+                const data = await res.json();
+                console.error("Approve failed:", data);
+                if (data?.error) msg = data.error;
+            } catch (e) {
+                console.error("Approve failed, could not parse JSON:", e);
+            }
+            alert(msg);
             return;
         }
 

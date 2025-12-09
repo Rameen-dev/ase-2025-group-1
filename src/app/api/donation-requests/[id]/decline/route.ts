@@ -9,8 +9,9 @@ export async function POST(
 
   try {
     // delete clothing items linked to request
-    await prisma.clothingItems.deleteMany({
+    await prisma.clothingItems.updateMany({
       where: { donation_request_id: id },
+      data: { status: "REJECTED" }
     });
 
     // delete donation request
@@ -19,7 +20,7 @@ export async function POST(
       data: { status: "REJECTED" }
     });
 
-    return NextResponse.json({ message: "Donation request deleted" });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Decline delete error:", error);
     return NextResponse.json(

@@ -116,7 +116,6 @@ model CharitySignupTokens {
   @@index([email])
 }
 
-// DONATIONS (Finalised donation per request)
 model Donations {
   donation_id         Int             @id @default(autoincrement())
   donation_request_id Int             @unique
@@ -129,7 +128,6 @@ model Donations {
   request             DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
 }
 
-// DONATION REQUEST (from donor)
 model DonationRequest {
   donation_request_id Int             @id @default(autoincrement())
   created_on          DateTime        @default(now())
@@ -160,7 +158,6 @@ model Session {
   @@index([charity_id])
 }
 
-// INDIVIDUAL CLOTHING ITEMS
 model ClothingItems {
   clothing_id         Int             @id @default(autoincrement())
   donation_request_id Int
@@ -172,6 +169,7 @@ model ClothingItems {
   owned_by            Int?
   front_image_url     String
   back_image_url      String
+  status              Status          @default(PENDING)
   Donations           Donations?      @relation(fields: [donation_id], references: [donation_id])
   DonationRequest     DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
   User                User            @relation(fields: [donor_id], references: [user_id])
