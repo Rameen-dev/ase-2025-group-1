@@ -54,21 +54,32 @@ export default function AdminPage() {
     load();
   }, []);
 
-  async function handleSignOut() {
-    try {
-    setLogoutModalOpen(true);
-    
-       // Call logout API route (see step 2)
-    await fetch("/api/auth/logout", {
-      method: "POST",
-    });
 
-    router.push("/");
-    } finally {
-    setIsSigningOut(false);
-    setLogoutModalOpen(false);
+  function openLogoutModal() {
+    setLogoutModalOpen(true);
+  }
+
+  function closeLogoutModal() {
+    if (!isSigningOut) {
+      setLogoutModalOpen(false);
     }
   }
+
+  async function confirmSignOut() {
+    try {
+      setIsSigningOut(true);
+
+      await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      router.push("/");
+    } finally {
+      setIsSigningOut(false);
+      setLogoutModalOpen(false);
+    }
+  }
+
 
   function handleTabChange(tab: TabName) {
     setActiveTab(tab);
@@ -131,7 +142,7 @@ export default function AdminPage() {
             Settings
           </div>
           <button
-            onClick={handleSignOut}
+            onClick={openLogoutModal}
             className="hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150"
           >
             Log Out
@@ -199,7 +210,7 @@ export default function AdminPage() {
                 <button
                   type="button"
                   disabled={isSigningOut}
-                  onClick={() => setLogoutModalOpen(false)}
+                  onClick={closeLogoutModal}
                   className="text-sm px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   Cancel
@@ -207,7 +218,7 @@ export default function AdminPage() {
                 <button
                   type="button"
                   disabled={isSigningOut}
-                  onClick={handleSignOut}
+                  onClick={confirmSignOut}
                   className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSigningOut ? "Logging out…" : "Log Out"}
