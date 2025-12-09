@@ -5,22 +5,72 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-const CookieBanner: React.FC = () => {
+const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
   const [showBanner, setShowBanner] = useState(false);
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
 
   useEffect(() => {
+    const storedPrefs = localStorage.getItem("cookie_preferences");
+    if (storedPrefs) {
+      try {
+        const parsed = JSON.parse(storedPrefs);
+        if (typeof parsed.analytics === "boolean") {
+          setAnalyticsEnabled(parsed.analytics);
+        }
+      } catch {
+        // ignore parse errors
+      }
+    }
+
     const consent = localStorage.getItem("cookie_consent");
+
+    // If forceOpen is true (user clicked "Change Cookie Preferences"),
+    // always show the banner regardless of previous choice.
+    if (forceOpen) {
+      setShowBanner(true);
+      return;
+    }
+
     if (!consent) setShowBanner(true);
+  }, [forceOpen]);
+
+  // Listen for the custom event from the footer
+  useEffect(() => {
+    const handler = () => setShowBanner(true);
+    window.addEventListener("open-cookie-settings", handler);
+    return () => window.removeEventListener("open-cookie-settings", handler);
   }, []);
 
-  const acceptCookies = () => {
+  const acceptAll = () => {
+    setAnalyticsEnabled(true);
     localStorage.setItem("cookie_consent", "accepted");
+    localStorage.setItem(
+      "cookie_preferences",
+      JSON.stringify({ analytics: true })
+    );
     setShowBanner(false);
+    // TODO: initialise analytics here if you add it later
   };
 
-  const rejectCookies = () => {
+  const rejectAll = () => {
+    setAnalyticsEnabled(false);
     localStorage.setItem("cookie_consent", "rejected");
+    localStorage.setItem(
+      "cookie_preferences",
+      JSON.stringify({ analytics: false })
+    );
     setShowBanner(false);
+    // TODO: ensure analytics is NOT loaded
+  };
+
+  const savePreferences = () => {
+    localStorage.setItem("cookie_consent", "custom");
+    localStorage.setItem(
+      "cookie_preferences",
+      JSON.stringify({ analytics: analyticsEnabled })
+    );
+    setShowBanner(false);
+    // TODO: conditionally (de)activate analytics based on analyticsEnabled
   };
 
   if (!showBanner) return null;
@@ -28,46 +78,95 @@ const CookieBanner: React.FC = () => {
   return (
     <div className="fixed inset-0 flex items-end md:items-center justify-center bg-black/30 backdrop-blur-sm z-[999]">
       <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-[90%] max-w-lg p-6 md:p-7 mx-auto animate-fadeIn">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+        <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
           We value your privacy
         </h2>
 
-        <p className="text-sm text-gray-600 leading-relaxed">
-          SustainWear uses cookies to improve your experience, analyse site usage,
-          and enhance our services. You can accept or reject non-essential cookies. 
-          See our{" "}
+        <p className="text-sm text-gray-600 leading-relaxed mb-4">
+          SustainWear uses cookies to operate the site and, with your consent, to
+          understand how our platform is used so we can improve it. You can
+          choose which optional cookies to allow. See our{" "}
           <a
             href="/privacy"
             className="text-[#2E7D32] underline hover:text-green-800"
           >
-            Privacy Policy
+            Privacy & Cookie Policy
           </a>
           .
         </p>
 
-        <div className="flex flex-col md:flex-row gap-3 mt-5 md:justify-end">
+        {/* Toggles section */}
+        <div className="bg-gray-50 rounded-xl p-4 mb-4 space-y-3">
+          {/* Essential cookies - always on */}
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                Essential cookies
+              </p>
+              <p className="text-xs text-gray-600">
+                Required for login, security, and saving your cookie choices.
+                These are always enabled.
+              </p>
+            </div>
+            <span className="px-3 py-1 text-xs rounded-full bg-gray-200 text-gray-700">
+              Always on
+            </span>
+          </div>
+
+          {/* Analytics cookies - user can toggle */}
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                Analytics cookies
+              </p>
+              <p className="text-xs text-gray-600">
+                Help us understand how SustainWear is used so we can improve
+                accessibility, performance, and sustainability features.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setAnalyticsEnabled((prev) => !prev)}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+                analyticsEnabled ? "bg-[#2E7D32]" : "bg-gray-300"
+              }`}
+              aria-pressed={analyticsEnabled}
+            >
+              <span
+                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  analyticsEnabled ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-3 mt-3 md:justify-end">
           <button
-            onClick={rejectCookies}
-            className="px-5 py-2.5 text-sm border rounded-lg border-gray-300
-                       hover:bg-gray-100 transition cursor-pointer"
+            onClick={rejectAll}
+            className="px-5 py-2.5 text-sm border rounded-lg border-gray-300 hover:bg-gray-100 transition cursor-pointer"
           >
-            Reject
+            Reject all
           </button>
 
           <button
-            onClick={acceptCookies}
-            className="px-5 py-2.5 text-sm bg-[#2E7D32] text-white rounded-lg
-                       hover:bg-green-800 transition shadow-md cursor-pointer"
+            onClick={savePreferences}
+            className="px-5 py-2.5 text-sm border rounded-lg border-gray-300 hover:bg-gray-100 transition cursor-pointer"
           >
-            Accept All
+            Save preferences
+          </button>
+
+          <button
+            onClick={acceptAll}
+            className="px-5 py-2.5 text-sm bg-[#2E7D32] text-white rounded-lg hover:bg-green-800 transition shadow-md cursor-pointer"
+          >
+            Accept all
           </button>
         </div>
       </div>
     </div>
   );
 };
-
-
 
 // This is the main page (Landing Page) of our SustainWear Web-application.
 // Next.js treats this as the route: '/'.
