@@ -122,7 +122,10 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-[#2E7D32] to-[#C9DECA] pt-24 px-4 sm:px-8 md:px-40">
+      <section
+        id="hero"
+        className="min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-[#2E7D32] to-[#C9DECA] pt-24 px-4 sm:px-8 md:px-40"
+      >
         <div className="flex-1 flex justify-center md:justify-end mb-8 md:mb-0">
           <Image
             src="/illustrations/hero.svg"
@@ -247,7 +250,10 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="w-full text-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4">
+        <div
+          id="donate"
+          className="w-full text-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4"
+        >
           <h2 className="text-2xl sm:text-3xl font-medium italic mb-6 sm:mb-10 text-[#2E7D32]">
             Ready to Sustain Tomorrow?
           </h2>
@@ -307,8 +313,9 @@ export default function HomePage() {
       </section>
 
       {/* Contact Us */}
-      <section id="contact">
-        <div className="w-full bg-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4">
+      {/* Contact Us */}
+      <section id="contact" className="min-h-screen flex flex-col">
+        <div className="w-full bg-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4 flex-grow">
           <p className="font-medium text-2xl sm:text-3xl mb-6 sm:mb-8">
             Have any questions?{" "}
             <span className="italic text-[#2E7D32]">Contact Us</span>
@@ -380,10 +387,81 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </section>
-      {/*   Footer */}
-      <section>
-        <footer></footer>
+
+        {/* FOOTER (ADDED) */}
+        <footer className="w-full bg-[#E6E6E6] text-black py-10 px-6 sm:px-12 md:px-20 mt-auto">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
+            {/* Left Section */}
+            <div className="flex-1 text-left">
+              <button
+                onClick={() => scrollToSection("hero")}
+                className="font-kalam text-3xl mb-4"
+              >
+                <span className="text-[#2E7D32]">S</span>ustain
+                <span className="text-[#2E7D32]">W</span>ear
+              </button>
+              <p className="max-w-sm text-gray-700">
+                A streamlined platform that makes{" "}
+                <span className="text-[#2E7D32]">Sustaining Tomorrow</span>{" "}
+                easier than ever through smarter clothing donations
+              </p>
+            </div>
+
+            {/* Middle Links */}
+            <div>
+              <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => scrollToSection("about")}
+                    className="hover:text-[#2E7D32] transition"
+                  >
+                    About Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection("donate")}
+                    className="hover:text-[#2E7D32] transition"
+                  >
+                    Donate
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Right Links */}
+            <div>
+              <h3 className="font-semibold text-lg mb-3">Help and Support</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => scrollToSection("contact")}
+                    className="hover:text-[#2E7D32] transition"
+                  >
+                    Contact Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection("how-it-works")}
+                    className="hover:text-[#2E7D32] transition"
+                  >
+                    How It Works
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => scrollToSection("how-it-works")}
+                    className="hover:text-[#2E7D32] transition"
+                  >
+                    Privacy Policy
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </footer>
       </section>
     </main>
   );
