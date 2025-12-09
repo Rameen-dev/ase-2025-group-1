@@ -237,68 +237,71 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
           {/* donation reqeusts table */}
           <div className="flex-1 overflow-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-green-50 border rounded-lg">
-                  <th className="p-3 text-center">Title</th>
-                  <th className="p-3 text-center">Items</th>
-                  <th className="p-3 text-center">Status</th>
-                  <th className="p-3 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading && (
-                  <tr>
-                    <td colSpan={4} className="p-3 text-center">
-                      Loading...
-                    </td>
+            <div>
+
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-green-50 border rounded-lg">
+                    <th className="p-3 text-center">Title</th>
+                    <th className="p-3 text-center">Items</th>
+                    <th className="p-3 text-center">Status</th>
+                    <th className="p-3 text-center">Action</th>
                   </tr>
-                )}
-
-                {!loading &&
-                  apps.map((app) => (
-                    <tr key={app.donation_request_id} className="border">
-                      <td className="p-3 text-center">{app.title}</td>
-                      <td className="p-3 text-center">
-                        {app._count?.ClothingItems ?? 0}
-                      </td>
-                      <td className="p-3 text-center">{app.status}</td>
-                      <td className="p-3 text-center flex justify-center gap-2">
-
-                        {/* view button to display items in the donation */}
-                        <button
-                          onClick={() => handleOpenView(app)}
-                          className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
-                        >
-                          View
-                        </button>
-
-                        {/* if donation request is in pending, display a remove button
-                            when donation request is accepted, remove button doesn't show*/}
-                        {app.status === "PENDING" && (
-                          <button
-                            onClick={() => {
-                              setItemToDelete(app);
-                              setDeleteOpen(true);
-                            }}
-                            className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
-                          >
-                            Remove
-                          </button>
-                        )}
+                </thead>
+                <tbody>
+                  {loading && (
+                    <tr>
+                      <td colSpan={4} className="p-3 text-center">
+                        Loading...
                       </td>
                     </tr>
-                  ))}
+                  )}
 
-                {!loading && apps.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="p-3 text-center">
-                      No donation requests yet.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  {!loading &&
+                    apps.map((app) => (
+                      <tr key={app.donation_request_id} className="border">
+                        <td className="p-3 text-center">{app.title}</td>
+                        <td className="p-3 text-center">
+                          {app._count?.ClothingItems ?? 0}
+                        </td>
+                        <td className="p-3 text-center">{app.status}</td>
+                        <td className="p-3 text-center flex justify-center gap-2">
+
+                          {/* view button to display items in the donation */}
+                          <button
+                            onClick={() => handleOpenView(app)}
+                            className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
+                          >
+                            View
+                          </button>
+
+                          {/* if donation request is in pending, display a remove button
+                            when donation request is accepted, remove button doesn't show*/}
+                          {app.status === "PENDING" && (
+                            <button
+                              onClick={() => {
+                                setItemToDelete(app);
+                                setDeleteOpen(true);
+                              }}
+                              className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+
+                  {!loading && apps.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="p-3 text-center">
+                        No donation requests yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
         </div>
