@@ -80,7 +80,6 @@ export default function AdminPage() {
     }
   }
 
-
   function handleTabChange(tab: TabName) {
     setActiveTab(tab);
     setMobileMenuOpen(false);

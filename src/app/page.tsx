@@ -2,8 +2,72 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+
+const CookieBanner: React.FC = () => {
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    const consent = localStorage.getItem("cookie_consent");
+    if (!consent) setShowBanner(true);
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem("cookie_consent", "accepted");
+    setShowBanner(false);
+  };
+
+  const rejectCookies = () => {
+    localStorage.setItem("cookie_consent", "rejected");
+    setShowBanner(false);
+  };
+
+  if (!showBanner) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-end md:items-center justify-center bg-black/30 backdrop-blur-sm z-[999]">
+      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-[90%] max-w-lg p-6 md:p-7 mx-auto animate-fadeIn">
+        <h2 className="text-lg font-semibold text-gray-900 mb-2">
+          We value your privacy
+        </h2>
+
+        <p className="text-sm text-gray-600 leading-relaxed">
+          SustainWear uses cookies to improve your experience, analyse site usage,
+          and enhance our services. You can accept or reject non-essential cookies. 
+          See our{" "}
+          <a
+            href="/privacy"
+            className="text-[#2E7D32] underline hover:text-green-800"
+          >
+            Privacy Policy
+          </a>
+          .
+        </p>
+
+        <div className="flex flex-col md:flex-row gap-3 mt-5 md:justify-end">
+          <button
+            onClick={rejectCookies}
+            className="px-5 py-2.5 text-sm border rounded-lg border-gray-300
+                       hover:bg-gray-100 transition cursor-pointer"
+          >
+            Reject
+          </button>
+
+          <button
+            onClick={acceptCookies}
+            className="px-5 py-2.5 text-sm bg-[#2E7D32] text-white rounded-lg
+                       hover:bg-green-800 transition shadow-md cursor-pointer"
+          >
+            Accept All
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 
 // This is the main page (Landing Page) of our SustainWear Web-application.
 // Next.js treats this as the route: '/'.
@@ -385,6 +449,8 @@ export default function HomePage() {
       <section>
         <footer></footer>
       </section>
+      <CookieBanner />
+
     </main>
   );
 }
