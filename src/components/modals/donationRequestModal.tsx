@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";  //ID used for React list rendering, not shown in front end
 import uploadImageToCloud from "@/lib/cloud/cloudClient";
+import type { DonationRequest } from "@/types/donation";
 
 //represents the clothing item row 
 type ItemState = {
@@ -31,7 +32,7 @@ export default function CreateDonationRequestModal({
   onClose: () => void;
 
   // FIXED: must match parent dashboard
-  onCreated: (req: ItemState) => void;
+  onCreated: (req: DonationRequest) => void;
 }) {
   //when opening after closing, it resets the modal, calling reset open function when isOpen = true
   useEffect(() => {
@@ -181,15 +182,17 @@ export default function CreateDonationRequestModal({
         }),
       });
 
-      const data = await res.json();
+      const raw = await res.json();
 
       if (!res.ok) {
+        const data = raw as { error?: string };
         seterror(data.error ?? "Failed to create donation request");
         return;
       }
 
       // parse response and notify parent component
-      onCreated(data);
+      const created = raw as DonationRequest;
+      onCreated(created);
       onClose(); //close modal on success
     } catch (err) {
       console.error(err);

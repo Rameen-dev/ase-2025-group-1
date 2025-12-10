@@ -6,6 +6,7 @@ import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
 import { DeleteDonationRequestModal } from "@/components/modals/confirmMessageModal";
+import type { DonationRequest } from "@/types/donation";
 
 // base URL for API requests, allowing the client to switch from dev/staging/prod
 // if missing, it falls back to " ", which prevents code to crash
@@ -14,23 +15,6 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 // sidebar tabs
 type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
-
-// status of donation request (Default: Pending)
-type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
-
-// defines the structure of a donation request returned by the API.
-// the backend also includes `_count.clothingItems`, which tells us how many
-// clothing items are linked to this request so the dashboard can display it.
-interface DonationRequest {
-  donation_request_id: number;
-  title: string;
-  status: DonationRequestStatus;
-  created_on: string;
-  createdAgo?: string;
-  _count: {
-    ClothingItems: number;
-  };
-}
 
 // properties required by the Donations tab/component. Includes the list of
 // donation requests to display, loading state, and callbacks that the parent
@@ -88,14 +72,9 @@ export default function DonorDashboard() {
   }
 
   //sets title of the header bar based on active tab
-  const headerTitle =
-    activeTab === "Home"
-      ? "Dashboard Overview"
-      : activeTab === "Donations"
-        ? "Donations"
-        : activeTab === "Inventory"
-          ? "Inventory"
-          : "Impact & Reports";
+  const headerTitle = activeTab === "Home" ? "Dashboard Overview" : activeTab === "Donations" ? "Donations"
+    : activeTab === "Inventory" ? "Inventory"
+      : "Impact & Reports";
 
   return (
     //dashboard lauout component inside components/UI
@@ -159,8 +138,6 @@ function HomeTab() {
 }
 
 function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps) {         // existing (view)
-  const [selected, setSelected] = useState<DonationRequest | null>(null);
-  const isLocked = selected?.status !== "PENDING";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<DonationRequest | null>(null);
 
@@ -175,6 +152,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     clothing_id: number;
     type: string;
     size: string;
+    status: string;
     condition: string;
   };
 
@@ -193,9 +171,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       const data: ClothingItemView[] = await res.json();
       setViewItems(data);
-    } catch (err) {
-      alert("Error loading items for this request");
-      setViewItems([]);
     } finally {
       setViewLoading(false);
     }
