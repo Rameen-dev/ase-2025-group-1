@@ -17,6 +17,7 @@ type ClothingItem = {
   back_image_url?: string;
 };
 
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
 // Tabs
@@ -109,6 +110,13 @@ function DonationsTab({
   const [itemsModalLoading, setItemsModalLoading] = useState(false);
   const [itemsModalItems, setItemsModalItems] = useState<ClothingItem[]>([]);
   const [itemsModalTitle, setItemsModalTitle] = useState<string | undefined>();
+
+  async function refreshRequests() {
+    const res = await fetch(`${API_BASE}/api/donation-requests`);
+    const data = await res.json();
+    if (Array.isArray(data)) setRequests(data);
+  }
+
 
   async function handleHistoryView(req: DonationRequest) {
     setItemsModalTitle(req.title);

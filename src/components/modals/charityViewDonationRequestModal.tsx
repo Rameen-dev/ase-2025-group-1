@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import type { DonationRequest } from "@/types/donation";
 import { CharityDeclineDonationRequestModal } from "@/components/modals/confirmMessageModal";
-import { TrendingUp } from "lucide-react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -118,8 +117,6 @@ export default function CharityViewDonationRequest({
         } catch (err) {
             console.error("Error refreshing requests:", err);
         }
-
-        alert("Request approved.");
         onClose();
     }
 
@@ -139,10 +136,12 @@ export default function CharityViewDonationRequest({
             }
 
             setRequests((prev) =>
-                prev.filter((r) => r.donation_request_id !== request.donation_request_id)
+                prev.map((r) =>
+                    r.donation_request_id === request.donation_request_id
+                        ? { ...r, status: "REJECTED" }
+                        : r
+                )
             );
-
-            alert("Donation request deleted.");
             setIsDeclineModalOpen(false)
             onClose();
         } catch (err) {

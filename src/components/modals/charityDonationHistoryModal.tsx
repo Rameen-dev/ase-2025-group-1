@@ -2,7 +2,6 @@
 
 import React from "react";
 import type { DonationRequest } from "@/types/donation";
-import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
 
 interface CharityDonationHistoryModalProps {
     isOpen: boolean;
