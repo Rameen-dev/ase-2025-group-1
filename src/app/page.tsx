@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
+  const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
   const [showBanner, setShowBanner] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
 
@@ -76,6 +77,7 @@ const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
   if (!showBanner) return null;
 
   return (
+    
     <div className="fixed inset-0 flex items-end md:items-center justify-center bg-black/30 backdrop-blur-sm z-[999]">
       <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-[90%] max-w-lg p-6 md:p-7 mx-auto animate-fadeIn">
         <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
@@ -172,19 +174,64 @@ const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
 // Next.js treats this as the route: '/'.
 export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setMobileMenuOpen(false);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setStatusMessage(null);
+  setStatusType(null);
+
+  if (!name || !email || !message) {
+    setStatusType("error");
+    setStatusMessage("Please fill in all fields before submitting.");
+    return;
+  }
+
+  setIsSubmitting(true);
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.error || "Failed to send message.");
     }
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Form submission logic here
-  };
+    setStatusType("success");
+    setStatusMessage(
+      "Thank you for getting in touch. We’ve received your message and will respond by email."
+    );
+    setName("");
+    setEmail("");
+    setMessage("");
+  } catch (err) {
+    console.error(err);
+    setStatusType("error");
+    setStatusMessage(
+      "Sorry, something went wrong sending your message. Please try again later."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+  const scrollToSection = (sectionId: string) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+    setMobileMenuOpen(false);
+  }
+};
 
   return (
     <main className="w-full text-black text-center">
@@ -313,9 +360,13 @@ export default function HomePage() {
             <br className="hidden sm:block" />
             easier than ever through smarter clothing donations.
           </p>
-          <button className="self-center w-auto px-6 py-2 bg-[#2E7D32] text-white rounded-lg font-semibold hover:bg-white hover:text-[#2E7D32] transition drop-shadow">
+          <button
+            onClick={() => scrollToSection("how-it-works")}
+            className="self-center w-auto px-6 py-2 bg-[#2E7D32] text-white rounded-lg font-semibold hover:bg-white hover:text-[#2E7D32] transition drop-shadow cursor-pointer"
+          >
             Learn More
           </button>
+
         </div>
       </section>
 
@@ -420,7 +471,7 @@ export default function HomePage() {
           <h2 className="text-2xl sm:text-3xl font-medium italic mb-6 sm:mb-10 text-[#2E7D32]">
             Ready to Sustain Tomorrow?
           </h2>
-          <button className="bg-[#2E7D32] px-8 sm:px-12 py-3 sm:py-4 rounded-lg text-xl sm:text-2xl font-regular hover:bg-green-800 transition mb-6 sm:mb-10">
+          <button className="bg-[#2E7D32] px-8 sm:px-12 py-3 sm:py-4 rounded-lg text-xl sm:text-2xl font-regular hover:bg-green-800 transition mb-6 sm:mb-10 cursor-pointer">
             Give Today
           </button>
           <p className="text-[#2E7D32] italic text-xl sm:text-2xl font-medium mb-3 sm:mb-5">
@@ -476,16 +527,20 @@ export default function HomePage() {
       </section>
 
       {/* Contact Us */}
-      {/* Contact Us */}
       <section id="contact" className="min-h-screen flex flex-col">
         <div className="w-full bg-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4 flex-grow">
           <p className="font-medium text-2xl sm:text-3xl mb-6 sm:mb-8">
             Have any questions?{" "}
             <span className="italic text-[#2E7D32]">Contact Us</span>
           </p>
+
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 mt-6 sm:mt-10 w-full max-w-6xl">
             <div className="flex-1 w-full">
-              <div className="space-y-4 sm:space-y-6">
+              {/* Form wrapper for contact us */}
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 sm:space-y-6"
+              >
                 <div>
                   <label
                     htmlFor="name"
@@ -497,6 +552,8 @@ export default function HomePage() {
                     type="text"
                     id="name"
                     placeholder="e.g, John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
                   />
                 </div>
@@ -512,6 +569,8 @@ export default function HomePage() {
                     type="email"
                     id="email"
                     placeholder="youremail@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
                   />
                 </div>
@@ -527,18 +586,35 @@ export default function HomePage() {
                     id="message"
                     placeholder="Tell us how you'd like to get involved"
                     rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#2E7D32]"
                   />
                 </div>
 
+                {/* Status message (small, under the fields) */}
+                {statusMessage && (
+                  <p
+                    className={`text-sm text-left ${
+                      statusType === "success"
+                        ? "text-green-700"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {statusMessage}
+                  </p>
+                )}
+
                 <button
-                  onClick={handleSubmit}
-                  className="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1e5723] transition"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#2E7D32] text-white py-3 rounded-lg font-semibold hover:bg-[#1e5723] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Submit
+                  {isSubmitting ? "Sending..." : "Submit"}
                 </button>
-              </div>
+              </form>
             </div>
+
             <div className="flex-1 w-full hidden md:flex justify-center items-center relative min-h-[400px]">
               <Image
                 src="/illustrations/contact-us.svg"
@@ -550,7 +626,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
         {/* FOOTER (ADDED) */}
         <footer className="w-full bg-[#E6E6E6] text-black py-10 px-6 sm:px-12 md:px-20 mt-auto">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
@@ -577,7 +652,7 @@ export default function HomePage() {
                 <li>
                   <button
                     onClick={() => scrollToSection("about")}
-                    className="hover:text-[#2E7D32] transition"
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
                   >
                     About Us
                   </button>
@@ -585,7 +660,7 @@ export default function HomePage() {
                 <li>
                   <button
                     onClick={() => scrollToSection("donate")}
-                    className="hover:text-[#2E7D32] transition"
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
                   >
                     Donate
                   </button>
@@ -595,12 +670,12 @@ export default function HomePage() {
 
             {/* Right Links */}
             <div>
-              <h3 className="font-semibold text-lg mb-3">Help and Support</h3>
+              <h3 className="font-semibold text-lg mb-3 ">Help and Support</h3>
               <ul className="space-y-2">
                 <li>
                   <button
                     onClick={() => scrollToSection("contact")}
-                    className="hover:text-[#2E7D32] transition"
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
                   >
                     Contact Us
                   </button>
@@ -608,25 +683,25 @@ export default function HomePage() {
                 <li>
                   <button
                     onClick={() => scrollToSection("how-it-works")}
-                    className="hover:text-[#2E7D32] transition"
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
                   >
                     How It Works
                   </button>
                 </li>
                 <li>
-                  <button
-                    onClick={() => scrollToSection("how-it-works")}
-                    className="hover:text-[#2E7D32] transition"
-                  >
-                    Privacy Policy
-                  </button>
+                 <button
+                  onClick={() => router.push("/privacy")}
+                  className="hover:text-[#2E7D32] transition cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
                 </li>
               </ul>
             </div>
           </div>
         </footer>
       </section>
-      <CookieBanner />
+      <CookieBanner/>
     </main>
   );
 }
