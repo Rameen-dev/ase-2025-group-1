@@ -113,7 +113,7 @@ export default function ViewDonationItemsModal({
     if (!isOpen) return null; //if isOpen is false, don't show modal
 
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-80">
             <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg">
                 <h2 className="text-lg font-semibold mb-3">
                     Items in {requestTitle ?? "request"}
@@ -127,7 +127,7 @@ export default function ViewDonationItemsModal({
                     </p>
                 ) : (
                     <table className="w-full text-sm border border-gray-200 rounded-md overflow-hidden">
-                        <thead className="bg-gray-50">
+                        <thead className="">
                             <tr>
                                 <th className="p-2 text-left">Type</th>
                                 <th className="p-2 text-left">Size</th>

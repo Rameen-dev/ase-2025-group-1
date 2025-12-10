@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import type { DonationRequest } from "@/types/donation";
+import { CharityDeclineDonationRequestModal } from "@/components/modals/confirmMessageModal";
+import { TrendingUp } from "lucide-react";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -32,6 +34,8 @@ export default function CharityViewDonationRequest({
     const [loading, setLoading] = useState(false);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [imageModalItem, setImageModalItem] = useState<ClothingItemView | null>(null);
+    const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
+
 
     const allUnchecked = selectedItems.length === 0;
 
@@ -122,27 +126,29 @@ export default function CharityViewDonationRequest({
     async function handleDecline() {
         if (!request) return;
 
-        const confirmDelete = confirm(
-            "Are you sure? This will DELETE the entire donation request permanently."
-        );
-        if (!confirmDelete) return;
+        try {
 
-        const res = await fetch(
-            `${API_BASE}/api/donation-requests/${request.donation_request_id}/decline`,
-            { method: "POST" }
-        );
+            const res = await fetch(
+                `${API_BASE}/api/donation-requests/${request.donation_request_id}/decline`,
+                { method: "POST" }
+            );
 
-        if (!res.ok) {
-            alert("Failed to delete donation request.");
-            return;
+            if (!res.ok) {
+                alert("Failed to delete donation request.");
+                return;
+            }
+
+            setRequests((prev) =>
+                prev.filter((r) => r.donation_request_id !== request.donation_request_id)
+            );
+
+            alert("Donation request deleted.");
+            setIsDeclineModalOpen(false)
+            onClose();
+        } catch (err) {
+            console.error("Decline error:", err);
+            alert("Something went wrong while declining the request.")
         }
-
-        setRequests((prev) =>
-            prev.filter((r) => r.donation_request_id !== request.donation_request_id)
-        );
-
-        alert("Donation request deleted.");
-        onClose();
     }
 
     if (!isOpen || !request) return null;
@@ -210,7 +216,7 @@ export default function CharityViewDonationRequest({
                         </button>
 
                         <button
-                            onClick={handleDecline}
+                            onClick={() => setIsDeclineModalOpen(true)}
                             disabled={!allUnchecked}
                             className={`px-3 py-1 rounded text-white ${allUnchecked ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
                                 }`}
@@ -276,6 +282,13 @@ export default function CharityViewDonationRequest({
                     </div>
                 </div>
             )}
+
+            <CharityDeclineDonationRequestModal
+                isOpen={isDeclineModalOpen}
+                onClose={() => setIsDeclineModalOpen(false)}
+                onConfirm={handleDecline}
+                title={request.title}
+            />
         </>
     );
 }

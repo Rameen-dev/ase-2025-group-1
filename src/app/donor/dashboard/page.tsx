@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
-import DeleteDonationRequestModal from "@/components/modals/donationDeleteMessageModal";
+import { DeleteDonationRequestModal } from "@/components/modals/confirmMessageModal";
 
 // base URL for API requests, allowing the client to switch from dev/staging/prod
 // if missing, it falls back to " ", which prevents code to crash
@@ -25,6 +25,8 @@ interface DonationRequest {
   donation_request_id: number;
   title: string;
   status: DonationRequestStatus;
+  created_on: string;
+  createdAgo?: string;
   _count: {
     ClothingItems: number;
   };
@@ -245,6 +247,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                     <th className="p-3 text-center">Title</th>
                     <th className="p-3 text-center">Items</th>
                     <th className="p-3 text-center">Status</th>
+                    <th className="p-3 text-center">Created</th>
                     <th className="p-3 text-center">Action</th>
                   </tr>
                 </thead>
@@ -265,6 +268,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                           {app._count?.ClothingItems ?? 0}
                         </td>
                         <td className="p-3 text-center">{app.status}</td>
+                        <td className="p-3 text-center">{app.createdAgo}</td>
                         <td className="p-3 text-center flex justify-center gap-2">
 
                           {/* view button to display items in the donation */}

@@ -6,8 +6,16 @@ import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
 import CharityViewDonationRequest from "@/components/modals/charityViewDonationRequestModal";
 import CharityDonationHistoryModal from "@/components/modals/charityDonationHistoryModal";
+import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
 
-
+type ClothingItem = {
+  clothing_id: number;
+  type: string;
+  size: string;
+  condition: string;
+  front_image_url?: string;
+  back_image_url?: string;
+};
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -96,6 +104,31 @@ function DonationsTab({
   const [viewOpen, setViewOpen] = useState(false);
   const [viewRequest, setViewRequest] = useState<DonationRequest | null>(null);
   const [historyOpen, setHistoryOpen] = useState(false);
+
+  const [itemsModalOpen, setItemsModalOpen] = useState(false);
+  const [itemsModalLoading, setItemsModalLoading] = useState(false);
+  const [itemsModalItems, setItemsModalItems] = useState<ClothingItem[]>([]);
+  const [itemsModalTitle, setItemsModalTitle] = useState<string | undefined>();
+
+  async function handleHistoryView(req: DonationRequest) {
+    setItemsModalTitle(req.title);
+    setItemsModalOpen(true);
+    setItemsModalLoading(true);
+    setItemsModalItems([]);
+
+    try {
+      const res = await fetch(
+        `${API_BASE}/api/donation-requests/${req.donation_request_id}/items`
+      );
+      const data = await res.json();
+      setItemsModalItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Error loading items for history request:", err);
+      setItemsModalItems([]);
+    } finally {
+      setItemsModalLoading(false);
+    }
+  }
 
   const pendingRequests = requests.filter(
     (r) => r.status === "PENDING"
@@ -206,6 +239,15 @@ function DonationsTab({
         isOpen={historyOpen}
         onClose={() => setHistoryOpen(false)}
         requests={requests}
+        onViewRequest={handleHistoryView}
+      />
+
+      <ViewDonationItemsModal
+        isOpen={itemsModalOpen}
+        onClose={() => setItemsModalOpen(false)}
+        requestTitle={itemsModalTitle}
+        loading={itemsModalLoading}
+        items={itemsModalItems}
       />
     </div>
   );
