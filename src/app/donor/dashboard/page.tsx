@@ -261,40 +261,49 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
                   )}
 
                   {!loading &&
-                    apps.map((app) => (
-                      <tr key={app.donation_request_id} className="border">
-                        <td className="p-3 text-center">{app.title}</td>
-                        <td className="p-3 text-center">
-                          {app._count?.ClothingItems ?? 0}
-                        </td>
-                        <td className="p-3 text-center">{app.status}</td>
-                        <td className="p-3 text-center">{app.createdAgo}</td>
-                        <td className="p-3 text-center flex justify-center gap-2">
+                    apps.map((app) => {
+                      const isApproved = app.status === "APPROVED";
+                      const isRejected = app.status === "REJECTED";
 
-                          {/* view button to display items in the donation */}
-                          <button
-                            onClick={() => handleOpenView(app)}
-                            className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
-                          >
-                            View
-                          </button>
+                      const rowBg = isApproved ? "bg-green-50" : isRejected ? "bg-red-50" : "";
+                      const statusText = isApproved ? "text-green-700 font-semibold" : isRejected ? "text-red-600 font-semibold" : "text-gray-700";
 
-                          {/* if donation request is in pending, display a remove button
-                            when donation request is accepted, remove button doesn't show*/}
-                          {app.status === "PENDING" && (
+                      return (
+                        <tr key={app.donation_request_id} className={`border ${rowBg} ${statusText}`}>
+                          <td className="p-3 text-center">{app.title}</td>
+                          <td className="p-3 text-center">
+                            {app._count?.ClothingItems ?? 0}
+                          </td>
+                          <td className="p-3 text-center">{app.status}</td>
+                          <td className="p-3 text-center">{app.createdAgo}</td>
+                          <td className="p-3 text-center flex justify-center gap-2">
+
+                            {/* view button to display items in the donation */}
                             <button
-                              onClick={() => {
-                                setItemToDelete(app);
-                                setDeleteOpen(true);
-                              }}
-                              className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                              onClick={() => handleOpenView(app)}
+                              className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
                             >
-                              Remove
+                              View
                             </button>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
+
+                            {/* if donation request is in pending, display a remove button
+                            when donation request is accepted, remove button doesn't show*/}
+                            {app.status === "PENDING" && (
+                              <button
+                                onClick={() => {
+                                  setItemToDelete(app);
+                                  setDeleteOpen(true);
+                                }}
+                                className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  }
 
                   {!loading && apps.length === 0 && (
                     <tr>
