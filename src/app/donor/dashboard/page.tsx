@@ -270,7 +270,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
                       return (
                         <tr key={app.donation_request_id} className={`border ${rowBg} ${statusText}`}>
-                          <td className="p-3 text-center">{app.title}</td>
+                          <td className="p-3 text-center text-xl text-black font-bold">{app.title}</td>
                           <td className="p-3 text-center">
                             {app._count?.ClothingItems ?? 0}
                           </td>

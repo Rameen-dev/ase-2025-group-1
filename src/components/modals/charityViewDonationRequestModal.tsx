@@ -12,6 +12,7 @@ interface ClothingItemView {
     type: string;
     size: string;
     condition: string;
+    status: string;
     front_image_url?: string;
     back_image_url?: string;
 }

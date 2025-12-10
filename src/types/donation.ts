@@ -10,3 +10,13 @@ export interface DonationRequest {
     ClothingItems: number;
   };
 }
+
+export type ClothingItem = {
+  clothing_id: number;
+  type: string;
+  size: string;
+  condition: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  front_image_url?: string | null;
+  back_image_url?: string | null;
+};

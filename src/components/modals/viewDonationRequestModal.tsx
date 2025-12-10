@@ -9,6 +9,7 @@ type ClothingItem = {
     type: string;
     size: string;
     condition: string;
+    status: string;
     front_image_url?: string;
     back_image_url?: string;
 };
@@ -132,28 +133,38 @@ export default function ViewDonationItemsModal({
                                 <th className="p-2 text-left">Type</th>
                                 <th className="p-2 text-left">Size</th>
                                 <th className="p-2 text-left">Condition</th>
+                                <th className="p-2 text-left">Images</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {items.map((item) => (
-                                <tr key={item.clothing_id} className="border-t">
-                                    <td className="p-2">{item.type}</td>
-                                    <td className="p-2">{item.size}</td>
-                                    <td className="p-2">{item.condition}</td>
-                                    <td className="p-2">
-                                        {/* button opening images modal*/}
-                                        <button
-                                            onClick={() => setSelectedItem(item)}
-                                            className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
-                                        >
-                                            Review Images
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                            {items.map((item) => {
+                                const isApproved = item.status === "APPROVED"
+                                const isRejcted = item.status === "REJECTED"
+
+                                const rowBg = isApproved ? "bg-green-50" : isRejcted ? "bg-red-50" : "";
+
+                                return (
+                                    <tr key={item.clothing_id} className={`border-t ${rowBg}`}>
+                                        <td className="p-2">{item.type}</td>
+                                        <td className="p-2">{item.size}</td>
+                                        <td className="p-2">{item.condition}</td>
+                                        <td className="p-2">
+                                            {/* button opening images modal*/}
+                                            <button
+                                                onClick={() => setSelectedItem(item)}
+                                                className="px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700"
+                                            >
+                                                Review Images
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 )}
+
 
                 <div className="flex justify-end mt-4">
                     <button

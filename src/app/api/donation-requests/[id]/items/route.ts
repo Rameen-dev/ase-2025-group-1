@@ -28,6 +28,7 @@ export async function GET(
         type: true,
         size: true,
         condition: true,
+        status: true,
         front_image_url: true,
         back_image_url: true,
       },

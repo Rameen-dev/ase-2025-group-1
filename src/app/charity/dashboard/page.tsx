@@ -13,6 +13,7 @@ type ClothingItem = {
   type: string;
   size: string;
   condition: string;
+  status: string;
   front_image_url?: string;
   back_image_url?: string;
 };
@@ -111,13 +112,6 @@ function DonationsTab({
   const [itemsModalItems, setItemsModalItems] = useState<ClothingItem[]>([]);
   const [itemsModalTitle, setItemsModalTitle] = useState<string | undefined>();
 
-  async function refreshRequests() {
-    const res = await fetch(`${API_BASE}/api/donation-requests`);
-    const data = await res.json();
-    if (Array.isArray(data)) setRequests(data);
-  }
-
-
   async function handleHistoryView(req: DonationRequest) {
     setItemsModalTitle(req.title);
     setItemsModalOpen(true);
@@ -203,7 +197,7 @@ function DonationsTab({
                 Array.isArray(pendingRequests) &&
                 pendingRequests.map((r) => (
                   <tr key={r.donation_request_id} className="border">
-                    <td className="p-3 text-center">{r.title}</td>
+                    <td className="p-3 text-center text-xl text-black font-bold">{r.title}</td>
                     <td className="p-3 text-center">
                       {r._count?.ClothingItems ?? 0}
                     </td>
