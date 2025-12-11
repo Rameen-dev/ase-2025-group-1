@@ -14,7 +14,7 @@ export default function VerifyEmailPage() {
   const [serverMsg, setServerMsg] = useState<string | null>(null);
   const [serverErr, setServerErr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [resending, setResending] = useState(false); // ⭐ NEW
+  const [resending, setResending] = useState(false); 
 
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -161,7 +161,12 @@ export default function VerifyEmailPage() {
           {serverMsg && (
             <p className="text-green-700 text-sm mb-4">{serverMsg}</p>
           )}
-
+          <form onSubmit={(e) => {
+          e.preventDefault();
+          handleContinue(); 
+          }}
+          className="flex flex-col items-center"
+          >
           <div className="flex items-center justify-center gap-4 mb-8">
             {Array.from({ length: BOXES }).map((_, i) => (
               <input
@@ -181,9 +186,9 @@ export default function VerifyEmailPage() {
           </div>
 
           <button
-            onClick={handleContinue}
+            type="submit"
             disabled={submitting}
-            className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-green-700 text-white w-56 mx-auto disabled:opacity-50"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-green-700 text-white w-56 mx-auto disabled:opacity-50 cursor-pointer hover:bg-green-900"
           >
             {submitting ? "Verifying..." : "Continue"}
           </button>
@@ -191,13 +196,15 @@ export default function VerifyEmailPage() {
           <p className="mt-6 text-sm">
             Didn’t receive your code?{" "}
             <button
-              className="text-green-700 underline disabled:opacity-50"
+              className="text-green-600 underline disabled:opacity-50 cursor-pointer hover:text-green-900"
               onClick={handleResend}
-              disabled={submitting || resending} // ⭐ NEW
+              disabled={submitting || resending} 
             >
               {resending ? "Sending..." : "Click here to send another"}
             </button>
+            
           </p>
+          </form>
         </div>
       </section>
     </main>
