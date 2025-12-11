@@ -28,8 +28,6 @@ export type EmailVerificationTokens = $Result.DefaultSelection<Prisma.$EmailVeri
  * 
  */
 export type PasswordResetTokens = $Result.DefaultSelection<Prisma.$PasswordResetTokensPayload>
-<<<<<<< HEAD
-=======
 /**
  * Model Charities
  * 
@@ -96,7 +94,6 @@ export const SessionActorType: typeof $Enums.SessionActorType
 export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
->>>>>>> main
 
 /**
  * ##  Prisma Client ʲˢ
@@ -245,8 +242,6 @@ export class PrismaClient<
     * ```
     */
   get passwordResetTokens(): Prisma.PasswordResetTokensDelegate<ExtArgs, ClientOptions>;
-<<<<<<< HEAD
-=======
 
   /**
    * `prisma.charities`: Exposes CRUD operations for the **Charities** model.
@@ -375,13 +370,8 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-<<<<<<< HEAD
-   * Prisma Client JS version: 6.17.1
-   * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
-=======
    * Prisma Client JS version: 6.18.0
    * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
->>>>>>> main
    */
   export type PrismaVersion = {
     client: string
@@ -394,10 +384,7 @@ export namespace Prisma {
    */
 
 
-<<<<<<< HEAD
-=======
   export import Bytes = runtime.Bytes
->>>>>>> main
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -768,9 +755,6 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     EmailVerificationTokens: 'EmailVerificationTokens',
-<<<<<<< HEAD
-    PasswordResetTokens: 'PasswordResetTokens'
-=======
     PasswordResetTokens: 'PasswordResetTokens',
     Charities: 'Charities',
     CharityApplications: 'CharityApplications',
@@ -1023,8 +1007,6 @@ export namespace Prisma {
           }
         }
       }
-<<<<<<< HEAD
-=======
       Charities: {
         payload: Prisma.$CharitiesPayload<ExtArgs>
         fields: Prisma.CharitiesFieldRefs
@@ -1642,8 +1624,6 @@ export namespace Prisma {
     user?: UserOmit
     emailVerificationTokens?: EmailVerificationTokensOmit
     passwordResetTokens?: PasswordResetTokensOmit
-<<<<<<< HEAD
-=======
     charities?: CharitiesOmit
     charityApplications?: CharityApplicationsOmit
     charitySignupTokens?: CharitySignupTokensOmit
@@ -1731,15 +1711,6 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-<<<<<<< HEAD
-    EmailVerificationTokens: number
-    PasswordResetTokens: number
-  }
-
-  export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    EmailVerificationTokens?: boolean | UserCountOutputTypeCountEmailVerificationTokensArgs
-    PasswordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
-=======
     approved_applications: number
     reviewed_applications: number
     created_invites: number
@@ -1777,8 +1748,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-<<<<<<< HEAD
-=======
   export type UserCountOutputTypeCountApproved_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CharityApplicationsWhereInput
   }
@@ -1811,8 +1780,6 @@ export namespace Prisma {
     where?: DonationRequestWhereInput
   }
 
-<<<<<<< HEAD
-=======
   /**
    * UserCountOutputType without action
    */
@@ -2214,10 +2181,6 @@ export namespace Prisma {
     last_name?: boolean
     created_on?: boolean
     updated_on?: boolean
-<<<<<<< HEAD
-    EmailVerificationTokens?: boolean | User$EmailVerificationTokensArgs<ExtArgs>
-    PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
-=======
     approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
     reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
     created_invites?: boolean | User$created_invitesArgs<ExtArgs>
@@ -2268,10 +2231,6 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"user_id" | "email" | "password_hash" | "role" | "is_verified" | "first_name" | "last_name" | "created_on" | "updated_on", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-<<<<<<< HEAD
-    EmailVerificationTokens?: boolean | User$EmailVerificationTokensArgs<ExtArgs>
-    PasswordResetTokens?: boolean | User$PasswordResetTokensArgs<ExtArgs>
-=======
     approved_applications?: boolean | User$approved_applicationsArgs<ExtArgs>
     reviewed_applications?: boolean | User$reviewed_applicationsArgs<ExtArgs>
     created_invites?: boolean | User$created_invitesArgs<ExtArgs>
@@ -2289,10 +2248,6 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-<<<<<<< HEAD
-      EmailVerificationTokens: Prisma.$EmailVerificationTokensPayload<ExtArgs>[]
-      PasswordResetTokens: Prisma.$PasswordResetTokensPayload<ExtArgs>[]
-=======
       approved_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
       reviewed_applications: Prisma.$CharityApplicationsPayload<ExtArgs>[]
       created_invites: Prisma.$CharitySignupTokensPayload<ExtArgs>[]
@@ -2707,10 +2662,6 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-<<<<<<< HEAD
-    EmailVerificationTokens<T extends User$EmailVerificationTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$EmailVerificationTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmailVerificationTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    PasswordResetTokens<T extends User$PasswordResetTokensArgs<ExtArgs> = {}>(args?: Subset<T, User$PasswordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-=======
     approved_applications<T extends User$approved_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$approved_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviewed_applications<T extends User$reviewed_applicationsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewed_applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharityApplicationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     created_invites<T extends User$created_invitesArgs<ExtArgs> = {}>(args?: Subset<T, User$created_invitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CharitySignupTokensPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3146,8 +3097,6 @@ export namespace Prisma {
   }
 
   /**
-<<<<<<< HEAD
-=======
    * User.approved_applications
    */
   export type User$approved_applicationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3244,8 +3193,6 @@ export namespace Prisma {
   }
 
   /**
-<<<<<<< HEAD
-=======
    * User.donation_requests
    */
   export type User$donation_requestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5603,8 +5550,6 @@ export namespace Prisma {
 
 
   /**
-<<<<<<< HEAD
-=======
    * Model Charities
    */
 
@@ -14241,8 +14186,6 @@ export namespace Prisma {
   export type PasswordResetTokensScalarFieldEnum = (typeof PasswordResetTokensScalarFieldEnum)[keyof typeof PasswordResetTokensScalarFieldEnum]
 
 
-<<<<<<< HEAD
-=======
   export const CharitiesScalarFieldEnum: {
     charity_id: 'charity_id',
     name: 'name',
@@ -14429,8 +14372,6 @@ export namespace Prisma {
 
 
   /**
-<<<<<<< HEAD
-=======
    * Reference to a field of type 'Status'
    */
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
@@ -14488,10 +14429,6 @@ export namespace Prisma {
     last_name?: StringFilter<"User"> | string
     created_on?: DateTimeFilter<"User"> | Date | string
     updated_on?: DateTimeFilter<"User"> | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensListRelationFilter
-    PasswordResetTokens?: PasswordResetTokensListRelationFilter
-=======
     approved_applications?: CharityApplicationsListRelationFilter
     reviewed_applications?: CharityApplicationsListRelationFilter
     created_invites?: CharitySignupTokensListRelationFilter
@@ -14513,10 +14450,6 @@ export namespace Prisma {
     last_name?: SortOrder
     created_on?: SortOrder
     updated_on?: SortOrder
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensOrderByRelationAggregateInput
-    PasswordResetTokens?: PasswordResetTokensOrderByRelationAggregateInput
-=======
     approved_applications?: CharityApplicationsOrderByRelationAggregateInput
     reviewed_applications?: CharityApplicationsOrderByRelationAggregateInput
     created_invites?: CharitySignupTokensOrderByRelationAggregateInput
@@ -14541,10 +14474,6 @@ export namespace Prisma {
     last_name?: StringFilter<"User"> | string
     created_on?: DateTimeFilter<"User"> | Date | string
     updated_on?: DateTimeFilter<"User"> | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensListRelationFilter
-    PasswordResetTokens?: PasswordResetTokensListRelationFilter
-=======
     approved_applications?: CharityApplicationsListRelationFilter
     reviewed_applications?: CharityApplicationsListRelationFilter
     created_invites?: CharitySignupTokensListRelationFilter
@@ -14712,8 +14641,6 @@ export namespace Prisma {
     created_on?: DateTimeWithAggregatesFilter<"PasswordResetTokens"> | Date | string
   }
 
-<<<<<<< HEAD
-=======
   export type CharitiesWhereInput = {
     AND?: CharitiesWhereInput | CharitiesWhereInput[]
     OR?: CharitiesWhereInput[]
@@ -15326,10 +15253,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
-    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -15351,10 +15274,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
-    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -15375,10 +15294,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
-    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -15400,10 +15315,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
-    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
@@ -15568,8 +15479,6 @@ export namespace Prisma {
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-<<<<<<< HEAD
-=======
   export type CharitiesCreateInput = {
     name: string
     email: string
@@ -16213,8 +16122,6 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-<<<<<<< HEAD
-=======
   export type CharityApplicationsListRelationFilter = {
     every?: CharityApplicationsWhereInput
     some?: CharityApplicationsWhereInput
@@ -16233,8 +16140,6 @@ export namespace Prisma {
     none?: ClothingItemsWhereInput
   }
 
-<<<<<<< HEAD
-=======
   export type DonationRequestListRelationFilter = {
     every?: DonationRequestWhereInput
     some?: DonationRequestWhereInput
@@ -16506,8 +16411,6 @@ export namespace Prisma {
     user_id?: SortOrder
   }
 
-<<<<<<< HEAD
-=======
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -17001,8 +16904,6 @@ export namespace Prisma {
     connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
   }
 
-<<<<<<< HEAD
-=======
   export type DonationRequestCreateNestedManyWithoutCreatorInput = {
     create?: XOR<DonationRequestCreateWithoutCreatorInput, DonationRequestUncheckedCreateWithoutCreatorInput> | DonationRequestCreateWithoutCreatorInput[] | DonationRequestUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: DonationRequestCreateOrConnectWithoutCreatorInput | DonationRequestCreateOrConnectWithoutCreatorInput[]
@@ -17066,8 +16967,6 @@ export namespace Prisma {
     connect?: ClothingItemsWhereUniqueInput | ClothingItemsWhereUniqueInput[]
   }
 
-<<<<<<< HEAD
-=======
   export type DonationRequestUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<DonationRequestCreateWithoutCreatorInput, DonationRequestUncheckedCreateWithoutCreatorInput> | DonationRequestCreateWithoutCreatorInput[] | DonationRequestUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: DonationRequestCreateOrConnectWithoutCreatorInput | DonationRequestCreateOrConnectWithoutCreatorInput[]
@@ -17115,8 +17014,6 @@ export namespace Prisma {
     set?: Date | string
   }
 
-<<<<<<< HEAD
-=======
   export type CharityApplicationsUpdateManyWithoutApproverNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -17173,8 +17070,6 @@ export namespace Prisma {
     deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
   }
 
-<<<<<<< HEAD
-=======
   export type DonationRequestUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<DonationRequestCreateWithoutCreatorInput, DonationRequestUncheckedCreateWithoutCreatorInput> | DonationRequestCreateWithoutCreatorInput[] | DonationRequestUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: DonationRequestCreateOrConnectWithoutCreatorInput | DonationRequestCreateOrConnectWithoutCreatorInput[]
@@ -17253,8 +17148,6 @@ export namespace Prisma {
     divide?: number
   }
 
-<<<<<<< HEAD
-=======
   export type CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutApproverInput, CharityApplicationsUncheckedCreateWithoutApproverInput> | CharityApplicationsCreateWithoutApproverInput[] | CharityApplicationsUncheckedCreateWithoutApproverInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutApproverInput | CharityApplicationsCreateOrConnectWithoutApproverInput[]
@@ -17311,8 +17204,6 @@ export namespace Prisma {
     deleteMany?: ClothingItemsScalarWhereInput | ClothingItemsScalarWhereInput[]
   }
 
-<<<<<<< HEAD
-=======
   export type DonationRequestUncheckedUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<DonationRequestCreateWithoutCreatorInput, DonationRequestUncheckedCreateWithoutCreatorInput> | DonationRequestCreateWithoutCreatorInput[] | DonationRequestUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: DonationRequestCreateOrConnectWithoutCreatorInput | DonationRequestCreateOrConnectWithoutCreatorInput[]
@@ -17415,8 +17306,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, UserUpdateWithoutPasswordResetTokensInput>, UserUncheckedUpdateWithoutPasswordResetTokensInput>
   }
 
-<<<<<<< HEAD
-=======
   export type CharityApplicationsCreateNestedManyWithoutCharityInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -18190,8 +18079,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-<<<<<<< HEAD
-=======
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -18841,9 +18728,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    PasswordResetTokens?: PasswordResetTokensCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -18864,9 +18748,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    PasswordResetTokens?: PasswordResetTokensUncheckedCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -18902,9 +18783,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    PasswordResetTokens?: PasswordResetTokensUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -18925,9 +18803,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    PasswordResetTokens?: PasswordResetTokensUncheckedUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput
@@ -18947,9 +18822,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensCreateNestedManyWithoutCreatorInput
@@ -18970,9 +18842,6 @@ export namespace Prisma {
     last_name: string
     created_on?: Date | string
     updated_on?: Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedCreateNestedManyWithoutUserInput
-=======
     approved_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutApproverInput
     reviewed_applications?: CharityApplicationsUncheckedCreateNestedManyWithoutReviewerInput
     created_invites?: CharitySignupTokensUncheckedCreateNestedManyWithoutCreatorInput
@@ -19008,9 +18877,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUpdateManyWithoutCreatorNestedInput
@@ -19031,9 +18897,6 @@ export namespace Prisma {
     last_name?: StringFieldUpdateOperationsInput | string
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
-<<<<<<< HEAD
-    EmailVerificationTokens?: EmailVerificationTokensUncheckedUpdateManyWithoutUserNestedInput
-=======
     approved_applications?: CharityApplicationsUncheckedUpdateManyWithoutApproverNestedInput
     reviewed_applications?: CharityApplicationsUncheckedUpdateManyWithoutReviewerNestedInput
     created_invites?: CharitySignupTokensUncheckedUpdateManyWithoutCreatorNestedInput

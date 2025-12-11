@@ -35,21 +35,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
-<<<<<<< HEAD
- * Prisma Client JS version: 6.17.1
- * Query Engine version: 272a37d34178c2894197e17273bf937f25acdeac
- */
-Prisma.prismaVersion = {
-  client: "6.17.1",
-  engine: "272a37d34178c2894197e17273bf937f25acdeac"
-=======
  * Prisma Client JS version: 6.18.0
  * Query Engine version: 34b5a692b7bd79939a9a2c3ef97d816e749cda2f
  */
 Prisma.prismaVersion = {
   client: "6.18.0",
   engine: "34b5a692b7bd79939a9a2c3ef97d816e749cda2f"
->>>>>>> main
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -132,8 +123,6 @@ exports.Prisma.PasswordResetTokensScalarFieldEnum = {
   created_on: 'created_on'
 };
 
-<<<<<<< HEAD
-=======
 exports.Prisma.CharitiesScalarFieldEnum = {
   charity_id: 'charity_id',
   name: 'name',
@@ -245,14 +234,10 @@ exports.Status = exports.$Enums.Status = {
   APPROVED: 'APPROVED',
   REJECTED: 'REJECTED'
 };
->>>>>>> main
 
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
-<<<<<<< HEAD
-  PasswordResetTokens: 'PasswordResetTokens'
-=======
   PasswordResetTokens: 'PasswordResetTokens',
   Charities: 'Charities',
   CharityApplications: 'CharityApplications',
@@ -273,7 +258,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -287,21 +272,16 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
-<<<<<<< HEAD
-  "clientVersion": "6.17.1",
-  "engineVersion": "272a37d34178c2894197e17273bf937f25acdeac",
-=======
   "clientVersion": "6.18.0",
   "engineVersion": "34b5a692b7bd79939a9a2c3ef97d816e749cda2f",
->>>>>>> main
   "datasourceNames": [
     "db"
   ],

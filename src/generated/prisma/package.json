@@ -151,11 +151,7 @@
     },
     "./*": "./*"
   },
-<<<<<<< HEAD
-  "version": "6.17.1",
-=======
   "version": "6.18.0",
->>>>>>> main
   "sideEffects": false,
   "imports": {
     "#wasm-engine-loader": {
