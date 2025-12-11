@@ -625,7 +625,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                 priority
               />
             </div>
->>>>>>> main
           </div>
         </div>
         {/* FOOTER (ADDED) */}
