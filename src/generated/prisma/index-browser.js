@@ -172,14 +172,14 @@ exports.Prisma.CharityApplicationsScalarFieldEnum = {
   website: 'website',
   org_address: 'org_address',
   charity_number: 'charity_number',
-  status: 'status',
   reviewed_on: 'reviewed_on',
   reviewed_by: 'reviewed_by',
   approved_on: 'approved_on',
   approved_by: 'approved_by',
   charity_id: 'charity_id',
   created_on: 'created_on',
-  updated_on: 'updated_on'
+  updated_on: 'updated_on',
+  status: 'status'
 };
 
 exports.Prisma.CharitySignupTokensScalarFieldEnum = {
@@ -203,26 +203,12 @@ exports.Prisma.DonationsScalarFieldEnum = {
 
 exports.Prisma.DonationRequestScalarFieldEnum = {
   donation_request_id: 'donation_request_id',
-  title: 'title',
   created_on: 'created_on',
   updated_on: 'updated_on',
   status: 'status',
   answered_by: 'answered_by',
-  created_by: 'created_by'
-};
-
-exports.Prisma.ClothingItemsScalarFieldEnum = {
-  clothing_id: 'clothing_id',
-  donation_request_id: 'donation_request_id',
-  type: 'type',
-  size: 'size',
-  condition: 'condition',
-  donor_id: 'donor_id',
-  donation_id: 'donation_id',
-  owned_by: 'owned_by',
-  status: 'status',
-  front_image_url: 'front_image_url',
-  back_image_url: 'back_image_url'
+  created_by: 'created_by',
+  title: 'title'
 };
 
 exports.Prisma.SessionScalarFieldEnum = {
@@ -234,6 +220,20 @@ exports.Prisma.SessionScalarFieldEnum = {
   created_on: 'created_on',
   expires_on: 'expires_on',
   revoked_on: 'revoked_on'
+};
+
+exports.Prisma.ClothingItemsScalarFieldEnum = {
+  clothing_id: 'clothing_id',
+  donation_request_id: 'donation_request_id',
+  type: 'type',
+  size: 'size',
+  condition: 'condition',
+  donor_id: 'donor_id',
+  donation_id: 'donation_id',
+  owned_by: 'owned_by',
+  front_image_url: 'front_image_url',
+  back_image_url: 'back_image_url',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -271,8 +271,8 @@ exports.Prisma.ModelName = {
   CharitySignupTokens: 'CharitySignupTokens',
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
-  ClothingItems: 'ClothingItems',
-  Session: 'Session'
+  Session: 'Session',
+  ClothingItems: 'ClothingItems'
 };
 
 /**

@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@fontsource/kalam": "^5.2.8",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^3.10.0",
     "@prisma/client": "^6.18.0",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.8.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.553.0",
     "next": "15.5.4",
@@ -23,6 +25,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-hook-form": "^7.65.0",
+    "uuid": "^13.0.0",
+    "react-markdown": "^10.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

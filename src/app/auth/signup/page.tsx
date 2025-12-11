@@ -124,7 +124,7 @@ export default function SignUpPage() {
 
   // Page layout for Sign-Up form:
   return (
-    // Logo appearing in top right of the screen, with link to home page
+    // Logo appearing in top left of the screen, with link to home page
     <div className="relative flex min-h-screen">
       <Link
         href="/"

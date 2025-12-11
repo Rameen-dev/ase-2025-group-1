@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { charityApplicationSchema } from "@/lib/validation";
 import { prisma } from "@/lib/prisma";
+import { sendCharityApplicationEmail } from "@/lib/email";
 
 export const runtime = "nodejs";
 
@@ -36,6 +37,10 @@ export async function POST(req: NextRequest) {
             },
             select: { application_id: true, contact_email: true, contact_number: true, website: true, charity_number: true },
         });
+
+        await sendCharityApplicationEmail({
+                                            toEmail: email, 
+                                            orgName: charityName, });
 
         return NextResponse.json(
             {
