@@ -83,7 +83,7 @@ export default function RequestPasswordResetPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-black py-3 text-white text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-md bg-green-700 py-3 text-white text-sm font-medium hover:bg-green-900 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Sending code..." : "Send reset code"}
           </button>
