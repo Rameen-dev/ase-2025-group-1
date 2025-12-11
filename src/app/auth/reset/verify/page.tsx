@@ -187,7 +187,7 @@ export default function VerifyResetCodePage() {
           <button
             onClick={handleResend}
             disabled={resending}
-            className="text-black underline disabled:opacity-50"
+            className="text-green-600 hover:text-green-900 cursor-pointer underline disabled:opacity-50"
           >
             {resending ? "Sending..." : "Click here to resend"}
           </button>
