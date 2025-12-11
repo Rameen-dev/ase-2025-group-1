@@ -258,7 +258,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -272,11 +272,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
