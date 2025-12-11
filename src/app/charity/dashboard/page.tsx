@@ -4,6 +4,20 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
+import CharityViewDonationRequest from "@/components/modals/charityViewDonationRequestModal";
+import CharityDonationHistoryModal from "@/components/modals/charityDonationHistoryModal";
+import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
+
+type ClothingItem = {
+  clothing_id: number;
+  type: string;
+  size: string;
+  condition: string;
+  status: string;
+  front_image_url?: string;
+  back_image_url?: string;
+};
+
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -11,22 +25,13 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
-// Clothing item shape returned from /items route
-interface ClothingItemView {
-  clothing_id: number;
-  type: string;
-  size: string;
-  condition: string;
-  front_image_url?: string;
-  back_image_url?: string;
-}
-
 // Main dashboard
 export default function CharityDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [requests, setRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     async function load() {
@@ -99,258 +104,156 @@ function DonationsTab({
   setRequests: React.Dispatch<React.SetStateAction<DonationRequest[]>>;
 }) {
   const [viewOpen, setViewOpen] = useState(false);
-  const [viewLoading, setViewLoading] = useState(false);
   const [viewRequest, setViewRequest] = useState<DonationRequest | null>(null);
-  const [viewItems, setViewItems] = useState<ClothingItemView[]>([]);
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
-  const allUnchecked = selectedItems.length === 0;
+  const [historyOpen, setHistoryOpen] = useState(false);
 
-  // Open modal and load items for a request
-  async function openView(req: DonationRequest) {
-    setViewItems([]);
-    setSelectedItems([]);
-    setViewRequest(req);
-    setViewOpen(true);
-    setViewLoading(true);
+  const [itemsModalOpen, setItemsModalOpen] = useState(false);
+  const [itemsModalLoading, setItemsModalLoading] = useState(false);
+  const [itemsModalItems, setItemsModalItems] = useState<ClothingItem[]>([]);
+  const [itemsModalTitle, setItemsModalTitle] = useState<string | undefined>();
+
+  async function handleHistoryView(req: DonationRequest) {
+    setItemsModalTitle(req.title);
+    setItemsModalOpen(true);
+    setItemsModalLoading(true);
+    setItemsModalItems([]);
 
     try {
       const res = await fetch(
         `${API_BASE}/api/donation-requests/${req.donation_request_id}/items`
       );
       const data = await res.json();
-      setViewItems(Array.isArray(data) ? data : []);
+      setItemsModalItems(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error("Error loading items:", err);
-      setViewItems([]);
+      console.error("Error loading items for history request:", err);
+      setItemsModalItems([]);
     } finally {
-      setViewLoading(false);
+      setItemsModalLoading(false);
     }
   }
 
-  // Accept entire request
-async function handleAccept() {
-  if (!viewRequest) return;
-
-  if (selectedItems.length === 0) {
-    alert("Select at least one item to approve.");
-    return;
-  }
-
-  // 1. Send approved item IDs to API
-  const res = await fetch(
-    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/accept`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemIds: selectedItems }), // send selected item IDs
-    }
+  const pendingRequests = requests.filter(
+    (r) => r.status === "PENDING"
   );
 
-  if (!res.ok) {
-    alert("Failed to approve request.");
-    return;
-  }
 
-  // 2. Update status visually in table without removing request
-  setRequests(prev =>
-    prev.map(r =>
-      r.donation_request_id === viewRequest.donation_request_id
-        ? { ...r, status: "APPROVED" }
-        : r
-    )
-  );
-
-  // 3. Refresh full list from server so UI stays consistent
-  const refresh = await fetch(`${API_BASE}/api/donation-requests`);
-  const updatedRequests = await refresh.json();
-  setRequests(updatedRequests);
-
-  // 4. Reload items so only approved ones appear when modal reopens
-  const refreshedItems = await fetch(
-    `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/items`
-  );
-  const newItems = await refreshedItems.json();
-  setViewItems(newItems);
-
-  // 5. Close modal and notify user
-  setViewOpen(false);
-  alert("Request approved.");
-}
-
-  // Decline and delete request
-  async function handleDecline() {
-    if (!viewRequest) return;
-
-    const confirmDelete = confirm(
-      "Are you sure? This will DELETE the entire donation request permanently."
-    );
-    if (!confirmDelete) return;
-
-    const res = await fetch(
-      `${API_BASE}/api/donation-requests/${viewRequest.donation_request_id}/decline`,
-      { method: "POST" }
-    );
-
-    if (!res.ok) {
-      alert("Failed to delete donation request.");
-      return;
-    }
-
-    // Remove from local state
-    setRequests((prev) =>
-      prev.filter(
-        (r) => r.donation_request_id !== viewRequest.donation_request_id
-      )
-    );
-
-    alert("Donation request deleted.");
-    setViewOpen(false);
+  // Open modal and load items for a request
+  function openView(req: DonationRequest) {
+    setViewRequest(req);
+    setViewOpen(true);
   }
 
   return (
     <div>
-      <h2 className="text-xl mb-2 font-semibold">Donation Requests</h2>
+      <div className="flex items-center justify-between mb-2">
+        <h2 className="text-xl font-semibold">Donation Requests</h2>
 
-      <div className="border rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+        <button
+          onClick={() => setHistoryOpen(true)}
+          className="text-sm px-3 py-1 rounded-md bg-green-700 text-white hover:bg-green-800"
+        >
+          View donation history
+        </button>
+      </div>
+
+      <div className="border rounded-lg overflow-hidden h-[calc(100vh-180px)] flex flex-col">
+        <table className="w-full text-sm table-fixed">
+
+          {/* colgroup to make columns align with the headers */}
+          <colgroup>
+            <col className="w-1/4" />
+            <col className="w-1/6" />
+            <col className="w-1/6" />
+            <col className="w-1/6" />
+          </colgroup>
           <thead className="bg-green-50">
             <tr>
               <th className="p-3">Title</th>
               <th>Items</th>
-              <th>Status</th>
+              <th>Created</th>
               <th>Action</th>
             </tr>
           </thead>
+        </table>
 
-          <tbody>
-            {loading && (
-              <tr>
-                <td colSpan={4} className="text-center p-4">
-                  Loading...
-                </td>
-              </tr>
-            )}
-
-            {!loading &&
-              Array.isArray(requests) &&
-              requests.map((r) => (
-                <tr key={r.donation_request_id} className="border">
-                  <td className="p-3 text-center">{r.title}</td>
-                  <td className="p-3 text-center">
-                    {r._count?.clothing_items ?? 0}
-                  </td>
-                  <td className="p-3 text-center text-blue-700 font-semibold">
-                    {r.status}
-                  </td>
-                  <td className="p-3 text-center">
-                    <button
-                      onClick={() => openView(r)}
-                      className="px-3 py-1 text-xs border rounded-md text-blue-600 hover:bg-blue-50"
-                    >
-                      Open
-                    </button>
+        <div className="flex-1 overflow-y-auto">
+          <table className="w-full text-sm table-fixed">
+            <colgroup>
+              <col className="w-1/4" />
+              <col className="w-1/6" />
+              <col className="w-1/6" />
+              <col className="w-1/6" />
+            </colgroup>
+            <tbody>
+              {loading && (
+                <tr>
+                  <td colSpan={4} className="text-center p-4">
+                    Loading...
                   </td>
                 </tr>
-              ))}
+              )}
 
-            {!loading && Array.isArray(requests) && requests.length === 0 && (
-              <tr>
-                <td colSpan={4} className="text-center p-4">
-                  No donation requests found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              {!loading &&
+                Array.isArray(pendingRequests) &&
+                pendingRequests.map((r) => (
+                  <tr key={r.donation_request_id} className="border">
+                    <td className="p-3 text-center text-xl text-black font-bold">{r.title}</td>
+                    <td className="p-3 text-center">
+                      {r._count?.ClothingItems ?? 0}
+                    </td>
+                    <td className="p-3 text-center text-blue-700 font-semibold">
+                      {r.createdAgo}
+                    </td>
+                    <td className="p-3 text-center">
+                      <button
+                        onClick={() => openView(r)}
+                        className="px-3 py-1 text-xs border rounded-md text-blue-600 hover:bg-blue-50"
+                      >
+                        Open
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+
+              {!loading && Array.isArray(pendingRequests) && requests.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="text-center p-4">
+                    No donation requests found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {/* View modal */}
-      {viewOpen && viewRequest && (
-        <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-full max-w-2xl">
-            <h2 className="text-lg font-semibold mb-3">{viewRequest.title}</h2>
+      <CharityViewDonationRequest
+        isOpen={viewOpen}
+        request={viewRequest}
+        onClose={() => {
+          setViewOpen(false);
+          setViewRequest(null);
+        }}
+        setRequests={setRequests}
+      />
 
-            {viewLoading ? (
-              <p>Loading...</p>
-            ) : (
-              <table className="w-full border text-sm">
-                <thead>
-                  <tr>
-                    <th className="p-2">Pick</th>
-                    <th>Images</th>
-                    <th>Type</th>
-                    <th>Size</th>
-                    <th>Condition</th>
-                  </tr>
-                </thead>
+      <CharityDonationHistoryModal
+        isOpen={historyOpen}
+        onClose={() => setHistoryOpen(false)}
+        requests={requests}
+        onViewRequest={handleHistoryView}
+      />
 
-                <tbody>
-                  {viewItems.map((item) => (
-                    <tr key={item.clothing_id} className="border-t">
-                      <td className="p-2 text-center">
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.includes(item.clothing_id)}
-                          onChange={() =>
-                            setSelectedItems((prev) =>
-                              prev.includes(item.clothing_id)
-                                ? prev.filter((x) => x !== item.clothing_id)
-                                : [...prev, item.clothing_id]
-                            )
-                          }
-                        />
-                      </td>
-                      <td className="p-2 flex gap-2">
-                        <img
-                          src={item.front_image_url ?? ""}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                        <img
-                          src={item.back_image_url ?? ""}
-                          className="w-12 h-12 object-cover rounded"
-                        />
-                      </td>
-                      <td className="p-2">{item.type}</td>
-                      <td className="p-2">{item.size}</td>
-                      <td className="p-2">{item.condition}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-
-            <div className="flex justify-end gap-2 mt-4">
-              <button
-                onClick={() => setViewOpen(false)}
-                className="border px-3 py-1 rounded"
-              >
-                Close
-              </button>
-
-              <button
-                onClick={handleDecline}
-                disabled={!allUnchecked}
-                className={`px-3 py-1 rounded text-white ${
-                  allUnchecked ? "bg-red-600" : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Decline
-              </button>
-
-              <button
-                onClick={handleAccept}
-                className="px-3 py-1 bg-green-600 text-white rounded"
-              >
-                Accept
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ViewDonationItemsModal
+        isOpen={itemsModalOpen}
+        onClose={() => setItemsModalOpen(false)}
+        requestTitle={itemsModalTitle}
+        loading={itemsModalLoading}
+        items={itemsModalItems}
+      />
     </div>
   );
 }
-
 // Inventory placeholder
 function PlaceholderTab({ title }: { title: string }) {
   return (
@@ -359,4 +262,4 @@ function PlaceholderTab({ title }: { title: string }) {
       <p>Coming soon.</p>
     </div>
   );
-}
+};

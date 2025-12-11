@@ -4,23 +4,21 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
+import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
+import { DeleteDonationRequestModal } from "@/components/modals/confirmMessageModal";
+import type { DonationRequest } from "@/types/donation";
 
+// base URL for API requests, allowing the client to switch from dev/staging/prod
+// if missing, it falls back to " ", which prevents code to crash
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
+// sidebar tabs
 type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
-type DonationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
-
-interface DonationRequest {
-  donation_request_id: number;
-  title: string;
-  status: DonationRequestStatus;
-  _count: {
-    clothing_items: number;
-  };
-}
-
+// properties required by the Donations tab/component. Includes the list of
+// donation requests to display, loading state, and callbacks that the parent
+// provides for handling create/delete actions.
 type DonationsProps = {
   title: string;
   apps: DonationRequest[];
@@ -30,41 +28,56 @@ type DonationsProps = {
 };
 
 export default function DonorDashboard() {
-  const [activeTab, setActiveTab] = useState<TabName>("Home");
-  const [apps, setApps] = useState<DonationRequest[]>([]);
+  const [activeTab, setActiveTab] = useState<TabName>("Home"); //tracks which dashboard is currently selected, always "Home" by default
+  const [apps, setApps] = useState<DonationRequest[]>([]); //holds list of donation requests fetched by the API
   const [loading, setLoading] = useState(true);
 
 
   const router = useRouter();
 
+  //fetch all donation requests
   useEffect(() => {
     async function load() {
       try {
-        setLoading(true);
+        setLoading(true); //while fetching show loading state
         const res = await fetch(`${API_BASE}/api/donation-requests`);
+
+        if (!res.ok) {
+          console.error("Failed to fetch donation requests: ", res.status);
+          setApps([]);
+          return;
+        }
+
         const data = await res.json();
-        setApps(data);
+
+        if (!Array.isArray(data)) {
+
+          console.error("Expected array of donation requests, got:", data);
+          setApps([]);
+          return;
+        }
+        setApps(data); //stores fetched donation requests in "apps"
+      } catch (err) {
+        console.error("Error loading donation requests:", err);
+        setApps([]);
       } finally {
-        setLoading(false);
+        setLoading(false); //stop loading state
       }
     }
     load();
   }, []);
 
   function handleSignOut() {
-    router.push("/"); // redirect to Landing page for Logout function.
+    router.push("/"); // redirect user to landing page when logging out
   }
 
-  const headerTitle =
-    activeTab === "Home"
-      ? "Dashboard Overview"
-      : activeTab === "Donations"
-        ? "Donations"
-        : activeTab === "Inventory"
-          ? "Inventory"
-          : "Impact & Reports";
+  //sets title of the header bar based on active tab
+  const headerTitle = activeTab === "Home" ? "Dashboard Overview" : activeTab === "Donations" ? "Donations"
+    : activeTab === "Inventory" ? "Inventory"
+      : "Impact & Reports";
 
   return (
+    //dashboard lauout component inside components/UI
     <DashboardLayout
       tabs={TABS}
       activeTab={activeTab}
@@ -125,8 +138,6 @@ function HomeTab() {
 }
 
 function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps) {         // existing (view)
-  const [selected, setSelected] = useState<DonationRequest | null>(null);
-  const isLocked = selected?.status !== "PENDING";
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<DonationRequest | null>(null);
 
@@ -141,6 +152,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
     clothing_id: number;
     type: string;
     size: string;
+    status: string;
     condition: string;
   };
 
@@ -159,9 +171,6 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       const data: ClothingItemView[] = await res.json();
       setViewItems(data);
-    } catch (err) {
-      alert("Error loading items for this request");
-      setViewItems([]);
     } finally {
       setViewLoading(false);
     }
@@ -190,11 +199,9 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
   return (
     <div className="flex flex-col h-full">
 
-      {/* TOP HALF: TABLE */}
+      {/* top row of the table */}
       <div className="h-[400px] mb-4">
         <div className="border rounded-lg shadow-md flex flex-col h-full">
-
-          {/* HEADER WITH BUTTON */}
           <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-1 flex items-center justify-between">
             <span>{title}</span>
             <button
@@ -205,77 +212,90 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
             </button>
           </div>
 
-          {/* TABLE */}
+          {/* donation reqeusts table */}
           <div className="flex-1 overflow-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-green-50 border rounded-lg">
-                  <th className="p-3 text-center">Title</th>
-                  <th className="p-3 text-center">Items</th>
-                  <th className="p-3 text-center">Status</th>
-                  <th className="p-3 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading && (
-                  <tr>
-                    <td colSpan={4} className="p-3 text-center">
-                      Loading...
-                    </td>
+            <div>
+
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-green-50 border rounded-lg">
+                    <th className="p-3 text-center">Title</th>
+                    <th className="p-3 text-center">Items</th>
+                    <th className="p-3 text-center">Status</th>
+                    <th className="p-3 text-center">Created</th>
+                    <th className="p-3 text-center">Action</th>
                   </tr>
-                )}
-
-                {!loading &&
-                  apps.map((app) => (
-                    <tr key={app.donation_request_id} className="border">
-                      <td className="p-3 text-center">{app.title}</td>
-                      <td className="p-3 text-center">
-                        {app._count?.clothing_items ?? 0}
-                      </td>
-                      <td className="p-3 text-center">{app.status}</td>
-
-                      {/* ACTION BUTTON */}
-                      <td className="p-3 text-center flex justify-center gap-2">
-
-                        {/* VIEW button always visible */}
-                        <button
-                          onClick={() => handleOpenView(app)}
-                          className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
-                        >
-                          View
-                        </button>
-
-                        {/* REMOVE button only when PENDING */}
-                        {app.status === "PENDING" && (
-                          <button
-                            onClick={() => {
-                              setItemToDelete(app);
-                              setDeleteOpen(true);
-                            }}
-                            className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
-                          >
-                            Remove
-                          </button>
-                        )}
+                </thead>
+                <tbody>
+                  {loading && (
+                    <tr>
+                      <td colSpan={4} className="p-3 text-center">
+                        Loading...
                       </td>
                     </tr>
-                  ))}
+                  )}
 
-                {!loading && apps.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="p-3 text-center">
-                      No donation requests yet.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  {!loading &&
+                    apps.map((app) => {
+                      const isApproved = app.status === "APPROVED";
+                      const isRejected = app.status === "REJECTED";
+
+                      const rowBg = isApproved ? "bg-green-50" : isRejected ? "bg-red-50" : "";
+                      const statusText = isApproved ? "text-green-700 font-semibold" : isRejected ? "text-red-600 font-semibold" : "text-gray-700";
+
+                      return (
+                        <tr key={app.donation_request_id} className={`border ${rowBg} ${statusText}`}>
+                          <td className="p-3 text-center text-xl text-black font-bold">{app.title}</td>
+                          <td className="p-3 text-center">
+                            {app._count?.ClothingItems ?? 0}
+                          </td>
+                          <td className="p-3 text-center">{app.status}</td>
+                          <td className="p-3 text-center">{app.createdAgo}</td>
+                          <td className="p-3 text-center flex justify-center gap-2">
+
+                            {/* view button to display items in the donation */}
+                            <button
+                              onClick={() => handleOpenView(app)}
+                              className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
+                            >
+                              View
+                            </button>
+
+                            {/* if donation request is in pending, display a remove button
+                            when donation request is accepted, remove button doesn't show*/}
+                            {app.status === "PENDING" && (
+                              <button
+                                onClick={() => {
+                                  setItemToDelete(app);
+                                  setDeleteOpen(true);
+                                }}
+                                className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  }
+
+                  {!loading && apps.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="p-3 text-center">
+                        No donation requests yet.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
         </div>
       </div>
 
-      {/* BOTTOM HALF: TWO BOXES */}
+      {/* bottom half of the dashboard */}
       <div className="flex-1 flex gap-4">
 
         <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
@@ -288,94 +308,29 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       </div>
 
+      {/* create donation request modal */}
       <CreateDonationRequestModal
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
         onCreated={(req) => onCreated(req)}
       />
 
-      {
-        deleteOpen && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-              <h2 className="text-lg font-semibold mb-2 text-red-600">
-                Remove Donation Request
-              </h2>
+      {/* displays items of a donation request */}
+      <ViewDonationItemsModal
+        isOpen={viewOpen}
+        onClose={() => setViewOpen(false)}
+        requestTitle={viewRequest?.title}
+        loading={viewLoading}
+        items={viewItems}
+      />
 
-              <p className="text-sm text-gray-700 mb-4">
-                Are you sure you want to delete{" "}
-                <strong>{itemToDelete?.title}</strong>?
-                <br />
-                This action cannot be undone.
-              </p>
-
-              <div className="flex justify-end gap-2">
-                <button
-                  className="px-3 py-1 border rounded-md text-sm"
-                  onClick={() => setDeleteOpen(false)}
-                >
-                  Cancel
-                </button>
-
-                <button
-                  className="px-3 py-1 bg-red-600 text-white rounded-md text-sm hover:bg-red-700"
-                  onClick={handleDeleteConfirm}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        )
-      }
-
-      {viewOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl shadow-lg">
-            <h2 className="text-lg font-semibold mb-3">
-              Items in {viewRequest?.title}
-            </h2>
-
-            {viewLoading ? (
-              <p className="text-sm text-gray-500">Loading items...</p>
-            ) : viewItems.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                No clothing items found for this request.
-              </p>
-            ) : (
-              <table className="w-full text-sm border border-gray-200 rounded-md overflow-hidden">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="p-2 text-left">Type</th>
-                    <th className="p-2 text-left">Size</th>
-                    <th className="p-2 text-left">Condition</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {viewItems.map((item) => (
-                    <tr key={item.clothing_id} className="border-t">
-                      <td className="p-2">{item.type}</td>
-                      <td className="p-2">{item.size}</td>
-                      <td className="p-2">{item.condition}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                className="px-3 py-1 border rounded-md text-sm"
-                onClick={() => setViewOpen(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-
+      {/* confirm delete donation message */}
+      <DeleteDonationRequestModal
+        isOpen={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        title={itemToDelete?.title}
+      />
     </div >
   );
 }

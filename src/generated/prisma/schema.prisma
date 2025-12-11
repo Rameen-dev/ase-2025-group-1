@@ -1,32 +1,29 @@
-// Prisma Client Generator
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
-// Database Connection 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// USER MODEL 
 model User {
-  user_id       Int      @id @default(autoincrement())
-  email         String   @unique
-  password_hash String
-  role          String
-  is_verified   Boolean
-  first_name    String
-  last_name     String
-  created_on    DateTime @default(now())
-  updated_on    DateTime @updatedAt
-
-  approved_applications CharityApplications[] @relation("approved_by_admin")
-  reviewed_applications CharityApplications[] @relation("reviewed_by_admin")
-  created_invites       CharitySignupTokens[] @relation("invites_created_by")
-
+  user_id                 Int                       @id @default(autoincrement())
+  email                   String                    @unique
+  password_hash           String
+  role                    String
+  is_verified             Boolean
+  first_name              String
+  last_name               String
+  created_on              DateTime                  @default(now())
+  updated_on              DateTime                  @updatedAt
+  approved_applications   CharityApplications[]     @relation("approved_by_admin")
+  reviewed_applications   CharityApplications[]     @relation("reviewed_by_admin")
+  created_invites         CharitySignupTokens[]     @relation("invites_created_by")
+  ClothingItems           ClothingItems[]
+  donation_requests       DonationRequest[]         @relation("donor_request")
+  donations_created       Donations[]               @relation("donor_donation")
   EmailVerificationTokens EmailVerificationTokens[]
   PasswordResetTokens     PasswordResetTokens[]
 
@@ -39,7 +36,6 @@ model User {
   ClothingItems     ClothingItems[]
 }
 
-// EMAIL VERIFICATION TOKENS MODEL
 model EmailVerificationTokens {
   ev_token_id Int       @id @default(autoincrement())
   user_id     Int
@@ -47,13 +43,11 @@ model EmailVerificationTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
-
-  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
 
-// PASSWORD RESET TOKENS
 model PasswordResetTokens {
   pr_token_id Int       @id @default(autoincrement())
   user_id     Int
@@ -61,28 +55,25 @@ model PasswordResetTokens {
   expires_on  DateTime
   consumed_on DateTime?
   created_on  DateTime  @default(now())
-
-  User User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  User        User      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   @@index([user_id, created_on])
 }
 
-// CHARITIES MODEL
 model Charities {
-  charity_id    Int      @id @default(autoincrement())
-  name          String
-  email         String   @unique
-  phone         String
-  address       String
-  website       String
-  verified      Boolean  @default(false)
-  created_on    DateTime @default(now())
-  updated_on    DateTime @updatedAt
-  password_hash String?
-
+  charity_id                 Int                   @id @default(autoincrement())
+  name                       String
+  email                      String                @unique
+  phone                      String
+  address                    String
+  website                    String
+  verified                   Boolean               @default(false)
+  created_on                 DateTime              @default(now())
+  updated_on                 DateTime              @updatedAt
+  password_hash              String?
   applications               CharityApplications[]
   signup_tokens              CharitySignupTokens[]
-  // All donation requests answered by this charity
+  ClothingItems              ClothingItems[]
   donation_requests_answered DonationRequest[]     @relation("charity_answer")
   // All donations accepted by this charity
   donations_received Donations[]     @relation("charity_donation")
@@ -93,9 +84,8 @@ model Charities {
   @@index([email])
 }
 
-// CHARITY APPLICATIONS MODEL
 model CharityApplications {
-  application_id Int       @id @default(autoincrement())
+  application_id Int        @id @default(autoincrement())
   org_name       String
   contact_name   String
   contact_email  String
@@ -103,24 +93,22 @@ model CharityApplications {
   website        String
   org_address    String
   charity_number String?
-  status         Status    @default(PENDING)
   reviewed_on    DateTime?
   reviewed_by    Int?
   approved_on    DateTime?
   approved_by    Int?
   charity_id     Int?
-  created_on     DateTime  @default(now())
-  updated_on     DateTime  @updatedAt
-
-  approver User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
-  reviewer User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
-  charity  Charities? @relation(fields: [charity_id], references: [charity_id])
+  created_on     DateTime   @default(now())
+  updated_on     DateTime   @updatedAt
+  status         Status     @default(PENDING)
+  approver       User?      @relation("approved_by_admin", fields: [approved_by], references: [user_id])
+  charity        Charities? @relation(fields: [charity_id], references: [charity_id])
+  reviewer       User?      @relation("reviewed_by_admin", fields: [reviewed_by], references: [user_id])
 
   @@index([status, created_on])
   @@index([contact_email])
 }
 
-// CHARITIES SIGNUP TOKENS
 model CharitySignupTokens {
   invite_id   Int       @id @default(autoincrement())
   charity_id  Int
@@ -130,18 +118,16 @@ model CharitySignupTokens {
   consumed_on DateTime?
   created_on  DateTime  @default(now())
   created_by  Int?
-
-  charity Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
-  creator User?     @relation("invites_created_by", fields: [created_by], references: [user_id])
+  charity     Charities @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+  creator     User?     @relation("invites_created_by", fields: [created_by], references: [user_id])
 
   @@index([charity_id, created_on])
   @@index([email])
 }
 
-// DONATIONS (Finalised donation per request)
 model Donations {
-  donation_id         Int      @id @default(autoincrement())
-  donation_request_id Int      @unique
+  donation_id         Int             @id @default(autoincrement())
+  donation_request_id Int             @unique
   created_by          Int
   accepted_by         Int
   accepted_at         DateTime @default(now())
@@ -152,9 +138,13 @@ model Donations {
   ClothingItems ClothingItems[]
 }
 
-// DONATION REQUEST (from donor)
 model DonationRequest {
-  donation_request_id Int      @id @default(autoincrement())
+  donation_request_id Int             @id @default(autoincrement())
+  created_on          DateTime        @default(now())
+  updated_on          DateTime        @updatedAt
+  status              Status          @default(PENDING)
+  answered_by         Int?
+  created_by          Int
   title               String
   created_on          DateTime @default(now())
   updated_on          DateTime @updatedAt
@@ -179,7 +169,7 @@ model DonationRequest {
 }
 
 model ClothingItems {
-  clothing_id         Int    @id @default(autoincrement())
+  clothing_id         Int             @id @default(autoincrement())
   donation_request_id Int
   type                String
   size                String

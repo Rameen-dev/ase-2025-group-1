@@ -145,14 +145,14 @@ exports.Prisma.CharityApplicationsScalarFieldEnum = {
   website: 'website',
   org_address: 'org_address',
   charity_number: 'charity_number',
-  status: 'status',
   reviewed_on: 'reviewed_on',
   reviewed_by: 'reviewed_by',
   approved_on: 'approved_on',
   approved_by: 'approved_by',
   charity_id: 'charity_id',
   created_on: 'created_on',
-  updated_on: 'updated_on'
+  updated_on: 'updated_on',
+  status: 'status'
 };
 
 exports.Prisma.CharitySignupTokensScalarFieldEnum = {
@@ -176,12 +176,23 @@ exports.Prisma.DonationsScalarFieldEnum = {
 
 exports.Prisma.DonationRequestScalarFieldEnum = {
   donation_request_id: 'donation_request_id',
-  title: 'title',
   created_on: 'created_on',
   updated_on: 'updated_on',
   status: 'status',
   answered_by: 'answered_by',
-  created_by: 'created_by'
+  created_by: 'created_by',
+  title: 'title'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  session_id: 'session_id',
+  session_token: 'session_token',
+  actor_type: 'actor_type',
+  user_id: 'user_id',
+  charity_id: 'charity_id',
+  created_on: 'created_on',
+  expires_on: 'expires_on',
+  revoked_on: 'revoked_on'
 };
 
 exports.Prisma.ClothingItemsScalarFieldEnum = {
@@ -223,6 +234,12 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+exports.SessionActorType = exports.$Enums.SessionActorType = {
+  DONOR: 'DONOR',
+  CHARITY: 'CHARITY',
+  ADMIN: 'ADMIN'
+};
+
 exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
@@ -258,7 +275,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -272,7 +289,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
