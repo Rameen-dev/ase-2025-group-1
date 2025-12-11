@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import ChatWidget from "@/components/ChatWidget";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -699,6 +700,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </ul>
             </div>
           </div>
+          <ChatWidget/>
         </footer>
       </section>
       <CookieBanner/>
