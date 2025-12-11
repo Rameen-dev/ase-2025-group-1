@@ -12,7 +12,6 @@ export default function VerifyResetCodePage() {
   const [statusMsg, setStatusMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ⭐ NEW: resend state
   const [resending, setResending] = useState(false);
   const [resendMsg, setResendMsg] = useState(""); // success / error from resend
 
@@ -49,7 +48,7 @@ export default function VerifyResetCodePage() {
     }
   }
 
-  // 🔐 Submit the 6-digit code they entered
+  // Submit the 6-digit code they entered
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatusMsg("");
@@ -91,7 +90,7 @@ export default function VerifyResetCodePage() {
     }
   }
 
-  // ♻️ RESEND: issue a new password reset code
+  // RESEND: issue a new password reset code
   async function handleResend() {
     // clear any old messages
     setResendMsg("");
@@ -137,7 +136,7 @@ export default function VerifyResetCodePage() {
           </h1>
 
           <p className="mt-2 text-sm text-gray-600">
-            We’ve sent a 6-digit code to{" "}
+            We've sent a 6-digit code to{" "}
             <span className="font-medium text-gray-900 break-all">
               {email || "your email"}
             </span>
@@ -176,15 +175,15 @@ export default function VerifyResetCodePage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-black py-3 text-white text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full rounded-md bg-green-700 py-3 text-white text-sm font-medium hover:bg-green-900 cursor-pointer transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Checking..." : "Continue"}
           </button>
         </form>
 
-        {/* 🔄 Resend link */}
+        {/* Resend link */}
         <p className="mt-6 text-center text-xs text-gray-700">
-          Didn’t get your code?{" "}
+          Didn't get your code?{" "}
           <button
             onClick={handleResend}
             disabled={resending}
