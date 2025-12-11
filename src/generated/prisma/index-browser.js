@@ -231,20 +231,9 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   donor_id: 'donor_id',
   donation_id: 'donation_id',
   owned_by: 'owned_by',
-  status: 'status',
   front_image_url: 'front_image_url',
-  back_image_url: 'back_image_url'
-};
-
-exports.Prisma.SessionScalarFieldEnum = {
-  session_id: 'session_id',
-  session_token: 'session_token',
-  actor_type: 'actor_type',
-  user_id: 'user_id',
-  charity_id: 'charity_id',
-  created_on: 'created_on',
-  expires_on: 'expires_on',
-  revoked_on: 'revoked_on'
+  back_image_url: 'back_image_url',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -271,10 +260,6 @@ exports.SessionActorType = exports.$Enums.SessionActorType = {
   DONOR: 'DONOR',
   CHARITY: 'CHARITY',
   ADMIN: 'ADMIN'
-exports.SessionActorType = exports.$Enums.SessionActorType = {
-  DONOR: 'DONOR',
-  CHARITY: 'CHARITY',
-  ADMIN: 'ADMIN'
 };
 
 exports.Prisma.ModelName = {
@@ -286,8 +271,8 @@ exports.Prisma.ModelName = {
   CharitySignupTokens: 'CharitySignupTokens',
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
-  ClothingItems: 'ClothingItems',
-  Session: 'Session'
+  Session: 'Session',
+  ClothingItems: 'ClothingItems'
 };
 
 /**
