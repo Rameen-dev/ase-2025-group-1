@@ -37,7 +37,7 @@ export default function CharityDashboard() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/api/donation-requests`);
+        const res = await fetch(`${API_BASE}/api/charity/donations`);
         const data = await res.json();
 
         // Safety: only accept array results

@@ -1,5 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+
+//retrieves user id from Session table using the session cookie token
+async function getUserId(req: NextRequest): Promise<number | null> {
+    //read the session token stored inside the browser cookie
+    const token = req.cookies.get("session")?.value;
+
+    if (!token) return null;
+
+    const session = await prisma.session.findFirst({
+        where: {
+            session_token: token,
+            expires_on: { gt: new Date() }, //looks for token that is not expired
+        },
+        select: { user_id: true }, //return user id WHERE session_token
+    });
+
+    return session?.user_id ?? null;
+}
+
 
 //returns all donation requests for the dashboard, 
 //including a count of how many clothing items per request
@@ -32,9 +51,21 @@ function formatTimeAgo(createdOn: Date): string {
 }
 
 
-export async function GET() {
+export async function GET(req: NextRequest) {
     try {
+        const userId = await getUserId(req);
+
+        //emnsure that userId is not null when id gets passed into variable
+        //prevents error in prisma
+        if (userId === null) {
+            return NextResponse.json(
+                { error: "Not authenticated" },
+                { status: 401 }
+            );
+        }
+
         const apps = await prisma.donationRequest.findMany({
+            where: { created_by: userId },
             orderBy: { created_on: "desc" },
             include: {
                 _count: {
@@ -60,7 +91,7 @@ export async function GET() {
 }
 
 //creates a new donation request, as well clothing items
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { title, items } = body;
@@ -82,7 +113,7 @@ export async function POST(req: Request) {
         }
 
         //ensures each clothing item has both front and back images
-        for (const [index, item] of items.entries()) {
+        for (const [, item] of items.entries()) {
             if (!item.front_image_url || !item.back_image_url) {
                 return NextResponse.json(
                     { error: "Clothing item at index ${index} is missing front/back image URLs" },
@@ -91,8 +122,15 @@ export async function POST(req: Request) {
             }
         }
 
+        const userId = await getUserId(req);  //calls function to retrieve user id
 
-        const userId = 1 //hardcode userId until we integrate session cookies
+        //ensures user id is not null to prevent prisma error
+        if (!userId) {
+            return NextResponse.json(
+                { error: "Not authenticated" },
+                { status: 401 }
+            );
+        }
 
         //wrap donation request and clothing items in a transaction
         //ensuring data base is not partially filled and there are no key values missing
