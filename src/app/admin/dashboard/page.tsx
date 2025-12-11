@@ -5,6 +5,7 @@ import { User, Menu, X } from "lucide-react";
 import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
 import UsersTab from "./components/UsersTab";
+import Link from "next/link";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -53,7 +54,6 @@ export default function AdminPage() {
     }
     load();
   }, []);
-
 
   function openLogoutModal() {
     setLogoutModalOpen(true);
@@ -230,7 +230,6 @@ export default function AdminPage() {
     </div>
   );
 }
-  
 
 /* ---------- SMALL REUSABLE COMPONENTS ---------- */
 
