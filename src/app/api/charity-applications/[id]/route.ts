@@ -12,7 +12,7 @@ type RouteContext = {
 };
 
 export async function PATCH(req: NextRequest, context: RouteContext) {
-  // ✅ Await params before using it
+  // Await params before using it
   const { id } = await context.params;
   const applicationId = Number(id);
 
@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
 
   const action = body.action as "APPROVE" | "DENY";
 
-  // 🔐 Later: get the real admin user_id from session
+  // Later get the real admin user_id from session
   // const adminId = session.user.id;
 
   try {
@@ -42,7 +42,7 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
         data: {
           status: "REJECTED",
           reviewed_on: new Date(),
-          // ❌ Don't set reviewed_by yet (would FK fail if ID not real)
+          // Don't set reviewed_by yet (would FK fail if ID not real)
           approved_on: null,
           approved_by: null,
           updated_on: new Date(),
@@ -62,7 +62,7 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
       return NextResponse.json(updated);
     }
 
-    // ===================== APPROVE FLOW =====================
+    //  APPROVE FLOW 
     if (action === "APPROVE") {
       // Generate secure token + 48h expiry
       const token = crypto.randomBytes(32).toString("hex");
@@ -75,9 +75,9 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
           data: {
             status: "APPROVED",
             reviewed_on: new Date(),
-            // ❌ reviewed_by: null for now (or leave untouched)
+            // reviewed_by: null for now (or leave untouched)
             approved_on: new Date(),
-            // ❌ approved_by: null for now
+            // approved_by: null for now
             updated_on: new Date(),
           },
         });

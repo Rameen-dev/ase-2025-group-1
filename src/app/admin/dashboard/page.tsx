@@ -174,6 +174,7 @@ export default function AdminPage() {
 
         {activeTab === "Requests" && (
           <RequestsTab apps={apps} loading={loading} />
+          <RequestsTab apps={apps} loading={loading} />
         )}
 
         {activeTab === "Users" && <UsersTab />}
@@ -481,3 +482,5 @@ function PlaceholderTab({ title }: { title: string }) {
     </div>
   );
 }
+
+

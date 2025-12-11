@@ -117,6 +117,42 @@ orgName: string;
   });
 }
 
+
+export async function sendCharityApplicationEmail(options: {
+
+toEmail: string;
+orgName: string;
+
+}) {
+  const { toEmail, orgName } = options;
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+  
+  await transporter.sendMail({
+    from: process.env.MAIL_FROM,
+    to: toEmail,
+    subject: "Thank You for Your Charity Partnership Application",
+    html: `
+    <p>Hi ${orgName},</p>
+    <p>Thank you for taking the time to apply to partner with SustainWear.</p>
+    <p>We appreciate your interest in joining our mission to promote sustainability and 
+    support communities through responsible clothing redistribution.</p>
+    <p>
+    Your application has been successfully received and will now be reviewed by our team. 
+    We will be in touch shortly with an update regarding the next steps.
+    </p>
+    <p>Best regards,<br/>The SustainWear Team</p>
+    `,
+  });
+}
+
 export async function sendCharityApprovalEmail(options: {
   toEmail: string;
   orgName: string;
