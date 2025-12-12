@@ -7,6 +7,7 @@ import type { DonationRequest } from "@/types/donation";
 import CharityViewDonationRequest from "@/components/modals/charityViewDonationRequestModal";
 import CharityDonationHistoryModal from "@/components/modals/charityDonationHistoryModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
+import InventoryTab from "@/components/charity/inventory";
 
 type ClothingItem = {
   clothing_id: number;
@@ -76,7 +77,7 @@ export default function CharityDashboard() {
         />
       )}
 
-      {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
+      {activeTab === "Inventory" && <InventoryTab />}
     </DashboardLayout>
   );
 }
@@ -254,12 +255,3 @@ function DonationsTab({
     </div>
   );
 }
-// Inventory placeholder
-function PlaceholderTab({ title }: { title: string }) {
-  return (
-    <div className="border rounded-xl p-6 text-center text-gray-400">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p>Coming soon.</p>
-    </div>
-  );
-};
