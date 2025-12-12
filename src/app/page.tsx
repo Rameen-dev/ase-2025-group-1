@@ -6,6 +6,8 @@ import ChatWidget from "@/components/ChatWidget";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import ImpactPreview from "@/components/impactPreview";
+
 
   const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
   const [showBanner, setShowBanner] = useState(false);
@@ -211,7 +213,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
     setStatusType("success");
     setStatusMessage(
-      "Thank you for getting in touch. We’ve received your message and will respond by email."
+      "Thank you for getting in touch. We've received your message and will respond by email."
     );
     setName("");
     setEmail("");
@@ -464,7 +466,18 @@ const handleSubmit = async (e: React.FormEvent) => {
             />
           </div>
         </div>
+        {/* Live Impact Preview */}
+        <section className="min-h-screen flex flex-col justify-center bg-white px-4 sm:px-8 md:px-20 py-24">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium italic mb-10 text-[#2E7D32]">
+            Live Impact Preview
+          </h2>
+          <ImpactPreview totalItems={1240}/>
 
+          <p className="text-sm text-gray-500 mt-10 text-center max-w-2xl mx-auto">
+            Impact values are estimates based on average clothing weights and conversion factors.
+            Figures shown are for demonstration purposes.
+          </p>
+          </section>
         <div
           id="donate"
           className="w-full text-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4"

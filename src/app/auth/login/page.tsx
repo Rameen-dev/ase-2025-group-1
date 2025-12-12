@@ -93,7 +93,6 @@ export default function LoginPage() {
       if (accountType === "charity") {
         // We just called /api/auth/charity-login
         if (data.code === "CHARITY_LOGIN_OK") {
-
           router.push("/charity/dashboard");
           return;
         }
@@ -107,7 +106,6 @@ export default function LoginPage() {
         // accountType === "user"
         // We just called /api/login (User table)
         if (data.code === "LOGIN_OK" && data.user) {
-
           // Normalise role in case DB stores "ADMIN"/"DONOR"
           const role = (data.user.role || "").toLowerCase();
 
@@ -136,14 +134,19 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen flex bg-white border border-black">
-      <Link href="/">
-        <Image
-          src="/images/logo.png"
-          alt="SustainWear"
-          width={600}
-          height={600}
-          className="absolute top-6 left-1/2 -translate-x-1/2 md:left-30 w-48 md:h-auto cursor-pointer"
-        />
+      <Link
+        href="/"
+        className="absolute top-6 left-7 z-10 hover:opacity-80 transition-opacity"
+      >
+        <div className="font-kalam text-4xl md:text-5xl">
+          <span className="text-[#2E7D32]">S</span>ustain
+          <span className="text-[#2E7D32]">W</span>ear
+        </div>
+        <p className="text-xs md:text-lg italic mt-1">
+          <span className="text-black">Give Today.</span>
+          <span className="text-[#2E7D32]">Sustain</span>
+          <span className="text-black"> Tomorrow.</span>
+        </p>
       </Link>
 
       {/* LEFT SIDE */}

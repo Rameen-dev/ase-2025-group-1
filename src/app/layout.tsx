@@ -16,6 +16,9 @@ const kalam = Kalam({
 export const metadata = {
   title: "SustainWear",
   description: "Sustainable fashion platform",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
