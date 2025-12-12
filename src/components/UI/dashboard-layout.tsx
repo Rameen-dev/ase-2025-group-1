@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-
 
 type DashboardLayoutProps<T extends string> = {
     tabs: T[];
@@ -17,15 +16,23 @@ export function DashboardLayout<T extends string>({
     tabs,
     activeTab,
     onTabChange,
-    onSignOut,
-    roleLabel,
     headerTitle,
     children,
 }: DashboardLayoutProps<T>) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [logoutModalOpen, setLogoutModalOpen] = useState(false);
     const [isSigningOut, setIsSigningOut] = useState(false);
+    const [loggedUser, setLoggedUser] = useState<string | null>(null);
     const router = useRouter();
+
+    useEffect(() => {
+        (async () => {
+            const res = await fetch("/api/getname");
+            if (!res.ok) return;
+            const me = await res.json();
+            setLoggedUser(me.name);
+        })();
+    }, []);
 
     function openLogoutModal() {
         setLogoutModalOpen(true);
@@ -128,7 +135,7 @@ export function DashboardLayout<T extends string>({
                     <div>
                         <h2 className="text-3xl font-semibold">{headerTitle}</h2>
                         <p className="text-sm text-gray-500">
-                            Welcome back, {roleLabel}. Manage your SustainWear from here.
+                            Welcome back <span className="font-semibold text-gray-900">{loggedUser}</span>. Manage your SustainWear from here.
                         </p>
                     </div>
 

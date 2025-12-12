@@ -44,7 +44,7 @@ export default function CharityDashboard() {
         if (Array.isArray(data)) {
           setRequests(data);
         } else {
-          console.error("Expected array from /api/donation-requests, got:", data);
+          console.error("Expected array from /api/charity/donations, got:", data);
           setRequests([]);
         }
       } catch (err) {
