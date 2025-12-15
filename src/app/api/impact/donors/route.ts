@@ -4,12 +4,18 @@ import { PrismaClient } from "@/generated/prisma";
 const prisma = new PrismaClient();
 
 // CO2 savings per clothing type (in kg)
+// Case-insensitive lookup
 const CO2_VALUES: { [key: string]: number } = {
-  Jacket: 25,
-  Pants: 15,
-  Shirt: 10,
-  Shoes: 20,
+  jacket: 25,
+  pants: 15,
+  shirt: 10,
+  shoes: 20,
 };
+
+function getCO2Value(type: string): number {
+  const normalizedType = type.toLowerCase();
+  return CO2_VALUES[normalizedType] || 0;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,10 +24,12 @@ export async function GET(request: NextRequest) {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
-    // Get all donated items grouped by donor
+    // Get all items from APPROVED donation requests grouped by donor
     const allItems = await prisma.clothingItems.findMany({
       where: {
-        donation_id: { not: null },
+        DonationRequest: {
+          status: "APPROVED",
+        },
       },
       select: {
         type: true,
@@ -33,7 +41,7 @@ export async function GET(request: NextRequest) {
     const donorCO2Map = new Map<number, { co2: number; itemCount: number }>();
 
     allItems.forEach((item) => {
-      const co2Value = CO2_VALUES[item.type] || 0;
+      const co2Value = getCO2Value(item.type);
       const current = donorCO2Map.get(item.donor_id) || {
         co2: 0,
         itemCount: 0,

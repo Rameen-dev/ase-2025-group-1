@@ -64,7 +64,12 @@ export default function ImpactTab() {
     async function loadPlatformStats() {
       try {
         const res = await fetch(`${API_BASE}/api/impact/platform`);
+        if (!res.ok) {
+          console.error("Platform stats error:", res.status, res.statusText);
+          return;
+        }
         const data = await res.json();
+        console.log("Platform stats loaded:", data);
         setPlatformStats(data);
       } catch (err) {
         console.error("Error loading platform stats:", err);
@@ -81,7 +86,12 @@ export default function ImpactTab() {
         const res = await fetch(
           `${API_BASE}/api/impact/donors?page=${donorPage}`
         );
+        if (!res.ok) {
+          console.error("Donors error:", res.status, res.statusText);
+          return;
+        }
         const data = await res.json();
+        console.log("Donors loaded:", data);
         setDonors(data.donors || []);
         setDonorPagination(data.pagination);
       } catch (err) {
@@ -134,11 +144,7 @@ export default function ImpactTab() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "bottom" as const,
-        labels: {
-          padding: 15,
-          font: { size: 12 },
-        },
+        display: false, // Hide the default legend completely
       },
       tooltip: {
         callbacks: {
@@ -159,6 +165,21 @@ export default function ImpactTab() {
 
   return (
     <div className="space-y-6">
+      {/* No Data State */}
+      {platformStats && platformStats.totalCO2 === 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+          <Leaf className="mx-auto text-yellow-600 mb-3" size={48} />
+          <h3 className="text-lg font-semibold text-yellow-800 mb-2">
+            No Impact Data Available Yet
+          </h3>
+          <p className="text-yellow-700 text-sm">
+            Impact data will appear once donations with clothing items are made.
+            Make sure ClothingItems have a donation_id set when donations are
+            accepted.
+          </p>
+        </div>
+      )}
+
       {/* Platform Overview */}
       <div>
         <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
@@ -222,29 +243,26 @@ export default function ImpactTab() {
           <h4 className="font-semibold mb-4 text-center">
             Top Contributors Distribution
           </h4>
-          <div className="w-full max-w-md mx-auto" style={{ height: "300px" }}>
-            {chartData ? (
-              <Doughnut data={chartData} options={chartOptions} />
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-400">
-                Loading chart...
+          {!platformStats ? (
+            <div className="flex items-center justify-center h-64 text-gray-400">
+              Loading chart data...
+            </div>
+          ) : platformStats.chartData.length === 0 ? (
+            <div className="flex items-center justify-center h-64 text-gray-400">
+              No data available for chart
+            </div>
+          ) : (
+            <>
+              <div
+                className="w-full max-w-md mx-auto"
+                style={{ height: "300px" }}
+              >
+                {chartData && (
+                  <Doughnut data={chartData} options={chartOptions} />
+                )}
               </div>
-            )}
-          </div>
-          <div className="flex justify-center gap-6 mt-4 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-green-500 rounded"></div>
-              <span>Donors</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-blue-500 rounded"></div>
-              <span>Charities</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-gray-400 rounded"></div>
-              <span>Others</span>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -253,7 +271,7 @@ export default function ImpactTab() {
         <div className="bg-green-100 px-4 py-3 border-b">
           <h3 className="font-semibold text-lg flex items-center gap-2">
             <Users className="text-green-600" size={20} />
-            Donor Impact
+            Donor Impact Leaderboard
           </h3>
         </div>
 
@@ -335,7 +353,7 @@ export default function ImpactTab() {
         <div className="bg-blue-100 px-4 py-3 border-b">
           <h3 className="font-semibold text-lg flex items-center gap-2">
             <Building2 className="text-blue-600" size={20} />
-            Charity Impact
+            Charity Impact Leaderboard
           </h3>
         </div>
 
