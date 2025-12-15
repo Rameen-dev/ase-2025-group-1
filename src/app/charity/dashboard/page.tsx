@@ -157,7 +157,7 @@ function DonationsTab({
         </button>
       </div>
 
-      <div className="border rounded-lg overflow-hidden h-[calc(100vh-180px)] flex flex-col">
+      <div className="border rounded-lg overflow-hidden h-[calc(100vh-180px)] flex flex-col shadow-2xl">
         <table className="w-full text-sm table-fixed">
 
           {/* colgroup to make columns align with the headers */}
