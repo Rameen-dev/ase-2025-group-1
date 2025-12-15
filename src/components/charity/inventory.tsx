@@ -65,7 +65,6 @@ export default function InventoryTab() {
         return (
             <div className="p-2 m-2">
                 <div
-                    onClick={handleNext}
                     className="relative mb-1 h-50 w-full overflow-hidden rounded-md bg-gray-100 cursor-pointer"
                 >
                     {activeImage ? (
@@ -97,7 +96,8 @@ export default function InventoryTab() {
                     {/* Only if canFlip is true (front and back image exists), show arrow to switch image */}
                     {canFlip && (
                         <div className="absolute inset-y-0 right-1 flex items-center">
-                            <div className="rounded bg-black/5 hover:bg-black/30 transition-colors duration-200 px-1 py-2 h-full">
+                            <div className="rounded bg-black/5 hover:bg-black/30 transition-colors duration-200 px-1 py-2 h-full"
+                                onClick={handleNext}>
                                 <svg
                                     viewBox="0 0 24 24"
                                     className="h-full w-5"
