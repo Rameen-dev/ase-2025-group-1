@@ -176,6 +176,21 @@ model ClothingItems {
   Charities           Charities?      @relation(fields: [owned_by], references: [charity_id])
 }
 
+model AuditEvent {
+  event_id            Int              @id @default(autoincrement())
+  actor_type          SessionActorType
+  actor_user_id       Int?
+  actor_charity_id    Int?
+  event_type          String
+  donation_request_id Int?
+  donation_id         Int?
+  metadata            Json?
+  created_on          DateTime         @default(now())
+
+  @@index([event_type, created_on])
+  @@index([donation_request_id])
+}
+
 enum SessionActorType {
   DONOR
   CHARITY

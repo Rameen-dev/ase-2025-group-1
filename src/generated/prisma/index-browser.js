@@ -236,9 +236,26 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   status: 'status'
 };
 
+exports.Prisma.AuditEventScalarFieldEnum = {
+  event_id: 'event_id',
+  actor_type: 'actor_type',
+  actor_user_id: 'actor_user_id',
+  actor_charity_id: 'actor_charity_id',
+  event_type: 'event_type',
+  donation_request_id: 'donation_request_id',
+  donation_id: 'donation_id',
+  metadata: 'metadata',
+  created_on: 'created_on'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -249,6 +266,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
@@ -272,7 +295,8 @@ exports.Prisma.ModelName = {
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
   Session: 'Session',
-  ClothingItems: 'ClothingItems'
+  ClothingItems: 'ClothingItems',
+  AuditEvent: 'AuditEvent'
 };
 
 /**

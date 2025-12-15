@@ -37,7 +37,10 @@ export default function CharityDashboard() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/api/charity/donations`);
+        const res = await fetch(`${API_BASE}/api/charity/donations`, {
+          credentials: "include",
+          cache: "no-store",
+        });
         const data = await res.json();
 
         // Safety: only accept array results
@@ -119,9 +122,10 @@ function DonationsTab({
     setItemsModalItems([]);
 
     try {
-      const res = await fetch(
-        `${API_BASE}/api/donation-requests/${req.donation_request_id}/items`
-      );
+      const res = await fetch(`${API_BASE}/api/charity/donations`, {
+        credentials: "include",
+        cache: "no-store",
+      });
       const data = await res.json();
       setItemsModalItems(Array.isArray(data) ? data : []);
     } catch (err) {

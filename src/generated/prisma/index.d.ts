@@ -63,6 +63,11 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * 
  */
 export type ClothingItems = $Result.DefaultSelection<Prisma.$ClothingItemsPayload>
+/**
+ * Model AuditEvent
+ * 
+ */
+export type AuditEvent = $Result.DefaultSelection<Prisma.$AuditEventPayload>
 
 /**
  * Enums
@@ -312,6 +317,16 @@ export class PrismaClient<
     * ```
     */
   get clothingItems(): Prisma.ClothingItemsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditEvent`: Exposes CRUD operations for the **AuditEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditEvents
+    * const auditEvents = await prisma.auditEvent.findMany()
+    * ```
+    */
+  get auditEvent(): Prisma.AuditEventDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -762,7 +777,8 @@ export namespace Prisma {
     Donations: 'Donations',
     DonationRequest: 'DonationRequest',
     Session: 'Session',
-    ClothingItems: 'ClothingItems'
+    ClothingItems: 'ClothingItems',
+    AuditEvent: 'AuditEvent'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -781,7 +797,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems"
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems" | "auditEvent"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1525,6 +1541,80 @@ export namespace Prisma {
           }
         }
       }
+      AuditEvent: {
+        payload: Prisma.$AuditEventPayload<ExtArgs>
+        fields: Prisma.AuditEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          findMany: {
+            args: Prisma.AuditEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          create: {
+            args: Prisma.AuditEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          createMany: {
+            args: Prisma.AuditEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          update: {
+            args: Prisma.AuditEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditEvent>
+          }
+          groupBy: {
+            args: Prisma.AuditEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditEventCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditEventCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1631,6 +1721,7 @@ export namespace Prisma {
     donationRequest?: DonationRequestOmit
     session?: SessionOmit
     clothingItems?: ClothingItemsOmit
+    auditEvent?: AuditEventOmit
   }
 
   /* Types for Logging */
@@ -14134,6 +14225,1099 @@ export namespace Prisma {
 
 
   /**
+   * Model AuditEvent
+   */
+
+  export type AggregateAuditEvent = {
+    _count: AuditEventCountAggregateOutputType | null
+    _avg: AuditEventAvgAggregateOutputType | null
+    _sum: AuditEventSumAggregateOutputType | null
+    _min: AuditEventMinAggregateOutputType | null
+    _max: AuditEventMaxAggregateOutputType | null
+  }
+
+  export type AuditEventAvgAggregateOutputType = {
+    event_id: number | null
+    actor_user_id: number | null
+    actor_charity_id: number | null
+    donation_request_id: number | null
+    donation_id: number | null
+  }
+
+  export type AuditEventSumAggregateOutputType = {
+    event_id: number | null
+    actor_user_id: number | null
+    actor_charity_id: number | null
+    donation_request_id: number | null
+    donation_id: number | null
+  }
+
+  export type AuditEventMinAggregateOutputType = {
+    event_id: number | null
+    actor_type: $Enums.SessionActorType | null
+    actor_user_id: number | null
+    actor_charity_id: number | null
+    event_type: string | null
+    donation_request_id: number | null
+    donation_id: number | null
+    created_on: Date | null
+  }
+
+  export type AuditEventMaxAggregateOutputType = {
+    event_id: number | null
+    actor_type: $Enums.SessionActorType | null
+    actor_user_id: number | null
+    actor_charity_id: number | null
+    event_type: string | null
+    donation_request_id: number | null
+    donation_id: number | null
+    created_on: Date | null
+  }
+
+  export type AuditEventCountAggregateOutputType = {
+    event_id: number
+    actor_type: number
+    actor_user_id: number
+    actor_charity_id: number
+    event_type: number
+    donation_request_id: number
+    donation_id: number
+    metadata: number
+    created_on: number
+    _all: number
+  }
+
+
+  export type AuditEventAvgAggregateInputType = {
+    event_id?: true
+    actor_user_id?: true
+    actor_charity_id?: true
+    donation_request_id?: true
+    donation_id?: true
+  }
+
+  export type AuditEventSumAggregateInputType = {
+    event_id?: true
+    actor_user_id?: true
+    actor_charity_id?: true
+    donation_request_id?: true
+    donation_id?: true
+  }
+
+  export type AuditEventMinAggregateInputType = {
+    event_id?: true
+    actor_type?: true
+    actor_user_id?: true
+    actor_charity_id?: true
+    event_type?: true
+    donation_request_id?: true
+    donation_id?: true
+    created_on?: true
+  }
+
+  export type AuditEventMaxAggregateInputType = {
+    event_id?: true
+    actor_type?: true
+    actor_user_id?: true
+    actor_charity_id?: true
+    event_type?: true
+    donation_request_id?: true
+    donation_id?: true
+    created_on?: true
+  }
+
+  export type AuditEventCountAggregateInputType = {
+    event_id?: true
+    actor_type?: true
+    actor_user_id?: true
+    actor_charity_id?: true
+    event_type?: true
+    donation_request_id?: true
+    donation_id?: true
+    metadata?: true
+    created_on?: true
+    _all?: true
+  }
+
+  export type AuditEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditEvent to aggregate.
+     */
+    where?: AuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEvents to fetch.
+     */
+    orderBy?: AuditEventOrderByWithRelationInput | AuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditEvents
+    **/
+    _count?: true | AuditEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AuditEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AuditEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditEventMaxAggregateInputType
+  }
+
+  export type GetAuditEventAggregateType<T extends AuditEventAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditEvent[P]>
+      : GetScalarType<T[P], AggregateAuditEvent[P]>
+  }
+
+
+
+
+  export type AuditEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditEventWhereInput
+    orderBy?: AuditEventOrderByWithAggregationInput | AuditEventOrderByWithAggregationInput[]
+    by: AuditEventScalarFieldEnum[] | AuditEventScalarFieldEnum
+    having?: AuditEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditEventCountAggregateInputType | true
+    _avg?: AuditEventAvgAggregateInputType
+    _sum?: AuditEventSumAggregateInputType
+    _min?: AuditEventMinAggregateInputType
+    _max?: AuditEventMaxAggregateInputType
+  }
+
+  export type AuditEventGroupByOutputType = {
+    event_id: number
+    actor_type: $Enums.SessionActorType
+    actor_user_id: number | null
+    actor_charity_id: number | null
+    event_type: string
+    donation_request_id: number | null
+    donation_id: number | null
+    metadata: JsonValue | null
+    created_on: Date
+    _count: AuditEventCountAggregateOutputType | null
+    _avg: AuditEventAvgAggregateOutputType | null
+    _sum: AuditEventSumAggregateOutputType | null
+    _min: AuditEventMinAggregateOutputType | null
+    _max: AuditEventMaxAggregateOutputType | null
+  }
+
+  type GetAuditEventGroupByPayload<T extends AuditEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    event_id?: boolean
+    actor_type?: boolean
+    actor_user_id?: boolean
+    actor_charity_id?: boolean
+    event_type?: boolean
+    donation_request_id?: boolean
+    donation_id?: boolean
+    metadata?: boolean
+    created_on?: boolean
+  }, ExtArgs["result"]["auditEvent"]>
+
+  export type AuditEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    event_id?: boolean
+    actor_type?: boolean
+    actor_user_id?: boolean
+    actor_charity_id?: boolean
+    event_type?: boolean
+    donation_request_id?: boolean
+    donation_id?: boolean
+    metadata?: boolean
+    created_on?: boolean
+  }, ExtArgs["result"]["auditEvent"]>
+
+  export type AuditEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    event_id?: boolean
+    actor_type?: boolean
+    actor_user_id?: boolean
+    actor_charity_id?: boolean
+    event_type?: boolean
+    donation_request_id?: boolean
+    donation_id?: boolean
+    metadata?: boolean
+    created_on?: boolean
+  }, ExtArgs["result"]["auditEvent"]>
+
+  export type AuditEventSelectScalar = {
+    event_id?: boolean
+    actor_type?: boolean
+    actor_user_id?: boolean
+    actor_charity_id?: boolean
+    event_type?: boolean
+    donation_request_id?: boolean
+    donation_id?: boolean
+    metadata?: boolean
+    created_on?: boolean
+  }
+
+  export type AuditEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"event_id" | "actor_type" | "actor_user_id" | "actor_charity_id" | "event_type" | "donation_request_id" | "donation_id" | "metadata" | "created_on", ExtArgs["result"]["auditEvent"]>
+
+  export type $AuditEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditEvent"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      event_id: number
+      actor_type: $Enums.SessionActorType
+      actor_user_id: number | null
+      actor_charity_id: number | null
+      event_type: string
+      donation_request_id: number | null
+      donation_id: number | null
+      metadata: Prisma.JsonValue | null
+      created_on: Date
+    }, ExtArgs["result"]["auditEvent"]>
+    composites: {}
+  }
+
+  type AuditEventGetPayload<S extends boolean | null | undefined | AuditEventDefaultArgs> = $Result.GetResult<Prisma.$AuditEventPayload, S>
+
+  type AuditEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditEventCountAggregateInputType | true
+    }
+
+  export interface AuditEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditEvent'], meta: { name: 'AuditEvent' } }
+    /**
+     * Find zero or one AuditEvent that matches the filter.
+     * @param {AuditEventFindUniqueArgs} args - Arguments to find a AuditEvent
+     * @example
+     * // Get one AuditEvent
+     * const auditEvent = await prisma.auditEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditEventFindUniqueArgs>(args: SelectSubset<T, AuditEventFindUniqueArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditEventFindUniqueOrThrowArgs} args - Arguments to find a AuditEvent
+     * @example
+     * // Get one AuditEvent
+     * const auditEvent = await prisma.auditEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditEventFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventFindFirstArgs} args - Arguments to find a AuditEvent
+     * @example
+     * // Get one AuditEvent
+     * const auditEvent = await prisma.auditEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditEventFindFirstArgs>(args?: SelectSubset<T, AuditEventFindFirstArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventFindFirstOrThrowArgs} args - Arguments to find a AuditEvent
+     * @example
+     * // Get one AuditEvent
+     * const auditEvent = await prisma.auditEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditEventFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditEvents
+     * const auditEvents = await prisma.auditEvent.findMany()
+     * 
+     * // Get first 10 AuditEvents
+     * const auditEvents = await prisma.auditEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `event_id`
+     * const auditEventWithEvent_idOnly = await prisma.auditEvent.findMany({ select: { event_id: true } })
+     * 
+     */
+    findMany<T extends AuditEventFindManyArgs>(args?: SelectSubset<T, AuditEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditEvent.
+     * @param {AuditEventCreateArgs} args - Arguments to create a AuditEvent.
+     * @example
+     * // Create one AuditEvent
+     * const AuditEvent = await prisma.auditEvent.create({
+     *   data: {
+     *     // ... data to create a AuditEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditEventCreateArgs>(args: SelectSubset<T, AuditEventCreateArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditEvents.
+     * @param {AuditEventCreateManyArgs} args - Arguments to create many AuditEvents.
+     * @example
+     * // Create many AuditEvents
+     * const auditEvent = await prisma.auditEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditEventCreateManyArgs>(args?: SelectSubset<T, AuditEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditEvents and returns the data saved in the database.
+     * @param {AuditEventCreateManyAndReturnArgs} args - Arguments to create many AuditEvents.
+     * @example
+     * // Create many AuditEvents
+     * const auditEvent = await prisma.auditEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditEvents and only return the `event_id`
+     * const auditEventWithEvent_idOnly = await prisma.auditEvent.createManyAndReturn({
+     *   select: { event_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditEventCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditEvent.
+     * @param {AuditEventDeleteArgs} args - Arguments to delete one AuditEvent.
+     * @example
+     * // Delete one AuditEvent
+     * const AuditEvent = await prisma.auditEvent.delete({
+     *   where: {
+     *     // ... filter to delete one AuditEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditEventDeleteArgs>(args: SelectSubset<T, AuditEventDeleteArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditEvent.
+     * @param {AuditEventUpdateArgs} args - Arguments to update one AuditEvent.
+     * @example
+     * // Update one AuditEvent
+     * const auditEvent = await prisma.auditEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditEventUpdateArgs>(args: SelectSubset<T, AuditEventUpdateArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditEvents.
+     * @param {AuditEventDeleteManyArgs} args - Arguments to filter AuditEvents to delete.
+     * @example
+     * // Delete a few AuditEvents
+     * const { count } = await prisma.auditEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditEventDeleteManyArgs>(args?: SelectSubset<T, AuditEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditEvents
+     * const auditEvent = await prisma.auditEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditEventUpdateManyArgs>(args: SelectSubset<T, AuditEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditEvents and returns the data updated in the database.
+     * @param {AuditEventUpdateManyAndReturnArgs} args - Arguments to update many AuditEvents.
+     * @example
+     * // Update many AuditEvents
+     * const auditEvent = await prisma.auditEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditEvents and only return the `event_id`
+     * const auditEventWithEvent_idOnly = await prisma.auditEvent.updateManyAndReturn({
+     *   select: { event_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditEventUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditEvent.
+     * @param {AuditEventUpsertArgs} args - Arguments to update or create a AuditEvent.
+     * @example
+     * // Update or create a AuditEvent
+     * const auditEvent = await prisma.auditEvent.upsert({
+     *   create: {
+     *     // ... data to create a AuditEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditEventUpsertArgs>(args: SelectSubset<T, AuditEventUpsertArgs<ExtArgs>>): Prisma__AuditEventClient<$Result.GetResult<Prisma.$AuditEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventCountArgs} args - Arguments to filter AuditEvents to count.
+     * @example
+     * // Count the number of AuditEvents
+     * const count = await prisma.auditEvent.count({
+     *   where: {
+     *     // ... the filter for the AuditEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditEventCountArgs>(
+      args?: Subset<T, AuditEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditEventAggregateArgs>(args: Subset<T, AuditEventAggregateArgs>): Prisma.PrismaPromise<GetAuditEventAggregateType<T>>
+
+    /**
+     * Group by AuditEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditEventGroupByArgs['orderBy'] }
+        : { orderBy?: AuditEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditEvent model
+   */
+  readonly fields: AuditEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditEvent model
+   */
+  interface AuditEventFieldRefs {
+    readonly event_id: FieldRef<"AuditEvent", 'Int'>
+    readonly actor_type: FieldRef<"AuditEvent", 'SessionActorType'>
+    readonly actor_user_id: FieldRef<"AuditEvent", 'Int'>
+    readonly actor_charity_id: FieldRef<"AuditEvent", 'Int'>
+    readonly event_type: FieldRef<"AuditEvent", 'String'>
+    readonly donation_request_id: FieldRef<"AuditEvent", 'Int'>
+    readonly donation_id: FieldRef<"AuditEvent", 'Int'>
+    readonly metadata: FieldRef<"AuditEvent", 'Json'>
+    readonly created_on: FieldRef<"AuditEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditEvent findUnique
+   */
+  export type AuditEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditEvent to fetch.
+     */
+    where: AuditEventWhereUniqueInput
+  }
+
+  /**
+   * AuditEvent findUniqueOrThrow
+   */
+  export type AuditEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditEvent to fetch.
+     */
+    where: AuditEventWhereUniqueInput
+  }
+
+  /**
+   * AuditEvent findFirst
+   */
+  export type AuditEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditEvent to fetch.
+     */
+    where?: AuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEvents to fetch.
+     */
+    orderBy?: AuditEventOrderByWithRelationInput | AuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditEvents.
+     */
+    cursor?: AuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditEvents.
+     */
+    distinct?: AuditEventScalarFieldEnum | AuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEvent findFirstOrThrow
+   */
+  export type AuditEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditEvent to fetch.
+     */
+    where?: AuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEvents to fetch.
+     */
+    orderBy?: AuditEventOrderByWithRelationInput | AuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditEvents.
+     */
+    cursor?: AuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditEvents.
+     */
+    distinct?: AuditEventScalarFieldEnum | AuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEvent findMany
+   */
+  export type AuditEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter, which AuditEvents to fetch.
+     */
+    where?: AuditEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditEvents to fetch.
+     */
+    orderBy?: AuditEventOrderByWithRelationInput | AuditEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditEvents.
+     */
+    cursor?: AuditEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditEvents.
+     */
+    skip?: number
+    distinct?: AuditEventScalarFieldEnum | AuditEventScalarFieldEnum[]
+  }
+
+  /**
+   * AuditEvent create
+   */
+  export type AuditEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AuditEvent.
+     */
+    data: XOR<AuditEventCreateInput, AuditEventUncheckedCreateInput>
+  }
+
+  /**
+   * AuditEvent createMany
+   */
+  export type AuditEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditEvents.
+     */
+    data: AuditEventCreateManyInput | AuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditEvent createManyAndReturn
+   */
+  export type AuditEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditEvents.
+     */
+    data: AuditEventCreateManyInput | AuditEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditEvent update
+   */
+  export type AuditEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AuditEvent.
+     */
+    data: XOR<AuditEventUpdateInput, AuditEventUncheckedUpdateInput>
+    /**
+     * Choose, which AuditEvent to update.
+     */
+    where: AuditEventWhereUniqueInput
+  }
+
+  /**
+   * AuditEvent updateMany
+   */
+  export type AuditEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditEvents.
+     */
+    data: XOR<AuditEventUpdateManyMutationInput, AuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditEvents to update
+     */
+    where?: AuditEventWhereInput
+    /**
+     * Limit how many AuditEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditEvent updateManyAndReturn
+   */
+  export type AuditEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditEvents.
+     */
+    data: XOR<AuditEventUpdateManyMutationInput, AuditEventUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditEvents to update
+     */
+    where?: AuditEventWhereInput
+    /**
+     * Limit how many AuditEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditEvent upsert
+   */
+  export type AuditEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AuditEvent to update in case it exists.
+     */
+    where: AuditEventWhereUniqueInput
+    /**
+     * In case the AuditEvent found by the `where` argument doesn't exist, create a new AuditEvent with this data.
+     */
+    create: XOR<AuditEventCreateInput, AuditEventUncheckedCreateInput>
+    /**
+     * In case the AuditEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditEventUpdateInput, AuditEventUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditEvent delete
+   */
+  export type AuditEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+    /**
+     * Filter which AuditEvent to delete.
+     */
+    where: AuditEventWhereUniqueInput
+  }
+
+  /**
+   * AuditEvent deleteMany
+   */
+  export type AuditEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditEvents to delete
+     */
+    where?: AuditEventWhereInput
+    /**
+     * Limit how many AuditEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditEvent without action
+   */
+  export type AuditEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditEvent
+     */
+    select?: AuditEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditEvent
+     */
+    omit?: AuditEventOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14293,12 +15477,35 @@ export namespace Prisma {
   export type ClothingItemsScalarFieldEnum = (typeof ClothingItemsScalarFieldEnum)[keyof typeof ClothingItemsScalarFieldEnum]
 
 
+  export const AuditEventScalarFieldEnum: {
+    event_id: 'event_id',
+    actor_type: 'actor_type',
+    actor_user_id: 'actor_user_id',
+    actor_charity_id: 'actor_charity_id',
+    event_type: 'event_type',
+    donation_request_id: 'donation_request_id',
+    donation_id: 'donation_id',
+    metadata: 'metadata',
+    created_on: 'created_on'
+  };
+
+  export type AuditEventScalarFieldEnum = (typeof AuditEventScalarFieldEnum)[keyof typeof AuditEventScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const QueryMode: {
@@ -14315,6 +15522,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -14396,6 +15612,20 @@ export namespace Prisma {
    * Reference to a field of type 'SessionActorType[]'
    */
   export type ListEnumSessionActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionActorType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -15244,6 +16474,80 @@ export namespace Prisma {
     status?: EnumStatusWithAggregatesFilter<"ClothingItems"> | $Enums.Status
   }
 
+  export type AuditEventWhereInput = {
+    AND?: AuditEventWhereInput | AuditEventWhereInput[]
+    OR?: AuditEventWhereInput[]
+    NOT?: AuditEventWhereInput | AuditEventWhereInput[]
+    event_id?: IntFilter<"AuditEvent"> | number
+    actor_type?: EnumSessionActorTypeFilter<"AuditEvent"> | $Enums.SessionActorType
+    actor_user_id?: IntNullableFilter<"AuditEvent"> | number | null
+    actor_charity_id?: IntNullableFilter<"AuditEvent"> | number | null
+    event_type?: StringFilter<"AuditEvent"> | string
+    donation_request_id?: IntNullableFilter<"AuditEvent"> | number | null
+    donation_id?: IntNullableFilter<"AuditEvent"> | number | null
+    metadata?: JsonNullableFilter<"AuditEvent">
+    created_on?: DateTimeFilter<"AuditEvent"> | Date | string
+  }
+
+  export type AuditEventOrderByWithRelationInput = {
+    event_id?: SortOrder
+    actor_type?: SortOrder
+    actor_user_id?: SortOrderInput | SortOrder
+    actor_charity_id?: SortOrderInput | SortOrder
+    event_type?: SortOrder
+    donation_request_id?: SortOrderInput | SortOrder
+    donation_id?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+  }
+
+  export type AuditEventWhereUniqueInput = Prisma.AtLeast<{
+    event_id?: number
+    AND?: AuditEventWhereInput | AuditEventWhereInput[]
+    OR?: AuditEventWhereInput[]
+    NOT?: AuditEventWhereInput | AuditEventWhereInput[]
+    actor_type?: EnumSessionActorTypeFilter<"AuditEvent"> | $Enums.SessionActorType
+    actor_user_id?: IntNullableFilter<"AuditEvent"> | number | null
+    actor_charity_id?: IntNullableFilter<"AuditEvent"> | number | null
+    event_type?: StringFilter<"AuditEvent"> | string
+    donation_request_id?: IntNullableFilter<"AuditEvent"> | number | null
+    donation_id?: IntNullableFilter<"AuditEvent"> | number | null
+    metadata?: JsonNullableFilter<"AuditEvent">
+    created_on?: DateTimeFilter<"AuditEvent"> | Date | string
+  }, "event_id">
+
+  export type AuditEventOrderByWithAggregationInput = {
+    event_id?: SortOrder
+    actor_type?: SortOrder
+    actor_user_id?: SortOrderInput | SortOrder
+    actor_charity_id?: SortOrderInput | SortOrder
+    event_type?: SortOrder
+    donation_request_id?: SortOrderInput | SortOrder
+    donation_id?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    created_on?: SortOrder
+    _count?: AuditEventCountOrderByAggregateInput
+    _avg?: AuditEventAvgOrderByAggregateInput
+    _max?: AuditEventMaxOrderByAggregateInput
+    _min?: AuditEventMinOrderByAggregateInput
+    _sum?: AuditEventSumOrderByAggregateInput
+  }
+
+  export type AuditEventScalarWhereWithAggregatesInput = {
+    AND?: AuditEventScalarWhereWithAggregatesInput | AuditEventScalarWhereWithAggregatesInput[]
+    OR?: AuditEventScalarWhereWithAggregatesInput[]
+    NOT?: AuditEventScalarWhereWithAggregatesInput | AuditEventScalarWhereWithAggregatesInput[]
+    event_id?: IntWithAggregatesFilter<"AuditEvent"> | number
+    actor_type?: EnumSessionActorTypeWithAggregatesFilter<"AuditEvent"> | $Enums.SessionActorType
+    actor_user_id?: IntNullableWithAggregatesFilter<"AuditEvent"> | number | null
+    actor_charity_id?: IntNullableWithAggregatesFilter<"AuditEvent"> | number | null
+    event_type?: StringWithAggregatesFilter<"AuditEvent"> | string
+    donation_request_id?: IntNullableWithAggregatesFilter<"AuditEvent"> | number | null
+    donation_id?: IntNullableWithAggregatesFilter<"AuditEvent"> | number | null
+    metadata?: JsonNullableWithAggregatesFilter<"AuditEvent">
+    created_on?: DateTimeWithAggregatesFilter<"AuditEvent"> | Date | string
+  }
+
   export type UserCreateInput = {
     email: string
     password_hash: string
@@ -16080,6 +17384,87 @@ export namespace Prisma {
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
   }
 
+  export type AuditEventCreateInput = {
+    actor_type: $Enums.SessionActorType
+    actor_user_id?: number | null
+    actor_charity_id?: number | null
+    event_type: string
+    donation_request_id?: number | null
+    donation_id?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: Date | string
+  }
+
+  export type AuditEventUncheckedCreateInput = {
+    event_id?: number
+    actor_type: $Enums.SessionActorType
+    actor_user_id?: number | null
+    actor_charity_id?: number | null
+    event_type: string
+    donation_request_id?: number | null
+    donation_id?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: Date | string
+  }
+
+  export type AuditEventUpdateInput = {
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    actor_user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    actor_charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    event_type?: StringFieldUpdateOperationsInput | string
+    donation_request_id?: NullableIntFieldUpdateOperationsInput | number | null
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEventUncheckedUpdateInput = {
+    event_id?: IntFieldUpdateOperationsInput | number
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    actor_user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    actor_charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    event_type?: StringFieldUpdateOperationsInput | string
+    donation_request_id?: NullableIntFieldUpdateOperationsInput | number | null
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEventCreateManyInput = {
+    event_id?: number
+    actor_type: $Enums.SessionActorType
+    actor_user_id?: number | null
+    actor_charity_id?: number | null
+    event_type: string
+    donation_request_id?: number | null
+    donation_id?: number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: Date | string
+  }
+
+  export type AuditEventUpdateManyMutationInput = {
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    actor_user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    actor_charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    event_type?: StringFieldUpdateOperationsInput | string
+    donation_request_id?: NullableIntFieldUpdateOperationsInput | number | null
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditEventUncheckedUpdateManyInput = {
+    event_id?: IntFieldUpdateOperationsInput | number
+    actor_type?: EnumSessionActorTypeFieldUpdateOperationsInput | $Enums.SessionActorType
+    actor_user_id?: NullableIntFieldUpdateOperationsInput | number | null
+    actor_charity_id?: NullableIntFieldUpdateOperationsInput | number | null
+    event_type?: StringFieldUpdateOperationsInput | string
+    donation_request_id?: NullableIntFieldUpdateOperationsInput | number | null
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -16874,6 +18259,105 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type AuditEventCountOrderByAggregateInput = {
+    event_id?: SortOrder
+    actor_type?: SortOrder
+    actor_user_id?: SortOrder
+    actor_charity_id?: SortOrder
+    event_type?: SortOrder
+    donation_request_id?: SortOrder
+    donation_id?: SortOrder
+    metadata?: SortOrder
+    created_on?: SortOrder
+  }
+
+  export type AuditEventAvgOrderByAggregateInput = {
+    event_id?: SortOrder
+    actor_user_id?: SortOrder
+    actor_charity_id?: SortOrder
+    donation_request_id?: SortOrder
+    donation_id?: SortOrder
+  }
+
+  export type AuditEventMaxOrderByAggregateInput = {
+    event_id?: SortOrder
+    actor_type?: SortOrder
+    actor_user_id?: SortOrder
+    actor_charity_id?: SortOrder
+    event_type?: SortOrder
+    donation_request_id?: SortOrder
+    donation_id?: SortOrder
+    created_on?: SortOrder
+  }
+
+  export type AuditEventMinOrderByAggregateInput = {
+    event_id?: SortOrder
+    actor_type?: SortOrder
+    actor_user_id?: SortOrder
+    actor_charity_id?: SortOrder
+    event_type?: SortOrder
+    donation_request_id?: SortOrder
+    donation_id?: SortOrder
+    created_on?: SortOrder
+  }
+
+  export type AuditEventSumOrderByAggregateInput = {
+    event_id?: SortOrder
+    actor_user_id?: SortOrder
+    actor_charity_id?: SortOrder
+    donation_request_id?: SortOrder
+    donation_id?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
@@ -18169,6 +19653,29 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSessionActorTypeFilter<$PrismaModel>
     _max?: NestedEnumSessionActorTypeFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type CharityApplicationsCreateWithoutApproverInput = {
