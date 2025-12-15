@@ -13,7 +13,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // NEW: account type state
+  // account type state
   // "user"  = donor/admin (User table)
   // "charity" = charities (Charities table)
   const [accountType, setAccountType] = useState<"user" | "charity">("user");
@@ -38,9 +38,7 @@ export default function LoginPage() {
 
       const data = await res.json();
 
-      // ---------------------------
       // ERROR HANDLING (both types)
-      // ---------------------------
       if (!res.ok) {
         // Shared invalid login case: wrong email/password
         if (data.code === "INVALID_LOGIN") {
@@ -87,9 +85,7 @@ export default function LoginPage() {
         return;
       }
 
-      // ---------------------------
       // SUCCESS HANDLING
-      // ---------------------------
       if (accountType === "charity") {
         // We just called /api/auth/charity-login
         if (data.code === "CHARITY_LOGIN_OK") {
@@ -232,7 +228,7 @@ export default function LoginPage() {
 
           {/* Links under form */}
           <p className="mt-4 text-sm">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <a
               href="/auth/signup"
               className="text-blue-500 underline hover:text-blue-800"

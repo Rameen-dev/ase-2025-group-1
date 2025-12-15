@@ -3,21 +3,23 @@ import { prisma } from "@/lib/prisma";
 
 //retrieves user id from Session table using the session cookie token
 async function getUserId(req: NextRequest): Promise<number | null> {
-    //read the session token stored inside the browser cookie
-    const token = req.cookies.get("session")?.value;
+  const token = req.cookies.get("session")?.value;
+  if (!token) return null;
 
-    if (!token) return null;
+  const session = await prisma.session.findFirst({
+    where: {
+      session_token: token,
+      revoked_on: null,
+      expires_on: { gt: new Date() },
+      actor_type: "DONOR",
+      user_id: { not: null },
+    },
+    select: { user_id: true },
+  });
 
-    const session = await prisma.session.findFirst({
-        where: {
-            session_token: token,
-            expires_on: { gt: new Date() }, //looks for token that is not expired
-        },
-        select: { user_id: true }, //return user id WHERE session_token
-    });
-
-    return session?.user_id ?? null;
+  return session?.user_id ?? null;
 }
+
 
 
 //returns all donation requests for the dashboard, 
@@ -50,127 +52,124 @@ function formatTimeAgo(createdOn: Date): string {
         : `${value} ${label}${value > 1 ? "s" : ""} ago`;
 }
 
-
 export async function GET(req: NextRequest) {
-    try {
-        const userId = await getUserId(req);
+  try {
+    const userId = await getUserId(req);
 
-        //emnsure that userId is not null when id gets passed into variable
-        //prevents error in prisma
-        if (userId === null) {
-            return NextResponse.json(
-                { error: "Not authenticated" },
-                { status: 401 }
-            );
-        }
-
-        const apps = await prisma.donationRequest.findMany({
-            where: { created_by: userId },
-            orderBy: { created_on: "desc" },
-            include: {
-                _count: {
-                    select: { ClothingItems: true },
-                },
-            },
-        });
-
-        const transformed = apps.map((app) => ({
-            ...app,
-            createdAgo: formatTimeAgo(app.created_on)
-        }));
-
-
-        return NextResponse.json(transformed);
-    } catch (error) {
-        console.error("GET /api/donation-requests ERROR:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch donation requests" },
-            { status: 500 }
-        );
+    // If user not logged in, stop
+    if (userId === null) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
+
+    // Fetch the donor’s requests and include a count of items
+    const requests = await prisma.donationRequest.findMany({
+      where: { created_by: userId },
+      orderBy: { created_on: "desc" },
+      include: {
+        _count: { select: { ClothingItems: true } },
+      },
+    });
+
+    // Add a friendly “time ago” field for UI
+    const transformed = requests.map((r) => ({
+      ...r,
+      createdAgo: formatTimeAgo(r.created_on),
+    }));
+
+    return NextResponse.json(transformed);
+  } catch (error) {
+    console.error("GET /api/donation-requests ERROR:", error);
+    return NextResponse.json({ error: "Failed to fetch donation requests" }, { status: 500 });
+  }
 }
 
-//creates a new donation request, as well clothing items
+
+// creates a new donation request, as well as clothing items
 export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
-        const { title, items } = body;
+  try {
+    const body = await req.json();
+    const { title, items } = body;
 
-        //ensures donation requsts have a title
-        if (!title || !title.trim()) {
-            return NextResponse.json(
-                { error: "Title is required" },
-                { status: 400 }
-            );
-        }
-
-        //ensures users provide at least 1 item for donation request
-        if (!items || !Array.isArray(items) || items.length === 0) {
-            return NextResponse.json(
-                { error: "At least one clothing item is required" },
-                { status: 400 }
-            );
-        }
-
-        //ensures each clothing item has both front and back images
-        for (const [, item] of items.entries()) {
-            if (!item.front_image_url || !item.back_image_url) {
-                return NextResponse.json(
-                    { error: "Clothing item at index ${index} is missing front/back image URLs" },
-                    { status: 400 }
-                );
-            }
-        }
-
-        const userId = await getUserId(req);  //calls function to retrieve user id
-
-        //ensures user id is not null to prevent prisma error
-        if (!userId) {
-            return NextResponse.json(
-                { error: "Not authenticated" },
-                { status: 401 }
-            );
-        }
-
-        //wrap donation request and clothing items in a transaction
-        //ensuring data base is not partially filled and there are no key values missing
-        const donationRequest = await prisma.$transaction(async (tx) => {
-
-            //insert donation request
-            const reqRow = await tx.donationRequest.create({
-                data: {
-                    title: title.trim(),
-                    status: "PENDING",
-                    created_by: userId,
-                }
-            });
-
-            //insert all clothing items linked to donation request
-            await tx.clothingItems.createMany({
-                data: items.map((item) => ({
-                    donation_request_id: reqRow.donation_request_id,
-                    type: item.type,
-                    size: item.size,
-                    condition: item.condition,
-                    donor_id: userId,
-                    donation_id: null,
-                    owned_by: null,
-                    front_image_url: item.front_image_url,
-                    back_image_url: item.back_image_url,
-                })),
-            });
-
-            return reqRow;
-        });
-
-
-
-        return NextResponse.json(donationRequest, { status: 201 });
-    } catch (error) {
-        console.error("POST /api/donor-dashboard/donation-requests ERROR:", error);
-        return NextResponse.json(
-            { error: "Failed to create donation request" },
-            { status: 500 }
-        );
+    // Basic validation
+    if (!title || !title.trim()) {
+      return NextResponse.json({ error: "Title is required" }, { status: 400 });
     }
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return NextResponse.json(
+        { error: "At least one clothing item is required" },
+        { status: 400 }
+      );
+    }
+
+    // Ensure images exist for each item
+    for (const item of items) {
+      if (!item.front_image_url || !item.back_image_url) {
+        return NextResponse.json(
+          { error: "Each item must include front and back images" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Get logged-in donor ID
+    const userId = await getUserId(req);
+    if (!userId) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+    }
+
+    // 3) Use a transaction so everything succeeds or fails together
+    const donationRequest = await prisma.$transaction(async (tx) => {
+
+      // Create the donation request
+      const reqRow = await tx.donationRequest.create({
+        data: {
+          title: title.trim(),
+          status: "PENDING",
+          created_by: userId,
+        },
+      });
+
+      // Create all clothing items linked to the request
+      await tx.clothingItems.createMany({
+        data: items.map((item) => ({
+          donation_request_id: reqRow.donation_request_id,
+          type: item.type,
+          size: item.size,
+          condition: item.condition,
+          donor_id: userId,
+          donation_id: null,
+          owned_by: null,
+          front_image_url: item.front_image_url,
+          back_image_url: item.back_image_url,
+        })),
+      });
+
+      // Log AuditEvent (this powers donor activity + analytics)
+      await tx.auditEvent.create({
+        data: {
+          actor_type: "DONOR",
+          actor_user_id: userId,
+          event_type: "REQUEST_CREATED",
+          donation_request_id: reqRow.donation_request_id,
+          metadata: {
+            title: reqRow.title,
+            itemCount: items.length,
+          },
+        },
+      });
+
+      return reqRow;
+    });
+
+    // Return created request
+    return NextResponse.json(donationRequest, { status: 201 });
+
+  } catch (error) {
+    console.error("POST /api/donation-requests ERROR:", error);
+    return NextResponse.json(
+      { error: "Failed to create donation request" },
+      { status: 500 }
+    );
+  }
 }
