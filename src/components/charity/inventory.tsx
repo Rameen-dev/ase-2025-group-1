@@ -23,6 +23,15 @@ export default function InventoryTab() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    //filter item types
+    const [typeMenuOpen, setTypeMenuOpen] = useState(false);
+    const [selectedTypes, setSelectedTypes] = useState<Set<string>>(new Set());
+
+    //sortMode is either SIZE or CONDITION
+    const [sortMode, setSortMode] = useState<"SIZE" | "CONDITION" | null>(null);
+    //sort direction, ascending or descending
+    const [sortDir, setSortDir] = useState<"ASC" | "DESC">("ASC");
+
     useEffect(() => {
         (async () => {
             try {
@@ -181,11 +190,139 @@ export default function InventoryTab() {
         },
     };
 
+    //item types in array, used for filtering
+    const allTypes = ["JACKET", "PANTS", "SHIRT", "SHOES", "OTHER"];
+
+    //sort order maps
+    const sizeOrder: Record<string, number> = {
+        XS: 0,
+        S: 1,
+        M: 2,
+        L: 3,
+        XL: 4,
+    };
+
+    const conditionOrder: Record<string, number> = {
+        NEW: 0,
+        GOOD: 1,
+        WORN: 2,
+    };
+
+    const displayItems = items
+        .filter((item) => {
+            //filter items by selected type
+            //if nothing is selected, show all items
+            if (selectedTypes.size === 0) return true;
+            return selectedTypes.has((item.type));
+        })
+        .slice()
+
+        //apply only one active sorting function (size or condition) by checking sortMode
+        .sort((a, b) => {
+            const dir = sortDir === "ASC" ? 1 : -1;
+
+            if (sortMode === "SIZE") {
+                const aRank = sizeOrder[(a.size)] ?? 999;
+                const bRank = sizeOrder[(b.size)] ?? 999;
+                if (aRank !== bRank) return (aRank - bRank) * dir;
+                return (b.clothing_id - a.clothing_id) * dir; // tie-breaker
+            }
+
+            if (sortMode === "CONDITION") {
+                const aRank = conditionOrder[(a.condition)] ?? 999;
+                const bRank = conditionOrder[(b.condition)] ?? 999;
+                if (aRank !== bRank) return (aRank - bRank) * dir;
+                return (b.clothing_id - a.clothing_id) * dir; // tie-breaker
+            }
+
+            //default order if no sort is active
+            return b.clothing_id - a.clothing_id;
+        });
+
+    //size sorting event handler
+    function toggleSizeSort() {
+        if (sortMode === "SIZE") {
+            setSortDir((d) => (d === "ASC" ? "DESC" : "ASC"));
+        } else {
+            setSortMode("SIZE");
+            setSortDir("ASC");
+        }
+    }
+
+    //condition sorting event handler
+    function toggleConditionSort() {
+        if (sortMode === "CONDITION") {
+            setSortDir((d) => (d === "ASC" ? "DESC" : "ASC"));
+        } else {
+            setSortMode("CONDITION");
+            setSortDir("ASC");
+        }
+    }
+
+    //filter by type event handler
+    function toggleType(t: string) {
+        setSelectedTypes((prev) => {
+            const next = new Set(prev);
+            if (next.has(t)) next.delete(t);
+            else next.add(t);
+            return next;
+        });
+    }
+
+    function clearTypes() {
+        setSelectedTypes(new Set());
+    }
+
+
     return (
         <div className="h-[calc(100vh-180px)] flex flex-col">
+            <div className="flex justify-end mb-0.5 relative">
+                <button
+                    onClick={() => setTypeMenuOpen((v) => !v)}
+                    className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                >
+                    Filter by {selectedTypes.size ? `(${selectedTypes.size})` : ""}
+                </button>
+                <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                    onClick={toggleConditionSort} >
+                    Condition {sortMode === "CONDITION" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                </button>
+                <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                    onClick={toggleSizeSort}>
+                    Size {sortMode === "SIZE" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                </button>
+                {typeMenuOpen && (
+                    <div className="absolute right-2 top-12 z-20 w-56 rounded-lg border bg-white shadow-md p-2">
+                        <div className="flex items-center justify-between px-2 py-1">
+                            <span className="text-xs text-gray-500">Item types</span>
+                            <button
+                                onClick={clearTypes}
+                                className="text-xs text-blue-600 hover:underline"
+                            >
+                                Clear
+                            </button>
+                        </div>
+
+                        <div className="max-h-56 overflow-y-auto">
+                            {allTypes.map((t) => (
+                                <label key={t} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTypes.has(t)}
+                                        onChange={() => toggleType(t)}
+                                    />
+                                    <span className="text-sm">{t}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
             <div className="flex-1 overflow-y-auto border rounded-lg shadow-md">
+
+                {/* using displayItems const instead of items, which handles all sorting functions */}
                 <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-                    {items?.map((item) => (
+                    {displayItems?.map((item) => (
                         <ImageSlider key={item.clothing_id} item={item} />
                     ))}
                 </div>
@@ -217,6 +354,6 @@ export default function InventoryTab() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
