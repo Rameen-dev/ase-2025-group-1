@@ -10,10 +10,11 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+//frame motion for the images in the inventory
 const slideVariants = {
-    enter: { x: 40, opacity: 0 },
-    center: { x: 0, opacity: 1 },
-    exit: { x: -40, opacity: 0 },
+    enter: { x: 40, opacity: 0 }, //makes image slide in from the right
+    center: { x: 0, opacity: 1 }, //centers image
+    exit: { x: -40, opacity: 0 }, //makes image leave to the left
 };
 
 export default function InventoryTab() {
@@ -41,16 +42,21 @@ export default function InventoryTab() {
         })();
     }, []);
 
-
+    //for each item, onClick function which switches between front and back image 
     function ImageSlider({ item }: { item: ClothingItem }) {
+        //boolean, when if TRUE = front image is showing and if FALSE = back image is showing
         const [showFront, setShowFront] = useState(true);
 
-        const front = item.front_image_url ?? null;
-        const back = item.back_image_url ?? null;
+        //grab image URL from item
+        const front = item.front_image_url;
+        const back = item.back_image_url;
 
+        //only allow flipping when both images exist
         const canFlip = Boolean(front && back);
+        //based on showFront being true or false, choose which image to show
         const activeImage = showFront ? front : back;
 
+        //event handler
         function handleNext() {
             if (!canFlip) return;
             setShowFront((prev) => !prev);
@@ -66,6 +72,7 @@ export default function InventoryTab() {
                         <AnimatePresence initial={false} mode="popLayout">
                             <motion.div
                                 key={activeImage}
+                                //calling slide variants from the top of the file
                                 variants={slideVariants}
                                 initial="enter"
                                 animate="center"
@@ -87,6 +94,7 @@ export default function InventoryTab() {
                         </div>
                     )}
 
+                    {/* Only if canFlip is true (front and back image exists), show arrow to switch image */}
                     {canFlip && (
                         <div className="absolute inset-y-0 right-1 flex items-center">
                             <div className="rounded bg-black/5 hover:bg-black/30 transition-colors duration-200 px-1 py-2 h-full">
@@ -124,16 +132,20 @@ export default function InventoryTab() {
     if (error) return <p className="text-red-600">{error}</p>;
     if (!items.length) return <p>No items in inventory yet.</p>;
 
+    //count how many items of each type there are in the inventory
     const countsByType = items.reduce<Record<string, number>>((acc, item) => {
-        const type = item.type?.trim() || "Unknown";
+        const type = item.type?.trim();
         acc[type] = (acc[type] ?? 0) + 1;
         return acc;
     }, {});
 
+    //chart labels are the types
     const labels = Object.keys(countsByType);
+    //values in the chart is equal to count
     const values = Object.values(countsByType);
 
-    const TYPE_COLORS: Record<string, string> = {
+    //colours of each type
+    const typeColours: Record<string, string> = {
         JACKET: "#BFDBFE",   //blue
         PANTS: "#C4B5FD",    //purple
         SHIRT: "#BBF7D0",    //green
@@ -141,8 +153,9 @@ export default function InventoryTab() {
         OTHER: "#D1D5DB",    // gray
     };
 
+    //apply type colour to background of the slice in doughnut chart
     const backgroundColors = labels.map(
-        (type) => TYPE_COLORS[type]
+        (type) => typeColours[type]
     );
 
     const doughnutData = {
@@ -150,7 +163,7 @@ export default function InventoryTab() {
         datasets: [
             {
                 label: "Amount",
-                data: values,
+                data: values, //count of each type in countsByType const
                 backgroundColor: backgroundColors,
                 borderWidth: 0,
             },
@@ -159,11 +172,11 @@ export default function InventoryTab() {
 
     const doughnutOptions = {
         responsive: true,
-        maintainAspectRatio: false,
-        cutout: "65%",
+        maintainAspectRatio: false, //allows to fit the container
+        cutout: "65%", //contorls thickness of chart
         plugins: {
             legend: {
-                display: false,
+                display: false, //disabled, allowing to control size of the chart
             },
         },
     };
@@ -195,7 +208,7 @@ export default function InventoryTab() {
                                 <li key={label} className="flex items-center gap-2">
                                     <span
                                         className="h-3 w-3 rounded-full"
-                                        style={{ backgroundColor: TYPE_COLORS[label] }}
+                                        style={{ backgroundColor: typeColours[label] }}
                                     />
                                     <span className="truncate">{label}</span>
                                 </li>
