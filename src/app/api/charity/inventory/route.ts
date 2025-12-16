@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
         //find items where owned_by === charity_id
         const items = await prisma.clothingItems.findMany({
-            where: { owned_by: session.charity_id },
+            where: { owned_by: session.charity_id, drafted_status: "AVAILABLE" },
             orderBy: { clothing_id: "desc" },
             select: {
                 clothing_id: true,
@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
                 size: true,
                 condition: true,
                 status: true,
+                drafted_status: true,
                 front_image_url: true,
                 back_image_url: true,
             },

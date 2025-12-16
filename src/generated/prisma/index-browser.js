@@ -233,12 +233,44 @@ exports.Prisma.ClothingItemsScalarFieldEnum = {
   owned_by: 'owned_by',
   front_image_url: 'front_image_url',
   back_image_url: 'back_image_url',
-  status: 'status'
+  status: 'status',
+  drafted_status: 'drafted_status'
+};
+
+exports.Prisma.AuditEventScalarFieldEnum = {
+  event_id: 'event_id',
+  actor_type: 'actor_type',
+  actor_user_id: 'actor_user_id',
+  actor_charity_id: 'actor_charity_id',
+  event_type: 'event_type',
+  donation_request_id: 'donation_request_id',
+  donation_id: 'donation_id',
+  metadata: 'metadata',
+  created_on: 'created_on'
+};
+
+exports.Prisma.DraftScalarFieldEnum = {
+  draft_id: 'draft_id',
+  charity_id: 'charity_id',
+  title: 'title',
+  draft_status: 'draft_status',
+  created_at: 'created_at',
+  edited_at: 'edited_at'
+};
+
+exports.Prisma.DraftedItemScalarFieldEnum = {
+  draft_id: 'draft_id',
+  clothing_id: 'clothing_id'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -249,6 +281,12 @@ exports.Prisma.QueryMode = {
 exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
 };
 exports.Status = exports.$Enums.Status = {
   PENDING: 'PENDING',
@@ -262,6 +300,16 @@ exports.SessionActorType = exports.$Enums.SessionActorType = {
   ADMIN: 'ADMIN'
 };
 
+exports.clothingDrafted = exports.$Enums.clothingDrafted = {
+  ALLOCATED: 'ALLOCATED',
+  AVAILABLE: 'AVAILABLE'
+};
+
+exports.draftStatus = exports.$Enums.draftStatus = {
+  DRAFT: 'DRAFT',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
@@ -272,7 +320,10 @@ exports.Prisma.ModelName = {
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
   Session: 'Session',
-  ClothingItems: 'ClothingItems'
+  ClothingItems: 'ClothingItems',
+  AuditEvent: 'AuditEvent',
+  Draft: 'Draft',
+  DraftedItem: 'DraftedItem'
 };
 
 /**

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ClothingItem } from "@/types/donation";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
+import Drafts from "./drafts";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -125,7 +126,7 @@ export default function InventoryTab() {
 
                 <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold truncate">{item.type}</p>
-                    <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px]">
+                    <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[13px]">
                         {item.size}
                     </span>
                 </div>
@@ -185,7 +186,7 @@ export default function InventoryTab() {
         cutout: "65%", //contorls thickness of chart
         plugins: {
             legend: {
-                display: false, //disabled, allowing to control size of the chart
+                display: false,
             },
         },
     };
@@ -328,8 +329,8 @@ export default function InventoryTab() {
                 </div>
             </div>
             <div className="mt-4 flex gap-4">
-                <div className="w-full border border-dashed border-red-300 rounded-xl p-4 text-center text-gray-500">
-                    Left panel
+                <div className="w-full border shadow-md rounded-xl p-4 text-gray-500">
+                    <Drafts />
                 </div>
                 <div className="w-1/3 border shadow-md rounded-xl p-4 text-gray-500">
                     <div className="flex items-center justify-center gap-6 h-full">
@@ -341,7 +342,7 @@ export default function InventoryTab() {
                             </div>
                         </div>
                         <ul className="space-y-2 text-sm">
-                            {labels.map((label) => (
+                            {allTypes.map((label) => (
                                 <li key={label} className="flex items-center gap-2">
                                     <span
                                         className="h-3 w-3 rounded-full"
