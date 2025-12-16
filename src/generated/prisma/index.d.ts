@@ -68,12 +68,38 @@ export type ClothingItems = $Result.DefaultSelection<Prisma.$ClothingItemsPayloa
  * 
  */
 export type AuditEvent = $Result.DefaultSelection<Prisma.$AuditEventPayload>
+/**
+ * Model Draft
+ * 
+ */
+export type Draft = $Result.DefaultSelection<Prisma.$DraftPayload>
+/**
+ * Model DraftedItem
+ * 
+ */
+export type DraftedItem = $Result.DefaultSelection<Prisma.$DraftedItemPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const SessionActorType: {
+  export const clothingDrafted: {
+  ALLOCATED: 'ALLOCATED',
+  AVAILABLE: 'AVAILABLE'
+};
+
+export type clothingDrafted = (typeof clothingDrafted)[keyof typeof clothingDrafted]
+
+
+export const draftStatus: {
+  DRAFT: 'DRAFT',
+  CANCELLED: 'CANCELLED'
+};
+
+export type draftStatus = (typeof draftStatus)[keyof typeof draftStatus]
+
+
+export const SessionActorType: {
   DONOR: 'DONOR',
   CHARITY: 'CHARITY',
   ADMIN: 'ADMIN'
@@ -91,6 +117,14 @@ export const Status: {
 export type Status = (typeof Status)[keyof typeof Status]
 
 }
+
+export type clothingDrafted = $Enums.clothingDrafted
+
+export const clothingDrafted: typeof $Enums.clothingDrafted
+
+export type draftStatus = $Enums.draftStatus
+
+export const draftStatus: typeof $Enums.draftStatus
 
 export type SessionActorType = $Enums.SessionActorType
 
@@ -327,6 +361,26 @@ export class PrismaClient<
     * ```
     */
   get auditEvent(): Prisma.AuditEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.draft`: Exposes CRUD operations for the **Draft** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Drafts
+    * const drafts = await prisma.draft.findMany()
+    * ```
+    */
+  get draft(): Prisma.DraftDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.draftedItem`: Exposes CRUD operations for the **DraftedItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DraftedItems
+    * const draftedItems = await prisma.draftedItem.findMany()
+    * ```
+    */
+  get draftedItem(): Prisma.DraftedItemDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -778,7 +832,9 @@ export namespace Prisma {
     DonationRequest: 'DonationRequest',
     Session: 'Session',
     ClothingItems: 'ClothingItems',
-    AuditEvent: 'AuditEvent'
+    AuditEvent: 'AuditEvent',
+    Draft: 'Draft',
+    DraftedItem: 'DraftedItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -797,7 +853,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems" | "auditEvent"
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems" | "auditEvent" | "draft" | "draftedItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1615,6 +1671,154 @@ export namespace Prisma {
           }
         }
       }
+      Draft: {
+        payload: Prisma.$DraftPayload<ExtArgs>
+        fields: Prisma.DraftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DraftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DraftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          findFirst: {
+            args: Prisma.DraftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DraftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          findMany: {
+            args: Prisma.DraftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          create: {
+            args: Prisma.DraftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          createMany: {
+            args: Prisma.DraftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DraftCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          delete: {
+            args: Prisma.DraftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          update: {
+            args: Prisma.DraftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          deleteMany: {
+            args: Prisma.DraftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DraftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DraftUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          upsert: {
+            args: Prisma.DraftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          aggregate: {
+            args: Prisma.DraftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDraft>
+          }
+          groupBy: {
+            args: Prisma.DraftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DraftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DraftCountArgs<ExtArgs>
+            result: $Utils.Optional<DraftCountAggregateOutputType> | number
+          }
+        }
+      }
+      DraftedItem: {
+        payload: Prisma.$DraftedItemPayload<ExtArgs>
+        fields: Prisma.DraftedItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DraftedItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DraftedItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          findFirst: {
+            args: Prisma.DraftedItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DraftedItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          findMany: {
+            args: Prisma.DraftedItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          create: {
+            args: Prisma.DraftedItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          createMany: {
+            args: Prisma.DraftedItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DraftedItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          delete: {
+            args: Prisma.DraftedItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          update: {
+            args: Prisma.DraftedItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.DraftedItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DraftedItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DraftedItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.DraftedItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          aggregate: {
+            args: Prisma.DraftedItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDraftedItem>
+          }
+          groupBy: {
+            args: Prisma.DraftedItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DraftedItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DraftedItemCountArgs<ExtArgs>
+            result: $Utils.Optional<DraftedItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1722,6 +1926,8 @@ export namespace Prisma {
     session?: SessionOmit
     clothingItems?: ClothingItemsOmit
     auditEvent?: AuditEventOmit
+    draft?: DraftOmit
+    draftedItem?: DraftedItemOmit
   }
 
   /* Types for Logging */
@@ -1911,6 +2117,7 @@ export namespace Prisma {
     donation_requests_answered: number
     donations_received: number
     Session: number
+    Draft: number
   }
 
   export type CharitiesCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1920,6 +2127,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | CharitiesCountOutputTypeCountDonation_requests_answeredArgs
     donations_received?: boolean | CharitiesCountOutputTypeCountDonations_receivedArgs
     Session?: boolean | CharitiesCountOutputTypeCountSessionArgs
+    Draft?: boolean | CharitiesCountOutputTypeCountDraftArgs
   }
 
   // Custom InputTypes
@@ -1973,6 +2181,13 @@ export namespace Prisma {
    */
   export type CharitiesCountOutputTypeCountSessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftWhereInput
   }
 
 
@@ -2035,6 +2250,68 @@ export namespace Prisma {
    */
   export type DonationRequestCountOutputTypeCountClothingItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ClothingItemsWhereInput
+  }
+
+
+  /**
+   * Count Type ClothingItemsCountOutputType
+   */
+
+  export type ClothingItemsCountOutputType = {
+    DraftedItem: number
+  }
+
+  export type ClothingItemsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    DraftedItem?: boolean | ClothingItemsCountOutputTypeCountDraftedItemArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ClothingItemsCountOutputType without action
+   */
+  export type ClothingItemsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ClothingItemsCountOutputType
+     */
+    select?: ClothingItemsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ClothingItemsCountOutputType without action
+   */
+  export type ClothingItemsCountOutputTypeCountDraftedItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftedItemWhereInput
+  }
+
+
+  /**
+   * Count Type DraftCountOutputType
+   */
+
+  export type DraftCountOutputType = {
+    items: number
+  }
+
+  export type DraftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    items?: boolean | DraftCountOutputTypeCountItemsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DraftCountOutputType without action
+   */
+  export type DraftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftCountOutputType
+     */
+    select?: DraftCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DraftCountOutputType without action
+   */
+  export type DraftCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftedItemWhereInput
   }
 
 
@@ -5884,6 +6161,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
+    Draft?: boolean | Charities$DraftArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["charities"]>
 
@@ -5934,6 +6212,7 @@ export namespace Prisma {
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
+    Draft?: boolean | Charities$DraftArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CharitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5948,6 +6227,7 @@ export namespace Prisma {
       donation_requests_answered: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_received: Prisma.$DonationsPayload<ExtArgs>[]
       Session: Prisma.$SessionPayload<ExtArgs>[]
+      Draft: Prisma.$DraftPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       charity_id: number
@@ -6360,6 +6640,7 @@ export namespace Prisma {
     donation_requests_answered<T extends Charities$donation_requests_answeredArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donation_requests_answeredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_received<T extends Charities$donations_receivedArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donations_receivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Session<T extends Charities$SessionArgs<ExtArgs> = {}>(args?: Subset<T, Charities$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Draft<T extends Charities$DraftArgs<ExtArgs> = {}>(args?: Subset<T, Charities$DraftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6928,6 +7209,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Charities.Draft
+   */
+  export type Charities$DraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    where?: DraftWhereInput
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    cursor?: DraftWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DraftScalarFieldEnum | DraftScalarFieldEnum[]
   }
 
   /**
@@ -13016,6 +13321,7 @@ export namespace Prisma {
     front_image_url: string | null
     back_image_url: string | null
     status: $Enums.Status | null
+    drafted_status: $Enums.clothingDrafted | null
   }
 
   export type ClothingItemsMaxAggregateOutputType = {
@@ -13030,6 +13336,7 @@ export namespace Prisma {
     front_image_url: string | null
     back_image_url: string | null
     status: $Enums.Status | null
+    drafted_status: $Enums.clothingDrafted | null
   }
 
   export type ClothingItemsCountAggregateOutputType = {
@@ -13044,6 +13351,7 @@ export namespace Prisma {
     front_image_url: number
     back_image_url: number
     status: number
+    drafted_status: number
     _all: number
   }
 
@@ -13076,6 +13384,7 @@ export namespace Prisma {
     front_image_url?: true
     back_image_url?: true
     status?: true
+    drafted_status?: true
   }
 
   export type ClothingItemsMaxAggregateInputType = {
@@ -13090,6 +13399,7 @@ export namespace Prisma {
     front_image_url?: true
     back_image_url?: true
     status?: true
+    drafted_status?: true
   }
 
   export type ClothingItemsCountAggregateInputType = {
@@ -13104,6 +13414,7 @@ export namespace Prisma {
     front_image_url?: true
     back_image_url?: true
     status?: true
+    drafted_status?: true
     _all?: true
   }
 
@@ -13205,6 +13516,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status: $Enums.Status
+    drafted_status: $Enums.clothingDrafted
     _count: ClothingItemsCountAggregateOutputType | null
     _avg: ClothingItemsAvgAggregateOutputType | null
     _sum: ClothingItemsSumAggregateOutputType | null
@@ -13238,10 +13550,13 @@ export namespace Prisma {
     front_image_url?: boolean
     back_image_url?: boolean
     status?: boolean
+    drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
     Charities?: boolean | ClothingItems$CharitiesArgs<ExtArgs>
+    DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
+    _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["clothingItems"]>
 
   export type ClothingItemsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13256,6 +13571,7 @@ export namespace Prisma {
     front_image_url?: boolean
     back_image_url?: boolean
     status?: boolean
+    drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -13274,6 +13590,7 @@ export namespace Prisma {
     front_image_url?: boolean
     back_image_url?: boolean
     status?: boolean
+    drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -13292,14 +13609,17 @@ export namespace Prisma {
     front_image_url?: boolean
     back_image_url?: boolean
     status?: boolean
+    drafted_status?: boolean
   }
 
-  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url" | "status", ExtArgs["result"]["clothingItems"]>
+  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url" | "status" | "drafted_status", ExtArgs["result"]["clothingItems"]>
   export type ClothingItemsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
     Charities?: boolean | ClothingItems$CharitiesArgs<ExtArgs>
+    DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
+    _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClothingItemsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
@@ -13321,6 +13641,7 @@ export namespace Prisma {
       DonationRequest: Prisma.$DonationRequestPayload<ExtArgs>
       User: Prisma.$UserPayload<ExtArgs>
       Charities: Prisma.$CharitiesPayload<ExtArgs> | null
+      DraftedItem: Prisma.$DraftedItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       clothing_id: number
@@ -13334,6 +13655,7 @@ export namespace Prisma {
       front_image_url: string
       back_image_url: string
       status: $Enums.Status
+      drafted_status: $Enums.clothingDrafted
     }, ExtArgs["result"]["clothingItems"]>
     composites: {}
   }
@@ -13732,6 +14054,7 @@ export namespace Prisma {
     DonationRequest<T extends DonationRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequestDefaultArgs<ExtArgs>>): Prisma__DonationRequestClient<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     Charities<T extends ClothingItems$CharitiesArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$CharitiesArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    DraftedItem<T extends ClothingItems$DraftedItemArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$DraftedItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13772,6 +14095,7 @@ export namespace Prisma {
     readonly front_image_url: FieldRef<"ClothingItems", 'String'>
     readonly back_image_url: FieldRef<"ClothingItems", 'String'>
     readonly status: FieldRef<"ClothingItems", 'Status'>
+    readonly drafted_status: FieldRef<"ClothingItems", 'clothingDrafted'>
   }
     
 
@@ -14203,6 +14527,30 @@ export namespace Prisma {
      */
     include?: CharitiesInclude<ExtArgs> | null
     where?: CharitiesWhereInput
+  }
+
+  /**
+   * ClothingItems.DraftedItem
+   */
+  export type ClothingItems$DraftedItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    where?: DraftedItemWhereInput
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    cursor?: DraftedItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
   }
 
   /**
@@ -15318,6 +15666,2210 @@ export namespace Prisma {
 
 
   /**
+   * Model Draft
+   */
+
+  export type AggregateDraft = {
+    _count: DraftCountAggregateOutputType | null
+    _avg: DraftAvgAggregateOutputType | null
+    _sum: DraftSumAggregateOutputType | null
+    _min: DraftMinAggregateOutputType | null
+    _max: DraftMaxAggregateOutputType | null
+  }
+
+  export type DraftAvgAggregateOutputType = {
+    draft_id: number | null
+    charity_id: number | null
+  }
+
+  export type DraftSumAggregateOutputType = {
+    draft_id: number | null
+    charity_id: number | null
+  }
+
+  export type DraftMinAggregateOutputType = {
+    draft_id: number | null
+    charity_id: number | null
+    title: string | null
+    draft_status: $Enums.draftStatus | null
+    created_at: Date | null
+    edited_at: Date | null
+  }
+
+  export type DraftMaxAggregateOutputType = {
+    draft_id: number | null
+    charity_id: number | null
+    title: string | null
+    draft_status: $Enums.draftStatus | null
+    created_at: Date | null
+    edited_at: Date | null
+  }
+
+  export type DraftCountAggregateOutputType = {
+    draft_id: number
+    charity_id: number
+    title: number
+    draft_status: number
+    created_at: number
+    edited_at: number
+    _all: number
+  }
+
+
+  export type DraftAvgAggregateInputType = {
+    draft_id?: true
+    charity_id?: true
+  }
+
+  export type DraftSumAggregateInputType = {
+    draft_id?: true
+    charity_id?: true
+  }
+
+  export type DraftMinAggregateInputType = {
+    draft_id?: true
+    charity_id?: true
+    title?: true
+    draft_status?: true
+    created_at?: true
+    edited_at?: true
+  }
+
+  export type DraftMaxAggregateInputType = {
+    draft_id?: true
+    charity_id?: true
+    title?: true
+    draft_status?: true
+    created_at?: true
+    edited_at?: true
+  }
+
+  export type DraftCountAggregateInputType = {
+    draft_id?: true
+    charity_id?: true
+    title?: true
+    draft_status?: true
+    created_at?: true
+    edited_at?: true
+    _all?: true
+  }
+
+  export type DraftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Draft to aggregate.
+     */
+    where?: DraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Drafts to fetch.
+     */
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Drafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Drafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Drafts
+    **/
+    _count?: true | DraftCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DraftAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DraftSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DraftMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DraftMaxAggregateInputType
+  }
+
+  export type GetDraftAggregateType<T extends DraftAggregateArgs> = {
+        [P in keyof T & keyof AggregateDraft]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDraft[P]>
+      : GetScalarType<T[P], AggregateDraft[P]>
+  }
+
+
+
+
+  export type DraftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftWhereInput
+    orderBy?: DraftOrderByWithAggregationInput | DraftOrderByWithAggregationInput[]
+    by: DraftScalarFieldEnum[] | DraftScalarFieldEnum
+    having?: DraftScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DraftCountAggregateInputType | true
+    _avg?: DraftAvgAggregateInputType
+    _sum?: DraftSumAggregateInputType
+    _min?: DraftMinAggregateInputType
+    _max?: DraftMaxAggregateInputType
+  }
+
+  export type DraftGroupByOutputType = {
+    draft_id: number
+    charity_id: number
+    title: string
+    draft_status: $Enums.draftStatus
+    created_at: Date
+    edited_at: Date
+    _count: DraftCountAggregateOutputType | null
+    _avg: DraftAvgAggregateOutputType | null
+    _sum: DraftSumAggregateOutputType | null
+    _min: DraftMinAggregateOutputType | null
+    _max: DraftMaxAggregateOutputType | null
+  }
+
+  type GetDraftGroupByPayload<T extends DraftGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DraftGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DraftGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DraftGroupByOutputType[P]>
+            : GetScalarType<T[P], DraftGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    charity_id?: boolean
+    title?: boolean
+    draft_status?: boolean
+    created_at?: boolean
+    edited_at?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    items?: boolean | Draft$itemsArgs<ExtArgs>
+    _count?: boolean | DraftCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draft"]>
+
+  export type DraftSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    charity_id?: boolean
+    title?: boolean
+    draft_status?: boolean
+    created_at?: boolean
+    edited_at?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draft"]>
+
+  export type DraftSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    charity_id?: boolean
+    title?: boolean
+    draft_status?: boolean
+    created_at?: boolean
+    edited_at?: boolean
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draft"]>
+
+  export type DraftSelectScalar = {
+    draft_id?: boolean
+    charity_id?: boolean
+    title?: boolean
+    draft_status?: boolean
+    created_at?: boolean
+    edited_at?: boolean
+  }
+
+  export type DraftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"draft_id" | "charity_id" | "title" | "draft_status" | "created_at" | "edited_at", ExtArgs["result"]["draft"]>
+  export type DraftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+    items?: boolean | Draft$itemsArgs<ExtArgs>
+    _count?: boolean | DraftCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DraftIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+  }
+  export type DraftIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    charity?: boolean | CharitiesDefaultArgs<ExtArgs>
+  }
+
+  export type $DraftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Draft"
+    objects: {
+      charity: Prisma.$CharitiesPayload<ExtArgs>
+      items: Prisma.$DraftedItemPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      draft_id: number
+      charity_id: number
+      title: string
+      draft_status: $Enums.draftStatus
+      created_at: Date
+      edited_at: Date
+    }, ExtArgs["result"]["draft"]>
+    composites: {}
+  }
+
+  type DraftGetPayload<S extends boolean | null | undefined | DraftDefaultArgs> = $Result.GetResult<Prisma.$DraftPayload, S>
+
+  type DraftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DraftFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DraftCountAggregateInputType | true
+    }
+
+  export interface DraftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Draft'], meta: { name: 'Draft' } }
+    /**
+     * Find zero or one Draft that matches the filter.
+     * @param {DraftFindUniqueArgs} args - Arguments to find a Draft
+     * @example
+     * // Get one Draft
+     * const draft = await prisma.draft.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DraftFindUniqueArgs>(args: SelectSubset<T, DraftFindUniqueArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Draft that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DraftFindUniqueOrThrowArgs} args - Arguments to find a Draft
+     * @example
+     * // Get one Draft
+     * const draft = await prisma.draft.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DraftFindUniqueOrThrowArgs>(args: SelectSubset<T, DraftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Draft that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftFindFirstArgs} args - Arguments to find a Draft
+     * @example
+     * // Get one Draft
+     * const draft = await prisma.draft.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DraftFindFirstArgs>(args?: SelectSubset<T, DraftFindFirstArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Draft that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftFindFirstOrThrowArgs} args - Arguments to find a Draft
+     * @example
+     * // Get one Draft
+     * const draft = await prisma.draft.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DraftFindFirstOrThrowArgs>(args?: SelectSubset<T, DraftFindFirstOrThrowArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Drafts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Drafts
+     * const drafts = await prisma.draft.findMany()
+     * 
+     * // Get first 10 Drafts
+     * const drafts = await prisma.draft.findMany({ take: 10 })
+     * 
+     * // Only select the `draft_id`
+     * const draftWithDraft_idOnly = await prisma.draft.findMany({ select: { draft_id: true } })
+     * 
+     */
+    findMany<T extends DraftFindManyArgs>(args?: SelectSubset<T, DraftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Draft.
+     * @param {DraftCreateArgs} args - Arguments to create a Draft.
+     * @example
+     * // Create one Draft
+     * const Draft = await prisma.draft.create({
+     *   data: {
+     *     // ... data to create a Draft
+     *   }
+     * })
+     * 
+     */
+    create<T extends DraftCreateArgs>(args: SelectSubset<T, DraftCreateArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Drafts.
+     * @param {DraftCreateManyArgs} args - Arguments to create many Drafts.
+     * @example
+     * // Create many Drafts
+     * const draft = await prisma.draft.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DraftCreateManyArgs>(args?: SelectSubset<T, DraftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Drafts and returns the data saved in the database.
+     * @param {DraftCreateManyAndReturnArgs} args - Arguments to create many Drafts.
+     * @example
+     * // Create many Drafts
+     * const draft = await prisma.draft.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Drafts and only return the `draft_id`
+     * const draftWithDraft_idOnly = await prisma.draft.createManyAndReturn({
+     *   select: { draft_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DraftCreateManyAndReturnArgs>(args?: SelectSubset<T, DraftCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Draft.
+     * @param {DraftDeleteArgs} args - Arguments to delete one Draft.
+     * @example
+     * // Delete one Draft
+     * const Draft = await prisma.draft.delete({
+     *   where: {
+     *     // ... filter to delete one Draft
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DraftDeleteArgs>(args: SelectSubset<T, DraftDeleteArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Draft.
+     * @param {DraftUpdateArgs} args - Arguments to update one Draft.
+     * @example
+     * // Update one Draft
+     * const draft = await prisma.draft.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DraftUpdateArgs>(args: SelectSubset<T, DraftUpdateArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Drafts.
+     * @param {DraftDeleteManyArgs} args - Arguments to filter Drafts to delete.
+     * @example
+     * // Delete a few Drafts
+     * const { count } = await prisma.draft.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DraftDeleteManyArgs>(args?: SelectSubset<T, DraftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Drafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Drafts
+     * const draft = await prisma.draft.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DraftUpdateManyArgs>(args: SelectSubset<T, DraftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Drafts and returns the data updated in the database.
+     * @param {DraftUpdateManyAndReturnArgs} args - Arguments to update many Drafts.
+     * @example
+     * // Update many Drafts
+     * const draft = await prisma.draft.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Drafts and only return the `draft_id`
+     * const draftWithDraft_idOnly = await prisma.draft.updateManyAndReturn({
+     *   select: { draft_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DraftUpdateManyAndReturnArgs>(args: SelectSubset<T, DraftUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Draft.
+     * @param {DraftUpsertArgs} args - Arguments to update or create a Draft.
+     * @example
+     * // Update or create a Draft
+     * const draft = await prisma.draft.upsert({
+     *   create: {
+     *     // ... data to create a Draft
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Draft we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DraftUpsertArgs>(args: SelectSubset<T, DraftUpsertArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Drafts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftCountArgs} args - Arguments to filter Drafts to count.
+     * @example
+     * // Count the number of Drafts
+     * const count = await prisma.draft.count({
+     *   where: {
+     *     // ... the filter for the Drafts we want to count
+     *   }
+     * })
+    **/
+    count<T extends DraftCountArgs>(
+      args?: Subset<T, DraftCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DraftCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Draft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DraftAggregateArgs>(args: Subset<T, DraftAggregateArgs>): Prisma.PrismaPromise<GetDraftAggregateType<T>>
+
+    /**
+     * Group by Draft.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DraftGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DraftGroupByArgs['orderBy'] }
+        : { orderBy?: DraftGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DraftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDraftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Draft model
+   */
+  readonly fields: DraftFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Draft.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DraftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    charity<T extends CharitiesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CharitiesDefaultArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    items<T extends Draft$itemsArgs<ExtArgs> = {}>(args?: Subset<T, Draft$itemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Draft model
+   */
+  interface DraftFieldRefs {
+    readonly draft_id: FieldRef<"Draft", 'Int'>
+    readonly charity_id: FieldRef<"Draft", 'Int'>
+    readonly title: FieldRef<"Draft", 'String'>
+    readonly draft_status: FieldRef<"Draft", 'draftStatus'>
+    readonly created_at: FieldRef<"Draft", 'DateTime'>
+    readonly edited_at: FieldRef<"Draft", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Draft findUnique
+   */
+  export type DraftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter, which Draft to fetch.
+     */
+    where: DraftWhereUniqueInput
+  }
+
+  /**
+   * Draft findUniqueOrThrow
+   */
+  export type DraftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter, which Draft to fetch.
+     */
+    where: DraftWhereUniqueInput
+  }
+
+  /**
+   * Draft findFirst
+   */
+  export type DraftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter, which Draft to fetch.
+     */
+    where?: DraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Drafts to fetch.
+     */
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Drafts.
+     */
+    cursor?: DraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Drafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Drafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Drafts.
+     */
+    distinct?: DraftScalarFieldEnum | DraftScalarFieldEnum[]
+  }
+
+  /**
+   * Draft findFirstOrThrow
+   */
+  export type DraftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter, which Draft to fetch.
+     */
+    where?: DraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Drafts to fetch.
+     */
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Drafts.
+     */
+    cursor?: DraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Drafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Drafts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Drafts.
+     */
+    distinct?: DraftScalarFieldEnum | DraftScalarFieldEnum[]
+  }
+
+  /**
+   * Draft findMany
+   */
+  export type DraftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter, which Drafts to fetch.
+     */
+    where?: DraftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Drafts to fetch.
+     */
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Drafts.
+     */
+    cursor?: DraftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Drafts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Drafts.
+     */
+    skip?: number
+    distinct?: DraftScalarFieldEnum | DraftScalarFieldEnum[]
+  }
+
+  /**
+   * Draft create
+   */
+  export type DraftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Draft.
+     */
+    data: XOR<DraftCreateInput, DraftUncheckedCreateInput>
+  }
+
+  /**
+   * Draft createMany
+   */
+  export type DraftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Drafts.
+     */
+    data: DraftCreateManyInput | DraftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Draft createManyAndReturn
+   */
+  export type DraftCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * The data used to create many Drafts.
+     */
+    data: DraftCreateManyInput | DraftCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Draft update
+   */
+  export type DraftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Draft.
+     */
+    data: XOR<DraftUpdateInput, DraftUncheckedUpdateInput>
+    /**
+     * Choose, which Draft to update.
+     */
+    where: DraftWhereUniqueInput
+  }
+
+  /**
+   * Draft updateMany
+   */
+  export type DraftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Drafts.
+     */
+    data: XOR<DraftUpdateManyMutationInput, DraftUncheckedUpdateManyInput>
+    /**
+     * Filter which Drafts to update
+     */
+    where?: DraftWhereInput
+    /**
+     * Limit how many Drafts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Draft updateManyAndReturn
+   */
+  export type DraftUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * The data used to update Drafts.
+     */
+    data: XOR<DraftUpdateManyMutationInput, DraftUncheckedUpdateManyInput>
+    /**
+     * Filter which Drafts to update
+     */
+    where?: DraftWhereInput
+    /**
+     * Limit how many Drafts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Draft upsert
+   */
+  export type DraftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Draft to update in case it exists.
+     */
+    where: DraftWhereUniqueInput
+    /**
+     * In case the Draft found by the `where` argument doesn't exist, create a new Draft with this data.
+     */
+    create: XOR<DraftCreateInput, DraftUncheckedCreateInput>
+    /**
+     * In case the Draft was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DraftUpdateInput, DraftUncheckedUpdateInput>
+  }
+
+  /**
+   * Draft delete
+   */
+  export type DraftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    /**
+     * Filter which Draft to delete.
+     */
+    where: DraftWhereUniqueInput
+  }
+
+  /**
+   * Draft deleteMany
+   */
+  export type DraftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Drafts to delete
+     */
+    where?: DraftWhereInput
+    /**
+     * Limit how many Drafts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Draft.items
+   */
+  export type Draft$itemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    where?: DraftedItemWhereInput
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    cursor?: DraftedItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
+  }
+
+  /**
+   * Draft without action
+   */
+  export type DraftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DraftedItem
+   */
+
+  export type AggregateDraftedItem = {
+    _count: DraftedItemCountAggregateOutputType | null
+    _avg: DraftedItemAvgAggregateOutputType | null
+    _sum: DraftedItemSumAggregateOutputType | null
+    _min: DraftedItemMinAggregateOutputType | null
+    _max: DraftedItemMaxAggregateOutputType | null
+  }
+
+  export type DraftedItemAvgAggregateOutputType = {
+    draft_id: number | null
+    clothing_id: number | null
+  }
+
+  export type DraftedItemSumAggregateOutputType = {
+    draft_id: number | null
+    clothing_id: number | null
+  }
+
+  export type DraftedItemMinAggregateOutputType = {
+    draft_id: number | null
+    clothing_id: number | null
+  }
+
+  export type DraftedItemMaxAggregateOutputType = {
+    draft_id: number | null
+    clothing_id: number | null
+  }
+
+  export type DraftedItemCountAggregateOutputType = {
+    draft_id: number
+    clothing_id: number
+    _all: number
+  }
+
+
+  export type DraftedItemAvgAggregateInputType = {
+    draft_id?: true
+    clothing_id?: true
+  }
+
+  export type DraftedItemSumAggregateInputType = {
+    draft_id?: true
+    clothing_id?: true
+  }
+
+  export type DraftedItemMinAggregateInputType = {
+    draft_id?: true
+    clothing_id?: true
+  }
+
+  export type DraftedItemMaxAggregateInputType = {
+    draft_id?: true
+    clothing_id?: true
+  }
+
+  export type DraftedItemCountAggregateInputType = {
+    draft_id?: true
+    clothing_id?: true
+    _all?: true
+  }
+
+  export type DraftedItemAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DraftedItem to aggregate.
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DraftedItems to fetch.
+     */
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DraftedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DraftedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DraftedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DraftedItems
+    **/
+    _count?: true | DraftedItemCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DraftedItemAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DraftedItemSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DraftedItemMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DraftedItemMaxAggregateInputType
+  }
+
+  export type GetDraftedItemAggregateType<T extends DraftedItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateDraftedItem]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDraftedItem[P]>
+      : GetScalarType<T[P], AggregateDraftedItem[P]>
+  }
+
+
+
+
+  export type DraftedItemGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftedItemWhereInput
+    orderBy?: DraftedItemOrderByWithAggregationInput | DraftedItemOrderByWithAggregationInput[]
+    by: DraftedItemScalarFieldEnum[] | DraftedItemScalarFieldEnum
+    having?: DraftedItemScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DraftedItemCountAggregateInputType | true
+    _avg?: DraftedItemAvgAggregateInputType
+    _sum?: DraftedItemSumAggregateInputType
+    _min?: DraftedItemMinAggregateInputType
+    _max?: DraftedItemMaxAggregateInputType
+  }
+
+  export type DraftedItemGroupByOutputType = {
+    draft_id: number
+    clothing_id: number
+    _count: DraftedItemCountAggregateOutputType | null
+    _avg: DraftedItemAvgAggregateOutputType | null
+    _sum: DraftedItemSumAggregateOutputType | null
+    _min: DraftedItemMinAggregateOutputType | null
+    _max: DraftedItemMaxAggregateOutputType | null
+  }
+
+  type GetDraftedItemGroupByPayload<T extends DraftedItemGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DraftedItemGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DraftedItemGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
+            : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DraftedItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    clothing_id?: boolean
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draftedItem"]>
+
+  export type DraftedItemSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    clothing_id?: boolean
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draftedItem"]>
+
+  export type DraftedItemSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    draft_id?: boolean
+    clothing_id?: boolean
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["draftedItem"]>
+
+  export type DraftedItemSelectScalar = {
+    draft_id?: boolean
+    clothing_id?: boolean
+  }
+
+  export type DraftedItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"draft_id" | "clothing_id", ExtArgs["result"]["draftedItem"]>
+  export type DraftedItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }
+  export type DraftedItemIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }
+  export type DraftedItemIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    draft?: boolean | DraftDefaultArgs<ExtArgs>
+    clothing?: boolean | ClothingItemsDefaultArgs<ExtArgs>
+  }
+
+  export type $DraftedItemPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DraftedItem"
+    objects: {
+      draft: Prisma.$DraftPayload<ExtArgs>
+      clothing: Prisma.$ClothingItemsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      draft_id: number
+      clothing_id: number
+    }, ExtArgs["result"]["draftedItem"]>
+    composites: {}
+  }
+
+  type DraftedItemGetPayload<S extends boolean | null | undefined | DraftedItemDefaultArgs> = $Result.GetResult<Prisma.$DraftedItemPayload, S>
+
+  type DraftedItemCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DraftedItemFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DraftedItemCountAggregateInputType | true
+    }
+
+  export interface DraftedItemDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DraftedItem'], meta: { name: 'DraftedItem' } }
+    /**
+     * Find zero or one DraftedItem that matches the filter.
+     * @param {DraftedItemFindUniqueArgs} args - Arguments to find a DraftedItem
+     * @example
+     * // Get one DraftedItem
+     * const draftedItem = await prisma.draftedItem.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DraftedItemFindUniqueArgs>(args: SelectSubset<T, DraftedItemFindUniqueArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DraftedItem that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DraftedItemFindUniqueOrThrowArgs} args - Arguments to find a DraftedItem
+     * @example
+     * // Get one DraftedItem
+     * const draftedItem = await prisma.draftedItem.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DraftedItemFindUniqueOrThrowArgs>(args: SelectSubset<T, DraftedItemFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DraftedItem that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemFindFirstArgs} args - Arguments to find a DraftedItem
+     * @example
+     * // Get one DraftedItem
+     * const draftedItem = await prisma.draftedItem.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DraftedItemFindFirstArgs>(args?: SelectSubset<T, DraftedItemFindFirstArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DraftedItem that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemFindFirstOrThrowArgs} args - Arguments to find a DraftedItem
+     * @example
+     * // Get one DraftedItem
+     * const draftedItem = await prisma.draftedItem.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DraftedItemFindFirstOrThrowArgs>(args?: SelectSubset<T, DraftedItemFindFirstOrThrowArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DraftedItems that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DraftedItems
+     * const draftedItems = await prisma.draftedItem.findMany()
+     * 
+     * // Get first 10 DraftedItems
+     * const draftedItems = await prisma.draftedItem.findMany({ take: 10 })
+     * 
+     * // Only select the `draft_id`
+     * const draftedItemWithDraft_idOnly = await prisma.draftedItem.findMany({ select: { draft_id: true } })
+     * 
+     */
+    findMany<T extends DraftedItemFindManyArgs>(args?: SelectSubset<T, DraftedItemFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DraftedItem.
+     * @param {DraftedItemCreateArgs} args - Arguments to create a DraftedItem.
+     * @example
+     * // Create one DraftedItem
+     * const DraftedItem = await prisma.draftedItem.create({
+     *   data: {
+     *     // ... data to create a DraftedItem
+     *   }
+     * })
+     * 
+     */
+    create<T extends DraftedItemCreateArgs>(args: SelectSubset<T, DraftedItemCreateArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DraftedItems.
+     * @param {DraftedItemCreateManyArgs} args - Arguments to create many DraftedItems.
+     * @example
+     * // Create many DraftedItems
+     * const draftedItem = await prisma.draftedItem.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DraftedItemCreateManyArgs>(args?: SelectSubset<T, DraftedItemCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DraftedItems and returns the data saved in the database.
+     * @param {DraftedItemCreateManyAndReturnArgs} args - Arguments to create many DraftedItems.
+     * @example
+     * // Create many DraftedItems
+     * const draftedItem = await prisma.draftedItem.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DraftedItems and only return the `draft_id`
+     * const draftedItemWithDraft_idOnly = await prisma.draftedItem.createManyAndReturn({
+     *   select: { draft_id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DraftedItemCreateManyAndReturnArgs>(args?: SelectSubset<T, DraftedItemCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DraftedItem.
+     * @param {DraftedItemDeleteArgs} args - Arguments to delete one DraftedItem.
+     * @example
+     * // Delete one DraftedItem
+     * const DraftedItem = await prisma.draftedItem.delete({
+     *   where: {
+     *     // ... filter to delete one DraftedItem
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DraftedItemDeleteArgs>(args: SelectSubset<T, DraftedItemDeleteArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DraftedItem.
+     * @param {DraftedItemUpdateArgs} args - Arguments to update one DraftedItem.
+     * @example
+     * // Update one DraftedItem
+     * const draftedItem = await prisma.draftedItem.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DraftedItemUpdateArgs>(args: SelectSubset<T, DraftedItemUpdateArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DraftedItems.
+     * @param {DraftedItemDeleteManyArgs} args - Arguments to filter DraftedItems to delete.
+     * @example
+     * // Delete a few DraftedItems
+     * const { count } = await prisma.draftedItem.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DraftedItemDeleteManyArgs>(args?: SelectSubset<T, DraftedItemDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DraftedItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DraftedItems
+     * const draftedItem = await prisma.draftedItem.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DraftedItemUpdateManyArgs>(args: SelectSubset<T, DraftedItemUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DraftedItems and returns the data updated in the database.
+     * @param {DraftedItemUpdateManyAndReturnArgs} args - Arguments to update many DraftedItems.
+     * @example
+     * // Update many DraftedItems
+     * const draftedItem = await prisma.draftedItem.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DraftedItems and only return the `draft_id`
+     * const draftedItemWithDraft_idOnly = await prisma.draftedItem.updateManyAndReturn({
+     *   select: { draft_id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DraftedItemUpdateManyAndReturnArgs>(args: SelectSubset<T, DraftedItemUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DraftedItem.
+     * @param {DraftedItemUpsertArgs} args - Arguments to update or create a DraftedItem.
+     * @example
+     * // Update or create a DraftedItem
+     * const draftedItem = await prisma.draftedItem.upsert({
+     *   create: {
+     *     // ... data to create a DraftedItem
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DraftedItem we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DraftedItemUpsertArgs>(args: SelectSubset<T, DraftedItemUpsertArgs<ExtArgs>>): Prisma__DraftedItemClient<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DraftedItems.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemCountArgs} args - Arguments to filter DraftedItems to count.
+     * @example
+     * // Count the number of DraftedItems
+     * const count = await prisma.draftedItem.count({
+     *   where: {
+     *     // ... the filter for the DraftedItems we want to count
+     *   }
+     * })
+    **/
+    count<T extends DraftedItemCountArgs>(
+      args?: Subset<T, DraftedItemCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DraftedItemCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DraftedItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DraftedItemAggregateArgs>(args: Subset<T, DraftedItemAggregateArgs>): Prisma.PrismaPromise<GetDraftedItemAggregateType<T>>
+
+    /**
+     * Group by DraftedItem.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DraftedItemGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DraftedItemGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DraftedItemGroupByArgs['orderBy'] }
+        : { orderBy?: DraftedItemGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DraftedItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDraftedItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DraftedItem model
+   */
+  readonly fields: DraftedItemFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DraftedItem.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DraftedItemClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    draft<T extends DraftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DraftDefaultArgs<ExtArgs>>): Prisma__DraftClient<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    clothing<T extends ClothingItemsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItemsDefaultArgs<ExtArgs>>): Prisma__ClothingItemsClient<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DraftedItem model
+   */
+  interface DraftedItemFieldRefs {
+    readonly draft_id: FieldRef<"DraftedItem", 'Int'>
+    readonly clothing_id: FieldRef<"DraftedItem", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DraftedItem findUnique
+   */
+  export type DraftedItemFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DraftedItem to fetch.
+     */
+    where: DraftedItemWhereUniqueInput
+  }
+
+  /**
+   * DraftedItem findUniqueOrThrow
+   */
+  export type DraftedItemFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DraftedItem to fetch.
+     */
+    where: DraftedItemWhereUniqueInput
+  }
+
+  /**
+   * DraftedItem findFirst
+   */
+  export type DraftedItemFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DraftedItem to fetch.
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DraftedItems to fetch.
+     */
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DraftedItems.
+     */
+    cursor?: DraftedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DraftedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DraftedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DraftedItems.
+     */
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
+  }
+
+  /**
+   * DraftedItem findFirstOrThrow
+   */
+  export type DraftedItemFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DraftedItem to fetch.
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DraftedItems to fetch.
+     */
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DraftedItems.
+     */
+    cursor?: DraftedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DraftedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DraftedItems.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DraftedItems.
+     */
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
+  }
+
+  /**
+   * DraftedItem findMany
+   */
+  export type DraftedItemFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter, which DraftedItems to fetch.
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DraftedItems to fetch.
+     */
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DraftedItems.
+     */
+    cursor?: DraftedItemWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DraftedItems from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DraftedItems.
+     */
+    skip?: number
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
+  }
+
+  /**
+   * DraftedItem create
+   */
+  export type DraftedItemCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DraftedItem.
+     */
+    data: XOR<DraftedItemCreateInput, DraftedItemUncheckedCreateInput>
+  }
+
+  /**
+   * DraftedItem createMany
+   */
+  export type DraftedItemCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DraftedItems.
+     */
+    data: DraftedItemCreateManyInput | DraftedItemCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DraftedItem createManyAndReturn
+   */
+  export type DraftedItemCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * The data used to create many DraftedItems.
+     */
+    data: DraftedItemCreateManyInput | DraftedItemCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DraftedItem update
+   */
+  export type DraftedItemUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DraftedItem.
+     */
+    data: XOR<DraftedItemUpdateInput, DraftedItemUncheckedUpdateInput>
+    /**
+     * Choose, which DraftedItem to update.
+     */
+    where: DraftedItemWhereUniqueInput
+  }
+
+  /**
+   * DraftedItem updateMany
+   */
+  export type DraftedItemUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DraftedItems.
+     */
+    data: XOR<DraftedItemUpdateManyMutationInput, DraftedItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DraftedItems to update
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * Limit how many DraftedItems to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DraftedItem updateManyAndReturn
+   */
+  export type DraftedItemUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * The data used to update DraftedItems.
+     */
+    data: XOR<DraftedItemUpdateManyMutationInput, DraftedItemUncheckedUpdateManyInput>
+    /**
+     * Filter which DraftedItems to update
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * Limit how many DraftedItems to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DraftedItem upsert
+   */
+  export type DraftedItemUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DraftedItem to update in case it exists.
+     */
+    where: DraftedItemWhereUniqueInput
+    /**
+     * In case the DraftedItem found by the `where` argument doesn't exist, create a new DraftedItem with this data.
+     */
+    create: XOR<DraftedItemCreateInput, DraftedItemUncheckedCreateInput>
+    /**
+     * In case the DraftedItem was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DraftedItemUpdateInput, DraftedItemUncheckedUpdateInput>
+  }
+
+  /**
+   * DraftedItem delete
+   */
+  export type DraftedItemDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    /**
+     * Filter which DraftedItem to delete.
+     */
+    where: DraftedItemWhereUniqueInput
+  }
+
+  /**
+   * DraftedItem deleteMany
+   */
+  export type DraftedItemDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DraftedItems to delete
+     */
+    where?: DraftedItemWhereInput
+    /**
+     * Limit how many DraftedItems to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DraftedItem without action
+   */
+  export type DraftedItemDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -15471,7 +18023,8 @@ export namespace Prisma {
     owned_by: 'owned_by',
     front_image_url: 'front_image_url',
     back_image_url: 'back_image_url',
-    status: 'status'
+    status: 'status',
+    drafted_status: 'drafted_status'
   };
 
   export type ClothingItemsScalarFieldEnum = (typeof ClothingItemsScalarFieldEnum)[keyof typeof ClothingItemsScalarFieldEnum]
@@ -15490,6 +18043,26 @@ export namespace Prisma {
   };
 
   export type AuditEventScalarFieldEnum = (typeof AuditEventScalarFieldEnum)[keyof typeof AuditEventScalarFieldEnum]
+
+
+  export const DraftScalarFieldEnum: {
+    draft_id: 'draft_id',
+    charity_id: 'charity_id',
+    title: 'title',
+    draft_status: 'draft_status',
+    created_at: 'created_at',
+    edited_at: 'edited_at'
+  };
+
+  export type DraftScalarFieldEnum = (typeof DraftScalarFieldEnum)[keyof typeof DraftScalarFieldEnum]
+
+
+  export const DraftedItemScalarFieldEnum: {
+    draft_id: 'draft_id',
+    clothing_id: 'clothing_id'
+  };
+
+  export type DraftedItemScalarFieldEnum = (typeof DraftedItemScalarFieldEnum)[keyof typeof DraftedItemScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15616,6 +18189,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'clothingDrafted'
+   */
+  export type EnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted'>
+    
+
+
+  /**
+   * Reference to a field of type 'clothingDrafted[]'
+   */
+  export type ListEnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -15626,6 +18213,20 @@ export namespace Prisma {
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'draftStatus'
+   */
+  export type EnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'draftStatus[]'
+   */
+  export type ListEnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus[]'>
     
 
 
@@ -15891,6 +18492,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    Draft?: DraftListRelationFilter
   }
 
   export type CharitiesOrderByWithRelationInput = {
@@ -15910,6 +18512,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestOrderByRelationAggregateInput
     donations_received?: DonationsOrderByRelationAggregateInput
     Session?: SessionOrderByRelationAggregateInput
+    Draft?: DraftOrderByRelationAggregateInput
   }
 
   export type CharitiesWhereUniqueInput = Prisma.AtLeast<{
@@ -15932,6 +18535,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
     Session?: SessionListRelationFilter
+    Draft?: DraftListRelationFilter
   }, "charity_id" | "email">
 
   export type CharitiesOrderByWithAggregationInput = {
@@ -16393,10 +18997,12 @@ export namespace Prisma {
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
     Donations?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     DonationRequest?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
     Charities?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    DraftedItem?: DraftedItemListRelationFilter
   }
 
   export type ClothingItemsOrderByWithRelationInput = {
@@ -16411,10 +19017,12 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
     Donations?: DonationsOrderByWithRelationInput
     DonationRequest?: DonationRequestOrderByWithRelationInput
     User?: UserOrderByWithRelationInput
     Charities?: CharitiesOrderByWithRelationInput
+    DraftedItem?: DraftedItemOrderByRelationAggregateInput
   }
 
   export type ClothingItemsWhereUniqueInput = Prisma.AtLeast<{
@@ -16432,10 +19040,12 @@ export namespace Prisma {
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
     Donations?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     DonationRequest?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
     Charities?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    DraftedItem?: DraftedItemListRelationFilter
   }, "clothing_id">
 
   export type ClothingItemsOrderByWithAggregationInput = {
@@ -16450,6 +19060,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
     _count?: ClothingItemsCountOrderByAggregateInput
     _avg?: ClothingItemsAvgOrderByAggregateInput
     _max?: ClothingItemsMaxOrderByAggregateInput
@@ -16472,6 +19083,7 @@ export namespace Prisma {
     front_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
     back_image_url?: StringWithAggregatesFilter<"ClothingItems"> | string
     status?: EnumStatusWithAggregatesFilter<"ClothingItems"> | $Enums.Status
+    drafted_status?: EnumclothingDraftedWithAggregatesFilter<"ClothingItems"> | $Enums.clothingDrafted
   }
 
   export type AuditEventWhereInput = {
@@ -16546,6 +19158,117 @@ export namespace Prisma {
     donation_id?: IntNullableWithAggregatesFilter<"AuditEvent"> | number | null
     metadata?: JsonNullableWithAggregatesFilter<"AuditEvent">
     created_on?: DateTimeWithAggregatesFilter<"AuditEvent"> | Date | string
+  }
+
+  export type DraftWhereInput = {
+    AND?: DraftWhereInput | DraftWhereInput[]
+    OR?: DraftWhereInput[]
+    NOT?: DraftWhereInput | DraftWhereInput[]
+    draft_id?: IntFilter<"Draft"> | number
+    charity_id?: IntFilter<"Draft"> | number
+    title?: StringFilter<"Draft"> | string
+    draft_status?: EnumdraftStatusFilter<"Draft"> | $Enums.draftStatus
+    created_at?: DateTimeFilter<"Draft"> | Date | string
+    edited_at?: DateTimeFilter<"Draft"> | Date | string
+    charity?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
+    items?: DraftedItemListRelationFilter
+  }
+
+  export type DraftOrderByWithRelationInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+    title?: SortOrder
+    draft_status?: SortOrder
+    created_at?: SortOrder
+    edited_at?: SortOrder
+    charity?: CharitiesOrderByWithRelationInput
+    items?: DraftedItemOrderByRelationAggregateInput
+  }
+
+  export type DraftWhereUniqueInput = Prisma.AtLeast<{
+    draft_id?: number
+    AND?: DraftWhereInput | DraftWhereInput[]
+    OR?: DraftWhereInput[]
+    NOT?: DraftWhereInput | DraftWhereInput[]
+    charity_id?: IntFilter<"Draft"> | number
+    title?: StringFilter<"Draft"> | string
+    draft_status?: EnumdraftStatusFilter<"Draft"> | $Enums.draftStatus
+    created_at?: DateTimeFilter<"Draft"> | Date | string
+    edited_at?: DateTimeFilter<"Draft"> | Date | string
+    charity?: XOR<CharitiesScalarRelationFilter, CharitiesWhereInput>
+    items?: DraftedItemListRelationFilter
+  }, "draft_id">
+
+  export type DraftOrderByWithAggregationInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+    title?: SortOrder
+    draft_status?: SortOrder
+    created_at?: SortOrder
+    edited_at?: SortOrder
+    _count?: DraftCountOrderByAggregateInput
+    _avg?: DraftAvgOrderByAggregateInput
+    _max?: DraftMaxOrderByAggregateInput
+    _min?: DraftMinOrderByAggregateInput
+    _sum?: DraftSumOrderByAggregateInput
+  }
+
+  export type DraftScalarWhereWithAggregatesInput = {
+    AND?: DraftScalarWhereWithAggregatesInput | DraftScalarWhereWithAggregatesInput[]
+    OR?: DraftScalarWhereWithAggregatesInput[]
+    NOT?: DraftScalarWhereWithAggregatesInput | DraftScalarWhereWithAggregatesInput[]
+    draft_id?: IntWithAggregatesFilter<"Draft"> | number
+    charity_id?: IntWithAggregatesFilter<"Draft"> | number
+    title?: StringWithAggregatesFilter<"Draft"> | string
+    draft_status?: EnumdraftStatusWithAggregatesFilter<"Draft"> | $Enums.draftStatus
+    created_at?: DateTimeWithAggregatesFilter<"Draft"> | Date | string
+    edited_at?: DateTimeWithAggregatesFilter<"Draft"> | Date | string
+  }
+
+  export type DraftedItemWhereInput = {
+    AND?: DraftedItemWhereInput | DraftedItemWhereInput[]
+    OR?: DraftedItemWhereInput[]
+    NOT?: DraftedItemWhereInput | DraftedItemWhereInput[]
+    draft_id?: IntFilter<"DraftedItem"> | number
+    clothing_id?: IntFilter<"DraftedItem"> | number
+    draft?: XOR<DraftScalarRelationFilter, DraftWhereInput>
+    clothing?: XOR<ClothingItemsScalarRelationFilter, ClothingItemsWhereInput>
+  }
+
+  export type DraftedItemOrderByWithRelationInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+    draft?: DraftOrderByWithRelationInput
+    clothing?: ClothingItemsOrderByWithRelationInput
+  }
+
+  export type DraftedItemWhereUniqueInput = Prisma.AtLeast<{
+    draft_id_clothing_id?: DraftedItemDraft_idClothing_idCompoundUniqueInput
+    AND?: DraftedItemWhereInput | DraftedItemWhereInput[]
+    OR?: DraftedItemWhereInput[]
+    NOT?: DraftedItemWhereInput | DraftedItemWhereInput[]
+    draft_id?: IntFilter<"DraftedItem"> | number
+    clothing_id?: IntFilter<"DraftedItem"> | number
+    draft?: XOR<DraftScalarRelationFilter, DraftWhereInput>
+    clothing?: XOR<ClothingItemsScalarRelationFilter, ClothingItemsWhereInput>
+  }, "draft_id_clothing_id">
+
+  export type DraftedItemOrderByWithAggregationInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+    _count?: DraftedItemCountOrderByAggregateInput
+    _avg?: DraftedItemAvgOrderByAggregateInput
+    _max?: DraftedItemMaxOrderByAggregateInput
+    _min?: DraftedItemMinOrderByAggregateInput
+    _sum?: DraftedItemSumOrderByAggregateInput
+  }
+
+  export type DraftedItemScalarWhereWithAggregatesInput = {
+    AND?: DraftedItemScalarWhereWithAggregatesInput | DraftedItemScalarWhereWithAggregatesInput[]
+    OR?: DraftedItemScalarWhereWithAggregatesInput[]
+    NOT?: DraftedItemScalarWhereWithAggregatesInput | DraftedItemScalarWhereWithAggregatesInput[]
+    draft_id?: IntWithAggregatesFilter<"DraftedItem"> | number
+    clothing_id?: IntWithAggregatesFilter<"DraftedItem"> | number
   }
 
   export type UserCreateInput = {
@@ -16799,6 +19522,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateInput = {
@@ -16818,6 +19542,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUpdateInput = {
@@ -16836,6 +19561,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateInput = {
@@ -16855,6 +19581,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesCreateManyInput = {
@@ -17300,10 +20027,12 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    DraftedItem?: DraftedItemCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUncheckedCreateInput = {
@@ -17318,6 +20047,8 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUpdateInput = {
@@ -17327,10 +20058,12 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    DraftedItem?: DraftedItemUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateInput = {
@@ -17345,6 +20078,8 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsCreateManyInput = {
@@ -17359,6 +20094,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateManyMutationInput = {
@@ -17368,6 +20104,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type ClothingItemsUncheckedUpdateManyInput = {
@@ -17382,6 +20119,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type AuditEventCreateInput = {
@@ -17463,6 +20201,103 @@ export namespace Prisma {
     donation_id?: NullableIntFieldUpdateOperationsInput | number | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
     created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DraftCreateInput = {
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    charity: CharitiesCreateNestedOneWithoutDraftInput
+    items?: DraftedItemCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftUncheckedCreateInput = {
+    draft_id?: number
+    charity_id: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    items?: DraftedItemUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftUpdateInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    charity?: CharitiesUpdateOneRequiredWithoutDraftNestedInput
+    items?: DraftedItemUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DraftedItemUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftCreateManyInput = {
+    draft_id?: number
+    charity_id: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+  }
+
+  export type DraftUpdateManyMutationInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DraftUncheckedUpdateManyInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DraftedItemCreateInput = {
+    draft: DraftCreateNestedOneWithoutItemsInput
+    clothing: ClothingItemsCreateNestedOneWithoutDraftedItemInput
+  }
+
+  export type DraftedItemUncheckedCreateInput = {
+    draft_id: number
+    clothing_id: number
+  }
+
+  export type DraftedItemUpdateInput = {
+    draft?: DraftUpdateOneRequiredWithoutItemsNestedInput
+    clothing?: ClothingItemsUpdateOneRequiredWithoutDraftedItemNestedInput
+  }
+
+  export type DraftedItemUncheckedUpdateInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    clothing_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DraftedItemCreateManyInput = {
+    draft_id: number
+    clothing_id: number
+  }
+
+  export type DraftedItemUpdateManyMutationInput = {
+
+  }
+
+  export type DraftedItemUncheckedUpdateManyInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    clothing_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -17809,6 +20644,16 @@ export namespace Prisma {
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type DraftListRelationFilter = {
+    every?: DraftWhereInput
+    some?: DraftWhereInput
+    none?: DraftWhereInput
+  }
+
+  export type DraftOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type CharitiesCountOrderByAggregateInput = {
@@ -18203,6 +21048,23 @@ export namespace Prisma {
     _max?: NestedEnumSessionActorTypeFilter<$PrismaModel>
   }
 
+  export type EnumclothingDraftedFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedFilter<$PrismaModel> | $Enums.clothingDrafted
+  }
+
+  export type DraftedItemListRelationFilter = {
+    every?: DraftedItemWhereInput
+    some?: DraftedItemWhereInput
+    none?: DraftedItemWhereInput
+  }
+
+  export type DraftedItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ClothingItemsCountOrderByAggregateInput = {
     clothing_id?: SortOrder
     donation_request_id?: SortOrder
@@ -18215,6 +21077,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
   }
 
   export type ClothingItemsAvgOrderByAggregateInput = {
@@ -18237,6 +21100,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
   }
 
   export type ClothingItemsMinOrderByAggregateInput = {
@@ -18251,6 +21115,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
   }
 
   export type ClothingItemsSumOrderByAggregateInput = {
@@ -18259,6 +21124,16 @@ export namespace Prisma {
     donor_id?: SortOrder
     donation_id?: SortOrder
     owned_by?: SortOrder
+  }
+
+  export type EnumclothingDraftedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedWithAggregatesFilter<$PrismaModel> | $Enums.clothingDrafted
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumclothingDraftedFilter<$PrismaModel>
+    _max?: NestedEnumclothingDraftedFilter<$PrismaModel>
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -18358,6 +21233,100 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedJsonNullableFilter<$PrismaModel>
     _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type EnumdraftStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusFilter<$PrismaModel> | $Enums.draftStatus
+  }
+
+  export type DraftCountOrderByAggregateInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+    title?: SortOrder
+    draft_status?: SortOrder
+    created_at?: SortOrder
+    edited_at?: SortOrder
+  }
+
+  export type DraftAvgOrderByAggregateInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type DraftMaxOrderByAggregateInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+    title?: SortOrder
+    draft_status?: SortOrder
+    created_at?: SortOrder
+    edited_at?: SortOrder
+  }
+
+  export type DraftMinOrderByAggregateInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+    title?: SortOrder
+    draft_status?: SortOrder
+    created_at?: SortOrder
+    edited_at?: SortOrder
+  }
+
+  export type DraftSumOrderByAggregateInput = {
+    draft_id?: SortOrder
+    charity_id?: SortOrder
+  }
+
+  export type EnumdraftStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusWithAggregatesFilter<$PrismaModel> | $Enums.draftStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumdraftStatusFilter<$PrismaModel>
+    _max?: NestedEnumdraftStatusFilter<$PrismaModel>
+  }
+
+  export type DraftScalarRelationFilter = {
+    is?: DraftWhereInput
+    isNot?: DraftWhereInput
+  }
+
+  export type ClothingItemsScalarRelationFilter = {
+    is?: ClothingItemsWhereInput
+    isNot?: ClothingItemsWhereInput
+  }
+
+  export type DraftedItemDraft_idClothing_idCompoundUniqueInput = {
+    draft_id: number
+    clothing_id: number
+  }
+
+  export type DraftedItemCountOrderByAggregateInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+  }
+
+  export type DraftedItemAvgOrderByAggregateInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+  }
+
+  export type DraftedItemMaxOrderByAggregateInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+  }
+
+  export type DraftedItemMinOrderByAggregateInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
+  }
+
+  export type DraftedItemSumOrderByAggregateInput = {
+    draft_id?: SortOrder
+    clothing_id?: SortOrder
   }
 
   export type CharityApplicationsCreateNestedManyWithoutApproverInput = {
@@ -18832,6 +21801,13 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
+  export type DraftCreateNestedManyWithoutCharityInput = {
+    create?: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput> | DraftCreateWithoutCharityInput[] | DraftUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharityInput | DraftCreateOrConnectWithoutCharityInput[]
+    createMany?: DraftCreateManyCharityInputEnvelope
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+  }
+
   export type CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -18872,6 +21848,13 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
     createMany?: SessionCreateManyCharityInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type DraftUncheckedCreateNestedManyWithoutCharityInput = {
+    create?: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput> | DraftCreateWithoutCharityInput[] | DraftUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharityInput | DraftCreateOrConnectWithoutCharityInput[]
+    createMany?: DraftCreateManyCharityInputEnvelope
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -18962,6 +21945,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type DraftUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput> | DraftCreateWithoutCharityInput[] | DraftUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharityInput | DraftCreateOrConnectWithoutCharityInput[]
+    upsert?: DraftUpsertWithWhereUniqueWithoutCharityInput | DraftUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: DraftCreateManyCharityInputEnvelope
+    set?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    disconnect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    delete?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    update?: DraftUpdateWithWhereUniqueWithoutCharityInput | DraftUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: DraftUpdateManyWithWhereWithoutCharityInput | DraftUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: DraftScalarWhereInput | DraftScalarWhereInput[]
+  }
+
   export type CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput = {
     create?: XOR<CharityApplicationsCreateWithoutCharityInput, CharityApplicationsUncheckedCreateWithoutCharityInput> | CharityApplicationsCreateWithoutCharityInput[] | CharityApplicationsUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: CharityApplicationsCreateOrConnectWithoutCharityInput | CharityApplicationsCreateOrConnectWithoutCharityInput[]
@@ -19044,6 +22041,20 @@ export namespace Prisma {
     update?: SessionUpdateWithWhereUniqueWithoutCharityInput | SessionUpdateWithWhereUniqueWithoutCharityInput[]
     updateMany?: SessionUpdateManyWithWhereWithoutCharityInput | SessionUpdateManyWithWhereWithoutCharityInput[]
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type DraftUncheckedUpdateManyWithoutCharityNestedInput = {
+    create?: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput> | DraftCreateWithoutCharityInput[] | DraftUncheckedCreateWithoutCharityInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharityInput | DraftCreateOrConnectWithoutCharityInput[]
+    upsert?: DraftUpsertWithWhereUniqueWithoutCharityInput | DraftUpsertWithWhereUniqueWithoutCharityInput[]
+    createMany?: DraftCreateManyCharityInputEnvelope
+    set?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    disconnect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    delete?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    update?: DraftUpdateWithWhereUniqueWithoutCharityInput | DraftUpdateWithWhereUniqueWithoutCharityInput[]
+    updateMany?: DraftUpdateManyWithWhereWithoutCharityInput | DraftUpdateManyWithWhereWithoutCharityInput[]
+    deleteMany?: DraftScalarWhereInput | DraftScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutApproved_applicationsInput = {
@@ -19384,6 +22395,24 @@ export namespace Prisma {
     connect?: CharitiesWhereUniqueInput
   }
 
+  export type DraftedItemCreateNestedManyWithoutClothingInput = {
+    create?: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput> | DraftedItemCreateWithoutClothingInput[] | DraftedItemUncheckedCreateWithoutClothingInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutClothingInput | DraftedItemCreateOrConnectWithoutClothingInput[]
+    createMany?: DraftedItemCreateManyClothingInputEnvelope
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+  }
+
+  export type DraftedItemUncheckedCreateNestedManyWithoutClothingInput = {
+    create?: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput> | DraftedItemCreateWithoutClothingInput[] | DraftedItemUncheckedCreateWithoutClothingInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutClothingInput | DraftedItemCreateOrConnectWithoutClothingInput[]
+    createMany?: DraftedItemCreateManyClothingInputEnvelope
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+  }
+
+  export type EnumclothingDraftedFieldUpdateOperationsInput = {
+    set?: $Enums.clothingDrafted
+  }
+
   export type DonationsUpdateOneWithoutClothingItemsNestedInput = {
     create?: XOR<DonationsCreateWithoutClothingItemsInput, DonationsUncheckedCreateWithoutClothingItemsInput>
     connectOrCreate?: DonationsCreateOrConnectWithoutClothingItemsInput
@@ -19418,6 +22447,122 @@ export namespace Prisma {
     delete?: CharitiesWhereInput | boolean
     connect?: CharitiesWhereUniqueInput
     update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutClothingItemsInput, CharitiesUpdateWithoutClothingItemsInput>, CharitiesUncheckedUpdateWithoutClothingItemsInput>
+  }
+
+  export type DraftedItemUpdateManyWithoutClothingNestedInput = {
+    create?: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput> | DraftedItemCreateWithoutClothingInput[] | DraftedItemUncheckedCreateWithoutClothingInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutClothingInput | DraftedItemCreateOrConnectWithoutClothingInput[]
+    upsert?: DraftedItemUpsertWithWhereUniqueWithoutClothingInput | DraftedItemUpsertWithWhereUniqueWithoutClothingInput[]
+    createMany?: DraftedItemCreateManyClothingInputEnvelope
+    set?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    disconnect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    delete?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    update?: DraftedItemUpdateWithWhereUniqueWithoutClothingInput | DraftedItemUpdateWithWhereUniqueWithoutClothingInput[]
+    updateMany?: DraftedItemUpdateManyWithWhereWithoutClothingInput | DraftedItemUpdateManyWithWhereWithoutClothingInput[]
+    deleteMany?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+  }
+
+  export type DraftedItemUncheckedUpdateManyWithoutClothingNestedInput = {
+    create?: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput> | DraftedItemCreateWithoutClothingInput[] | DraftedItemUncheckedCreateWithoutClothingInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutClothingInput | DraftedItemCreateOrConnectWithoutClothingInput[]
+    upsert?: DraftedItemUpsertWithWhereUniqueWithoutClothingInput | DraftedItemUpsertWithWhereUniqueWithoutClothingInput[]
+    createMany?: DraftedItemCreateManyClothingInputEnvelope
+    set?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    disconnect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    delete?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    update?: DraftedItemUpdateWithWhereUniqueWithoutClothingInput | DraftedItemUpdateWithWhereUniqueWithoutClothingInput[]
+    updateMany?: DraftedItemUpdateManyWithWhereWithoutClothingInput | DraftedItemUpdateManyWithWhereWithoutClothingInput[]
+    deleteMany?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+  }
+
+  export type CharitiesCreateNestedOneWithoutDraftInput = {
+    create?: XOR<CharitiesCreateWithoutDraftInput, CharitiesUncheckedCreateWithoutDraftInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutDraftInput
+    connect?: CharitiesWhereUniqueInput
+  }
+
+  export type DraftedItemCreateNestedManyWithoutDraftInput = {
+    create?: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput> | DraftedItemCreateWithoutDraftInput[] | DraftedItemUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutDraftInput | DraftedItemCreateOrConnectWithoutDraftInput[]
+    createMany?: DraftedItemCreateManyDraftInputEnvelope
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+  }
+
+  export type DraftedItemUncheckedCreateNestedManyWithoutDraftInput = {
+    create?: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput> | DraftedItemCreateWithoutDraftInput[] | DraftedItemUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutDraftInput | DraftedItemCreateOrConnectWithoutDraftInput[]
+    createMany?: DraftedItemCreateManyDraftInputEnvelope
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+  }
+
+  export type EnumdraftStatusFieldUpdateOperationsInput = {
+    set?: $Enums.draftStatus
+  }
+
+  export type CharitiesUpdateOneRequiredWithoutDraftNestedInput = {
+    create?: XOR<CharitiesCreateWithoutDraftInput, CharitiesUncheckedCreateWithoutDraftInput>
+    connectOrCreate?: CharitiesCreateOrConnectWithoutDraftInput
+    upsert?: CharitiesUpsertWithoutDraftInput
+    connect?: CharitiesWhereUniqueInput
+    update?: XOR<XOR<CharitiesUpdateToOneWithWhereWithoutDraftInput, CharitiesUpdateWithoutDraftInput>, CharitiesUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type DraftedItemUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput> | DraftedItemCreateWithoutDraftInput[] | DraftedItemUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutDraftInput | DraftedItemCreateOrConnectWithoutDraftInput[]
+    upsert?: DraftedItemUpsertWithWhereUniqueWithoutDraftInput | DraftedItemUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: DraftedItemCreateManyDraftInputEnvelope
+    set?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    disconnect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    delete?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    update?: DraftedItemUpdateWithWhereUniqueWithoutDraftInput | DraftedItemUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: DraftedItemUpdateManyWithWhereWithoutDraftInput | DraftedItemUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+  }
+
+  export type DraftedItemUncheckedUpdateManyWithoutDraftNestedInput = {
+    create?: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput> | DraftedItemCreateWithoutDraftInput[] | DraftedItemUncheckedCreateWithoutDraftInput[]
+    connectOrCreate?: DraftedItemCreateOrConnectWithoutDraftInput | DraftedItemCreateOrConnectWithoutDraftInput[]
+    upsert?: DraftedItemUpsertWithWhereUniqueWithoutDraftInput | DraftedItemUpsertWithWhereUniqueWithoutDraftInput[]
+    createMany?: DraftedItemCreateManyDraftInputEnvelope
+    set?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    disconnect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    delete?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    connect?: DraftedItemWhereUniqueInput | DraftedItemWhereUniqueInput[]
+    update?: DraftedItemUpdateWithWhereUniqueWithoutDraftInput | DraftedItemUpdateWithWhereUniqueWithoutDraftInput[]
+    updateMany?: DraftedItemUpdateManyWithWhereWithoutDraftInput | DraftedItemUpdateManyWithWhereWithoutDraftInput[]
+    deleteMany?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+  }
+
+  export type DraftCreateNestedOneWithoutItemsInput = {
+    create?: XOR<DraftCreateWithoutItemsInput, DraftUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DraftCreateOrConnectWithoutItemsInput
+    connect?: DraftWhereUniqueInput
+  }
+
+  export type ClothingItemsCreateNestedOneWithoutDraftedItemInput = {
+    create?: XOR<ClothingItemsCreateWithoutDraftedItemInput, ClothingItemsUncheckedCreateWithoutDraftedItemInput>
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDraftedItemInput
+    connect?: ClothingItemsWhereUniqueInput
+  }
+
+  export type DraftUpdateOneRequiredWithoutItemsNestedInput = {
+    create?: XOR<DraftCreateWithoutItemsInput, DraftUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: DraftCreateOrConnectWithoutItemsInput
+    upsert?: DraftUpsertWithoutItemsInput
+    connect?: DraftWhereUniqueInput
+    update?: XOR<XOR<DraftUpdateToOneWithWhereWithoutItemsInput, DraftUpdateWithoutItemsInput>, DraftUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ClothingItemsUpdateOneRequiredWithoutDraftedItemNestedInput = {
+    create?: XOR<ClothingItemsCreateWithoutDraftedItemInput, ClothingItemsUncheckedCreateWithoutDraftedItemInput>
+    connectOrCreate?: ClothingItemsCreateOrConnectWithoutDraftedItemInput
+    upsert?: ClothingItemsUpsertWithoutDraftedItemInput
+    connect?: ClothingItemsWhereUniqueInput
+    update?: XOR<XOR<ClothingItemsUpdateToOneWithWhereWithoutDraftedItemInput, ClothingItemsUpdateWithoutDraftedItemInput>, ClothingItemsUncheckedUpdateWithoutDraftedItemInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -19654,6 +22799,23 @@ export namespace Prisma {
     _min?: NestedEnumSessionActorTypeFilter<$PrismaModel>
     _max?: NestedEnumSessionActorTypeFilter<$PrismaModel>
   }
+
+  export type NestedEnumclothingDraftedFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedFilter<$PrismaModel> | $Enums.clothingDrafted
+  }
+
+  export type NestedEnumclothingDraftedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedWithAggregatesFilter<$PrismaModel> | $Enums.clothingDrafted
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumclothingDraftedFilter<$PrismaModel>
+    _max?: NestedEnumclothingDraftedFilter<$PrismaModel>
+  }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -19676,6 +22838,23 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumdraftStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusFilter<$PrismaModel> | $Enums.draftStatus
+  }
+
+  export type NestedEnumdraftStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusWithAggregatesFilter<$PrismaModel> | $Enums.draftStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumdraftStatusFilter<$PrismaModel>
+    _max?: NestedEnumdraftStatusFilter<$PrismaModel>
   }
 
   export type CharityApplicationsCreateWithoutApproverInput = {
@@ -19804,9 +22983,11 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    DraftedItem?: DraftedItemCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUncheckedCreateWithoutUserInput = {
@@ -19820,6 +23001,8 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsCreateOrConnectWithoutUserInput = {
@@ -20082,6 +23265,7 @@ export namespace Prisma {
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
   }
 
   export type DonationRequestUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -20495,9 +23679,11 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
+    DraftedItem?: DraftedItemCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUncheckedCreateWithoutCharitiesInput = {
@@ -20511,6 +23697,8 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsCreateOrConnectWithoutCharitiesInput = {
@@ -20605,6 +23793,33 @@ export namespace Prisma {
 
   export type SessionCreateManyCharityInputEnvelope = {
     data: SessionCreateManyCharityInput | SessionCreateManyCharityInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DraftCreateWithoutCharityInput = {
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    items?: DraftedItemCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftUncheckedCreateWithoutCharityInput = {
+    draft_id?: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    items?: DraftedItemUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftCreateOrConnectWithoutCharityInput = {
+    where: DraftWhereUniqueInput
+    create: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput>
+  }
+
+  export type DraftCreateManyCharityInputEnvelope = {
+    data: DraftCreateManyCharityInput | DraftCreateManyCharityInput[]
     skipDuplicates?: boolean
   }
 
@@ -20704,6 +23919,34 @@ export namespace Prisma {
     data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutCharityInput>
   }
 
+  export type DraftUpsertWithWhereUniqueWithoutCharityInput = {
+    where: DraftWhereUniqueInput
+    update: XOR<DraftUpdateWithoutCharityInput, DraftUncheckedUpdateWithoutCharityInput>
+    create: XOR<DraftCreateWithoutCharityInput, DraftUncheckedCreateWithoutCharityInput>
+  }
+
+  export type DraftUpdateWithWhereUniqueWithoutCharityInput = {
+    where: DraftWhereUniqueInput
+    data: XOR<DraftUpdateWithoutCharityInput, DraftUncheckedUpdateWithoutCharityInput>
+  }
+
+  export type DraftUpdateManyWithWhereWithoutCharityInput = {
+    where: DraftScalarWhereInput
+    data: XOR<DraftUpdateManyMutationInput, DraftUncheckedUpdateManyWithoutCharityInput>
+  }
+
+  export type DraftScalarWhereInput = {
+    AND?: DraftScalarWhereInput | DraftScalarWhereInput[]
+    OR?: DraftScalarWhereInput[]
+    NOT?: DraftScalarWhereInput | DraftScalarWhereInput[]
+    draft_id?: IntFilter<"Draft"> | number
+    charity_id?: IntFilter<"Draft"> | number
+    title?: StringFilter<"Draft"> | string
+    draft_status?: EnumdraftStatusFilter<"Draft"> | $Enums.draftStatus
+    created_at?: DateTimeFilter<"Draft"> | Date | string
+    edited_at?: DateTimeFilter<"Draft"> | Date | string
+  }
+
   export type UserCreateWithoutApproved_applicationsInput = {
     email: string
     password_hash: string
@@ -20763,6 +24006,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutApplicationsInput = {
@@ -20781,6 +24025,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutApplicationsInput = {
@@ -20908,6 +24153,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutApplicationsInput = {
@@ -20926,6 +24172,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutReviewed_applicationsInput = {
@@ -20993,6 +24240,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutSignup_tokensInput = {
@@ -21011,6 +24259,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutSignup_tokensInput = {
@@ -21088,6 +24337,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutSignup_tokensInput = {
@@ -21106,6 +24356,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutCreated_invitesInput = {
@@ -21165,9 +24416,11 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    DraftedItem?: DraftedItemCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUncheckedCreateWithoutDonationsInput = {
@@ -21181,6 +24434,8 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsCreateOrConnectWithoutDonationsInput = {
@@ -21208,6 +24463,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonations_receivedInput = {
@@ -21226,6 +24482,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonations_receivedInput = {
@@ -21345,6 +24602,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonations_receivedInput = {
@@ -21363,6 +24621,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutDonations_createdInput = {
@@ -21454,9 +24713,11 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
+    DraftedItem?: DraftedItemCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsUncheckedCreateWithoutDonationRequestInput = {
@@ -21470,6 +24731,8 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutClothingInput
   }
 
   export type ClothingItemsCreateOrConnectWithoutDonationRequestInput = {
@@ -21497,6 +24760,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutDonation_requests_answeredInput = {
@@ -21515,6 +24779,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutDonation_requests_answeredInput = {
@@ -21628,6 +24893,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutDonation_requests_answeredInput = {
@@ -21646,6 +24912,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutDonation_requestsInput = {
@@ -21739,6 +25006,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutSessionInput = {
@@ -21757,6 +25025,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutSessionInput = {
@@ -21834,6 +25103,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutSessionInput = {
@@ -21852,6 +25122,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
 
   export type UserUpsertWithoutSessionInput = {
@@ -22009,6 +25280,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
     Session?: SessionCreateNestedManyWithoutCharityInput
+    Draft?: DraftCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesUncheckedCreateWithoutClothingItemsInput = {
@@ -22027,11 +25299,30 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
 
   export type CharitiesCreateOrConnectWithoutClothingItemsInput = {
     where: CharitiesWhereUniqueInput
     create: XOR<CharitiesCreateWithoutClothingItemsInput, CharitiesUncheckedCreateWithoutClothingItemsInput>
+  }
+
+  export type DraftedItemCreateWithoutClothingInput = {
+    draft: DraftCreateNestedOneWithoutItemsInput
+  }
+
+  export type DraftedItemUncheckedCreateWithoutClothingInput = {
+    draft_id: number
+  }
+
+  export type DraftedItemCreateOrConnectWithoutClothingInput = {
+    where: DraftedItemWhereUniqueInput
+    create: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput>
+  }
+
+  export type DraftedItemCreateManyClothingInputEnvelope = {
+    data: DraftedItemCreateManyClothingInput | DraftedItemCreateManyClothingInput[]
+    skipDuplicates?: boolean
   }
 
   export type DonationsUpsertWithoutClothingItemsInput = {
@@ -22168,6 +25459,7 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
 
   export type CharitiesUncheckedUpdateWithoutClothingItemsInput = {
@@ -22186,6 +25478,279 @@ export namespace Prisma {
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type DraftedItemUpsertWithWhereUniqueWithoutClothingInput = {
+    where: DraftedItemWhereUniqueInput
+    update: XOR<DraftedItemUpdateWithoutClothingInput, DraftedItemUncheckedUpdateWithoutClothingInput>
+    create: XOR<DraftedItemCreateWithoutClothingInput, DraftedItemUncheckedCreateWithoutClothingInput>
+  }
+
+  export type DraftedItemUpdateWithWhereUniqueWithoutClothingInput = {
+    where: DraftedItemWhereUniqueInput
+    data: XOR<DraftedItemUpdateWithoutClothingInput, DraftedItemUncheckedUpdateWithoutClothingInput>
+  }
+
+  export type DraftedItemUpdateManyWithWhereWithoutClothingInput = {
+    where: DraftedItemScalarWhereInput
+    data: XOR<DraftedItemUpdateManyMutationInput, DraftedItemUncheckedUpdateManyWithoutClothingInput>
+  }
+
+  export type DraftedItemScalarWhereInput = {
+    AND?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+    OR?: DraftedItemScalarWhereInput[]
+    NOT?: DraftedItemScalarWhereInput | DraftedItemScalarWhereInput[]
+    draft_id?: IntFilter<"DraftedItem"> | number
+    clothing_id?: IntFilter<"DraftedItem"> | number
+  }
+
+  export type CharitiesCreateWithoutDraftInput = {
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
+    donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Session?: SessionCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesUncheckedCreateWithoutDraftInput = {
+    charity_id?: number
+    name: string
+    email: string
+    phone: string
+    address: string
+    website: string
+    verified?: boolean
+    created_on?: Date | string
+    updated_on?: Date | string
+    password_hash?: string | null
+    applications?: CharityApplicationsUncheckedCreateNestedManyWithoutCharityInput
+    signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
+    ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
+    donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
+    donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
+  }
+
+  export type CharitiesCreateOrConnectWithoutDraftInput = {
+    where: CharitiesWhereUniqueInput
+    create: XOR<CharitiesCreateWithoutDraftInput, CharitiesUncheckedCreateWithoutDraftInput>
+  }
+
+  export type DraftedItemCreateWithoutDraftInput = {
+    clothing: ClothingItemsCreateNestedOneWithoutDraftedItemInput
+  }
+
+  export type DraftedItemUncheckedCreateWithoutDraftInput = {
+    clothing_id: number
+  }
+
+  export type DraftedItemCreateOrConnectWithoutDraftInput = {
+    where: DraftedItemWhereUniqueInput
+    create: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput>
+  }
+
+  export type DraftedItemCreateManyDraftInputEnvelope = {
+    data: DraftedItemCreateManyDraftInput | DraftedItemCreateManyDraftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CharitiesUpsertWithoutDraftInput = {
+    update: XOR<CharitiesUpdateWithoutDraftInput, CharitiesUncheckedUpdateWithoutDraftInput>
+    create: XOR<CharitiesCreateWithoutDraftInput, CharitiesUncheckedCreateWithoutDraftInput>
+    where?: CharitiesWhereInput
+  }
+
+  export type CharitiesUpdateToOneWithWhereWithoutDraftInput = {
+    where?: CharitiesWhereInput
+    data: XOR<CharitiesUpdateWithoutDraftInput, CharitiesUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type CharitiesUpdateWithoutDraftInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
+    donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
+    donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUpdateManyWithoutCharityNestedInput
+  }
+
+  export type CharitiesUncheckedUpdateWithoutDraftInput = {
+    charity_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    website?: StringFieldUpdateOperationsInput | string
+    verified?: BoolFieldUpdateOperationsInput | boolean
+    created_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_on?: DateTimeFieldUpdateOperationsInput | Date | string
+    password_hash?: NullableStringFieldUpdateOperationsInput | string | null
+    applications?: CharityApplicationsUncheckedUpdateManyWithoutCharityNestedInput
+    signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
+    ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
+    donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
+    donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
+  }
+
+  export type DraftedItemUpsertWithWhereUniqueWithoutDraftInput = {
+    where: DraftedItemWhereUniqueInput
+    update: XOR<DraftedItemUpdateWithoutDraftInput, DraftedItemUncheckedUpdateWithoutDraftInput>
+    create: XOR<DraftedItemCreateWithoutDraftInput, DraftedItemUncheckedCreateWithoutDraftInput>
+  }
+
+  export type DraftedItemUpdateWithWhereUniqueWithoutDraftInput = {
+    where: DraftedItemWhereUniqueInput
+    data: XOR<DraftedItemUpdateWithoutDraftInput, DraftedItemUncheckedUpdateWithoutDraftInput>
+  }
+
+  export type DraftedItemUpdateManyWithWhereWithoutDraftInput = {
+    where: DraftedItemScalarWhereInput
+    data: XOR<DraftedItemUpdateManyMutationInput, DraftedItemUncheckedUpdateManyWithoutDraftInput>
+  }
+
+  export type DraftCreateWithoutItemsInput = {
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    charity: CharitiesCreateNestedOneWithoutDraftInput
+  }
+
+  export type DraftUncheckedCreateWithoutItemsInput = {
+    draft_id?: number
+    charity_id: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+  }
+
+  export type DraftCreateOrConnectWithoutItemsInput = {
+    where: DraftWhereUniqueInput
+    create: XOR<DraftCreateWithoutItemsInput, DraftUncheckedCreateWithoutItemsInput>
+  }
+
+  export type ClothingItemsCreateWithoutDraftedItemInput = {
+    type: string
+    size: string
+    condition: string
+    front_image_url: string
+    back_image_url: string
+    status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+    Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
+    DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
+    User: UserCreateNestedOneWithoutClothingItemsInput
+    Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
+  }
+
+  export type ClothingItemsUncheckedCreateWithoutDraftedItemInput = {
+    clothing_id?: number
+    donation_request_id: number
+    type: string
+    size: string
+    condition: string
+    donor_id: number
+    donation_id?: number | null
+    owned_by?: number | null
+    front_image_url: string
+    back_image_url: string
+    status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
+  }
+
+  export type ClothingItemsCreateOrConnectWithoutDraftedItemInput = {
+    where: ClothingItemsWhereUniqueInput
+    create: XOR<ClothingItemsCreateWithoutDraftedItemInput, ClothingItemsUncheckedCreateWithoutDraftedItemInput>
+  }
+
+  export type DraftUpsertWithoutItemsInput = {
+    update: XOR<DraftUpdateWithoutItemsInput, DraftUncheckedUpdateWithoutItemsInput>
+    create: XOR<DraftCreateWithoutItemsInput, DraftUncheckedCreateWithoutItemsInput>
+    where?: DraftWhereInput
+  }
+
+  export type DraftUpdateToOneWithWhereWithoutItemsInput = {
+    where?: DraftWhereInput
+    data: XOR<DraftUpdateWithoutItemsInput, DraftUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type DraftUpdateWithoutItemsInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    charity?: CharitiesUpdateOneRequiredWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateWithoutItemsInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    charity_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClothingItemsUpsertWithoutDraftedItemInput = {
+    update: XOR<ClothingItemsUpdateWithoutDraftedItemInput, ClothingItemsUncheckedUpdateWithoutDraftedItemInput>
+    create: XOR<ClothingItemsCreateWithoutDraftedItemInput, ClothingItemsUncheckedCreateWithoutDraftedItemInput>
+    where?: ClothingItemsWhereInput
+  }
+
+  export type ClothingItemsUpdateToOneWithWhereWithoutDraftedItemInput = {
+    where?: ClothingItemsWhereInput
+    data: XOR<ClothingItemsUpdateWithoutDraftedItemInput, ClothingItemsUncheckedUpdateWithoutDraftedItemInput>
+  }
+
+  export type ClothingItemsUpdateWithoutDraftedItemInput = {
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
+    DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
+    User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+  }
+
+  export type ClothingItemsUncheckedUpdateWithoutDraftedItemInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+    donation_request_id?: IntFieldUpdateOperationsInput | number
+    type?: StringFieldUpdateOperationsInput | string
+    size?: StringFieldUpdateOperationsInput | string
+    condition?: StringFieldUpdateOperationsInput | string
+    donor_id?: IntFieldUpdateOperationsInput | number
+    donation_id?: NullableIntFieldUpdateOperationsInput | number | null
+    owned_by?: NullableIntFieldUpdateOperationsInput | number | null
+    front_image_url?: StringFieldUpdateOperationsInput | string
+    back_image_url?: StringFieldUpdateOperationsInput | string
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type CharityApplicationsCreateManyApproverInput = {
@@ -22245,6 +25810,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type DonationRequestCreateManyCreatorInput = {
@@ -22431,9 +25997,11 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    DraftedItem?: DraftedItemUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateWithoutUserInput = {
@@ -22447,6 +26015,8 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutUserInput = {
@@ -22460,6 +26030,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type DonationRequestUpdateWithoutCreatorInput = {
@@ -22628,6 +26199,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type DonationRequestCreateManyAnswering_charityInput = {
@@ -22654,6 +26226,14 @@ export namespace Prisma {
     created_on?: Date | string
     expires_on: Date | string
     revoked_on?: Date | string | null
+  }
+
+  export type DraftCreateManyCharityInput = {
+    draft_id?: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
   }
 
   export type CharityApplicationsUpdateWithoutCharityInput = {
@@ -22745,9 +26325,11 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
+    DraftedItem?: DraftedItemUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateWithoutCharitiesInput = {
@@ -22761,6 +26343,8 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutCharitiesInput = {
@@ -22774,6 +26358,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type DonationRequestUpdateWithoutAnswering_charityInput = {
@@ -22857,6 +26442,31 @@ export namespace Prisma {
     revoked_on?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type DraftUpdateWithoutCharityInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DraftedItemUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateWithoutCharityInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: DraftedItemUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateManyWithoutCharityInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ClothingItemsCreateManyDonationsInput = {
     clothing_id?: number
     donation_request_id: number
@@ -22868,6 +26478,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateWithoutDonationsInput = {
@@ -22877,9 +26488,11 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    DraftedItem?: DraftedItemUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateWithoutDonationsInput = {
@@ -22893,6 +26506,8 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutDonationsInput = {
@@ -22906,6 +26521,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type ClothingItemsCreateManyDonationRequestInput = {
@@ -22919,6 +26535,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateWithoutDonationRequestInput = {
@@ -22928,9 +26545,11 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
     Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
+    DraftedItem?: DraftedItemUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateWithoutDonationRequestInput = {
@@ -22944,6 +26563,8 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutClothingNestedInput
   }
 
   export type ClothingItemsUncheckedUpdateManyWithoutDonationRequestInput = {
@@ -22957,6 +26578,39 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+  }
+
+  export type DraftedItemCreateManyClothingInput = {
+    draft_id: number
+  }
+
+  export type DraftedItemUpdateWithoutClothingInput = {
+    draft?: DraftUpdateOneRequiredWithoutItemsNestedInput
+  }
+
+  export type DraftedItemUncheckedUpdateWithoutClothingInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DraftedItemUncheckedUpdateManyWithoutClothingInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DraftedItemCreateManyDraftInput = {
+    clothing_id: number
+  }
+
+  export type DraftedItemUpdateWithoutDraftInput = {
+    clothing?: ClothingItemsUpdateOneRequiredWithoutDraftedItemNestedInput
+  }
+
+  export type DraftedItemUncheckedUpdateWithoutDraftInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type DraftedItemUncheckedUpdateManyWithoutDraftInput = {
+    clothing_id?: IntFieldUpdateOperationsInput | number
   }
 
 
