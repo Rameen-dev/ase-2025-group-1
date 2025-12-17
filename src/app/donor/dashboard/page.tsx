@@ -80,7 +80,7 @@ async function refreshAnalytics() {
     // Turn on loading state
     setAnalyticsLoading(true);
 
-    // Fetch analytics securely (includes cookie and handles 401)
+    // Fetch analytics securely 
     const res = await fetchWithAuth(`${API_BASE}/api/donor/analytics`, {
       // no-store forces fresh data each time (important for live dashboards)
       cache: "no-store",

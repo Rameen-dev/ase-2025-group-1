@@ -218,7 +218,7 @@ export default function AdminPage() {
                   type="button"
                   disabled={isSigningOut}
                   onClick={confirmSignOut}
-                  className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {isSigningOut ? "Logging out…" : "Log Out"}
                 </button>

@@ -1,23 +1,18 @@
 // This API route builds the donor’s dashboard analytics by securely collecting all 
 // statistics about their donation activity and recent actions
+// It validates the session by checking it exists, isn't revoked, not expired and with an actor_type = DONOR
+
 
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 
- // Helper: Get the logged-in donor ID from the session cookie.
- // We validate:
- // - cookie exists
- // - session exists
- // - not revoked
- // - not expired
- // - actor_type is DONOR
- 
+
 async function getDonorId(req: NextRequest): Promise<number | null> {
   const token = req.cookies.get("session")?.value;
   if (!token) return null;
 
-  // Here I read the session token from cookies
+  // Here we read the session token from cookies
   const session = await prisma.session.findFirst({
     where: {
       session_token: token,
@@ -126,6 +121,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (err) {
     console.error("GET /api/donor/analytics ERROR:", err);
-    return NextResponse.json({ error: "Failed to load analytics" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to load the donor analytics" }, { status: 500 });
   }
 }
