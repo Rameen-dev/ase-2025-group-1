@@ -32,8 +32,11 @@ export async function GET(
             },
             select: {
                 draft_id: true,
+                charity_id: true,
                 title: true,
                 draft_status: true,
+                created_at: true,
+                edited_at: true,
                 DraftedItem: {
                     select: {
                         clothing_id: true,
@@ -45,6 +48,7 @@ export async function GET(
                                 condition: true,
                                 front_image_url: true,
                                 back_image_url: true,
+                                drafted_status: true,
                             },
                         },
                     },
@@ -56,19 +60,19 @@ export async function GET(
             return NextResponse.json({ error: "Draft not found" }, { status: 404 });
         }
 
-        const items = draft.DraftedItem
-            .map((di) => di.ClothingItems)
-            .filter(Boolean);
+        const items = draft.DraftedItem.map((di) => di.ClothingItems).filter(Boolean);
 
         return NextResponse.json({
             draft_id: draft.draft_id,
+            charity_id: draft.charity_id,
             title: draft.title,
             draft_status: draft.draft_status,
+            created_at: draft.created_at,
+            edited_at: draft.edited_at,
             items,
-            itemCount: items.length,
         });
     } catch (err) {
         console.error("GET /api/charity/inventory/drafts/[draftId] ERROR:", err);
-        return NextResponse.json({ error: "Failed to load draft" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch draft" }, { status: 500 });
     }
 }

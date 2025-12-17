@@ -18,9 +18,11 @@ type Draft = {
 export default function Drafts({
     onCreateDraft,
     refreshToken,
+    onChanged,
 }: {
     onCreateDraft: () => void;
     refreshToken: number;
+    onChanged: () => void;
 }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -117,6 +119,7 @@ export default function Drafts({
                 open={isViewOpen}
                 draftId={viewDraftId}
                 onClose={() => setIsViewOpen(false)}
+                onChanged={onChanged}
             />
         </div>
     );

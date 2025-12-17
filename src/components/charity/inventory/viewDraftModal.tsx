@@ -15,14 +15,18 @@ export default function DraftViewModal({
     open,
     draftId,
     onClose,
+    onChanged,
 }: {
     open: boolean;
     draftId: number | null;
     onClose: () => void;
+    onChanged?: () => void;
 }) {
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
     const [data, setData] = useState<DraftPayload | null>(null);
+
+    const [cancelling, setCancelling] = useState(false);
 
     useEffect(() => {
         if (!open || !draftId) return;
@@ -58,6 +62,31 @@ export default function DraftViewModal({
 
     if (!open) return null;
 
+    async function cancelDraft() {
+        if (!draftId) return;
+
+        try {
+            setCancelling(true);
+            setErr(null);
+
+            const res = await fetch(`/api/charity/inventory/drafts/${draftId}/cancel`, {
+                method: "POST",
+                credentials: "include",
+            });
+
+            const json = await res.json();
+            if (!res.ok) throw new Error(json?.error ?? "Failed to cancel draft");
+
+            onChanged?.();
+            onClose();
+            // optional: trigger parent refresh via a callback prop (we’ll add later)
+        } catch {
+            setErr("Failed to cancel draft");
+        } finally {
+            setCancelling(false);
+        }
+    }
+
     return (
         <div className="fixed inset-0 z-50">
             {/* backdrop */}
@@ -77,6 +106,13 @@ export default function DraftViewModal({
                             {loading ? "Loading…" : `${data?.items?.length ?? 0} items`}
                         </p>
                     </div>
+                    <button
+                        onClick={cancelDraft}
+                        disabled={cancelling || loading}
+                        className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                    >
+                        {cancelling ? "Cancelling…" : "Cancel draft"}
+                    </button>
 
                     <button
                         onClick={onClose}

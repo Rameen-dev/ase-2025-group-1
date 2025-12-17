@@ -226,6 +226,22 @@ export default function InventoryTab() {
         setSelectedTypes(new Set());
     }
 
+    async function reloadInventory() {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const res = await fetch("/api/charity/inventory", { credentials: "include" });
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data?.error ?? "Failed to load inventory");
+            setItems(data);
+        } catch {
+            setError("Something went wrong");
+        } finally {
+            setLoading(false);
+        }
+    }
 
     return (
         <div className="h-[calc(100vh-180px)] flex flex-col">
@@ -326,7 +342,10 @@ export default function InventoryTab() {
             </div>
             <div className="mt-4 flex gap-4">
                 <div className="w-full border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
-                    <Drafts onCreateDraft={startDraftMode} refreshToken={refreshDraftsToken} />
+                    <Drafts onCreateDraft={startDraftMode} refreshToken={refreshDraftsToken}
+                        onChanged={() => {
+                            setRefreshDraftsToken((x) => x + 1); reloadInventory();
+                        }} />
                 </div>
                 <InventoryTypeChart items={chartItems} />
             </div>
