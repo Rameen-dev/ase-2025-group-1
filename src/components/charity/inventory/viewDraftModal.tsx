@@ -27,6 +27,24 @@ export default function DraftViewModal({
     const [data, setData] = useState<DraftPayload | null>(null);
 
     const [cancelling, setCancelling] = useState(false);
+    const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
+    //when modal opens, reset selections
+    useEffect(() => {
+        if (!open || !draftId) return;
+
+        (async () => {
+            try {
+                setLoading(true);
+                setErr(null);
+            } catch {
+                setErr("Failed to load draft");
+                setData(null);
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [open, draftId]);
 
     useEffect(() => {
         if (!open || !draftId) return;
@@ -52,15 +70,34 @@ export default function DraftViewModal({
         })();
     }, [open, draftId]);
 
-    // Escape closes modal
     useEffect(() => {
-        if (!open) return;
-        const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-        window.addEventListener("keydown", onKey);
-        return () => window.removeEventListener("keydown", onKey);
-    }, [open, onClose]);
+        if (!open || !draftId) return;
+
+        async function reloadDraft() {
+            try {
+                setLoading(true);
+                setErr(null);
+
+                const res = await fetch(`/api/charity/inventory/drafts/${draftId}`, {
+                    credentials: "include",
+                });
+                const json = await res.json();
+                if (!res.ok) throw new Error(json?.error ?? "Failed to load draft");
+
+                setData(json);
+            } catch {
+                setErr("Failed to load draft");
+                setData(null);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        reloadDraft();
+    }, [open, draftId]);
 
     if (!open) return null;
+
 
     async function cancelDraft() {
         if (!draftId) return;
@@ -79,11 +116,58 @@ export default function DraftViewModal({
 
             onChanged?.();
             onClose();
-            // optional: trigger parent refresh via a callback prop (we’ll add later)
         } catch {
             setErr("Failed to cancel draft");
         } finally {
             setCancelling(false);
+        }
+    }
+
+    function toggleSelect(id: number) {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id);
+            else next.add(id);
+            return next;
+        });
+    }
+
+    async function removeItems() {
+        if (!draftId || selectedIds.size === 0) return;
+
+        try {
+            setLoading(true);
+            setErr(null);
+
+            const res = await fetch(
+                `/api/charity/inventory/drafts/${draftId}/remove`,
+                {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        itemIds: Array.from(selectedIds),
+                    }),
+                }
+            );
+
+            const json = await res.json();
+            if (!res.ok) throw new Error(json?.error ?? "Failed to remove items");
+
+            //update modal UI 
+            setData((prev) =>
+                prev
+                    ? { ...prev, items: prev.items.filter((it) => !selectedIds.has(it.clothing_id)) }
+                    : prev
+            );
+
+
+            setSelectedIds(new Set());
+            onChanged?.(); //refresh inventory and drafts
+        } catch {
+            setErr("Failed to remove items");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -97,7 +181,7 @@ export default function DraftViewModal({
 
             {/* modal */}
             <div className="absolute left-1/2 top-1/2 w-[92vw] max-w-5xl -translate-x-1/2 -translate-y-1/2 rounded-xl bg-white shadow-xl">
-                <div className="flex items-center justify-between border-b px-4 py-3">
+                <div className="flex items-center border-b px-4 py-3">
                     <div>
                         <h2 className="text-lg font-semibold text-gray-900">
                             {data?.title ?? "Draft"}
@@ -106,20 +190,31 @@ export default function DraftViewModal({
                             {loading ? "Loading…" : `${data?.items?.length ?? 0} items`}
                         </p>
                     </div>
-                    <button
-                        onClick={cancelDraft}
-                        disabled={cancelling || loading}
-                        className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
-                    >
-                        {cancelling ? "Cancelling…" : "Cancel draft"}
-                    </button>
+                    <div className="ml-auto flex items-center gap-2">
 
-                    <button
-                        onClick={onClose}
-                        className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50"
-                    >
-                        Close
-                    </button>
+                        <button
+                            disabled={selectedIds.size === 0 || loading}
+                            className="rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-black disabled:opacity-50"
+                            onClick={removeItems}
+                        >
+                            Remove ({selectedIds.size})
+                        </button>
+
+                        <button
+                            onClick={cancelDraft}
+                            disabled={cancelling || loading}
+                            className="rounded-md bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700 disabled:opacity-50"
+                        >
+                            {cancelling ? "Cancelling…" : "Cancel draft"}
+                        </button>
+
+                        <button
+                            onClick={onClose}
+                            className="rounded-md border px-3 py-1 text-sm hover:bg-gray-50"
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
 
                 <div className="max-h-[70vh] overflow-y-auto p-3">
@@ -132,9 +227,9 @@ export default function DraftViewModal({
                                 <ImageSlider
                                     key={item.clothing_id}
                                     item={item}
-                                    isDraftMode={false}
-                                    isSelected={false}
-                                    onToggleSelect={() => { }}
+                                    isDraftMode={true}
+                                    isSelected={selectedIds.has(item.clothing_id)}
+                                    onToggleSelect={() => toggleSelect(item.clothing_id)}
                                 />
                             ))}
                         </div>
