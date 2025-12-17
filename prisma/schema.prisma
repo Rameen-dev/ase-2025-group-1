@@ -200,7 +200,7 @@ model Draft {
   title        String
   draft_status draftStatus   @default(DRAFT)
   created_at   DateTime      @default(now())
-  edited_at    DateTime
+  edited_at    DateTime      @updatedAt
   Charities    Charities     @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
   DraftedItem  DraftedItem[]
 

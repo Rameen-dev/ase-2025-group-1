@@ -20207,7 +20207,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
     Charities: CharitiesCreateNestedOneWithoutDraftInput
     DraftedItem?: DraftedItemCreateNestedManyWithoutDraftInput
   }
@@ -20218,7 +20218,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
     DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutDraftInput
   }
 
@@ -20247,7 +20247,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
   }
 
   export type DraftUpdateManyMutationInput = {
@@ -23771,7 +23771,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
     DraftedItem?: DraftedItemCreateNestedManyWithoutDraftInput
   }
 
@@ -23780,7 +23780,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
     DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutDraftInput
   }
 
@@ -25667,7 +25667,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
     Charities: CharitiesCreateNestedOneWithoutDraftInput
   }
 
@@ -25677,7 +25677,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
   }
 
   export type DraftCreateOrConnectWithoutDraftedItemInput = {
@@ -26223,7 +26223,7 @@ export namespace Prisma {
     title: string
     draft_status?: $Enums.draftStatus
     created_at?: Date | string
-    edited_at: Date | string
+    edited_at?: Date | string
   }
 
   export type SessionCreateManyCharityInput = {

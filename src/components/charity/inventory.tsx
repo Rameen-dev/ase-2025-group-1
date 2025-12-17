@@ -33,6 +33,13 @@ export default function InventoryTab() {
     //sort direction, ascending or descending
     const [sortDir, setSortDir] = useState<"ASC" | "DESC">("ASC");
 
+    const [isDraftMode, setIsDraftMode] = useState(false); //switch 
+    const [draftTitle, setDraftTitle] = useState(""); //title entered for the draft
+    const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+    const [savingDraft, setSavingDraft] = useState(false);
+    const [draftErr, setDraftErr] = useState<string | null>(null);
+    const [refreshDraftsToken, setRefreshDraftsToken] = useState(0); //refresh 
+
     useEffect(() => {
         (async () => {
             try {
@@ -44,7 +51,7 @@ export default function InventoryTab() {
 
                 if (!res.ok) throw new Error(data?.error ?? "Failed to load inventory");
                 setItems(data);
-            } catch (e: unknown) {
+            } catch {
                 setError("Something went wrong");
             } finally {
                 setLoading(false);
@@ -52,8 +59,91 @@ export default function InventoryTab() {
         })();
     }, []);
 
+    function startDraftMode() {
+        setDraftErr(null); //clear previous errors
+        setDraftTitle(""); //resets the title input
+        setSelectedIds(new Set()); //clear any selected items if previously made a draft
+        setIsDraftMode(true); //switch UI to drafting mode
+    }
+
+    function cancelDraftMode() {
+        setDraftErr(null);
+        setDraftTitle("");
+        setSelectedIds(new Set());
+        setIsDraftMode(false);
+    }
+
+    function toggleSelectItem(id: number) {
+        setSelectedIds((prev) => {
+            const next = new Set(prev);
+
+            //unselect if already selected
+            if (next.has(id)) {
+                next.delete(id);
+            }
+
+            //select if not selected
+            else {
+                next.add(id);
+            }
+            return next;
+        });
+    }
+
+    async function saveDraft() {
+        const title = draftTitle.trim();
+
+        //validation
+        if (!title) {
+            setDraftErr("Title is required");
+            return;
+        }
+        if (selectedIds.size === 0) {
+            setDraftErr("Select at least one item");
+            return;
+        }
+
+        try {
+            setSavingDraft(true); //show loading state
+            setDraftErr(null); //clear previous errors
+
+            const res = await fetch("/api/charity/inventory/drafts", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    title,
+                    items: Array.from(selectedIds), //convert set of selected items into an array for backend to send it to database
+                }),
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data?.error ?? "Failed to save draft");
+
+            const ids = Array.from(selectedIds); //save selected items in array var
+
+            cancelDraftMode();
+            setRefreshDraftsToken((x) => x + 1);
+
+            setItems((prev) => prev.filter((it) => !ids.includes(it.clothing_id)));
+
+        } catch {
+            setDraftErr("Failed to save draft");
+        } finally {
+            setSavingDraft(false);
+        }
+    }
+
+
+
     //for each item, onClick function which switches between front and back image 
     function ImageSlider({ item }: { item: ClothingItem }) {
+        const selected = selectedIds.has(item.clothing_id);
+
+        function handleCardClick() {
+            if (!isDraftMode) return;
+            toggleSelectItem(item.clothing_id);
+        }
         //boolean, when if TRUE = front image is showing and if FALSE = back image is showing
         const [showFront, setShowFront] = useState(true);
 
@@ -73,7 +163,11 @@ export default function InventoryTab() {
         }
 
         return (
-            <div className="p-2 m-2">
+            <div
+                className={`p-2 m-2 rounded-md transition cursor-pointer ${isDraftMode ? "border" : ""
+                    } ${selected ? "border-green-600 ring-2 ring-green-200" : "border-transparent"}`}
+                onClick={handleCardClick}
+            >
                 <div
                     className="relative mb-1 h-50 w-full overflow-hidden rounded-md bg-gray-100 cursor-pointer"
                 >
@@ -277,49 +371,87 @@ export default function InventoryTab() {
 
     return (
         <div className="h-[calc(100vh-180px)] flex flex-col">
-            <div className="flex justify-end mb-0.5 relative">
-                <button
-                    onClick={() => setTypeMenuOpen((v) => !v)}
-                    className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                >
-                    Filter by {selectedTypes.size ? `(${selectedTypes.size})` : ""}
-                </button>
-                <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                    onClick={toggleConditionSort} >
-                    Condition {sortMode === "CONDITION" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
-                </button>
-                <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                    onClick={toggleSizeSort}>
-                    Size {sortMode === "SIZE" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
-                </button>
-                {typeMenuOpen && (
-                    <div className="absolute right-2 top-12 z-20 w-56 rounded-lg border bg-white shadow-md p-2">
-                        <div className="flex items-center justify-between px-2 py-1">
-                            <span className="text-xs text-gray-500">Item types</span>
-                            <button
-                                onClick={clearTypes}
-                                className="text-xs text-blue-600 hover:underline"
-                            >
-                                Clear
-                            </button>
-                        </div>
+            <div className="flex items-center justify-between mb-0.5 relative gap-2">
+                <div className="flex items-center gap-2">
+                    {isDraftMode && (
+                        <>
+                            <input
+                                value={draftTitle}
+                                onChange={(e) => setDraftTitle(e.target.value)}
+                                placeholder="Draft title…"
+                                className="text-sm px-3 py-1 rounded-md border w-64"
+                                disabled={savingDraft}
+                            />
 
-                        <div className="max-h-56 overflow-y-auto">
-                            {allTypes.map((t) => (
-                                <label key={t} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTypes.has(t)}
-                                        onChange={() => toggleType(t)}
-                                    />
-                                    <span className="text-sm">{t}</span>
-                                </label>
-                            ))}
+                            <button
+                                onClick={saveDraft}
+                                disabled={savingDraft}
+                                className="text-sm px-3 py-1 rounded-md bg-green-700 text-white hover:bg-green-800 disabled:opacity-50"
+                            >
+                                {savingDraft ? "Saving…" : `Save draft (${selectedIds.size})`}
+                            </button>
+
+                            <button
+                                onClick={cancelDraftMode}
+                                disabled={savingDraft}
+                                className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
+                            >
+                                Cancel
+                            </button>
+                        </>
+                    )}
+                    {draftErr && <span className="text-xs text-red-600">{draftErr}</span>}
+                </div>
+
+                <div className="flex justify-end">
+                    <button
+                        onClick={() => setTypeMenuOpen((v) => !v)}
+                        className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                        disabled={savingDraft}
+                    >
+                        Filter by {selectedTypes.size ? `(${selectedTypes.size})` : ""}
+                    </button>
+                    <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                        onClick={toggleConditionSort}
+                        disabled={savingDraft} >
+                        Condition {sortMode === "CONDITION" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                    </button>
+                    <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
+                        onClick={toggleSizeSort}
+                        disabled={savingDraft}>
+                        Size {sortMode === "SIZE" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                    </button>
+                    {typeMenuOpen && (
+                        <div className="absolute right-2 top-12 z-20 w-56 rounded-lg border bg-white shadow-md p-2">
+                            <div className="flex items-center justify-between px-2 py-1">
+                                <span className="text-xs text-gray-500">Item types</span>
+                                <button
+                                    onClick={clearTypes}
+                                    disabled={savingDraft}
+                                    className="text-xs text-blue-600 hover:underline"
+                                >
+                                    Clear
+                                </button>
+                            </div>
+
+                            <div className="max-h-56 overflow-y-auto">
+                                {allTypes.map((t) => (
+                                    <label key={t} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedTypes.has(t)}
+                                            onChange={() => toggleType(t)}
+                                            disabled={savingDraft} />
+                                        <span className="text-sm">{t}</span>
+                                    </label>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
-            <div className="flex-1 overflow-y-auto border rounded-lg shadow-md">
+
+            <div className="flex-1 overflow-y-auto border rounded-lg shadow-md bg-green-50">
 
                 {/* using displayItems const instead of items, which handles all sorting functions */}
                 <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
@@ -329,10 +461,10 @@ export default function InventoryTab() {
                 </div>
             </div>
             <div className="mt-4 flex gap-4">
-                <div className="w-full border shadow-md rounded-xl p-4 text-gray-500">
-                    <Drafts />
+                <div className="w-full border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
+                    <Drafts onCreateDraft={startDraftMode} refreshToken={refreshDraftsToken} />
                 </div>
-                <div className="w-1/3 border shadow-md rounded-xl p-4 text-gray-500">
+                <div className="w-1/3 border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
                     <div className="flex items-center justify-center gap-6 h-full">
                         <div className="relative h-48 w-48 shrink-0">
                             <Doughnut data={doughnutData} options={doughnutOptions} />
