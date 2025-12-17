@@ -29,6 +29,9 @@ export default function InventoryTab() {
     const [draftErr, setDraftErr] = useState<string | null>(null);
     const [refreshDraftsToken, setRefreshDraftsToken] = useState(0); //refresh 
 
+    //items for chart
+    const [chartItems, setChartItems] = useState<Pick<ClothingItem, "type">[]>([]);
+
     useEffect(() => {
         (async () => {
             try {
@@ -47,6 +50,19 @@ export default function InventoryTab() {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const res = await fetch("/api/charity/inventory/chart", {
+                    credentials: "include",
+                });
+                const data = await res.json();
+                if (res.ok) setChartItems(data);
+            } catch {
+            }
+        })();
+    }, [refreshDraftsToken]);
 
     function startDraftMode() {
         setDraftErr(null); //clear previous errors
@@ -312,7 +328,7 @@ export default function InventoryTab() {
                 <div className="w-full border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
                     <Drafts onCreateDraft={startDraftMode} refreshToken={refreshDraftsToken} />
                 </div>
-                <InventoryTypeChart items={items} />
+                <InventoryTypeChart items={chartItems} />
             </div>
         </div >
     );

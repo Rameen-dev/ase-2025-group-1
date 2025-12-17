@@ -28,6 +28,11 @@ export async function GET(req: NextRequest) {
                 charity_id: true,
                 title: true,
                 draft_status: true,
+                _count: {
+                    select: {
+                        DraftedItem: true,
+                    }
+                }
             },
         });
 

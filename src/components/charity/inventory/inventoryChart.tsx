@@ -8,7 +8,7 @@ import { Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 type Props = {
-    items: ClothingItem[];
+    items: Pick<ClothingItem, "type">[];
 };
 
 const ALL_TYPES = ["JACKET", "PANTS", "SHIRT", "SHOES", "OTHER"] as const;

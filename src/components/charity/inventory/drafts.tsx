@@ -8,6 +8,9 @@ type Draft = {
     draft_id: number;
     title: string;
     draft_status: "DRAFT" | string;
+    _count: {
+        DraftedItem: number;
+    }
 };
 
 
@@ -61,7 +64,7 @@ export default function Drafts({
             {loading && <p className="text-sm text-gray-500 mt-2">Loading drafts…</p>}
             {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
 
-            <div className="overflow-y-auto mt-1 max-h-30">
+            <div className="overflow-y-auto mt-3 max-h-30">
                 <table className="w-full text-sm table-fixed">
                     <colgroup>
                         <col className="w-3/5" />
@@ -72,7 +75,7 @@ export default function Drafts({
                     <thead className="text-left text-gray-600">
                         <tr className="border-b">
                             <th className="py-2">Title</th>
-                            <th className="py-2">Status</th>
+                            <th className="py-2">Items</th>
                             <th className="py-2">Action</th>
                         </tr>
                     </thead>
@@ -87,8 +90,8 @@ export default function Drafts({
                         ) : (
                             drafts.map((d) => (
                                 <tr key={d.draft_id} className="border-b">
-                                    <td className="py-2 pr-2 truncate">{d.title}</td>
-                                    <td className="py-2">{d.draft_status}</td>
+                                    <td className="py-2 pr-2 truncate font-bold text-lg text-gray-600 underline">{d.title}</td>
+                                    <td className="py-2 tabular-nums">{d._count.DraftedItem}</td>
                                     <td className="py-2">
                                         <button
                                             className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:bg-black"
