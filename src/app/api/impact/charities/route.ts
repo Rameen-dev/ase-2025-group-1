@@ -24,20 +24,15 @@ export async function GET(request: NextRequest) {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
-    // Get all items from APPROVED requests where charity accepted
-    // We'll get items through the donation request's answering charity
-    const approvedRequests = await prisma.donationRequest.findMany({
-      where: {
-        status: "APPROVED",
-        answered_by: { not: null },
-      },
+    // Get all items with donation_id through Donations table
+    const donations = await prisma.donations.findMany({
       include: {
         ClothingItems: {
           select: {
             type: true,
           },
         },
-        answering_charity: {
+        accepted: {
           select: {
             charity_id: true,
             name: true,
@@ -58,18 +53,16 @@ export async function GET(request: NextRequest) {
       }
     >();
 
-    approvedRequests.forEach((request) => {
-      if (!request.answering_charity) return;
-
-      const charityId = request.answering_charity.charity_id;
+    donations.forEach((donation) => {
+      const charityId = donation.accepted_by;
       const current = charityCO2Map.get(charityId) || {
         co2: 0,
         itemCount: 0,
-        name: request.answering_charity.name,
-        email: request.answering_charity.email,
+        name: donation.accepted.name,
+        email: donation.accepted.email,
       };
 
-      request.ClothingItems.forEach((item) => {
+      donation.ClothingItems.forEach((item) => {
         const co2Value = getCO2Value(item.type);
         current.co2 += co2Value;
         current.itemCount += 1;

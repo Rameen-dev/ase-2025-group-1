@@ -4,11 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import CreateDonationRequestModal from "@/components/modals/donationRequestModal";
-import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal"
+import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
 import { DeleteDonationRequestModal } from "@/components/modals/confirmMessageModal";
 import type { DonationRequest } from "@/types/donation";
 import DonorImpactCards from "@/components/donor/DonorImpactCards";
-
 
 // base URL for API requests, allowing the client to switch from dev/staging/prod
 // if missing, it falls back to " ", which prevents code to crash
@@ -30,7 +29,6 @@ type DonationsProps = {
   onCreated: (req: DonationRequest) => void;
   onDelete: (id: number) => void;
 };
-
 
 type DonorAnalytics = {
   totals: {
@@ -61,51 +59,53 @@ export default function DonorDashboard() {
   const router = useRouter();
 
   async function fetchWithAuth(url: string, options?: RequestInit) {
-  const res = await fetch(url, { credentials: "include", ...options });
+    const res = await fetch(url, { credentials: "include", ...options });
 
-  if (res.status === 401) {
-    // Kill the session properly (DB + cookie)
-    await fetch("/api/auth/logout", { method: "POST", credentials: "include" });
+    if (res.status === 401) {
+      // Kill the session properly (DB + cookie)
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
-    // Send user away
-    router.push("/"); // 
-    throw new Error("Unauthorised");
-  }
-  return res;
-}
-
-// Loads the donor analytics from /api/donor/analytics.
-async function refreshAnalytics() {
-  try {
-    // Turn on loading state
-    setAnalyticsLoading(true);
-
-    // Fetch analytics securely (includes cookie and handles 401)
-    const res = await fetchWithAuth(`${API_BASE}/api/donor/analytics`, {
-      // no-store forces fresh data each time (important for live dashboards)
-      cache: "no-store",
-    });
-
-    // If server returns a non-200 status, we treat it as a failure
-    if (!res.ok) {
-      console.error("Failed to fetch donor analytics:", res.status);
-      setAnalytics(null); // clear analytics so UI can show fallback message
-      return;
+      // Send user away
+      router.push("/"); //
+      throw new Error("Unauthorised");
     }
-    const json = await res.json();
-
-    // Save into state, react rerenders the dashboard automatically
-    setAnalytics(json);
-  } catch (err) {
-    // This catches network issues
-    console.error("Error loading donor analytics:", err);
-    setAnalytics(null);
-  } finally {
-    // Always stop loading state whether success or fail
-    setAnalyticsLoading(false);
+    return res;
   }
-}
 
+  // Loads the donor analytics from /api/donor/analytics.
+  async function refreshAnalytics() {
+    try {
+      // Turn on loading state
+      setAnalyticsLoading(true);
+
+      // Fetch analytics securely (includes cookie and handles 401)
+      const res = await fetchWithAuth(`${API_BASE}/api/donor/analytics`, {
+        // no-store forces fresh data each time (important for live dashboards)
+        cache: "no-store",
+      });
+
+      // If server returns a non-200 status, we treat it as a failure
+      if (!res.ok) {
+        console.error("Failed to fetch donor analytics:", res.status);
+        setAnalytics(null); // clear analytics so UI can show fallback message
+        return;
+      }
+      const json = await res.json();
+
+      // Save into state, react rerenders the dashboard automatically
+      setAnalytics(json);
+    } catch (err) {
+      // This catches network issues
+      console.error("Error loading donor analytics:", err);
+      setAnalytics(null);
+    } finally {
+      // Always stop loading state whether success or fail
+      setAnalyticsLoading(false);
+    }
+  }
 
   //fetch all donation requests
   useEffect(() => {
@@ -125,7 +125,6 @@ async function refreshAnalytics() {
         const data = await res.json();
 
         if (!Array.isArray(data)) {
-
           console.error("Expected array of donation requests, got:", data);
           setApps([]);
           return;
@@ -142,17 +141,22 @@ async function refreshAnalytics() {
   }, []);
 
   useEffect(() => {
-  refreshAnalytics();
-}, []);
+    refreshAnalytics();
+  }, []);
 
   function handleSignOut() {
     router.push("/"); // redirect user to landing page when logging out
   }
 
   //sets title of the header bar based on active tab
-  const headerTitle = activeTab === "Home" ? "Dashboard Overview" : activeTab === "Donations" ? "Donations"
-    : activeTab === "Inventory" ? "Inventory"
-      : "Impact & Reports";
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Donations"
+        ? "Donations"
+        : activeTab === "Inventory"
+          ? "Inventory"
+          : "Impact & Reports";
 
   return (
     //dashboard lauout component inside components/UI
@@ -164,40 +168,35 @@ async function refreshAnalytics() {
       roleLabel="Donor"
       headerTitle={headerTitle}
     >
-    {activeTab === "Home" && (
-      <HomeTab analytics={analytics} loading={analyticsLoading} />
-    )}
+      {activeTab === "Home" && (
+        <HomeTab analytics={analytics} loading={analyticsLoading} />
+      )}
 
       {activeTab === "Donations" && (
-      <Donations
-        title="Donations"
-        apps={apps}
-        loading={loading}
-        analytics={analytics}
-        analyticsLoading={analyticsLoading}
-        onCreated={(newReq) => {
-          // 1) Update donation requests immediately
-          setApps((prev) => [newReq, ...prev]);
+        <Donations
+          title="Donations"
+          apps={apps}
+          loading={loading}
+          analytics={analytics}
+          analyticsLoading={analyticsLoading}
+          onCreated={(newReq) => {
+            // 1) Update donation requests immediately
+            setApps((prev) => [newReq, ...prev]);
 
-          // 2) Refresh analytics so Recent Activity updates
-          refreshAnalytics();
-        }}
-        onDelete={(id) => {
-          // 1) Update donation requests immediately
-          setApps((prev) =>
-            prev.filter((a) => a.donation_request_id !== id)
-          );
+            // 2) Refresh analytics so Recent Activity updates
+            refreshAnalytics();
+          }}
+          onDelete={(id) => {
+            // 1) Update donation requests immediately
+            setApps((prev) => prev.filter((a) => a.donation_request_id !== id));
 
-          // 2) Refresh analytics
-          refreshAnalytics();
-        }}
-      />
-
+            // 2) Refresh analytics
+            refreshAnalytics();
+          }}
+        />
       )}
 
-      {activeTab === "Inventory" && (
-        <PlaceholderTab title="Inventory" />
-      )}
+      {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
     </DashboardLayout>
   );
 }
@@ -209,9 +208,9 @@ function HomeTab({
   loading: boolean;
 }) {
   return (
-    <div className="h-1/2 space-y-6">
+    <div className="h-full space-y-6">
       {/* TOP: Donor impact summary */}
-      <div className="border h-full border-gray-200 rounded-xl p-8 bg-white">
+      <div className="border border-gray-200 rounded-xl p-8 bg-white">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Your Sustainability Impact
         </h3>
@@ -219,9 +218,9 @@ function HomeTab({
       </div>
 
       {/* BOTTOM ROW */}
-      <div className="relative flex h-full gap-6">
-        {/* Left: Recent activity */}
-        <div className="w-1/2 border border-gray-200 rounded-xl p-8 bg-white">
+      <div className="flex gap-6 h-[400px]">
+        {/* Left: Recent activity - FIXED OVERFLOW ISSUE */}
+        <div className="w-1/2 border border-gray-200 rounded-xl p-8 bg-white flex flex-col">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Recent Activity
           </h3>
@@ -233,12 +232,17 @@ function HomeTab({
           )}
 
           {!loading && analytics && analytics.recentEvents.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-3 overflow-y-auto flex-1 pr-2">
               {analytics.recentEvents.map((e) => (
-                <div key={e.event_id} className="border rounded-lg p-3">
+                <div
+                  key={e.event_id}
+                  className="border rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                >
                   <p className="text-sm font-semibold text-gray-800">
                     {formatEventLabel(e.event_type)}
-                    {e.donation_request_id ? ` — Request #${e.donation_request_id}` : ""}
+                    {e.donation_request_id
+                      ? ` — Request #${e.donation_request_id}`
+                      : ""}
                   </p>
                   <p className="text-xs text-gray-500">
                     {new Date(e.created_on).toLocaleString()}
@@ -259,10 +263,19 @@ function HomeTab({
 
           {!loading && analytics && (
             <div className="space-y-3 text-sm text-gray-700">
-              <p>Total Requests: <b>{analytics.totals.totalRequests}</b></p>
-              <p>Total Items: <b>{analytics.totals.totalItems}</b></p>
-              <p>Acceptance Rate: <b>{analytics.totals.acceptanceRate}%</b></p>
-              <p>Completed Donations: <b>{analytics.totals.completedDonations}</b></p>
+              <p>
+                Total Requests: <b>{analytics.totals.totalRequests}</b>
+              </p>
+              <p>
+                Total Items: <b>{analytics.totals.totalItems}</b>
+              </p>
+              <p>
+                Acceptance Rate: <b>{analytics.totals.acceptanceRate}%</b>
+              </p>
+              <p>
+                Completed Donations:{" "}
+                <b>{analytics.totals.completedDonations}</b>
+              </p>
             </div>
           )}
 
@@ -291,9 +304,19 @@ function formatEventLabel(eventType: string) {
   }
 }
 
-function Donations({ title, apps, loading, analytics, analyticsLoading, onCreated, onDelete }: DonationsProps) {
+function Donations({
+  title,
+  apps,
+  loading,
+  analytics,
+  analyticsLoading,
+  onCreated,
+  onDelete,
+}: DonationsProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<DonationRequest | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<DonationRequest | null>(
+    null
+  );
 
   const [viewOpen, setViewOpen] = useState(false);
   const [viewLoading, setViewLoading] = useState(false);
@@ -309,7 +332,6 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
     status: string;
     condition: string;
   };
-
 
   async function handleOpenView(app: DonationRequest) {
     setViewRequest(app);
@@ -352,7 +374,6 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
 
   return (
     <div className="flex flex-col h-full">
-
       {/* top row of the table */}
       <div className="h-[400px] mb-4">
         <div className="border rounded-lg shadow-md flex flex-col h-full">
@@ -369,7 +390,6 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
           {/* donation reqeusts table */}
           <div className="flex-1 overflow-auto">
             <div>
-
               <table className="w-full">
                 <thead>
                   <tr className="bg-green-50 border rounded-lg">
@@ -394,19 +414,31 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
                       const isApproved = app.status === "APPROVED";
                       const isRejected = app.status === "REJECTED";
 
-                      const rowBg = isApproved ? "bg-green-50" : isRejected ? "bg-red-50" : "";
-                      const statusText = isApproved ? "text-green-700 font-semibold" : isRejected ? "text-red-600 font-semibold" : "text-gray-700";
+                      const rowBg = isApproved
+                        ? "bg-green-50"
+                        : isRejected
+                          ? "bg-red-50"
+                          : "";
+                      const statusText = isApproved
+                        ? "text-green-700 font-semibold"
+                        : isRejected
+                          ? "text-red-600 font-semibold"
+                          : "text-gray-700";
 
                       return (
-                        <tr key={app.donation_request_id} className={`border ${rowBg} ${statusText}`}>
-                          <td className="p-3 text-center text-xl text-black font-bold">{app.title}</td>
+                        <tr
+                          key={app.donation_request_id}
+                          className={`border ${rowBg} ${statusText}`}
+                        >
+                          <td className="p-3 text-center text-xl text-black font-bold">
+                            {app.title}
+                          </td>
                           <td className="p-3 text-center">
                             {app._count?.ClothingItems ?? 0}
                           </td>
                           <td className="p-3 text-center">{app.status}</td>
                           <td className="p-3 text-center">{app.createdAgo}</td>
                           <td className="p-3 text-center flex justify-center gap-2">
-
                             {/* view button to display items in the donation */}
                             <button
                               onClick={() => handleOpenView(app)}
@@ -431,8 +463,7 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
                           </td>
                         </tr>
                       );
-                    })
-                  }
+                    })}
 
                   {!loading && apps.length === 0 && (
                     <tr>
@@ -445,13 +476,11 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
               </table>
             </div>
           </div>
-
         </div>
       </div>
 
       {/* bottom half of the dashboard */}
       <div className="flex-1 flex gap-4">
-
         <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
           *TOTAL ITEMS DONATED*
         </div>
@@ -459,7 +488,6 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
         <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
           *TO BE DECIDED*
         </div>
-
       </div>
 
       {/* create donation request modal */}
@@ -485,7 +513,7 @@ function Donations({ title, apps, loading, analytics, analyticsLoading, onCreate
         onConfirm={handleDeleteConfirm}
         title={itemToDelete?.title}
       />
-    </div >
+    </div>
   );
 }
 
@@ -494,7 +522,8 @@ function PlaceholderTab({ title }: { title: string }) {
     <div className="border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
       <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
       <p className="text-sm">
-        This section is not built yet. You can describe what will go here in your documentation.
+        This section is not built yet. You can describe what will go here in
+        your documentation.
       </p>
     </div>
   );

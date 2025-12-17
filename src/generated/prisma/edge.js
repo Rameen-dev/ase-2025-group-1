@@ -281,7 +281,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "/Users/r.d.a/Downloads/SustainWear/ase-2025-group-1/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -290,16 +290,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/r.d.a/Downloads/SustainWear/ase-2025-group-1/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -309,6 +309,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

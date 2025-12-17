@@ -24,12 +24,10 @@ export async function GET(request: NextRequest) {
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
-    // Get all items from APPROVED donation requests grouped by donor
+    // Get all donated items (items with donation_id) grouped by donor
     const allItems = await prisma.clothingItems.findMany({
       where: {
-        DonationRequest: {
-          status: "APPROVED",
-        },
+        donation_id: { not: null },
       },
       select: {
         type: true,

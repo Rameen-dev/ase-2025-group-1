@@ -19,12 +19,10 @@ function getCO2Value(type: string): number {
 
 export async function GET() {
   try {
-    // Get all clothing items from APPROVED donation requests
+    // Get all clothing items that have been donated (have donation_id)
     const allItems = await prisma.clothingItems.findMany({
       where: {
-        DonationRequest: {
-          status: "APPROVED",
-        },
+        donation_id: { not: null },
       },
       select: {
         type: true,
