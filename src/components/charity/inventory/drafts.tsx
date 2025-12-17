@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
+import DraftViewModal from "./viewDraftModal";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -24,6 +25,9 @@ export default function Drafts({
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [drafts, setDrafts] = useState<Draft[]>([]);
+
+    const [viewDraftId, setViewDraftId] = useState<number | null>(null);
+    const [isViewOpen, setIsViewOpen] = useState(false);
 
     useEffect(() => {
         async function load() {
@@ -96,7 +100,8 @@ export default function Drafts({
                                         <button
                                             className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:bg-black"
                                             onClick={() => {
-                                                alert(`View draft ${d.draft_id}`);
+                                                setViewDraftId(d.draft_id);
+                                                setIsViewOpen(true);
                                             }}
                                         >
                                             View
@@ -108,6 +113,11 @@ export default function Drafts({
                     </tbody>
                 </table>
             </div>
+            <DraftViewModal
+                open={isViewOpen}
+                draftId={viewDraftId}
+                onClose={() => setIsViewOpen(false)}
+            />
         </div>
     );
 }

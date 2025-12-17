@@ -58,7 +58,7 @@ export default function ImageSlider({
             onClick={handleCardClick}
         >
             <div
-                className="relative mb-1 h-50 w-full overflow-hidden rounded-md bg-gray-100 cursor-pointer"
+                className="relative mb-1 h-50 w-full overflow-hidden rounded-md bg-green-50 cursor-pointer"
             >
                 {activeImage ? (
                     <AnimatePresence initial={false} mode="popLayout">
