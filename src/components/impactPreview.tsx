@@ -4,11 +4,13 @@
 type ImpactData = {
     // totalItems represents the total number of clothing items donated.
     totalItems: number;
+
 };
 
 // This is the React functional component.
 // It receives totalItems as a prop from the landing oage.
-export default function ImpactPreview({ totalItems }: ImpactData) {
+export default function ImpactPreview({ totalItems, peopleSupported, }: { totalItems: number; peopleSupported: number;
+}) {
     // Assumptions Sustainability logic
 
     // Average weight of one clothing item in KG
@@ -32,10 +34,6 @@ export default function ImpactPreview({ totalItems }: ImpactData) {
     // Calculate estimated CO2 savings
     // Formula - Total KG Saved X CO2 saved per KG
     const co2Saved = totalKgSaved * CO2_PER_KG;
-
-    // Calculate number of people supported
-    // Math.floor is used to avoid partial people
-    const peopleSupported = Math.floor(totalItems / ITEMS_PER_PERSON);
 
     // UI OUTPUT 
 
@@ -71,28 +69,30 @@ export default function ImpactPreview({ totalItems }: ImpactData) {
 // This component is reusable for displaying a single impact metric
 // It receives a label (Description) and a value (Number/ text)
 function ImpactCard({
-    label,
-    value,
+  label,
+  value,
 }: {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 }) {
-    return (
-        // Card container with rounded corners, border, padding and shadow/
-        <div className="rounded-2xl border border-gray-200 bg-white p-8 sm:p-10 text-center
-                        shadow-sm transition-all duration-300 ease-out
-                        hover:-translate-y-5 hover:shadow-xl hover:border-[#2E7D32]/40
-                        hover:ring-2 hover:ring-[#2E7D32]/20">
+  return (
+    <div
+      className="
+        group rounded-2xl border border-gray-200 bg-white p-8 sm:p-10 text-center
+        shadow-sm transition-all duration-300 ease-out
+        hover:-translate-y-1 hover:shadow-xl
+        hover:bg-[#2E7D32] hover:border-[#2E7D32]
+      "
+    >
+      {/* Label */}
+      <p className="text-sm sm:text-base text-gray-500 transition-colors duration-300 group-hover:text-white/90">
+        {label}
+      </p>
 
-            {/* Small descriptive label */}
-            <p className="text-sm sm:text-base text-gray-500">
-                {label}
-            </p>
-
-            {/* Main value displayed prominently */}
-            <p className="text-4xl sm:text-5xl font-bold mt-3">
-                {value}
-            </p>
-        </div>
-    );
+      {/* Value */}
+      <p className="text-4xl sm:text-5xl font-bold mt-3 text-black transition-colors duration-300 group-hover:text-white">
+        {value}
+      </p>
+    </div>
+  );
 }

@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect, FormEvent } from "react";
 import ReactMarkdown from "react-markdown";
+import Linkify  from "linkify-react";
+
 // Define a TypeScript type for each chat message
 type Message = {
   id: number; // simple numeric ID so React can track list items
@@ -217,12 +219,24 @@ const ChatWidget: React.FC = () => {
                   `}
                 >
                 {msg.sender === "assistant" ? (
-                  <div className="prose prose-sm max-w-none">
-                  <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                    <ReactMarkdown
+                      components={{
+                        a: ({ node, ...props }) => (
+                          <a
+                            {...props}
+                            className="text-green-700 underline font-semibold hover:text-green-800"
+                          />
+                        ),
+                      }}
+                    >
+                      {msg.text}
+                    </ReactMarkdown>
                   </div>
                 ) : (
-                  msg.text
+                  <div className="text-sm whitespace-pre-wrap">{msg.text}</div>
                 )}
+
                 </div>
               </div>
             ))}

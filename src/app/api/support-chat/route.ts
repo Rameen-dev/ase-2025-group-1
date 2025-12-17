@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Get the API key from the environmental variables (.env file)
 const API_KEY = process.env.GEMINI_API_KEY;
-
+const URL_LOCAL_HOST = process.env.API_BASE_URL;
 // If the key is missing, we throw a clear error
 if (!API_KEY) {
     console.error("GEMINI_API_KEY is not set in .env File. Please check!");
@@ -21,19 +21,19 @@ SustainWear Overview
 - The goal is to reduce clothing waste and support communities through sustainable redistribution.
 
 User Roles
-1) Donors
+Donors
 - Donors create an account and log in.
 - They can submit donation requests describing the clothes they want to donate.
 - Each donation request can include multiple clothing items with details like type, size, condition, and images.
 - Donors can see the status of their donation requests (e.g. pending, accepted, collected, completed).
 
-2) Charities
+Charities
 - Charities apply to join SustainWear through a charity application form.
 - Admins review charity applications and can approve or reject them.
 - Approved charities get access to a charity dashboard.
 - Charities can view available donations assigned to them, update statuses, and manage which items they receive.
 
-3) Admins
+Admins
 - Admins manage the overall platform.
 - They can review and approve charity applications.
 - They can view all users, donations, charities and key sustainability metrics.
@@ -53,6 +53,16 @@ Sustainability & Analytics
   - Number of items successfully given to charities
   - Popular item types and sizes
   - Potential impact on reducing textile waste
+
+If the user asks about navigation (signup, login, charity application, donating),
+include a section at the end and use the links below depending on what the user is asking for:
+When including links, ALWAYS format them as Markdown links and make sure the link is noticable with colour and styling:
+
+- [Signup](http://localhost:3000/auth/signup)
+- [Login](http://localhost:3000/auth/login)
+- [Charity application](http://localhost:3000/auth/charity-application)
+
+Only include links that are relevant to the user's question
 
 General Behaviour
 - Do NOT invent new platform features that do not exist.
@@ -84,7 +94,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Here I build a prompt for Gemini
-    // This is the systems instruction message to make sure it doesn't go rogue!
+    // This is the systems instruction message to make sure it doesn't go rogue
 
     const systemInstruction = `
     You are SustainWear's virtual assistant. Your job is to:
@@ -105,9 +115,16 @@ export async function POST(req: NextRequest) {
     })
     .join("\n");
 
+    const linkCatalog = `
+    Available links below:
+    - Signup: ${URL_LOCAL_HOST}/auth/signup`;
+
+
     const fullPrompt = `${systemInstruction}\n\n
     
-    Here is official SustainWear knowledge you must use when answering: ${sustainWearKnowledge}
+    Here is official SustainWear knowledge you must use when answering: ${sustainWearKnowledge}\n\n
+
+    ${linkCatalog} 
 
     Conversation so far:\n${historyText}\n\nAssistant:`;
 
