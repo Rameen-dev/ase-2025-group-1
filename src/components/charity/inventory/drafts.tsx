@@ -13,6 +13,7 @@ type Draft = {
 
 export default function Drafts({
     onCreateDraft,
+    refreshToken,
 }: {
     onCreateDraft: () => void;
     refreshToken: number;
@@ -44,7 +45,7 @@ export default function Drafts({
         }
 
         load();
-    }, []);
+    }, [refreshToken]);
 
     return (
         <div>
@@ -60,7 +61,7 @@ export default function Drafts({
             {loading && <p className="text-sm text-gray-500 mt-2">Loading drafts…</p>}
             {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
 
-            <div className="overflow-y-auto mt-3">
+            <div className="overflow-y-auto mt-1 max-h-30">
                 <table className="w-full text-sm table-fixed">
                     <colgroup>
                         <col className="w-3/5" />

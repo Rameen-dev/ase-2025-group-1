@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-import CharityViewDonationRequest from "@/components/modals/charityViewDonationRequestModal";
-import CharityDonationHistoryModal from "@/components/modals/charityDonationHistoryModal";
+import CharityViewDonationRequest from "@/components/charity/donations/charityViewDonationRequestModal";
+import CharityDonationHistoryModal from "@/components/charity/donations/charityDonationHistoryModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
-import InventoryTab from "@/components/charity/inventory";
+import InventoryTab from "@/components/charity/inventory/inventory";
 
 type ClothingItem = {
   clothing_id: number;

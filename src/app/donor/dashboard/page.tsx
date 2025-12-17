@@ -191,7 +191,7 @@ function Donations({ title, apps, loading, onCreated, onDelete }: DonationsProps
 
       setDeleteOpen(false);
       setItemToDelete(null);
-    } catch (err) {
+    } catch {
       alert("Error deleting donation request");
     }
   }
