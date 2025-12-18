@@ -79,15 +79,57 @@ const ChatWidget: React.FC = () => {
         }),
       });
 
-      // Instead of throwing, handle the error like a bot message.
-      if (!response.ok) {
-        let fallbackMessage = "I couldn't answer that question right now."
+    // Below we have a few error handling responses.
+    // If the request did not success (status 200 - 299)
+    if (!response.ok) {
+
+      // Below is a message the user will see in the chat if something goes wrong. 
+      // This is a safe starting message.
+      let fallbackMessage = "Sorry, I couldn't respond right now. Please try again in a moment or refresh the tab.";
+
+      // Status errors 
+      
+      // 401 or 403 errors could mean either:
+      // - The API key is missing
+      // - The API key is invalid
+      // - The server is not authorised to talk to Gemini (The LLM)
+      if (response.status === 401 || response.status === 403) {
+        fallbackMessage = "The assistant is temporarily unavailable due to a configuration issue.";
       }
 
+      // Here we check for too many requests (Status = 429 Rate limiting)
+      // This happens when the multiple users are chatting at once and the AI provider may be rate-limiting you.
+      // Here we ask the user to try again if this error is encounted.
 
-      if (!response.ok) {
-        throw new Error("Failed to get response from AI");
+      else if (response.status == 429) {
+        fallbackMessage = "I am currently getting a lot of requests right now. Please try again shortly.";
       }
+
+      // Here we check for server-side errors (status 500+)
+      // This could happen if:
+      // - The server crashes
+      // - Gemini fails to provide a response
+      // - Something unexpected happened on the backend
+
+      else if (response.status >= 500) {
+        fallbackMessage = "Something went wrong on our side. Please try again shortly.";
+      }
+
+      // Here we have a log in place for developers to take a look at when it comes to debugging issues via the browser
+      console.error("Gemini Support chat API error:", response.status, await response.text());
+
+      // Here we add a new message to the caht so it looks like the assistant replied
+
+      const errorMessage: Message = {
+        id: Date.now() + 1,
+        sender: "assistant",
+        text: fallbackMessage,
+      };
+
+      setMessages((previous) => [...previous, errorMessage])
+
+      return;
+    }  
 
       const data = await response.json();
 

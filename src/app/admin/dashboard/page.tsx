@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { User, Menu, X } from "lucide-react";
-import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
+import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import UsersTab from "./components/UsersTab";
 import ImpactTab from "./components/ImpactTab";
 
@@ -32,7 +31,6 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [apps, setApps] = useState<CharityApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const router = useRouter();
 
@@ -55,96 +53,29 @@ export default function AdminPage() {
     router.push("/");
   }
 
-  function handleTabChange(tab: TabName) {
-    setActiveTab(tab);
-    setMobileMenuOpen(false);
-  }
+  // Dynamic header title based on active tab
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Requests"
+        ? "Charity Requests"
+        : activeTab === "Users"
+          ? "User Management"
+          : activeTab === "Inventory"
+            ? "Inventory"
+            : "Impact & Reports";
 
   return (
-    <div className="flex min-h-screen bg-white relative">
-      {/* Mobile hamburger menu - positioned at top right to avoid overlapping heading */}
-      <button
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 bg-green-700 text-white p-2 rounded-lg shadow-lg"
-        aria-label="Toggle menu"
-      >
-        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {/* Mobile menu backdrop */}
-      {mobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/40 z-30"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* SIDEBAR */}
-      <aside
-        className={`bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen z-40 transition-transform duration-300 ease-in-out
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
-      >
-        <div className="bg-white px-6 py-6">
-          <h1 className="text-3xl font-[Kalam] font-bold">
-            <span className="text-green-600">S</span>ustain
-            <span className="text-green-600">W</span>ear
-          </h1>
-          <p className="text-xs text-gray-600">
-            Give Today.{" "}
-            <span className="text-green-600">Sustain Tomorrow.</span>
-          </p>
-        </div>
-
-        <nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => handleTabChange(tab)}
-              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${
-                activeTab === tab
-                  ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
-                  : "text-white hover:bg-green-600/70"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
-          <div className="hover:opacity-80 cursor-pointer transition-opacity duration-150">
-            Settings
-          </div>
-          <button
-            onClick={handleSignOut}
-            className="hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150"
-          >
-            Log Out
-          </button>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <main className="ml-0 lg:ml-64 p-4 sm:p-6 md:p-10 flex-1 bg-white min-h-screen w-full">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold">
-              {activeTab === "Home" && "Dashboard Overview"}
-              {activeTab === "Requests" && "Charity Requests"}
-              {activeTab === "Users" && "User Management"}
-              {activeTab === "Inventory" && "Inventory"}
-              {activeTab === "Impact" && "Impact & Reports"}
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-500">
-              Welcome back, Admin. Manage your SustainWear from here.
-            </p>
-          </div>
-
-          <div className="bg-green-100 text-green-700 p-2 rounded-full">
-            <User size={26} />
-          </div>
-        </div>
-
+    <DashboardLayout
+      tabs={TABS}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onSignOut={handleSignOut}
+      roleLabel="Admin"
+      headerTitle={headerTitle}
+    >
+      {/* ADMIN ONLY: allow scrolling inside dashboard content */}
+      <div className="h-full min-h-0 overflow-y-auto pr-1">
         {activeTab === "Home" && <HomeTab />}
 
         {activeTab === "Requests" && (
@@ -156,8 +87,8 @@ export default function AdminPage() {
         {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
 
         {activeTab === "Impact" && <ImpactTab />}
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }
 

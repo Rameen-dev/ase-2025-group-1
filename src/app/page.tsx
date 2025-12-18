@@ -8,8 +8,7 @@ import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ImpactPreview from "@/components/impactPreview";
 
-
-  const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
+const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
   const [showBanner, setShowBanner] = useState(false);
   const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
 
@@ -80,7 +79,6 @@ import ImpactPreview from "@/components/impactPreview";
   if (!showBanner) return null;
 
   return (
-    
     <div className="fixed inset-0 flex items-end md:items-center justify-center bg-black/30 backdrop-blur-sm z-[999]">
       <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 w-[90%] max-w-lg p-6 md:p-7 mx-auto animate-fadeIn">
         <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-2">
@@ -88,8 +86,8 @@ import ImpactPreview from "@/components/impactPreview";
         </h2>
 
         <p className="text-sm text-gray-600 leading-relaxed mb-4">
-          SustainWear uses cookies to operate the site and, with your consent, to
-          understand how our platform is used so we can improve it. You can
+          SustainWear uses cookies to operate the site and, with your consent,
+          to understand how our platform is used so we can improve it. You can
           choose which optional cookies to allow. See our{" "}
           <a
             href="/privacy"
@@ -183,58 +181,61 @@ export default function HomePage() {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const [statusType, setStatusType] = useState<"success" | "error" | null>(null);
+  const [statusType, setStatusType] = useState<"success" | "error" | null>(
+    null
+  );
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setStatusMessage(null);
-  setStatusType(null);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatusMessage(null);
+    setStatusType(null);
 
-  if (!name || !email || !message) {
-    setStatusType("error");
-    setStatusMessage("Please fill in all fields before submitting.");
-    return;
-  }
-
-  setIsSubmitting(true);
-
-  try {
-    const res = await fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
-      throw new Error(data.error || "Failed to send message.");
+    if (!name || !email || !message) {
+      setStatusType("error");
+      setStatusMessage("Please fill in all fields before submitting.");
+      return;
     }
 
-    setStatusType("success");
-    setStatusMessage(
-      "Thank you for getting in touch. We've received your message and will respond by email."
-    );
-    setName("");
-    setEmail("");
-    setMessage("");
-  } catch (err) {
-    console.error(err);
-    setStatusType("error");
-    setStatusMessage(
-      "Sorry, something went wrong sending your message. Please try again later."
-    );
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to send message.");
+      }
+
+      setStatusType("success");
+      setStatusMessage(
+        "Thank you for getting in touch. We've received your message and will respond by email."
+      );
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      console.error(err);
+      setStatusType("error");
+      setStatusMessage(
+        "Sorry, something went wrong sending your message. Please try again later."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const scrollToSection = (sectionId: string) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: "smooth" });
-    setMobileMenuOpen(false);
-  }
-};
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setMobileMenuOpen(false);
+    }
+  };
 
   return (
     <main className="w-full text-black text-center">
@@ -369,7 +370,6 @@ const handleSubmit = async (e: React.FormEvent) => {
           >
             Learn More
           </button>
-
         </div>
       </section>
 
@@ -466,18 +466,20 @@ const handleSubmit = async (e: React.FormEvent) => {
             />
           </div>
         </div>
+
         {/* Live Impact Preview */}
         <section className="min-h-screen flex flex-col justify-center bg-white px-4 sm:px-8 md:px-20 py-24">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium italic mb-10 text-[#2E7D32]">
             Live Impact Preview
           </h2>
-          <ImpactPreview totalItems={1240}/>
+          <ImpactPreview totalItems={1240} />
 
           <p className="text-sm text-gray-500 mt-10 text-center max-w-2xl mx-auto">
-            Impact values are estimates based on average clothing weights and conversion factors.
-            Figures shown are for demonstration purposes.
+            Impact values are estimates based on average clothing weights and
+            conversion factors. Figures shown are for demonstration purposes.
           </p>
-          </section>
+        </section>
+
         <div
           id="donate"
           className="w-full text-white py-12 sm:py-16 md:py-20 text-center flex flex-col items-center justify-center px-4"
@@ -550,11 +552,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 sm:gap-12 mt-6 sm:mt-10 w-full max-w-6xl">
             <div className="flex-1 w-full">
-              {/* Form wrapper for contact us */}
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-4 sm:space-y-6"
-              >
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
                   <label
                     htmlFor="name"
@@ -606,7 +604,6 @@ const handleSubmit = async (e: React.FormEvent) => {
                   />
                 </div>
 
-                {/* Status message (small, under the fields) */}
                 {statusMessage && (
                   <p
                     className={`text-sm text-left ${
@@ -640,8 +637,9 @@ const handleSubmit = async (e: React.FormEvent) => {
             </div>
           </div>
         </div>
-        {/* FOOTER (ADDED) */}
-        <footer className="w-full bg-[#E6E6E6] text-black py-10 px-6 sm:px-12 md:px-20 mt-auto">
+
+        {/*  FOOTER UPDATED */}
+        <footer className="w-full bg-[#E6E6E6] text-black py-10 px-6 sm:px-12 md:px-20 mt-auto pb-28 md:pb-10">
           <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
             {/* Left Section */}
             <div className="flex-1 text-left">
@@ -659,64 +657,71 @@ const handleSubmit = async (e: React.FormEvent) => {
               </p>
             </div>
 
-            {/* Middle Links */}
-            <div>
-              <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
-              <ul className="space-y-2">
-                <li>
-                  <button
-                    onClick={() => scrollToSection("about")}
-                    className="hover:text-[#2E7D32] transition cursor-pointer"
-                  >
-                    About Us
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollToSection("donate")}
-                    className="hover:text-[#2E7D32] transition cursor-pointer"
-                  >
-                    Donate
-                  </button>
-                </li>
-              </ul>
-            </div>
+            {/* On mobile: 2 columns (Quick Links | Help & Support) */}
+            {/*  On md+: behaves like your original layout */}
+            <div className="grid grid-cols-2 gap-10 md:flex md:gap-16 md:items-start">
+              {/* Quick Links */}
+              <div className="text-left">
+                <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button
+                      onClick={() => scrollToSection("about")}
+                      className="hover:text-[#2E7D32] transition cursor-pointer"
+                    >
+                      About Us
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => scrollToSection("donate")}
+                      className="hover:text-[#2E7D32] transition cursor-pointer"
+                    >
+                      Donate
+                    </button>
+                  </li>
+                </ul>
+              </div>
 
-            {/* Right Links */}
-            <div>
-              <h3 className="font-semibold text-lg mb-3 ">Help and Support</h3>
-              <ul className="space-y-2">
-                <li>
-                  <button
-                    onClick={() => scrollToSection("contact")}
-                    className="hover:text-[#2E7D32] transition cursor-pointer"
-                  >
-                    Contact Us
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => scrollToSection("how-it-works")}
-                    className="hover:text-[#2E7D32] transition cursor-pointer"
-                  >
-                    How It Works
-                  </button>
-                </li>
-                <li>
-                 <button
-                  onClick={() => router.push("/privacy")}
-                  className="hover:text-[#2E7D32] transition cursor-pointer"
-                >
-                  Privacy Policy
-                </button>
-                </li>
-              </ul>
+              {/* Help and Support */}
+              <div className="text-left">
+                <h3 className="font-semibold text-lg mb-3">Help and Support</h3>
+                <ul className="space-y-2">
+                  <li>
+                    <button
+                      onClick={() => scrollToSection("contact")}
+                      className="hover:text-[#2E7D32] transition cursor-pointer"
+                    >
+                      Contact Us
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => scrollToSection("how-it-works")}
+                      className="hover:text-[#2E7D32] transition cursor-pointer"
+                    >
+                      How It Works
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => router.push("/privacy")}
+                      className="hover:text-[#2E7D32] transition cursor-pointer"
+                    >
+                      Privacy Policy
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <ChatWidget/>
         </footer>
       </section>
-      <CookieBanner/>
+
+      {/* Keep chat widget OUTSIDE footer so it doesn't affect layout */}
+      <ChatWidget />
+
+      <CookieBanner />
     </main>
   );
 }
