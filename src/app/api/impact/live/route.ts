@@ -26,7 +26,6 @@ export async function GET() {
           not: null,
         },
       },
-      
     });
 
     // Estimate: average number of items needed to support 1 person

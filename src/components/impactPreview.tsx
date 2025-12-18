@@ -1,12 +1,6 @@
 // Here we define the shape of the data that this component expects as props.
 // This also helps TS catch errors and makes the component easier to understand.
 
-type ImpactData = {
-    // totalItems represents the total number of clothing items donated.
-    totalItems: number;
-
-};
-
 // This is the React functional component.
 // It receives totalItems as a prop from the landing oage.
 export default function ImpactPreview({ totalItems, peopleSupported, }: { totalItems: number; peopleSupported: number;
@@ -20,10 +14,6 @@ export default function ImpactPreview({ totalItems, peopleSupported, }: { totalI
     // Estimated C02 saved per KG of reused clothing.
     // This value is based on common sustainability estimates.
     const CO2_PER_KG = 3.6;
-
-    // Number of clothing items required to support one person.
-    // Used to estimate social impact.
-    const ITEMS_PER_PERSON = 10;
 
     // CALCULATIONS
 
@@ -41,7 +31,7 @@ export default function ImpactPreview({ totalItems, peopleSupported, }: { totalI
         // Section wrapper for the impact preview
         // - 1 Column for mobile
         // - 3 Column on medium screens and above
-        <section className="grid grid-cols=1 md:grid-cols-3 gap-6 py-12">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 py-12">
         
         {/* Impact card showing landfill diversion */}
         <ImpactCard 

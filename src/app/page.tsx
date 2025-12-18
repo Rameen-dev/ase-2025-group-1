@@ -185,53 +185,42 @@ export default function HomePage() {
     null
   );
 
-<<<<<<< HEAD
   const [impactData, setImpactData] = useState<{
-  totals: {
-    items: number;
-    donations: number;
-    co2SavedKg: number;
-    landfillSavedKg: number;
-    peopleSupported: number;
-  };
-} | null>(null);
+    totals: {
+      items: number;
+      peopleSupported: number;
+    };
+  } | null>(null);
 
-  const [impactLoading, setImpactLoading] = useState(true);
 
-  useEffect(() => {
-  async function fetchLiveImpact() {
+useEffect(() => {
+  async function fetchImpact() {
     try {
       const res = await fetch("/api/impact/live");
       const data = await res.json();
+      console.log("LIVE IMPACT:", data); 
       setImpactData(data);
-    } catch (error) {
-      console.error("Failed to load live impact data", error);
-    } finally {
-      setImpactLoading(false);
+    } catch (err) {
+      console.error("Failed to fetch live impact", err);
     }
   }
 
-  fetchLiveImpact();
+  fetchImpact();
 }, []);
 
+// Add loading states for better UX - FUTURE IMPROVEMENT!
+// const [impactLoading, setImpactLoading] = useState(true);
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setStatusMessage(null);
-  setStatusType(null);
-=======
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatusMessage(null);
     setStatusType(null);
->>>>>>> origin/co2-impact
 
     if (!name || !email || !message) {
       setStatusType("error");
       setStatusMessage("Please fill in all fields before submitting.");
       return;
     }
-
     setIsSubmitting(true);
 
     try {
@@ -513,24 +502,14 @@ const handleSubmit = async (e: React.FormEvent) => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold italic mb-10 text-white drop-shadow-sm text-center">
           Live Impact Preview
           </h2>
-<<<<<<< HEAD
-
-          <div className="w-full max-w-6xl mx-auto">
           <ImpactPreview
             totalItems={impactData?.totals.items ?? 0}
             peopleSupported={impactData?.totals.peopleSupported ?? 0}
           />
-          </div>
-          <p className="text-sm text-white/80 mt-10 text-center max-w-2xl mx-auto">
-            Impact values are estimates based on average clothing weights and conversion factors.
-            Figures shown are for demonstration purposes.
-=======
-          <ImpactPreview totalItems={1240} />
 
-          <p className="text-sm text-gray-500 mt-10 text-center max-w-2xl mx-auto">
+          <p className="text-sm text-white mt-10 text-center max-w-2xl mx-auto">
             Impact values are estimates based on average clothing weights and
             conversion factors. Figures shown are for demonstration purposes.
->>>>>>> origin/co2-impact
           </p>
         </section>
 
