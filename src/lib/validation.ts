@@ -5,6 +5,13 @@ import { z } from "zod";
 // This schema defines all the fields that appear in your signup form.
 // Each field includes its own rules: Minimum length, Valid email format, etc.
 // When the user submits the form, Zod automatically checks if their input matches these rules.
+export const strongPasswordSchema = z 
+.string()
+.min(8, "Password must be at least 8 characters long")
+.regex(/[A-Z]/,"Must contain at least one uppercase letter")
+.regex(/[a-z]/, "Must contain at least one lowercase letter")
+.regex(/[0-9]/, "Must contain at least one number")
+.regex(/[^A-Za-z0-9]/, "Must contain at least one special character");
 
 export const signUpSchema = z
   .object({
@@ -19,13 +26,7 @@ export const signUpSchema = z
       .toLowerCase()
       .email("Invalid email"),
     // Password must meet all requirements below:
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters long") // Must be 8 characters long,
-      .regex(/[A-Z]/, "Must contain at least one uppercase letter") // One Uppercase letter,
-      .regex(/[a-z]/, "Must contain at least one lowercase letter") // One lowercase letter,
-      .regex(/[0-9]/, "Must contain at least one number") // One number,
-      .regex(/[^A-Za-z0-9]/, "Must contain at least one special character"), // One special character.
+    password: strongPasswordSchema,
 
     // This field will later be compared with 'Password'.
     confirmPassword: z.string(),

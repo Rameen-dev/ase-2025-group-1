@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { User, Menu, X } from "lucide-react";
-import "@fontsource/kalam";
 import { useRouter } from "next/navigation";
+import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import UsersTab from "./components/UsersTab";
-import Link from "next/link";
+import ImpactTab from "./components/ImpactTab";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -32,11 +31,6 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [apps, setApps] = useState<CharityApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Logout confirmation modal state
-  const [logoutModalOpen, setLogoutModalOpen] = useState(false);
-  const [isSigningOut, setIsSigningOut] = useState(false);
 
   const router = useRouter();
 
@@ -55,121 +49,33 @@ export default function AdminPage() {
     load();
   }, []);
 
-  function openLogoutModal() {
-    setLogoutModalOpen(true);
+  function handleSignOut() {
+    router.push("/");
   }
 
-  function closeLogoutModal() {
-    if (!isSigningOut) {
-      setLogoutModalOpen(false);
-    }
-  }
-
-  async function confirmSignOut() {
-    try {
-      setIsSigningOut(true);
-
-      await fetch("/api/auth/logout", {
-        method: "POST",
-      });
-
-      router.push("/");
-    } finally {
-      setIsSigningOut(false);
-      setLogoutModalOpen(false);
-    }
-  }
-
-  function handleTabChange(tab: TabName) {
-    setActiveTab(tab);
-    setMobileMenuOpen(false);
-  }
+  // Dynamic header title based on active tab
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Requests"
+        ? "Charity Requests"
+        : activeTab === "Users"
+          ? "User Management"
+          : activeTab === "Inventory"
+            ? "Inventory"
+            : "Impact & Reports";
 
   return (
-    <div className="flex min-h-screen bg-white relative">
-      {/* Mobile hamburger menu - positioned at top right to avoid overlapping heading */}
-      <button
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        className="lg:hidden fixed top-4 right-4 z-50 bg-green-700 text-white p-2 rounded-lg shadow-lg"
-        aria-label="Toggle menu"
-      >
-        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
-
-      {/* Mobile menu backdrop */}
-      {mobileMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/40 z-30"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-
-      {/* SIDEBAR */}
-      <aside
-        className={`bg-green-700 w-64 flex flex-col justify-between fixed left-0 top-0 h-screen z-40 transition-transform duration-300 ease-in-out
-          ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
-      >
-        <div className="bg-white px-6 py-6">
-          <h1 className="text-3xl font-[Kalam] font-bold">
-            <span className="text-green-600">S</span>ustain
-            <span className="text-green-600">W</span>ear
-          </h1>
-          <p className="text-xs text-gray-600">
-            Give Today.{" "}
-            <span className="text-green-600">Sustain Tomorrow.</span>
-          </p>
-        </div>
-
-        <nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => handleTabChange(tab)}
-              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${
-                activeTab === tab
-                  ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
-                  : "text-white hover:bg-green-600/70"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-
-        <div className="border-t border-white/70 py-6 text-center text-white font-semibold">
-          <div className="hover:opacity-80 cursor-pointer transition-opacity duration-150">
-            Settings
-          </div>
-          <button
-            onClick={openLogoutModal}
-            className="hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150"
-          >
-            Log Out
-          </button>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT */}
-      <main className="ml-0 lg:ml-64 p-4 sm:p-6 md:p-10 flex-1 bg-white min-h-screen w-full">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-semibold">
-              {activeTab === "Home" && "Dashboard Overview"}
-              {activeTab === "Requests" && "Charity Requests"}
-              {activeTab === "Users" && "User Management"}
-              {activeTab === "Inventory" && "Inventory"}
-              {activeTab === "Impact" && "Impact & Reports"}
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-500">
-              Welcome back, Admin. Manage your SustainWear from here.
-            </p>
-          </div>
-
-          <div className="bg-green-100 text-green-700 p-2 rounded-full">
-            <User size={26} />
-          </div>
-        </div>
-
+    <DashboardLayout
+      tabs={TABS}
+      activeTab={activeTab}
+      onTabChange={setActiveTab}
+      onSignOut={handleSignOut}
+      roleLabel="Admin"
+      headerTitle={headerTitle}
+    >
+      {/* ADMIN ONLY: allow scrolling inside dashboard content */}
+      <div className="h-full min-h-0 overflow-y-auto pr-1">
         {activeTab === "Home" && <HomeTab />}
 
         {activeTab === "Requests" && (
@@ -180,54 +86,9 @@ export default function AdminPage() {
 
         {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
 
-        {activeTab === "Impact" && <PlaceholderTab title="Impact & Reports" />}
-      </main>
-
-      {/* LOGOUT CONFIRMATION MODAL */}
-      {logoutModalOpen && (
-        <>
-          {/* Dark backdrop */}
-          <div
-            className="fixed inset-0 bg-black/40 z-40"
-            onClick={() => !isSigningOut && setLogoutModalOpen(false)}
-          />
-
-          {/* Modal card */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-md border border-gray-100">
-              <div className="px-5 py-4 border-b bg-green-50 rounded-t-xl">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Confirm logout
-                </h3>
-                <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  You are about to log out of your SustainWear admin account.
-                  Make sure any changes have been saved before you continue.
-                </p>
-              </div>
-
-              <div className="px-5 py-4 flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end">
-                <button
-                  type="button"
-                  disabled={isSigningOut}
-                  onClick={closeLogoutModal}
-                  className="text-sm px-4 py-2 rounded border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  disabled={isSigningOut}
-                  onClick={confirmSignOut}
-                  className="text-sm px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {isSigningOut ? "Logging out…" : "Log Out"}
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+        {activeTab === "Impact" && <ImpactTab />}
+      </div>
+    </DashboardLayout>
   );
 }
 
@@ -480,5 +341,3 @@ function PlaceholderTab({ title }: { title: string }) {
     </div>
   );
 }
-
-

@@ -101,7 +101,7 @@ export default function VerifyEmailPage() {
     }
   }
 
-  // ⭐ NEW: resend logic
+  // Resend logic
   async function handleResend() {
     if (!email) {
       setServerErr("Missing email in URL.");

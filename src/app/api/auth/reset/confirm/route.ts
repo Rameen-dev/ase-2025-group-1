@@ -1,30 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
+import { z } from "zod";
+import { strongPasswordSchema } from "@/lib/validation";
 
 export const runtime = "nodejs";
 
+const resetConfirmSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Invalid email"),
+  newPassword: strongPasswordSchema,
+});
+
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const rawEmail = body.email ?? "";
-    const newPassword = body.newPassword ?? "";
+    const body = await req.json().catch(() => ({}));
 
-    const email = rawEmail.toLowerCase().trim();
-
-    if (!email || !newPassword) {
+    const parsed = resetConfirmSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { success: false, message: "Email and new password are required." },
+        {
+          success: false,
+          message: parsed.error.issues[0]?.message ?? "Invalid input.",
+        },
         { status: 400 }
       );
     }
 
-    if (newPassword.length < 8) {
-      return NextResponse.json(
-        { success: false, message: "Password must be at least 8 characters." },
-        { status: 400 }
-      );
-    }
+    const { email, newPassword } = parsed.data;
 
     // 1. Find user with their current password hash
     const user = await prisma.user.findUnique({

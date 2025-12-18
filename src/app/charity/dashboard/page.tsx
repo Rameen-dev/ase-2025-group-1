@@ -9,7 +9,6 @@ import CharityDonationHistoryModal from "@/components/modals/charityDonationHist
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
 import CharityImpactCards from "@/components/charity/CharityImpactCards";
 
-
 type ClothingItem = {
   clothing_id: number;
   type: string;
@@ -40,11 +39,9 @@ type CharityAnalytics = {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-// Tabs
 type TabName = "Home" | "Donations" | "Inventory";
 const TABS: TabName[] = ["Home", "Donations", "Inventory"];
 
-// Main dashboard
 export default function CharityDashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<TabName>("Home");
@@ -53,34 +50,35 @@ export default function CharityDashboard() {
   const [analytics, setAnalytics] = useState<CharityAnalytics | null>(null);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
 
-async function refreshCharityAnalytics() {
-  try {
-    setAnalyticsLoading(true);
+  async function refreshCharityAnalytics() {
+    try {
+      setAnalyticsLoading(true);
 
-    const res = await fetch(`${API_BASE}/api/charity/analytics`, {
-      credentials: "include",
-      cache: "no-store",
-    });
+      const res = await fetch(`${API_BASE}/api/charity/analytics`, {
+        credentials: "include",
+        cache: "no-store",
+      });
 
-    const json = await res.json();
+      const json = await res.json();
 
-    if (!res.ok) {
-      console.error("Failed to fetch charity analytics:", json);
+      if (!res.ok) {
+        console.error("Failed to fetch charity analytics:", json);
+        setAnalytics(null);
+        return;
+      }
+
+      setAnalytics(json);
+    } catch (err) {
+      console.error("Error loading charity analytics:", err);
       setAnalytics(null);
-      return;
+    } finally {
+      setAnalyticsLoading(false);
     }
-
-    setAnalytics(json);
-  } catch (err) {
-    console.error("Error loading charity analytics:", err);
-    setAnalytics(null);
-  } finally {
-    setAnalyticsLoading(false);
   }
-}
 
   useEffect(() => {
     refreshCharityAnalytics();
+
     async function load() {
       try {
         setLoading(true);
@@ -90,10 +88,12 @@ async function refreshCharityAnalytics() {
         });
         const data = await res.json();
 
-        if (Array.isArray(data)) {
-          setRequests(data);
-        } else {
-          console.error("Expected array from /api/donation-requests, got:", data);
+        if (Array.isArray(data)) setRequests(data);
+        else {
+          console.error(
+            "Expected array from /api/charity/donations, got:",
+            data
+          );
           setRequests([]);
         }
       } catch (err) {
@@ -103,7 +103,9 @@ async function refreshCharityAnalytics() {
         setLoading(false);
       }
     }
+
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -115,19 +117,22 @@ async function refreshCharityAnalytics() {
       roleLabel="Charity"
       headerTitle={activeTab}
     >
-    {activeTab === "Home" && (
-      <HomeTab analytics={analytics} loading={analyticsLoading} />
-    )}
+      {/* Mobile: allow scroll. Desktop: keep locked. */}
+      <div className="h-full min-h-0 overflow-y-auto md:overflow-hidden">
+        {activeTab === "Home" && (
+          <HomeTab analytics={analytics} loading={analyticsLoading} />
+        )}
 
-      {activeTab === "Donations" && (
-        <DonationsTab
-          requests={requests}
-          loading={loading}
-          setRequests={setRequests}
-        />
-      )}
+        {activeTab === "Donations" && (
+          <DonationsTab
+            requests={requests}
+            loading={loading}
+            setRequests={setRequests}
+          />
+        )}
 
-      {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
+        {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
+      </div>
     </DashboardLayout>
   );
 }
@@ -141,21 +146,19 @@ function HomeTab({
   loading: boolean;
 }) {
   return (
-    <div className="h-1/2 space-y-6">
-      {/* TOP: Charity sustainability impact */}
-      <div className="border h-full border-gray-200 rounded-xl p-8 bg-white">
+    <div className="h-full min-h-0 flex flex-col gap-6 overflow-y-auto md:overflow-hidden">
+      {/* TOP */}
+      <div className="border border-gray-200 rounded-xl p-6 md:p-8 bg-white">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Your Sustainability Impact
         </h3>
-
-        {/* Reuses the same impact logic pattern as donor, but charity-based */}
         <CharityImpactCards />
       </div>
 
-      {/* BOTTOM ROW */}
-      <div className="relative flex h-full gap-6">
-        {/* Left: Recent charity activity */}
-        <div className="w-1/2 border border-gray-200 rounded-xl p-8 bg-white">
+      {/* BOTTOM */}
+      <div className="flex flex-col md:flex-row gap-6 md:h-[400px] min-h-0">
+        {/* Recent Activity */}
+        <div className="w-full md:w-1/2 border border-gray-200 rounded-xl p-6 md:p-8 bg-white flex flex-col min-h-[320px] md:min-h-0 overflow-hidden">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Recent Activity
           </h3>
@@ -167,9 +170,12 @@ function HomeTab({
           )}
 
           {!loading && analytics && analytics.recentEvents.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-3 overflow-y-auto flex-1 min-h-0 pr-2">
               {analytics.recentEvents.map((e) => (
-                <div key={e.event_id} className="border rounded-lg p-3">
+                <div
+                  key={e.event_id}
+                  className="border rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                >
                   <p className="text-sm font-semibold text-gray-800">
                     {e.event_type.replaceAll("_", " ")}
                     {e.donation_request_id
@@ -185,8 +191,8 @@ function HomeTab({
           )}
         </div>
 
-        {/* Right: Charity stats */}
-        <div className="w-1/2 border border-gray-200 rounded-xl p-8 bg-white">
+        {/* Charity Overview */}
+        <div className="w-full md:w-1/2 border border-gray-200 rounded-xl p-6 md:p-8 bg-white overflow-hidden min-h-[220px]">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Charity Overview
           </h3>
@@ -196,24 +202,19 @@ function HomeTab({
           {!loading && analytics && (
             <div className="space-y-3 text-sm text-gray-700">
               <p>
-                Pending Requests:{" "}
-                <b>{analytics.totals.pendingRequests}</b>
+                Pending Requests: <b>{analytics.totals.pendingRequests}</b>
               </p>
               <p>
-                Reviewed Requests:{" "}
-                <b>{analytics.totals.reviewedRequests}</b>
+                Reviewed Requests: <b>{analytics.totals.reviewedRequests}</b>
               </p>
               <p>
-                Accepted Donations:{" "}
-                <b>{analytics.totals.acceptedDonations}</b>
+                Accepted Donations: <b>{analytics.totals.acceptedDonations}</b>
               </p>
               <p>
-                Accepted Items:{" "}
-                <b>{analytics.totals.acceptedItems}</b>
+                Accepted Items: <b>{analytics.totals.acceptedItems}</b>
               </p>
               <p>
-                Rejected Items:{" "}
-                <b>{analytics.totals.rejectedItems}</b>
+                Rejected Items: <b>{analytics.totals.rejectedItems}</b>
               </p>
             </div>
           )}
@@ -226,8 +227,6 @@ function HomeTab({
     </div>
   );
 }
-
-
 
 // Donations tab
 function DonationsTab({
@@ -269,19 +268,15 @@ function DonationsTab({
     }
   }
 
-  const pendingRequests = requests.filter(
-    (r) => r.status === "PENDING"
-  );
+  const pendingRequests = requests.filter((r) => r.status === "PENDING");
 
-
-  // Open modal and load items for a request
   function openView(req: DonationRequest) {
     setViewRequest(req);
     setViewOpen(true);
   }
 
   return (
-    <div>
+    <div className="h-full min-h-0 overflow-hidden flex flex-col">
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-xl font-semibold">Donation Requests</h2>
 
@@ -293,10 +288,8 @@ function DonationsTab({
         </button>
       </div>
 
-      <div className="border rounded-lg overflow-hidden h-[calc(100vh-180px)] flex flex-col">
+      <div className="border rounded-lg overflow-hidden flex flex-col flex-1 min-h-0">
         <table className="w-full text-sm table-fixed">
-
-          {/* colgroup to make columns align with the headers */}
           <colgroup>
             <col className="w-1/4" />
             <col className="w-1/6" />
@@ -313,7 +306,7 @@ function DonationsTab({
           </thead>
         </table>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <table className="w-full text-sm table-fixed">
             <colgroup>
               <col className="w-1/4" />
@@ -331,10 +324,11 @@ function DonationsTab({
               )}
 
               {!loading &&
-                Array.isArray(pendingRequests) &&
                 pendingRequests.map((r) => (
-                  <tr key={r.donation_request_id} className="border">
-                    <td className="p-3 text-center text-xl text-black font-bold">{r.title}</td>
+                  <tr key={r.donation_request_id} className="border-b">
+                    <td className="p-3 text-center text-black font-bold">
+                      {r.title}
+                    </td>
                     <td className="p-3 text-center">
                       {r._count?.ClothingItems ?? 0}
                     </td>
@@ -352,7 +346,7 @@ function DonationsTab({
                   </tr>
                 ))}
 
-              {!loading && Array.isArray(pendingRequests) && requests.length === 0 && (
+              {!loading && pendingRequests.length === 0 && (
                 <tr>
                   <td colSpan={4} className="text-center p-4">
                     No donation requests found.
@@ -391,12 +385,13 @@ function DonationsTab({
     </div>
   );
 }
+
 // Inventory placeholder
 function PlaceholderTab({ title }: { title: string }) {
   return (
-    <div className="border rounded-xl p-6 text-center text-gray-400">
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p>Coming soon.</p>
+    <div className="h-full min-h-0 border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
+      <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
+      <p className="text-sm">Coming soon.</p>
     </div>
   );
-};
+}
