@@ -52,4 +52,69 @@ describe("signUpSchema", () => {
         });
         expect(result.success).toBe(true);
     });
+
+    test("This test will Reject signup if the First name field is left empty (Empty string)", () => {
+        const result = signUpSchema.safeParse({
+            firstName: "",
+            lastName: "Burdabar",
+            email: "test@example.com",
+            password: "Reefat1!",
+            confirmPassword: "Reefat1!",
+            marketingOptIn: false,
+            termsAccepted: true,
+        });
+        expect(result.success).toBe(false);
+    });
+
+    test("This test will Reject signup if the Last name field is left empty (Empty string)", () => {
+        const result = signUpSchema.safeParse({
+            firstName: "Rameen",
+            lastName: "",
+            email: "test@example.com",
+            password: "Reefat1!",
+            confirmPassword: "Reefat1!",
+            marketingOptIn: false,
+            termsAccepted: true,
+        });
+        expect(result.success).toBe(false);
+    });
+
+    test("This test will Reject signup if the password field is left empty (Empty string)", () => {
+        const result = signUpSchema.safeParse({
+            firstName: "Rameen",
+            lastName: "Burdabar",
+            email: "test@example.com",
+            password: "",
+            confirmPassword: "",
+            marketingOptIn: false,
+            termsAccepted: true,
+        });
+        expect(result.success).toBe(false);
+    });
+
+    test("This test will Reject signup if the confirmPassword field is left empty (Empty string)", () => {
+        const result = signUpSchema.safeParse({
+            firstName: "Rameen",
+            lastName: "Burdabar",
+            email: "test@example.com",
+            password: "Reefat1!",
+            confirmPassword: "",
+            marketingOptIn: false,
+            termsAccepted: true,
+        });
+        expect(result.success).toBe(false);
+    });
+
+    test("This will test for if an email is not the correct format", () => {
+        const result = signUpSchema.safeParse({
+            firstName: "Rameen",
+            lastName: "Burdabar",
+            email: "Incorrect format",
+            password: "Reefat1!",
+            confirmPassword: "Reefat1!",
+            marketingOptIn: false,
+            termsAccepted: true,
+        });
+        expect(result.success).toBe(false);
+    });
 });
