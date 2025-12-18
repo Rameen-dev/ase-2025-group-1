@@ -1,5 +1,4 @@
 import { signUpSchema } from "@/lib/validation";
-import { sign } from "crypto";
 
 describe("signUpSchema", () => {
     test("This test is for accepting valid sign-up details", () => {
