@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     });
 
     // if user doesn't exist:
-    // For coursework clarity, we TELL them.
+    // For coursework clarity, we tell them.
     // (In production you'd pretend it's fine.)
     if (!user) {
       return NextResponse.json(

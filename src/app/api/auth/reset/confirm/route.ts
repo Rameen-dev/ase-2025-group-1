@@ -71,8 +71,8 @@ export async function POST(req: NextRequest) {
       success: true,
       message: "Password updated successfully.",
     });
-  } catch (err) {
-    console.error("Error in /api/auth/reset/confirm:", err);
+  } catch (error) {
+    console.error("Error in /api/auth/reset/confirm:", error);
     return NextResponse.json(
       { success: false, message: "Something went wrong." },
       { status: 500 }

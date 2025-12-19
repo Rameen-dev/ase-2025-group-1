@@ -20,7 +20,7 @@ describe("signUpSchema", () => {
             lastName: "Burdabar",
             email: "test@example.com",
             password: "Reefat1!",
-            confirmPassword: "Reefat!!", // Mismatch on purpose for test
+            confirmPassword: "Reefat!!", 
             marketingOptIn: false,
             termsAccepted: true,
         });
