@@ -69,6 +69,7 @@ model Charities {
   ClothingItems              ClothingItems[]
   donation_requests_answered DonationRequest[]     @relation("charity_answer")
   donations_received         Donations[]           @relation("charity_donation")
+  Draft                      Draft[]
   Session                    Session[]
   Draft                      Draft[]
 
@@ -171,6 +172,7 @@ model ClothingItems {
   front_image_url     String
   back_image_url      String
   status              Status          @default(PENDING)
+  drafted_status      clothingDrafted @default(AVAILABLE)
   Donations           Donations?      @relation(fields: [donation_id], references: [donation_id])
   DonationRequest     DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
   User                User            @relation(fields: [donor_id], references: [user_id])
@@ -239,4 +241,14 @@ enum Status {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum clothingDrafted {
+  ALLOCATED
+  AVAILABLE
+}
+
+enum draftStatus {
+  DRAFT
+  CANCELLED
 }

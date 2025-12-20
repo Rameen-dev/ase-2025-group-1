@@ -111,3 +111,49 @@ export function CharityDeclineDonationRequestModal({
         />
     );
 }
+
+export function CharityInventoryActionConfirm({
+    isOpen,
+    onClose,
+    onConfirm,
+    title,
+    message,
+    confirmLabel,
+    confirmClassName,
+}: BaseConfirmMessage) {
+    if (!isOpen) return null;
+
+    return (
+        <div
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {title && (
+                    <h2 className="text-lg font-semibold mb-2">{title}</h2>
+                )}
+
+                <div className="text-sm text-gray-700 mb-4">{message}</div>
+
+                <div className="flex justify-end gap-2">
+                    <button
+                        className="px-3 py-1 border rounded-md text-sm"
+                        onClick={onClose}
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        className={`px-3 py-1 text-white rounded-md text-sm ${confirmClassName}`}
+                        onClick={onConfirm}
+                    >
+                        {confirmLabel}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}

@@ -78,43 +78,58 @@ export type Draft = $Result.DefaultSelection<Prisma.$DraftPayload>
  * 
  */
 export type DraftedItem = $Result.DefaultSelection<Prisma.$DraftedItemPayload>
+/**
+ * Model AuditEvent
+ * 
+ */
+export type AuditEvent = $Result.DefaultSelection<Prisma.$AuditEventPayload>
+/**
+ * Model Draft
+ * 
+ */
+export type Draft = $Result.DefaultSelection<Prisma.$DraftPayload>
+/**
+ * Model DraftedItem
+ * 
+ */
+export type DraftedItem = $Result.DefaultSelection<Prisma.$DraftedItemPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
   export const clothingDrafted: {
-  ALLOCATED: 'ALLOCATED',
-  AVAILABLE: 'AVAILABLE'
-};
+    ALLOCATED: 'ALLOCATED',
+    AVAILABLE: 'AVAILABLE'
+  };
 
-export type clothingDrafted = (typeof clothingDrafted)[keyof typeof clothingDrafted]
-
-
-export const draftStatus: {
-  DRAFT: 'DRAFT',
-  CANCELLED: 'CANCELLED'
-};
-
-export type draftStatus = (typeof draftStatus)[keyof typeof draftStatus]
+  export type clothingDrafted = (typeof clothingDrafted)[keyof typeof clothingDrafted]
 
 
-export const SessionActorType: {
-  DONOR: 'DONOR',
-  CHARITY: 'CHARITY',
-  ADMIN: 'ADMIN'
-};
+  export const draftStatus: {
+    DRAFT: 'DRAFT',
+    CANCELLED: 'CANCELLED'
+  };
 
-export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
+  export type draftStatus = (typeof draftStatus)[keyof typeof draftStatus]
 
 
-export const Status: {
-  PENDING: 'PENDING',
-  APPROVED: 'APPROVED',
-  REJECTED: 'REJECTED'
-};
+  export const SessionActorType: {
+    DONOR: 'DONOR',
+    CHARITY: 'CHARITY',
+    ADMIN: 'ADMIN'
+  };
 
-export type Status = (typeof Status)[keyof typeof Status]
+  export type SessionActorType = (typeof SessionActorType)[keyof typeof SessionActorType]
+
+
+  export const Status: {
+    PENDING: 'PENDING',
+    APPROVED: 'APPROVED',
+    REJECTED: 'REJECTED'
+  };
+
+  export type Status = (typeof Status)[keyof typeof Status]
 
 }
 
@@ -133,6 +148,14 @@ export const SessionActorType: typeof $Enums.SessionActorType
 export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
+
+export type clothingDrafted = $Enums.clothingDrafted
+
+export const clothingDrafted: typeof $Enums.clothingDrafted
+
+export type draftStatus = $Enums.draftStatus
+
+export const draftStatus: typeof $Enums.draftStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -155,22 +178,22 @@ export class PrismaClient<
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
 
-    /**
-   * ##  Prisma Client ʲˢ
-   *
-   * Type-safe database client for TypeScript & Node.js
-   * @example
-   * ```
-   * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
-   * ```
-   *
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
-   */
+  /**
+ * ##  Prisma Client ʲˢ
+ *
+ * Type-safe database client for TypeScript & Node.js
+ * @example
+ * ```
+ * const prisma = new PrismaClient()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
+ * ```
+ *
+ *
+ * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ */
 
-  constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
+  constructor(optionsArg?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
   $on<V extends U>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : Prisma.LogEvent) => void): PrismaClient;
 
   /**
@@ -183,15 +206,15 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
-/**
-   * Executes a prepared raw query and returns the number of affected rows.
-   * @example
-   * ```
-   * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
-   * ```
-   *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
-   */
+  /**
+     * Executes a prepared raw query and returns the number of affected rows.
+     * @example
+     * ```
+     * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
+     * ```
+     *
+     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+     */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
   /**
@@ -252,14 +275,14 @@ export class PrismaClient<
     extArgs: ExtArgs
   }>>
 
-      /**
-   * `prisma.user`: Exposes CRUD operations for the **User** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Users
-    * const users = await prisma.user.findMany()
-    * ```
-    */
+  /**
+* `prisma.user`: Exposes CRUD operations for the **User** model.
+* Example usage:
+* ```ts
+* // Fetch zero or more Users
+* const users = await prisma.user.findMany()
+* ```
+*/
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
@@ -351,6 +374,36 @@ export class PrismaClient<
     * ```
     */
   get clothingItems(): Prisma.ClothingItemsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditEvent`: Exposes CRUD operations for the **AuditEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditEvents
+    * const auditEvents = await prisma.auditEvent.findMany()
+    * ```
+    */
+  get auditEvent(): Prisma.AuditEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.draft`: Exposes CRUD operations for the **Draft** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Drafts
+    * const drafts = await prisma.draft.findMany()
+    * ```
+    */
+  get draft(): Prisma.DraftDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.draftedItem`: Exposes CRUD operations for the **DraftedItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DraftedItems
+    * const draftedItems = await prisma.draftedItem.findMany()
+    * ```
+    */
+  get draftedItem(): Prisma.DraftedItemDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.auditEvent`: Exposes CRUD operations for the **AuditEvent** model.
@@ -549,7 +602,7 @@ export namespace Prisma {
    * From T, pick a set of properties whose keys are in the union K
    */
   type Prisma__Pick<T, K extends keyof T> = {
-      [P in K]: T[P];
+    [P in K]: T[P];
   };
 
 
@@ -584,8 +637,8 @@ export namespace Prisma {
     (T extends SelectAndInclude
       ? 'Please either choose `select` or `include`.'
       : T extends SelectAndOmit
-        ? 'Please either choose `select` or `omit`.'
-        : {})
+      ? 'Please either choose `select` or `omit`.'
+      : {})
 
   /**
    * Subset + Intersection
@@ -605,7 +658,7 @@ export namespace Prisma {
   type XOR<T, U> =
     T extends object ?
     U extends object ?
-      (Without<T, U> & U) | (Without<U, T> & T)
+    (Without<T, U> & U) | (Without<U, T> & T)
     : U : T
 
 
@@ -613,16 +666,16 @@ export namespace Prisma {
    * Is T a Record?
    */
   type IsObject<T extends any> = T extends Array<any>
-  ? False
-  : T extends Date
-  ? False
-  : T extends Uint8Array
-  ? False
-  : T extends BigInt
-  ? False
-  : T extends object
-  ? True
-  : False
+    ? False
+    : T extends Date
+    ? False
+    : T extends Uint8Array
+    ? False
+    : T extends BigInt
+    ? False
+    : T extends object
+    ? True
+    : False
 
 
   /**
@@ -673,11 +726,11 @@ export namespace Prisma {
     : never
 
   export type Overwrite<O extends object, O1 extends object> = {
-      [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
+    [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
   } & {};
 
   type _Merge<U extends object> = IntersectOf<Overwrite<U, {
-      [K in keyof U]-?: At<U, K>;
+    [K in keyof U]-?: At<U, K>;
   }>>;
 
   type Key = string | number | symbol;
@@ -685,8 +738,8 @@ export namespace Prisma {
   type AtStrict<O extends object, K extends Key> = O[K & keyof O];
   type AtLoose<O extends object, K extends Key> = O extends unknown ? AtStrict<O, K> : never;
   export type At<O extends object, K extends Key, strict extends Boolean = 1> = {
-      1: AtStrict<O, K>;
-      0: AtLoose<O, K>;
+    1: AtStrict<O, K>;
+    0: AtLoose<O, K>;
   }[strict];
 
   export type ComputeRaw<A extends any> = A extends Function ? A : {
@@ -708,7 +761,7 @@ export namespace Prisma {
   type AtLeast<O extends object, K extends string> = NoExpand<
     O extends unknown
     ? | (K extends keyof O ? { [P in K]: O[P] } & O : O)
-      | {[P in keyof O as P extends K ? P : never]-?: O[P]} & O
+    | { [P in keyof O as P extends K ? P : never]-?: O[P] } & O
     : never>;
 
   type _Strict<U, _U = U> = U extends unknown ? U & OptionalFlat<_Record<Exclude<Keys<_U>, keyof U>, never>> : never;
@@ -773,8 +826,8 @@ export namespace Prisma {
 
   export type GetScalarType<T, O> = O extends object ? {
     [P in keyof T]: P extends keyof O
-      ? O[P]
-      : never
+    ? O[P]
+    : never
   } : never
 
   type FieldPaths<
@@ -787,15 +840,15 @@ export namespace Prisma {
       Or<Extends<'OR', K>, Extends<'AND', K>>,
       Extends<'NOT', K>
     > extends True
-      ? // infer is only needed to not hit TS limit
-        // based on the brilliant idea of Pierre-Antoine Mills
-        // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
-        T[K] extends infer TK
-        ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
-        : never
-      : {} extends FieldPaths<T[K]>
-      ? never
-      : K
+    ? // infer is only needed to not hit TS limit
+    // based on the brilliant idea of Pierre-Antoine Mills
+    // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
+    T[K] extends infer TK
+    ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
+    : never
+    : {} extends FieldPaths<T[K]>
+    ? never
+    : K
   }[keyof T]
 
   /**
@@ -835,6 +888,10 @@ export namespace Prisma {
     AuditEvent: 'AuditEvent',
     Draft: 'Draft',
     DraftedItem: 'DraftedItem'
+    ClothingItems: 'ClothingItems',
+    AuditEvent: 'AuditEvent',
+    Draft: 'Draft',
+    DraftedItem: 'DraftedItem'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -844,7 +901,7 @@ export namespace Prisma {
     db?: Datasource
   }
 
-  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
+  interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{ extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
   }
 
@@ -853,6 +910,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
+      modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems" | "auditEvent" | "draft" | "draftedItem"
       modelProps: "user" | "emailVerificationTokens" | "passwordResetTokens" | "charities" | "charityApplications" | "charitySignupTokens" | "donations" | "donationRequest" | "session" | "clothingItems" | "auditEvent" | "draft" | "draftedItem"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
@@ -1819,6 +1877,228 @@ export namespace Prisma {
           }
         }
       }
+      AuditEvent: {
+        payload: Prisma.$AuditEventPayload<ExtArgs>
+        fields: Prisma.AuditEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          findMany: {
+            args: Prisma.AuditEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          create: {
+            args: Prisma.AuditEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          createMany: {
+            args: Prisma.AuditEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          update: {
+            args: Prisma.AuditEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditEventPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditEvent>
+          }
+          groupBy: {
+            args: Prisma.AuditEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditEventCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      Draft: {
+        payload: Prisma.$DraftPayload<ExtArgs>
+        fields: Prisma.DraftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DraftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DraftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          findFirst: {
+            args: Prisma.DraftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DraftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          findMany: {
+            args: Prisma.DraftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          create: {
+            args: Prisma.DraftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          createMany: {
+            args: Prisma.DraftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DraftCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          delete: {
+            args: Prisma.DraftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          update: {
+            args: Prisma.DraftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          deleteMany: {
+            args: Prisma.DraftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DraftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DraftUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>[]
+          }
+          upsert: {
+            args: Prisma.DraftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftPayload>
+          }
+          aggregate: {
+            args: Prisma.DraftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDraft>
+          }
+          groupBy: {
+            args: Prisma.DraftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DraftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DraftCountArgs<ExtArgs>
+            result: $Utils.Optional<DraftCountAggregateOutputType> | number
+          }
+        }
+      }
+      DraftedItem: {
+        payload: Prisma.$DraftedItemPayload<ExtArgs>
+        fields: Prisma.DraftedItemFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DraftedItemFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DraftedItemFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          findFirst: {
+            args: Prisma.DraftedItemFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DraftedItemFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          findMany: {
+            args: Prisma.DraftedItemFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          create: {
+            args: Prisma.DraftedItemCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          createMany: {
+            args: Prisma.DraftedItemCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DraftedItemCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          delete: {
+            args: Prisma.DraftedItemDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          update: {
+            args: Prisma.DraftedItemUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          deleteMany: {
+            args: Prisma.DraftedItemDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DraftedItemUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DraftedItemUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>[]
+          }
+          upsert: {
+            args: Prisma.DraftedItemUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DraftedItemPayload>
+          }
+          aggregate: {
+            args: Prisma.DraftedItemAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDraftedItem>
+          }
+          groupBy: {
+            args: Prisma.DraftedItemGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DraftedItemGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DraftedItemCountArgs<ExtArgs>
+            result: $Utils.Optional<DraftedItemCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1925,6 +2205,9 @@ export namespace Prisma {
     donationRequest?: DonationRequestOmit
     session?: SessionOmit
     clothingItems?: ClothingItemsOmit
+    auditEvent?: AuditEventOmit
+    draft?: DraftOmit
+    draftedItem?: DraftedItemOmit
     auditEvent?: AuditEventOmit
     draft?: DraftOmit
     draftedItem?: DraftedItemOmit
@@ -2116,6 +2399,7 @@ export namespace Prisma {
     ClothingItems: number
     donation_requests_answered: number
     donations_received: number
+    Draft: number
     Session: number
     Draft: number
   }
@@ -2126,6 +2410,7 @@ export namespace Prisma {
     ClothingItems?: boolean | CharitiesCountOutputTypeCountClothingItemsArgs
     donation_requests_answered?: boolean | CharitiesCountOutputTypeCountDonation_requests_answeredArgs
     donations_received?: boolean | CharitiesCountOutputTypeCountDonations_receivedArgs
+    Draft?: boolean | CharitiesCountOutputTypeCountDraftArgs
     Session?: boolean | CharitiesCountOutputTypeCountSessionArgs
     Draft?: boolean | CharitiesCountOutputTypeCountDraftArgs
   }
@@ -2174,6 +2459,13 @@ export namespace Prisma {
    */
   export type CharitiesCountOutputTypeCountDonations_receivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DonationsWhereInput
+  }
+
+  /**
+   * CharitiesCountOutputType without action
+   */
+  export type CharitiesCountOutputTypeCountDraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DraftWhereInput
   }
 
   /**
@@ -2484,11 +2776,11 @@ export namespace Prisma {
   }
 
   export type GetUserAggregateType<T extends UserAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser[P]>
-      : GetScalarType<T[P], AggregateUser[P]>
+    [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateUser[P]>
+    : GetScalarType<T[P], AggregateUser[P]>
   }
 
 
@@ -2528,15 +2820,15 @@ export namespace Prisma {
   type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<UserGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserGroupByOutputType[P]>
-            : GetScalarType<T[P], UserGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], UserGroupByOutputType[P]>
+        : GetScalarType<T[P], UserGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2908,10 +3200,10 @@ export namespace Prisma {
       args?: Subset<T, UserCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], UserCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -2965,8 +3257,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserGroupByArgs['orderBy'] }
-        : { orderBy?: UserGroupByArgs['orderBy'] },
+      ? { orderBy: UserGroupByArgs['orderBy'] }
+      : { orderBy?: UserGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2977,49 +3269,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the User model
-   */
-  readonly fields: UserFieldRefs;
+    /**
+     * Fields of the User model
+     */
+    readonly fields: UserFieldRefs;
   }
 
   /**
@@ -3078,7 +3370,7 @@ export namespace Prisma {
     readonly created_on: FieldRef<"User", 'DateTime'>
     readonly updated_on: FieldRef<"User", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -3850,11 +4142,11 @@ export namespace Prisma {
   }
 
   export type GetEmailVerificationTokensAggregateType<T extends EmailVerificationTokensAggregateArgs> = {
-        [P in keyof T & keyof AggregateEmailVerificationTokens]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateEmailVerificationTokens[P]>
-      : GetScalarType<T[P], AggregateEmailVerificationTokens[P]>
+    [P in keyof T & keyof AggregateEmailVerificationTokens]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateEmailVerificationTokens[P]>
+    : GetScalarType<T[P], AggregateEmailVerificationTokens[P]>
   }
 
 
@@ -3891,15 +4183,15 @@ export namespace Prisma {
   type GetEmailVerificationTokensGroupByPayload<T extends EmailVerificationTokensGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<EmailVerificationTokensGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof EmailVerificationTokensGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], EmailVerificationTokensGroupByOutputType[P]>
-            : GetScalarType<T[P], EmailVerificationTokensGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof EmailVerificationTokensGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], EmailVerificationTokensGroupByOutputType[P]>
+        : GetScalarType<T[P], EmailVerificationTokensGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type EmailVerificationTokensSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4236,10 +4528,10 @@ export namespace Prisma {
       args?: Subset<T, EmailVerificationTokensCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], EmailVerificationTokensCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], EmailVerificationTokensCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -4293,8 +4585,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: EmailVerificationTokensGroupByArgs['orderBy'] }
-        : { orderBy?: EmailVerificationTokensGroupByArgs['orderBy'] },
+      ? { orderBy: EmailVerificationTokensGroupByArgs['orderBy'] }
+      : { orderBy?: EmailVerificationTokensGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -4305,49 +4597,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, EmailVerificationTokensGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmailVerificationTokensGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the EmailVerificationTokens model
-   */
-  readonly fields: EmailVerificationTokensFieldRefs;
+    /**
+     * Fields of the EmailVerificationTokens model
+     */
+    readonly fields: EmailVerificationTokensFieldRefs;
   }
 
   /**
@@ -4395,7 +4687,7 @@ export namespace Prisma {
     readonly consumed_on: FieldRef<"EmailVerificationTokens", 'DateTime'>
     readonly created_on: FieldRef<"EmailVerificationTokens", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -4959,11 +5251,11 @@ export namespace Prisma {
   }
 
   export type GetPasswordResetTokensAggregateType<T extends PasswordResetTokensAggregateArgs> = {
-        [P in keyof T & keyof AggregatePasswordResetTokens]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregatePasswordResetTokens[P]>
-      : GetScalarType<T[P], AggregatePasswordResetTokens[P]>
+    [P in keyof T & keyof AggregatePasswordResetTokens]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregatePasswordResetTokens[P]>
+    : GetScalarType<T[P], AggregatePasswordResetTokens[P]>
   }
 
 
@@ -5000,15 +5292,15 @@ export namespace Prisma {
   type GetPasswordResetTokensGroupByPayload<T extends PasswordResetTokensGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<PasswordResetTokensGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof PasswordResetTokensGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], PasswordResetTokensGroupByOutputType[P]>
-            : GetScalarType<T[P], PasswordResetTokensGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof PasswordResetTokensGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], PasswordResetTokensGroupByOutputType[P]>
+        : GetScalarType<T[P], PasswordResetTokensGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type PasswordResetTokensSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5345,10 +5637,10 @@ export namespace Prisma {
       args?: Subset<T, PasswordResetTokensCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], PasswordResetTokensCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], PasswordResetTokensCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -5402,8 +5694,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: PasswordResetTokensGroupByArgs['orderBy'] }
-        : { orderBy?: PasswordResetTokensGroupByArgs['orderBy'] },
+      ? { orderBy: PasswordResetTokensGroupByArgs['orderBy'] }
+      : { orderBy?: PasswordResetTokensGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -5414,49 +5706,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, PasswordResetTokensGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPasswordResetTokensGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the PasswordResetTokens model
-   */
-  readonly fields: PasswordResetTokensFieldRefs;
+    /**
+     * Fields of the PasswordResetTokens model
+     */
+    readonly fields: PasswordResetTokensFieldRefs;
   }
 
   /**
@@ -5504,7 +5796,7 @@ export namespace Prisma {
     readonly consumed_on: FieldRef<"PasswordResetTokens", 'DateTime'>
     readonly created_on: FieldRef<"PasswordResetTokens", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -6088,11 +6380,11 @@ export namespace Prisma {
   }
 
   export type GetCharitiesAggregateType<T extends CharitiesAggregateArgs> = {
-        [P in keyof T & keyof AggregateCharities]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCharities[P]>
-      : GetScalarType<T[P], AggregateCharities[P]>
+    [P in keyof T & keyof AggregateCharities]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateCharities[P]>
+    : GetScalarType<T[P], AggregateCharities[P]>
   }
 
 
@@ -6133,15 +6425,15 @@ export namespace Prisma {
   type GetCharitiesGroupByPayload<T extends CharitiesGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<CharitiesGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CharitiesGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
-            : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof CharitiesGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
+        : GetScalarType<T[P], CharitiesGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type CharitiesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6160,6 +6452,7 @@ export namespace Prisma {
     ClothingItems?: boolean | Charities$ClothingItemsArgs<ExtArgs>
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
+    Draft?: boolean | Charities$DraftArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
     Draft?: boolean | Charities$DraftArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
@@ -6211,6 +6504,7 @@ export namespace Prisma {
     ClothingItems?: boolean | Charities$ClothingItemsArgs<ExtArgs>
     donation_requests_answered?: boolean | Charities$donation_requests_answeredArgs<ExtArgs>
     donations_received?: boolean | Charities$donations_receivedArgs<ExtArgs>
+    Draft?: boolean | Charities$DraftArgs<ExtArgs>
     Session?: boolean | Charities$SessionArgs<ExtArgs>
     Draft?: boolean | Charities$DraftArgs<ExtArgs>
     _count?: boolean | CharitiesCountOutputTypeDefaultArgs<ExtArgs>
@@ -6226,6 +6520,7 @@ export namespace Prisma {
       ClothingItems: Prisma.$ClothingItemsPayload<ExtArgs>[]
       donation_requests_answered: Prisma.$DonationRequestPayload<ExtArgs>[]
       donations_received: Prisma.$DonationsPayload<ExtArgs>[]
+      Draft: Prisma.$DraftPayload<ExtArgs>[]
       Session: Prisma.$SessionPayload<ExtArgs>[]
       Draft: Prisma.$DraftPayload<ExtArgs>[]
     }
@@ -6512,10 +6807,10 @@ export namespace Prisma {
       args?: Subset<T, CharitiesCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CharitiesCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], CharitiesCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -6569,8 +6864,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CharitiesGroupByArgs['orderBy'] }
-        : { orderBy?: CharitiesGroupByArgs['orderBy'] },
+      ? { orderBy: CharitiesGroupByArgs['orderBy'] }
+      : { orderBy?: CharitiesGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -6581,49 +6876,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, CharitiesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharitiesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Charities model
-   */
-  readonly fields: CharitiesFieldRefs;
+    /**
+     * Fields of the Charities model
+     */
+    readonly fields: CharitiesFieldRefs;
   }
 
   /**
@@ -6639,6 +6934,7 @@ export namespace Prisma {
     ClothingItems<T extends Charities$ClothingItemsArgs<ExtArgs> = {}>(args?: Subset<T, Charities$ClothingItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClothingItemsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donation_requests_answered<T extends Charities$donation_requests_answeredArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donation_requests_answeredArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     donations_received<T extends Charities$donations_receivedArgs<ExtArgs> = {}>(args?: Subset<T, Charities$donations_receivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DonationsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Draft<T extends Charities$DraftArgs<ExtArgs> = {}>(args?: Subset<T, Charities$DraftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Session<T extends Charities$SessionArgs<ExtArgs> = {}>(args?: Subset<T, Charities$SessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Draft<T extends Charities$DraftArgs<ExtArgs> = {}>(args?: Subset<T, Charities$DraftArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -6681,7 +6977,7 @@ export namespace Prisma {
     readonly updated_on: FieldRef<"Charities", 'DateTime'>
     readonly password_hash: FieldRef<"Charities", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -7188,6 +7484,30 @@ export namespace Prisma {
   }
 
   /**
+   * Charities.Draft
+   */
+  export type Charities$DraftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Draft
+     */
+    select?: DraftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Draft
+     */
+    omit?: DraftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftInclude<ExtArgs> | null
+    where?: DraftWhereInput
+    orderBy?: DraftOrderByWithRelationInput | DraftOrderByWithRelationInput[]
+    cursor?: DraftWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DraftScalarFieldEnum | DraftScalarFieldEnum[]
+  }
+
+  /**
    * Charities.Session
    */
   export type Charities$SessionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7473,11 +7793,11 @@ export namespace Prisma {
   }
 
   export type GetCharityApplicationsAggregateType<T extends CharityApplicationsAggregateArgs> = {
-        [P in keyof T & keyof AggregateCharityApplications]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCharityApplications[P]>
-      : GetScalarType<T[P], AggregateCharityApplications[P]>
+    [P in keyof T & keyof AggregateCharityApplications]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateCharityApplications[P]>
+    : GetScalarType<T[P], AggregateCharityApplications[P]>
   }
 
 
@@ -7524,15 +7844,15 @@ export namespace Prisma {
   type GetCharityApplicationsGroupByPayload<T extends CharityApplicationsGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<CharityApplicationsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CharityApplicationsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
-            : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof CharityApplicationsGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
+        : GetScalarType<T[P], CharityApplicationsGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type CharityApplicationsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7933,10 +8253,10 @@ export namespace Prisma {
       args?: Subset<T, CharityApplicationsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CharityApplicationsCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], CharityApplicationsCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -7990,8 +8310,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CharityApplicationsGroupByArgs['orderBy'] }
-        : { orderBy?: CharityApplicationsGroupByArgs['orderBy'] },
+      ? { orderBy: CharityApplicationsGroupByArgs['orderBy'] }
+      : { orderBy?: CharityApplicationsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -8002,49 +8322,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, CharityApplicationsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharityApplicationsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CharityApplications model
-   */
-  readonly fields: CharityApplicationsFieldRefs;
+    /**
+     * Fields of the CharityApplications model
+     */
+    readonly fields: CharityApplicationsFieldRefs;
   }
 
   /**
@@ -8104,7 +8424,7 @@ export namespace Prisma {
     readonly updated_on: FieldRef<"CharityApplications", 'DateTime'>
     readonly status: FieldRef<"CharityApplications", 'Status'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -8741,11 +9061,11 @@ export namespace Prisma {
   }
 
   export type GetCharitySignupTokensAggregateType<T extends CharitySignupTokensAggregateArgs> = {
-        [P in keyof T & keyof AggregateCharitySignupTokens]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
-      : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
+    [P in keyof T & keyof AggregateCharitySignupTokens]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
+    : GetScalarType<T[P], AggregateCharitySignupTokens[P]>
   }
 
 
@@ -8784,15 +9104,15 @@ export namespace Prisma {
   type GetCharitySignupTokensGroupByPayload<T extends CharitySignupTokensGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<CharitySignupTokensGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof CharitySignupTokensGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
-            : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof CharitySignupTokensGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
+        : GetScalarType<T[P], CharitySignupTokensGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type CharitySignupTokensSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9146,10 +9466,10 @@ export namespace Prisma {
       args?: Subset<T, CharitySignupTokensCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], CharitySignupTokensCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], CharitySignupTokensCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -9203,8 +9523,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: CharitySignupTokensGroupByArgs['orderBy'] }
-        : { orderBy?: CharitySignupTokensGroupByArgs['orderBy'] },
+      ? { orderBy: CharitySignupTokensGroupByArgs['orderBy'] }
+      : { orderBy?: CharitySignupTokensGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -9215,49 +9535,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, CharitySignupTokensGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCharitySignupTokensGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the CharitySignupTokens model
-   */
-  readonly fields: CharitySignupTokensFieldRefs;
+    /**
+     * Fields of the CharitySignupTokens model
+     */
+    readonly fields: CharitySignupTokensFieldRefs;
   }
 
   /**
@@ -9308,7 +9628,7 @@ export namespace Prisma {
     readonly created_on: FieldRef<"CharitySignupTokens", 'DateTime'>
     readonly created_by: FieldRef<"CharitySignupTokens", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -9893,11 +10213,11 @@ export namespace Prisma {
   }
 
   export type GetDonationsAggregateType<T extends DonationsAggregateArgs> = {
-        [P in keyof T & keyof AggregateDonations]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDonations[P]>
-      : GetScalarType<T[P], AggregateDonations[P]>
+    [P in keyof T & keyof AggregateDonations]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateDonations[P]>
+    : GetScalarType<T[P], AggregateDonations[P]>
   }
 
 
@@ -9933,15 +10253,15 @@ export namespace Prisma {
   type GetDonationsGroupByPayload<T extends DonationsGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<DonationsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DonationsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DonationsGroupByOutputType[P]>
-            : GetScalarType<T[P], DonationsGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof DonationsGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], DonationsGroupByOutputType[P]>
+        : GetScalarType<T[P], DonationsGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type DonationsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10292,10 +10612,10 @@ export namespace Prisma {
       args?: Subset<T, DonationsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DonationsCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], DonationsCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -10349,8 +10669,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DonationsGroupByArgs['orderBy'] }
-        : { orderBy?: DonationsGroupByArgs['orderBy'] },
+      ? { orderBy: DonationsGroupByArgs['orderBy'] }
+      : { orderBy?: DonationsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -10361,49 +10681,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, DonationsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDonationsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Donations model
-   */
-  readonly fields: DonationsFieldRefs;
+    /**
+     * Fields of the Donations model
+     */
+    readonly fields: DonationsFieldRefs;
   }
 
   /**
@@ -10453,7 +10773,7 @@ export namespace Prisma {
     readonly accepted_by: FieldRef<"Donations", 'Int'>
     readonly accepted_at: FieldRef<"Donations", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -11051,11 +11371,11 @@ export namespace Prisma {
   }
 
   export type GetDonationRequestAggregateType<T extends DonationRequestAggregateArgs> = {
-        [P in keyof T & keyof AggregateDonationRequest]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDonationRequest[P]>
-      : GetScalarType<T[P], AggregateDonationRequest[P]>
+    [P in keyof T & keyof AggregateDonationRequest]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateDonationRequest[P]>
+    : GetScalarType<T[P], AggregateDonationRequest[P]>
   }
 
 
@@ -11093,15 +11413,15 @@ export namespace Prisma {
   type GetDonationRequestGroupByPayload<T extends DonationRequestGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<DonationRequestGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DonationRequestGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DonationRequestGroupByOutputType[P]>
-            : GetScalarType<T[P], DonationRequestGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof DonationRequestGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], DonationRequestGroupByOutputType[P]>
+        : GetScalarType<T[P], DonationRequestGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type DonationRequestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11458,10 +11778,10 @@ export namespace Prisma {
       args?: Subset<T, DonationRequestCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DonationRequestCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], DonationRequestCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -11515,8 +11835,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DonationRequestGroupByArgs['orderBy'] }
-        : { orderBy?: DonationRequestGroupByArgs['orderBy'] },
+      ? { orderBy: DonationRequestGroupByArgs['orderBy'] }
+      : { orderBy?: DonationRequestGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -11527,49 +11847,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, DonationRequestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDonationRequestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DonationRequest model
-   */
-  readonly fields: DonationRequestFieldRefs;
+    /**
+     * Fields of the DonationRequest model
+     */
+    readonly fields: DonationRequestFieldRefs;
   }
 
   /**
@@ -11621,7 +11941,7 @@ export namespace Prisma {
     readonly created_by: FieldRef<"DonationRequest", 'Int'>
     readonly title: FieldRef<"DonationRequest", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -12263,11 +12583,11 @@ export namespace Prisma {
   }
 
   export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
-        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSession[P]>
-      : GetScalarType<T[P], AggregateSession[P]>
+    [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateSession[P]>
+    : GetScalarType<T[P], AggregateSession[P]>
   }
 
 
@@ -12306,15 +12626,15 @@ export namespace Prisma {
   type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<SessionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SessionGroupByOutputType[P]>
-            : GetScalarType<T[P], SessionGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        : GetScalarType<T[P], SessionGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12668,10 +12988,10 @@ export namespace Prisma {
       args?: Subset<T, SessionCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SessionCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], SessionCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -12725,8 +13045,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SessionGroupByArgs['orderBy'] }
-        : { orderBy?: SessionGroupByArgs['orderBy'] },
+      ? { orderBy: SessionGroupByArgs['orderBy'] }
+      : { orderBy?: SessionGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -12737,49 +13057,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Session model
-   */
-  readonly fields: SessionFieldRefs;
+    /**
+     * Fields of the Session model
+     */
+    readonly fields: SessionFieldRefs;
   }
 
   /**
@@ -12830,7 +13150,7 @@ export namespace Prisma {
     readonly expires_on: FieldRef<"Session", 'DateTime'>
     readonly revoked_on: FieldRef<"Session", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -13322,6 +13642,7 @@ export namespace Prisma {
     back_image_url: string | null
     status: $Enums.Status | null
     drafted_status: $Enums.clothingDrafted | null
+    drafted_status: $Enums.clothingDrafted | null
   }
 
   export type ClothingItemsMaxAggregateOutputType = {
@@ -13337,6 +13658,7 @@ export namespace Prisma {
     back_image_url: string | null
     status: $Enums.Status | null
     drafted_status: $Enums.clothingDrafted | null
+    drafted_status: $Enums.clothingDrafted | null
   }
 
   export type ClothingItemsCountAggregateOutputType = {
@@ -13351,6 +13673,7 @@ export namespace Prisma {
     front_image_url: number
     back_image_url: number
     status: number
+    drafted_status: number
     drafted_status: number
     _all: number
   }
@@ -13385,6 +13708,7 @@ export namespace Prisma {
     back_image_url?: true
     status?: true
     drafted_status?: true
+    drafted_status?: true
   }
 
   export type ClothingItemsMaxAggregateInputType = {
@@ -13400,6 +13724,7 @@ export namespace Prisma {
     back_image_url?: true
     status?: true
     drafted_status?: true
+    drafted_status?: true
   }
 
   export type ClothingItemsCountAggregateInputType = {
@@ -13414,6 +13739,7 @@ export namespace Prisma {
     front_image_url?: true
     back_image_url?: true
     status?: true
+    drafted_status?: true
     drafted_status?: true
     _all?: true
   }
@@ -13480,11 +13806,11 @@ export namespace Prisma {
   }
 
   export type GetClothingItemsAggregateType<T extends ClothingItemsAggregateArgs> = {
-        [P in keyof T & keyof AggregateClothingItems]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateClothingItems[P]>
-      : GetScalarType<T[P], AggregateClothingItems[P]>
+    [P in keyof T & keyof AggregateClothingItems]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateClothingItems[P]>
+    : GetScalarType<T[P], AggregateClothingItems[P]>
   }
 
 
@@ -13517,6 +13843,7 @@ export namespace Prisma {
     back_image_url: string
     status: $Enums.Status
     drafted_status: $Enums.clothingDrafted
+    drafted_status: $Enums.clothingDrafted
     _count: ClothingItemsCountAggregateOutputType | null
     _avg: ClothingItemsAvgAggregateOutputType | null
     _sum: ClothingItemsSumAggregateOutputType | null
@@ -13527,15 +13854,15 @@ export namespace Prisma {
   type GetClothingItemsGroupByPayload<T extends ClothingItemsGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<ClothingItemsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ClothingItemsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
-            : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof ClothingItemsGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
+        : GetScalarType<T[P], ClothingItemsGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type ClothingItemsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -13551,10 +13878,13 @@ export namespace Prisma {
     back_image_url?: boolean
     status?: boolean
     drafted_status?: boolean
+    drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
     Charities?: boolean | ClothingItems$CharitiesArgs<ExtArgs>
+    DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
+    _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
     DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
     _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["clothingItems"]>
@@ -13571,6 +13901,7 @@ export namespace Prisma {
     front_image_url?: boolean
     back_image_url?: boolean
     status?: boolean
+    drafted_status?: boolean
     drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
@@ -13591,6 +13922,7 @@ export namespace Prisma {
     back_image_url?: boolean
     status?: boolean
     drafted_status?: boolean
+    drafted_status?: boolean
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
@@ -13610,14 +13942,18 @@ export namespace Prisma {
     back_image_url?: boolean
     status?: boolean
     drafted_status?: boolean
+    drafted_status?: boolean
   }
 
+  export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url" | "status" | "drafted_status", ExtArgs["result"]["clothingItems"]>
   export type ClothingItemsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"clothing_id" | "donation_request_id" | "type" | "size" | "condition" | "donor_id" | "donation_id" | "owned_by" | "front_image_url" | "back_image_url" | "status" | "drafted_status", ExtArgs["result"]["clothingItems"]>
   export type ClothingItemsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Donations?: boolean | ClothingItems$DonationsArgs<ExtArgs>
     DonationRequest?: boolean | DonationRequestDefaultArgs<ExtArgs>
     User?: boolean | UserDefaultArgs<ExtArgs>
     Charities?: boolean | ClothingItems$CharitiesArgs<ExtArgs>
+    DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
+    _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
     DraftedItem?: boolean | ClothingItems$DraftedItemArgs<ExtArgs>
     _count?: boolean | ClothingItemsCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -13642,6 +13978,7 @@ export namespace Prisma {
       User: Prisma.$UserPayload<ExtArgs>
       Charities: Prisma.$CharitiesPayload<ExtArgs> | null
       DraftedItem: Prisma.$DraftedItemPayload<ExtArgs>[]
+      DraftedItem: Prisma.$DraftedItemPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       clothing_id: number
@@ -13655,6 +13992,7 @@ export namespace Prisma {
       front_image_url: string
       back_image_url: string
       status: $Enums.Status
+      drafted_status: $Enums.clothingDrafted
       drafted_status: $Enums.clothingDrafted
     }, ExtArgs["result"]["clothingItems"]>
     composites: {}
@@ -13928,10 +14266,10 @@ export namespace Prisma {
       args?: Subset<T, ClothingItemsCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ClothingItemsCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], ClothingItemsCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -13985,8 +14323,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ClothingItemsGroupByArgs['orderBy'] }
-        : { orderBy?: ClothingItemsGroupByArgs['orderBy'] },
+      ? { orderBy: ClothingItemsGroupByArgs['orderBy'] }
+      : { orderBy?: ClothingItemsGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -13997,49 +14335,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, ClothingItemsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClothingItemsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ClothingItems model
-   */
-  readonly fields: ClothingItemsFieldRefs;
+    /**
+     * Fields of the ClothingItems model
+     */
+    readonly fields: ClothingItemsFieldRefs;
   }
 
   /**
@@ -14054,6 +14392,7 @@ export namespace Prisma {
     DonationRequest<T extends DonationRequestDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DonationRequestDefaultArgs<ExtArgs>>): Prisma__DonationRequestClient<$Result.GetResult<Prisma.$DonationRequestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     Charities<T extends ClothingItems$CharitiesArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$CharitiesArgs<ExtArgs>>): Prisma__CharitiesClient<$Result.GetResult<Prisma.$CharitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    DraftedItem<T extends ClothingItems$DraftedItemArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$DraftedItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     DraftedItem<T extends ClothingItems$DraftedItemArgs<ExtArgs> = {}>(args?: Subset<T, ClothingItems$DraftedItemArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DraftedItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -14096,8 +14435,9 @@ export namespace Prisma {
     readonly back_image_url: FieldRef<"ClothingItems", 'String'>
     readonly status: FieldRef<"ClothingItems", 'Status'>
     readonly drafted_status: FieldRef<"ClothingItems", 'clothingDrafted'>
+    readonly drafted_status: FieldRef<"ClothingItems", 'clothingDrafted'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -14554,6 +14894,30 @@ export namespace Prisma {
   }
 
   /**
+   * ClothingItems.DraftedItem
+   */
+  export type ClothingItems$DraftedItemArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DraftedItem
+     */
+    select?: DraftedItemSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DraftedItem
+     */
+    omit?: DraftedItemOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DraftedItemInclude<ExtArgs> | null
+    where?: DraftedItemWhereInput
+    orderBy?: DraftedItemOrderByWithRelationInput | DraftedItemOrderByWithRelationInput[]
+    cursor?: DraftedItemWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DraftedItemScalarFieldEnum | DraftedItemScalarFieldEnum[]
+  }
+
+  /**
    * ClothingItems without action
    */
   export type ClothingItemsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -14749,11 +15113,11 @@ export namespace Prisma {
   }
 
   export type GetAuditEventAggregateType<T extends AuditEventAggregateArgs> = {
-        [P in keyof T & keyof AggregateAuditEvent]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAuditEvent[P]>
-      : GetScalarType<T[P], AggregateAuditEvent[P]>
+    [P in keyof T & keyof AggregateAuditEvent]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateAuditEvent[P]>
+    : GetScalarType<T[P], AggregateAuditEvent[P]>
   }
 
 
@@ -14793,15 +15157,15 @@ export namespace Prisma {
   type GetAuditEventGroupByPayload<T extends AuditEventGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<AuditEventGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AuditEventGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
-            : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof AuditEventGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
+        : GetScalarType<T[P], AuditEventGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type AuditEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15139,10 +15503,10 @@ export namespace Prisma {
       args?: Subset<T, AuditEventCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AuditEventCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], AuditEventCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -15196,8 +15560,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AuditEventGroupByArgs['orderBy'] }
-        : { orderBy?: AuditEventGroupByArgs['orderBy'] },
+      ? { orderBy: AuditEventGroupByArgs['orderBy'] }
+      : { orderBy?: AuditEventGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -15208,49 +15572,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, AuditEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the AuditEvent model
-   */
-  readonly fields: AuditEventFieldRefs;
+    /**
+     * Fields of the AuditEvent model
+     */
+    readonly fields: AuditEventFieldRefs;
   }
 
   /**
@@ -15300,7 +15664,7 @@ export namespace Prisma {
     readonly metadata: FieldRef<"AuditEvent", 'Json'>
     readonly created_on: FieldRef<"AuditEvent", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -15816,11 +16180,11 @@ export namespace Prisma {
   }
 
   export type GetDraftAggregateType<T extends DraftAggregateArgs> = {
-        [P in keyof T & keyof AggregateDraft]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDraft[P]>
-      : GetScalarType<T[P], AggregateDraft[P]>
+    [P in keyof T & keyof AggregateDraft]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateDraft[P]>
+    : GetScalarType<T[P], AggregateDraft[P]>
   }
 
 
@@ -15857,15 +16221,15 @@ export namespace Prisma {
   type GetDraftGroupByPayload<T extends DraftGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<DraftGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DraftGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DraftGroupByOutputType[P]>
-            : GetScalarType<T[P], DraftGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof DraftGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], DraftGroupByOutputType[P]>
+        : GetScalarType<T[P], DraftGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type DraftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -16207,10 +16571,10 @@ export namespace Prisma {
       args?: Subset<T, DraftCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DraftCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], DraftCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -16264,8 +16628,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DraftGroupByArgs['orderBy'] }
-        : { orderBy?: DraftGroupByArgs['orderBy'] },
+      ? { orderBy: DraftGroupByArgs['orderBy'] }
+      : { orderBy?: DraftGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -16276,49 +16640,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, DraftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDraftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Draft model
-   */
-  readonly fields: DraftFieldRefs;
+    /**
+     * Fields of the Draft model
+     */
+    readonly fields: DraftFieldRefs;
   }
 
   /**
@@ -16367,7 +16731,7 @@ export namespace Prisma {
     readonly created_at: FieldRef<"Draft", 'DateTime'>
     readonly edited_at: FieldRef<"Draft", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -16931,11 +17295,11 @@ export namespace Prisma {
   }
 
   export type GetDraftedItemAggregateType<T extends DraftedItemAggregateArgs> = {
-        [P in keyof T & keyof AggregateDraftedItem]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateDraftedItem[P]>
-      : GetScalarType<T[P], AggregateDraftedItem[P]>
+    [P in keyof T & keyof AggregateDraftedItem]: P extends '_count' | 'count'
+    ? T[P] extends true
+    ? number
+    : GetScalarType<T[P], AggregateDraftedItem[P]>
+    : GetScalarType<T[P], AggregateDraftedItem[P]>
   }
 
 
@@ -16968,15 +17332,15 @@ export namespace Prisma {
   type GetDraftedItemGroupByPayload<T extends DraftedItemGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickEnumerable<DraftedItemGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof DraftedItemGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
-            : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
-        }
-      >
+      {
+        [P in ((keyof T) & (keyof DraftedItemGroupByOutputType))]: P extends '_count'
+        ? T[P] extends boolean
+        ? number
+        : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
+        : GetScalarType<T[P], DraftedItemGroupByOutputType[P]>
+      }
     >
+  >
 
 
   export type DraftedItemSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17300,10 +17664,10 @@ export namespace Prisma {
       args?: Subset<T, DraftedItemCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], DraftedItemCountAggregateOutputType>
-        : number
+      ? T['select'] extends true
+      ? number
+      : GetScalarType<T['select'], DraftedItemCountAggregateOutputType>
+      : number
     >
 
     /**
@@ -17357,8 +17721,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: DraftedItemGroupByArgs['orderBy'] }
-        : { orderBy?: DraftedItemGroupByArgs['orderBy'] },
+      ? { orderBy: DraftedItemGroupByArgs['orderBy'] }
+      : { orderBy?: DraftedItemGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -17369,49 +17733,49 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
+        [P in HavingFields]: P extends ByFields
+        ? never
+        : P extends string
+        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+        : [
+          Error,
+          'Field ',
+          P,
+          ` in "having" needs to be provided in "by"`,
+        ]
+      }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      ? ByValid extends True
+      ? {}
+      : {
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
+      : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
+        [P in OrderFields]: P extends ByFields
+        ? never
+        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+      }[OrderFields]
     >(args: SubsetIntersection<T, DraftedItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDraftedItemGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the DraftedItem model
-   */
-  readonly fields: DraftedItemFieldRefs;
+    /**
+     * Fields of the DraftedItem model
+     */
+    readonly fields: DraftedItemFieldRefs;
   }
 
   /**
@@ -17456,7 +17820,7 @@ export namespace Prisma {
     readonly draft_id: FieldRef<"DraftedItem", 'Int'>
     readonly clothing_id: FieldRef<"DraftedItem", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -18025,9 +18389,46 @@ export namespace Prisma {
     back_image_url: 'back_image_url',
     status: 'status',
     drafted_status: 'drafted_status'
+    status: 'status',
+    drafted_status: 'drafted_status'
   };
 
   export type ClothingItemsScalarFieldEnum = (typeof ClothingItemsScalarFieldEnum)[keyof typeof ClothingItemsScalarFieldEnum]
+
+
+  export const AuditEventScalarFieldEnum: {
+    event_id: 'event_id',
+    actor_type: 'actor_type',
+    actor_user_id: 'actor_user_id',
+    actor_charity_id: 'actor_charity_id',
+    event_type: 'event_type',
+    donation_request_id: 'donation_request_id',
+    donation_id: 'donation_id',
+    metadata: 'metadata',
+    created_on: 'created_on'
+  };
+
+  export type AuditEventScalarFieldEnum = (typeof AuditEventScalarFieldEnum)[keyof typeof AuditEventScalarFieldEnum]
+
+
+  export const DraftScalarFieldEnum: {
+    draft_id: 'draft_id',
+    charity_id: 'charity_id',
+    title: 'title',
+    draft_status: 'draft_status',
+    created_at: 'created_at',
+    edited_at: 'edited_at'
+  };
+
+  export type DraftScalarFieldEnum = (typeof DraftScalarFieldEnum)[keyof typeof DraftScalarFieldEnum]
+
+
+  export const DraftedItemScalarFieldEnum: {
+    draft_id: 'draft_id',
+    clothing_id: 'clothing_id'
+  };
+
+  export type DraftedItemScalarFieldEnum = (typeof DraftedItemScalarFieldEnum)[keyof typeof DraftedItemScalarFieldEnum]
 
 
   export const AuditEventScalarFieldEnum: {
@@ -18081,6 +18482,14 @@ export namespace Prisma {
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -18106,6 +18515,15 @@ export namespace Prisma {
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
   /**
    * Field references
    */
@@ -18115,133 +18533,175 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
+
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
+
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Status'
    */
   export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
-    
+
 
 
   /**
    * Reference to a field of type 'Status[]'
    */
   export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'SessionActorType'
    */
   export type EnumSessionActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionActorType'>
-    
+
 
 
   /**
    * Reference to a field of type 'SessionActorType[]'
    */
   export type ListEnumSessionActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionActorType[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'clothingDrafted'
    */
   export type EnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted'>
-    
+
 
 
   /**
    * Reference to a field of type 'clothingDrafted[]'
    */
   export type ListEnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
+
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
+
 
 
   /**
    * Reference to a field of type 'draftStatus'
    */
   export type EnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus'>
-    
+
 
 
   /**
    * Reference to a field of type 'draftStatus[]'
    */
   export type ListEnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus[]'>
-    
+
+
+
+  /**
+   * Reference to a field of type 'clothingDrafted'
+   */
+  export type EnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted'>
+
+
+
+  /**
+   * Reference to a field of type 'clothingDrafted[]'
+   */
+  export type ListEnumclothingDraftedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'clothingDrafted[]'>
+
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+
+
+
+  /**
+   * Reference to a field of type 'draftStatus'
+   */
+  export type EnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus'>
+
+
+
+  /**
+   * Reference to a field of type 'draftStatus[]'
+   */
+  export type ListEnumdraftStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'draftStatus[]'>
+
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
+
   /**
    * Deep Input Types
    */
@@ -18491,6 +18951,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsListRelationFilter
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
+    Draft?: DraftListRelationFilter
     Session?: SessionListRelationFilter
     Draft?: DraftListRelationFilter
   }
@@ -18511,6 +18972,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsOrderByRelationAggregateInput
     donation_requests_answered?: DonationRequestOrderByRelationAggregateInput
     donations_received?: DonationsOrderByRelationAggregateInput
+    Draft?: DraftOrderByRelationAggregateInput
     Session?: SessionOrderByRelationAggregateInput
     Draft?: DraftOrderByRelationAggregateInput
   }
@@ -18534,6 +18996,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsListRelationFilter
     donation_requests_answered?: DonationRequestListRelationFilter
     donations_received?: DonationsListRelationFilter
+    Draft?: DraftListRelationFilter
     Session?: SessionListRelationFilter
     Draft?: DraftListRelationFilter
   }, "charity_id" | "email">
@@ -18998,10 +19461,12 @@ export namespace Prisma {
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
     drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
     Donations?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     DonationRequest?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
     Charities?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    DraftedItem?: DraftedItemListRelationFilter
     DraftedItem?: DraftedItemListRelationFilter
   }
 
@@ -19018,10 +19483,12 @@ export namespace Prisma {
     back_image_url?: SortOrder
     status?: SortOrder
     drafted_status?: SortOrder
+    drafted_status?: SortOrder
     Donations?: DonationsOrderByWithRelationInput
     DonationRequest?: DonationRequestOrderByWithRelationInput
     User?: UserOrderByWithRelationInput
     Charities?: CharitiesOrderByWithRelationInput
+    DraftedItem?: DraftedItemOrderByRelationAggregateInput
     DraftedItem?: DraftedItemOrderByRelationAggregateInput
   }
 
@@ -19041,10 +19508,12 @@ export namespace Prisma {
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
     drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
     Donations?: XOR<DonationsNullableScalarRelationFilter, DonationsWhereInput> | null
     DonationRequest?: XOR<DonationRequestScalarRelationFilter, DonationRequestWhereInput>
     User?: XOR<UserScalarRelationFilter, UserWhereInput>
     Charities?: XOR<CharitiesNullableScalarRelationFilter, CharitiesWhereInput> | null
+    DraftedItem?: DraftedItemListRelationFilter
     DraftedItem?: DraftedItemListRelationFilter
   }, "clothing_id">
 
@@ -19060,6 +19529,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
     drafted_status?: SortOrder
     _count?: ClothingItemsCountOrderByAggregateInput
     _avg?: ClothingItemsAvgOrderByAggregateInput
@@ -19521,6 +19991,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -19541,6 +20012,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -19560,6 +20032,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -19580,6 +20053,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -20028,6 +20502,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
@@ -20058,6 +20533,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -20095,6 +20571,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateManyMutationInput = {
@@ -20104,6 +20581,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
@@ -20656,6 +21134,16 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type DraftListRelationFilter = {
+    every?: DraftWhereInput
+    some?: DraftWhereInput
+    none?: DraftWhereInput
+  }
+
+  export type DraftOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type CharitiesCountOrderByAggregateInput = {
     charity_id?: SortOrder
     name?: SortOrder
@@ -21065,6 +21553,23 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type EnumclothingDraftedFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedFilter<$PrismaModel> | $Enums.clothingDrafted
+  }
+
+  export type DraftedItemListRelationFilter = {
+    every?: DraftedItemWhereInput
+    some?: DraftedItemWhereInput
+    none?: DraftedItemWhereInput
+  }
+
+  export type DraftedItemOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ClothingItemsCountOrderByAggregateInput = {
     clothing_id?: SortOrder
     donation_request_id?: SortOrder
@@ -21077,6 +21582,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
     drafted_status?: SortOrder
   }
 
@@ -21101,6 +21607,7 @@ export namespace Prisma {
     back_image_url?: SortOrder
     status?: SortOrder
     drafted_status?: SortOrder
+    drafted_status?: SortOrder
   }
 
   export type ClothingItemsMinOrderByAggregateInput = {
@@ -21115,6 +21622,7 @@ export namespace Prisma {
     front_image_url?: SortOrder
     back_image_url?: SortOrder
     status?: SortOrder
+    drafted_status?: SortOrder
     drafted_status?: SortOrder
   }
 
@@ -21137,9 +21645,9 @@ export namespace Prisma {
   }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
+      Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+      Required<JsonNullableFilterBase<$PrismaModel>>
+    >
     | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
   export type JsonNullableFilterBase<$PrismaModel = never> = {
@@ -21210,9 +21718,9 @@ export namespace Prisma {
   }
   export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
+      Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+      Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+    >
     | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
   export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
@@ -21794,6 +22302,13 @@ export namespace Prisma {
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
   }
 
+  export type DraftCreateNestedManyWithoutCharitiesInput = {
+    create?: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput> | DraftCreateWithoutCharitiesInput[] | DraftUncheckedCreateWithoutCharitiesInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharitiesInput | DraftCreateOrConnectWithoutCharitiesInput[]
+    createMany?: DraftCreateManyCharitiesInputEnvelope
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+  }
+
   export type SessionCreateNestedManyWithoutCharityInput = {
     create?: XOR<SessionCreateWithoutCharityInput, SessionUncheckedCreateWithoutCharityInput> | SessionCreateWithoutCharityInput[] | SessionUncheckedCreateWithoutCharityInput[]
     connectOrCreate?: SessionCreateOrConnectWithoutCharityInput | SessionCreateOrConnectWithoutCharityInput[]
@@ -21841,6 +22356,13 @@ export namespace Prisma {
     connectOrCreate?: DonationsCreateOrConnectWithoutAcceptedInput | DonationsCreateOrConnectWithoutAcceptedInput[]
     createMany?: DonationsCreateManyAcceptedInputEnvelope
     connect?: DonationsWhereUniqueInput | DonationsWhereUniqueInput[]
+  }
+
+  export type DraftUncheckedCreateNestedManyWithoutCharitiesInput = {
+    create?: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput> | DraftCreateWithoutCharitiesInput[] | DraftUncheckedCreateWithoutCharitiesInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharitiesInput | DraftCreateOrConnectWithoutCharitiesInput[]
+    createMany?: DraftCreateManyCharitiesInputEnvelope
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
   }
 
   export type SessionUncheckedCreateNestedManyWithoutCharityInput = {
@@ -21929,6 +22451,20 @@ export namespace Prisma {
     update?: DonationsUpdateWithWhereUniqueWithoutAcceptedInput | DonationsUpdateWithWhereUniqueWithoutAcceptedInput[]
     updateMany?: DonationsUpdateManyWithWhereWithoutAcceptedInput | DonationsUpdateManyWithWhereWithoutAcceptedInput[]
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
+  }
+
+  export type DraftUpdateManyWithoutCharitiesNestedInput = {
+    create?: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput> | DraftCreateWithoutCharitiesInput[] | DraftUncheckedCreateWithoutCharitiesInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharitiesInput | DraftCreateOrConnectWithoutCharitiesInput[]
+    upsert?: DraftUpsertWithWhereUniqueWithoutCharitiesInput | DraftUpsertWithWhereUniqueWithoutCharitiesInput[]
+    createMany?: DraftCreateManyCharitiesInputEnvelope
+    set?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    disconnect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    delete?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    update?: DraftUpdateWithWhereUniqueWithoutCharitiesInput | DraftUpdateWithWhereUniqueWithoutCharitiesInput[]
+    updateMany?: DraftUpdateManyWithWhereWithoutCharitiesInput | DraftUpdateManyWithWhereWithoutCharitiesInput[]
+    deleteMany?: DraftScalarWhereInput | DraftScalarWhereInput[]
   }
 
   export type SessionUpdateManyWithoutCharityNestedInput = {
@@ -22027,6 +22563,20 @@ export namespace Prisma {
     update?: DonationsUpdateWithWhereUniqueWithoutAcceptedInput | DonationsUpdateWithWhereUniqueWithoutAcceptedInput[]
     updateMany?: DonationsUpdateManyWithWhereWithoutAcceptedInput | DonationsUpdateManyWithWhereWithoutAcceptedInput[]
     deleteMany?: DonationsScalarWhereInput | DonationsScalarWhereInput[]
+  }
+
+  export type DraftUncheckedUpdateManyWithoutCharitiesNestedInput = {
+    create?: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput> | DraftCreateWithoutCharitiesInput[] | DraftUncheckedCreateWithoutCharitiesInput[]
+    connectOrCreate?: DraftCreateOrConnectWithoutCharitiesInput | DraftCreateOrConnectWithoutCharitiesInput[]
+    upsert?: DraftUpsertWithWhereUniqueWithoutCharitiesInput | DraftUpsertWithWhereUniqueWithoutCharitiesInput[]
+    createMany?: DraftCreateManyCharitiesInputEnvelope
+    set?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    disconnect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    delete?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    connect?: DraftWhereUniqueInput | DraftWhereUniqueInput[]
+    update?: DraftUpdateWithWhereUniqueWithoutCharitiesInput | DraftUpdateWithWhereUniqueWithoutCharitiesInput[]
+    updateMany?: DraftUpdateManyWithWhereWithoutCharitiesInput | DraftUpdateManyWithWhereWithoutCharitiesInput[]
+    deleteMany?: DraftScalarWhereInput | DraftScalarWhereInput[]
   }
 
   export type SessionUncheckedUpdateManyWithoutCharityNestedInput = {
@@ -22818,9 +23368,66 @@ export namespace Prisma {
   }
   export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
+      Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+      Required<NestedJsonNullableFilterBase<$PrismaModel>>
+    >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumdraftStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusFilter<$PrismaModel> | $Enums.draftStatus
+  }
+
+  export type NestedEnumdraftStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.draftStatus | EnumdraftStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.draftStatus[] | ListEnumdraftStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumdraftStatusWithAggregatesFilter<$PrismaModel> | $Enums.draftStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumdraftStatusFilter<$PrismaModel>
+    _max?: NestedEnumdraftStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumclothingDraftedFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedFilter<$PrismaModel> | $Enums.clothingDrafted
+  }
+
+  export type NestedEnumclothingDraftedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.clothingDrafted | EnumclothingDraftedFieldRefInput<$PrismaModel>
+    in?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.clothingDrafted[] | ListEnumclothingDraftedFieldRefInput<$PrismaModel>
+    not?: NestedEnumclothingDraftedWithAggregatesFilter<$PrismaModel> | $Enums.clothingDrafted
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumclothingDraftedFilter<$PrismaModel>
+    _max?: NestedEnumclothingDraftedFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+      Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+      Required<NestedJsonNullableFilterBase<$PrismaModel>>
+    >
     | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
   export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
@@ -22983,6 +23590,7 @@ export namespace Prisma {
     front_image_url: string
     back_image_url: string
     status?: $Enums.Status
+    drafted_status?: $Enums.clothingDrafted
     drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
@@ -23265,6 +23873,7 @@ export namespace Prisma {
     front_image_url?: StringFilter<"ClothingItems"> | string
     back_image_url?: StringFilter<"ClothingItems"> | string
     status?: EnumStatusFilter<"ClothingItems"> | $Enums.Status
+    drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFilter<"ClothingItems"> | $Enums.clothingDrafted
   }
 
@@ -23680,6 +24289,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
@@ -23764,6 +24374,33 @@ export namespace Prisma {
 
   export type DonationsCreateManyAcceptedInputEnvelope = {
     data: DonationsCreateManyAcceptedInput | DonationsCreateManyAcceptedInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DraftCreateWithoutCharitiesInput = {
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    DraftedItem?: DraftedItemCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftUncheckedCreateWithoutCharitiesInput = {
+    draft_id?: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
+    DraftedItem?: DraftedItemUncheckedCreateNestedManyWithoutDraftInput
+  }
+
+  export type DraftCreateOrConnectWithoutCharitiesInput = {
+    where: DraftWhereUniqueInput
+    create: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput>
+  }
+
+  export type DraftCreateManyCharitiesInputEnvelope = {
+    data: DraftCreateManyCharitiesInput | DraftCreateManyCharitiesInput[]
     skipDuplicates?: boolean
   }
 
@@ -23903,6 +24540,34 @@ export namespace Prisma {
     data: XOR<DonationsUpdateManyMutationInput, DonationsUncheckedUpdateManyWithoutAcceptedInput>
   }
 
+  export type DraftUpsertWithWhereUniqueWithoutCharitiesInput = {
+    where: DraftWhereUniqueInput
+    update: XOR<DraftUpdateWithoutCharitiesInput, DraftUncheckedUpdateWithoutCharitiesInput>
+    create: XOR<DraftCreateWithoutCharitiesInput, DraftUncheckedCreateWithoutCharitiesInput>
+  }
+
+  export type DraftUpdateWithWhereUniqueWithoutCharitiesInput = {
+    where: DraftWhereUniqueInput
+    data: XOR<DraftUpdateWithoutCharitiesInput, DraftUncheckedUpdateWithoutCharitiesInput>
+  }
+
+  export type DraftUpdateManyWithWhereWithoutCharitiesInput = {
+    where: DraftScalarWhereInput
+    data: XOR<DraftUpdateManyMutationInput, DraftUncheckedUpdateManyWithoutCharitiesInput>
+  }
+
+  export type DraftScalarWhereInput = {
+    AND?: DraftScalarWhereInput | DraftScalarWhereInput[]
+    OR?: DraftScalarWhereInput[]
+    NOT?: DraftScalarWhereInput | DraftScalarWhereInput[]
+    draft_id?: IntFilter<"Draft"> | number
+    charity_id?: IntFilter<"Draft"> | number
+    title?: StringFilter<"Draft"> | string
+    draft_status?: EnumdraftStatusFilter<"Draft"> | $Enums.draftStatus
+    created_at?: DateTimeFilter<"Draft"> | Date | string
+    edited_at?: DateTimeFilter<"Draft"> | Date | string
+  }
+
   export type SessionUpsertWithWhereUniqueWithoutCharityInput = {
     where: SessionWhereUniqueInput
     update: XOR<SessionUpdateWithoutCharityInput, SessionUncheckedUpdateWithoutCharityInput>
@@ -24005,6 +24670,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -24024,6 +24690,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -24152,6 +24819,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -24171,6 +24839,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -24239,6 +24908,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -24258,6 +24928,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -24336,6 +25007,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -24355,6 +25027,7 @@ export namespace Prisma {
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -24417,6 +25090,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
     DonationRequest: DonationRequestCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
@@ -24462,6 +25136,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -24481,6 +25156,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -24601,6 +25277,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -24620,6 +25297,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -24714,6 +25392,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
     Donations?: DonationsCreateNestedOneWithoutClothingItemsInput
     User: UserCreateNestedOneWithoutClothingItemsInput
     Charities?: CharitiesCreateNestedOneWithoutClothingItemsInput
@@ -24759,6 +25438,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     ClothingItems?: ClothingItemsCreateNestedManyWithoutCharitiesInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -24778,6 +25458,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     ClothingItems?: ClothingItemsUncheckedCreateNestedManyWithoutCharitiesInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -24892,6 +25573,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     ClothingItems?: ClothingItemsUpdateManyWithoutCharitiesNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -24911,6 +25593,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     ClothingItems?: ClothingItemsUncheckedUpdateManyWithoutCharitiesNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -25279,6 +25962,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftCreateNestedManyWithoutCharitiesInput
     Session?: SessionCreateNestedManyWithoutCharityInput
     Draft?: DraftCreateNestedManyWithoutCharityInput
   }
@@ -25298,6 +25982,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedCreateNestedManyWithoutCharityInput
     donation_requests_answered?: DonationRequestUncheckedCreateNestedManyWithoutAnswering_charityInput
     donations_received?: DonationsUncheckedCreateNestedManyWithoutAcceptedInput
+    Draft?: DraftUncheckedCreateNestedManyWithoutCharitiesInput
     Session?: SessionUncheckedCreateNestedManyWithoutCharityInput
     Draft?: DraftUncheckedCreateNestedManyWithoutCharityInput
   }
@@ -25458,6 +26143,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUpdateManyWithoutCharityNestedInput
     Draft?: DraftUpdateManyWithoutCharityNestedInput
   }
@@ -25477,6 +26163,7 @@ export namespace Prisma {
     signup_tokens?: CharitySignupTokensUncheckedUpdateManyWithoutCharityNestedInput
     donation_requests_answered?: DonationRequestUncheckedUpdateManyWithoutAnswering_charityNestedInput
     donations_received?: DonationsUncheckedUpdateManyWithoutAcceptedNestedInput
+    Draft?: DraftUncheckedUpdateManyWithoutCharitiesNestedInput
     Session?: SessionUncheckedUpdateManyWithoutCharityNestedInput
     Draft?: DraftUncheckedUpdateManyWithoutCharityNestedInput
   }
@@ -25811,6 +26498,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type DonationRequestCreateManyCreatorInput = {
@@ -25998,6 +26686,7 @@ export namespace Prisma {
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     Charities?: CharitiesUpdateOneWithoutClothingItemsNestedInput
@@ -26030,6 +26719,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
@@ -26200,6 +26890,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type DonationRequestCreateManyAnswering_charityInput = {
@@ -26216,6 +26907,14 @@ export namespace Prisma {
     donation_request_id: number
     created_by: number
     accepted_at?: Date | string
+  }
+
+  export type DraftCreateManyCharitiesInput = {
+    draft_id?: number
+    title: string
+    draft_status?: $Enums.draftStatus
+    created_at?: Date | string
+    edited_at?: Date | string
   }
 
   export type SessionCreateManyCharityInput = {
@@ -26326,6 +27025,7 @@ export namespace Prisma {
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -26358,6 +27058,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
@@ -26411,6 +27112,31 @@ export namespace Prisma {
     donation_request_id?: IntFieldUpdateOperationsInput | number
     created_by?: IntFieldUpdateOperationsInput | number
     accepted_at?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DraftUpdateWithoutCharitiesInput = {
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    DraftedItem?: DraftedItemUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateWithoutCharitiesInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    DraftedItem?: DraftedItemUncheckedUpdateManyWithoutDraftNestedInput
+  }
+
+  export type DraftUncheckedUpdateManyWithoutCharitiesInput = {
+    draft_id?: IntFieldUpdateOperationsInput | number
+    title?: StringFieldUpdateOperationsInput | string
+    draft_status?: EnumdraftStatusFieldUpdateOperationsInput | $Enums.draftStatus
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    edited_at?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionUpdateWithoutCharityInput = {
@@ -26479,6 +27205,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateWithoutDonationsInput = {
@@ -26488,6 +27215,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     DonationRequest?: DonationRequestUpdateOneRequiredWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput
@@ -26522,6 +27250,7 @@ export namespace Prisma {
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
   }
 
   export type ClothingItemsCreateManyDonationRequestInput = {
@@ -26536,6 +27265,7 @@ export namespace Prisma {
     back_image_url: string
     status?: $Enums.Status
     drafted_status?: $Enums.clothingDrafted
+    drafted_status?: $Enums.clothingDrafted
   }
 
   export type ClothingItemsUpdateWithoutDonationRequestInput = {
@@ -26545,6 +27275,7 @@ export namespace Prisma {
     front_image_url?: StringFieldUpdateOperationsInput | string
     back_image_url?: StringFieldUpdateOperationsInput | string
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     drafted_status?: EnumclothingDraftedFieldUpdateOperationsInput | $Enums.clothingDrafted
     Donations?: DonationsUpdateOneWithoutClothingItemsNestedInput
     User?: UserUpdateOneRequiredWithoutClothingItemsNestedInput

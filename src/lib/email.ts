@@ -1,27 +1,24 @@
 import nodemailer from "nodemailer";
-/**
- * sendVerificationEmail
- * Sends an email containing the OTP code to the new user.
- */
+
 export async function sendVerificationEmail(
   toEmail: string,
   firstName: string,
   otpCode: string
 ) {
-  // 1. Create a mail "transport" (how we connect to an SMTP server)
+  // Create a mail "transport 
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST, // e.g. "smtp.gmail.com" or your provider
-    port: Number(process.env.SMTP_PORT), // e.g. 587
-    secure: false, // upgrade later with STARTTLS if true is needed
+    host: process.env.SMTP_HOST, // smtp.gmail.com 
+    port: Number(process.env.SMTP_PORT),
+    secure: false, 
     auth: {
       user: process.env.SMTP_USER, // SMTP username / email login
       pass: process.env.SMTP_PASS, // SMTP password / app password
     },
   });
 
-  // 2. Send the verification email
+  // Send the verification email
   await transporter.sendMail({
-    from: process.env.MAIL_FROM, // "SustainWear <no-reply@sustainwear.com>"
+    from: process.env.MAIL_FROM, // SustainWear <no-reply@sustainwear.com>
     to: toEmail,
     subject: "Your SustainWear verification code",
     text: `Hello ${firstName},\n\nYour verification code is: ${otpCode}\n\nIt will expire shortly, so please enter it soon.`,
@@ -40,16 +37,15 @@ export async function sendVerificationEmail(
   });
 }
 
-/**
- * sendResetCodeEmail
- * Sends a 6-digit password reset code to an existing user.
- */
+// sendResetCodeEmail
+// Sends a 6-digit password reset code to an existing user.
+ 
 export async function sendResetCodeEmail(
   toEmail: string,
   firstName: string,
   code: string
 ) {
-  // 1. Create a mail transport (same as in sendVerificationEmail)
+  // Create a mail transport 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
@@ -60,9 +56,9 @@ export async function sendResetCodeEmail(
     },
   });
 
-  // 2. Send the password reset email
+  // Send the password reset email
   await transporter.sendMail({
-    from: process.env.MAIL_FROM, // e.g. "SustainWear <no-reply@sustainwear.com>"
+    from: process.env.MAIL_FROM, 
     to: toEmail,
     subject: "Your SustainWear Password Reset Code",
     text: `Hello ${firstName},\n\nYour password reset code is: ${code}\n\nIt will expire in 10 minutes.`,
@@ -74,19 +70,16 @@ export async function sendResetCodeEmail(
         <p style="font-size: 24px; font-weight: bold; letter-spacing: 4px;">${code}</p>
         <p>This code will expire in <b>10 minutes</b>.</p>
         <p>If you didn't request this, please ignore this email.</p>
-        <br />
+        <br/>
       <p>Best regards,<br/>The SustainWear Team</p>
       </div>
     `,
   });
 }
 
-
 export async function sendCharityRejectionEmail(options: {
-
 toEmail: string;
 orgName: string;
-
 }) {
   const { toEmail, orgName } = options;
   const transporter = nodemailer.createTransport({
@@ -117,12 +110,9 @@ orgName: string;
   });
 }
 
-
 export async function sendCharityApplicationEmail(options: {
-
 toEmail: string;
 orgName: string;
-
 }) {
   const { toEmail, orgName } = options;
   const transporter = nodemailer.createTransport({
@@ -134,7 +124,6 @@ orgName: string;
       pass: process.env.SMTP_PASS,
     },
   });
-  
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: toEmail,
@@ -169,7 +158,6 @@ export async function sendCharityApprovalEmail(options: {
       pass: process.env.SMTP_PASS,
     },
   });
-
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: toEmail,
@@ -212,7 +200,6 @@ export async function sendContactConfirmationEmail(options: {
       pass: process.env.SMTP_PASS,
     },
   });
-
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: toEmail,
@@ -225,7 +212,7 @@ We've received your message and a member of our team will respond to you by emai
 
 If your enquiry is urgent, you can reply directly to this email with any additional details.
 
-— The SustainWear Team
+The SustainWear Team
     `,
     html: `
       <div style="font-family: sans-serif; line-height: 1.6;">
@@ -262,7 +249,6 @@ export async function sendContactMessageEmail(options: {
       pass: process.env.SMTP_PASS,
     },
   });
-
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: process.env.SMTP_USER, 

@@ -348,7 +348,7 @@ function Donations({
       onDelete(itemToDelete.donation_request_id);
       setDeleteOpen(false);
       setItemToDelete(null);
-    } catch (err) {
+    } catch {
       alert("Error deleting donation request");
     }
   }

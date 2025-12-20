@@ -69,6 +69,7 @@ model Charities {
   ClothingItems              ClothingItems[]
   donation_requests_answered DonationRequest[]     @relation("charity_answer")
   donations_received         Donations[]           @relation("charity_donation")
+  Draft                      Draft[]
   Session                    Session[]
   Draft                      Draft[]
 
@@ -171,10 +172,50 @@ model ClothingItems {
   front_image_url     String
   back_image_url      String
   status              Status          @default(PENDING)
+  drafted_status      clothingDrafted @default(AVAILABLE)
   Donations           Donations?      @relation(fields: [donation_id], references: [donation_id])
   DonationRequest     DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
   User                User            @relation(fields: [donor_id], references: [user_id])
   Charities           Charities?      @relation(fields: [owned_by], references: [charity_id])
+  DraftedItem         DraftedItem[]
+}
+
+model AuditEvent {
+  event_id            Int              @id @default(autoincrement())
+  actor_type          SessionActorType
+  actor_user_id       Int?
+  actor_charity_id    Int?
+  event_type          String
+  donation_request_id Int?
+  donation_id         Int?
+  metadata            Json?
+  created_on          DateTime         @default(now())
+
+  @@index([donation_request_id])
+  @@index([event_type, created_on])
+}
+
+model Draft {
+  draft_id     Int           @id @default(autoincrement())
+  charity_id   Int
+  title        String
+  draft_status draftStatus   @default(DRAFT)
+  created_at   DateTime      @default(now())
+  edited_at    DateTime      @updatedAt
+  Charities    Charities     @relation(fields: [charity_id], references: [charity_id], onDelete: Cascade)
+  DraftedItem  DraftedItem[]
+
+  @@index([charity_id])
+}
+
+model DraftedItem {
+  draft_id      Int
+  clothing_id   Int
+  ClothingItems ClothingItems @relation(fields: [clothing_id], references: [clothing_id], onDelete: Cascade)
+  Draft         Draft         @relation(fields: [draft_id], references: [draft_id], onDelete: Cascade)
+
+  @@id([draft_id, clothing_id])
+  @@index([clothing_id])
   drafted_status      clothingDrafted @default(AVAILABLE)
   DraftedItem         DraftedItem[]
 }
@@ -240,4 +281,14 @@ enum Status {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum clothingDrafted {
+  ALLOCATED
+  AVAILABLE
+}
+
+enum draftStatus {
+  DRAFT
+  CANCELLED
 }
