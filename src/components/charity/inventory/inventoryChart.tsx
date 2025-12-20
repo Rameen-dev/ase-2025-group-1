@@ -59,7 +59,7 @@ export default function InventoryChart({ items }: Props) {
     }, [items]);
 
     return (
-        <div className="w-1/3 border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
+        <div className="w-full md:w-1/3 border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
             <div className="flex items-center justify-center gap-6 h-full">
                 <div className="relative h-48 w-48 shrink-0">
                     <Doughnut data={doughnutData} options={doughnutOptions} />

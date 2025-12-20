@@ -18,11 +18,14 @@ export default function DraftViewModal({
     draftId,
     onClose,
     onChanged,
+    onAddItems,
 }: {
     open: boolean;
     draftId: number | null;
     onClose: () => void;
     onChanged?: () => void;
+    onAddItems?: (draftId: number) => void;
+
 }) {
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState<string | null>(null);
@@ -187,6 +190,14 @@ export default function DraftViewModal({
                     </div>
                     <div className="ml-auto flex items-center gap-2">
                         {/* remove button */}
+                        <button className="rounded-md bg-green-500 px-3 py-1 text-sm text-white hover:bg-green-700 disabled:opacity-50"
+                            onClick={() => {
+                                if (!draftId) return;
+                                onAddItems?.(draftId);
+                                onClose();
+                            }}>
+                            Add item
+                        </button>
                         <button
                             disabled={selectedIds.size === 0 || loading}
                             className="rounded-md bg-gray-900 px-3 py-1 text-sm text-white hover:bg-black disabled:opacity-50"

@@ -29,6 +29,9 @@ export default function InventoryTab() {
     const [draftErr, setDraftErr] = useState<string | null>(null);
     const [refreshDraftsToken, setRefreshDraftsToken] = useState(0); //refresh 
 
+    const [addToDraftId, setAddToDraftId] = useState<number | null>(null);
+    const isAddMode = addToDraftId !== null;
+
     //items for chart
     const [chartItems, setChartItems] = useState<Pick<ClothingItem, "type">[]>([]);
 
@@ -226,6 +229,62 @@ export default function InventoryTab() {
         setSelectedTypes(new Set());
     }
 
+    function startAddToDraftMode(draftId: number) {
+        setDraftErr(null);
+        setSelectedIds(new Set());
+        setAddToDraftId(draftId);
+        setIsDraftMode(true);
+    }
+    function cancelAddToDraftMode() {
+        setDraftErr(null);
+        setSelectedIds(new Set());
+        setAddToDraftId(null);
+        setIsDraftMode(false);
+    }
+
+    async function addItemsToDraft() {
+        if (!addToDraftId) return;
+
+        if (selectedIds.size === 0) {
+            setDraftErr("Select at least one item");
+            return;
+        }
+
+        try {
+            setSavingDraft(true);
+            setDraftErr(null);
+
+            const ids = Array.from(selectedIds);
+
+            const res = await fetch(`/api/charity/inventory/drafts/${addToDraftId}/add`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ itemIds: ids }),
+            });
+
+            const json = await res.json();
+            if (!res.ok) throw new Error(json?.error ?? "Failed to add items");
+
+            // remove them from inventory list immediately (because they're drafted now)
+            setItems((prev) => prev.filter((it) => !ids.includes(it.clothing_id)));
+
+            // reset selection and exit add mode
+            setSelectedIds(new Set());
+            setAddToDraftId(null);
+            setIsDraftMode(false);
+
+            // refresh drafts table / chart if you want
+            setRefreshDraftsToken((x) => x + 1);
+
+        } catch (e: any) {
+            setDraftErr(e?.message ?? "Failed to add items");
+        } finally {
+            setSavingDraft(false);
+        }
+    }
+
+
     async function reloadInventory() {
         try {
             setLoading(true);
@@ -249,35 +308,49 @@ export default function InventoryTab() {
                 <div className="flex items-center gap-2">
                     {isDraftMode && (
                         <>
-                            <input
-                                value={draftTitle}
-                                onChange={(e) => setDraftTitle(e.target.value)}
-                                placeholder="Draft title…"
-                                className="text-sm px-3 py-1 rounded-md border w-64"
-                                disabled={savingDraft}
-                            />
+                            {!isAddMode ? (
+                                <>
+                                    <input
+                                        value={draftTitle}
+                                        onChange={(e) => setDraftTitle(e.target.value)}
+                                        placeholder="Draft title…"
+                                        className="text-sm px-3 py-1 rounded-md border w-64"
+                                        disabled={savingDraft}
+                                    />
+                                    <button className="text-sm px-3 py-1 rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
+                                        onClick={saveDraft}>Save draft ({selectedIds.size})</button>
+                                    <button onClick={cancelDraftMode}>Cancel</button>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="text-sm text-gray-700 px-2">
+                                        Adding to draft #{addToDraftId}
+                                    </div>
 
-                            <button
-                                onClick={saveDraft}
-                                disabled={savingDraft}
-                                className="text-sm px-3 py-1 rounded-md bg-green-700 text-white hover:bg-green-800 disabled:opacity-50"
-                            >
-                                {savingDraft ? "Saving…" : `Save draft (${selectedIds.size})`}
-                            </button>
+                                    <button
+                                        onClick={addItemsToDraft}
+                                        disabled={savingDraft || selectedIds.size === 0}
+                                        className="text-sm px-3 py-1 rounded-md bg-gray-900 text-white hover:bg-black disabled:opacity-50"
+                                    >
+                                        Add to draft ({selectedIds.size})
+                                    </button>
 
-                            <button
-                                onClick={cancelDraftMode}
-                                disabled={savingDraft}
-                                className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
-                            >
-                                Cancel
-                            </button>
+                                    <button
+                                        onClick={cancelAddToDraftMode}
+                                        disabled={savingDraft}
+                                        className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
+                                    >
+                                        Cancel
+                                    </button>
+                                </>
+                            )}
                         </>
                     )}
+
                     {draftErr && <span className="text-xs text-red-600">{draftErr}</span>}
                 </div>
 
-                <div className="flex justify-end">
+                <div className="flex items-center">
                     <button
                         onClick={() => setTypeMenuOpen((v) => !v)}
                         className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
@@ -340,11 +413,14 @@ export default function InventoryTab() {
                     ))}
                 </div>
             </div>
-            <div className="mt-4 flex gap-4">
-                <div className="w-full border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
+            <div className="mt-4 flex flex-col gap-4 md:flex-row">
+                <div className="w-full md:flex-1 border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">
                     <Drafts onCreateDraft={startDraftMode} refreshToken={refreshDraftsToken}
                         onChanged={() => {
                             setRefreshDraftsToken((x) => x + 1); reloadInventory();
+                        }}
+                        onAddItems={(draftId) => {
+                            startAddToDraftMode(draftId); // you implement this in InventoryTab
                         }} />
                 </div>
                 <InventoryTypeChart items={chartItems} />

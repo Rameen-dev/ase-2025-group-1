@@ -19,16 +19,23 @@ export default function Drafts({
     onCreateDraft,
     refreshToken,
     onChanged,
+    onAddItems,
 }: {
     onCreateDraft: () => void;
     refreshToken: number;
     onChanged: () => void;
+    onAddItems: (draftId: number) => void;
 }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    //list of drafts fetched from the back end
     const [drafts, setDrafts] = useState<Draft[]>([]);
 
+    //selected draft id for correct view modal to open
     const [viewDraftId, setViewDraftId] = useState<number | null>(null);
+
+    //open / close modal boolean
     const [isViewOpen, setIsViewOpen] = useState(false);
 
     useEffect(() => {
@@ -120,6 +127,10 @@ export default function Drafts({
                 draftId={viewDraftId}
                 onClose={() => setIsViewOpen(false)}
                 onChanged={onChanged}
+                onAddItems={(draftId) => {
+                    onAddItems(draftId);
+                    setIsViewOpen(false);
+                }}
             />
         </div>
     );
