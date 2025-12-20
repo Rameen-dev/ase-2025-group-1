@@ -12,7 +12,7 @@ export async function sendVerificationEmail(
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST, // e.g. "smtp.gmail.com" or your provider
     port: Number(process.env.SMTP_PORT), // e.g. 587
-    secure: false, // upgrade later with STARTTLS if true is needed
+    secure: false, 
     auth: {
       user: process.env.SMTP_USER, // SMTP username / email login
       pass: process.env.SMTP_PASS, // SMTP password / app password
@@ -62,7 +62,7 @@ export async function sendResetCodeEmail(
 
   // 2. Send the password reset email
   await transporter.sendMail({
-    from: process.env.MAIL_FROM, // e.g. "SustainWear <no-reply@sustainwear.com>"
+    from: process.env.MAIL_FROM, 
     to: toEmail,
     subject: "Your SustainWear Password Reset Code",
     text: `Hello ${firstName},\n\nYour password reset code is: ${code}\n\nIt will expire in 10 minutes.`,
