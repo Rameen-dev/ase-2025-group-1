@@ -4,10 +4,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-import CharityViewDonationRequest from "@/components/modals/charityViewDonationRequestModal";
-import CharityDonationHistoryModal from "@/components/modals/charityDonationHistoryModal";
+import CharityViewDonationRequest from "@/components/charity/donations/charityViewDonationRequestModal";
+import CharityDonationHistoryModal from "@/components/charity/donations/charityDonationHistoryModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
-import CharityImpactCards from "@/components/charity/CharityImpactCards";
+import InventoryTab from "@/components/charity/inventory/inventory";
 
 type ClothingItem = {
   clothing_id: number;
@@ -88,12 +88,11 @@ export default function CharityDashboard() {
         });
         const data = await res.json();
 
-        if (Array.isArray(data)) setRequests(data);
-        else {
-          console.error(
-            "Expected array from /api/charity/donations, got:",
-            data
-          );
+        // Safety: only accept array results
+        if (Array.isArray(data)) {
+          setRequests(data);
+        } else {
+          console.error("Expected array from /api/charity/donations, got:", data);
           setRequests([]);
         }
       } catch (err) {
@@ -131,8 +130,7 @@ export default function CharityDashboard() {
           />
         )}
 
-        {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
-      </div>
+        {activeTab === "Inventory" && <InventoryTab />}
     </DashboardLayout>
   );
 }
@@ -288,7 +286,7 @@ function DonationsTab({
         </button>
       </div>
 
-      <div className="border rounded-lg overflow-hidden flex flex-col flex-1 min-h-0">
+      <div className="border rounded-lg overflow-hidden h-[calc(100vh-180px)] flex flex-col shadow-2xl">
         <table className="w-full text-sm table-fixed">
           <colgroup>
             <col className="w-1/4" />
@@ -382,16 +380,6 @@ function DonationsTab({
         loading={itemsModalLoading}
         items={itemsModalItems}
       />
-    </div>
-  );
-}
-
-// Inventory placeholder
-function PlaceholderTab({ title }: { title: string }) {
-  return (
-    <div className="h-full min-h-0 border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
-      <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-      <p className="text-sm">Coming soon.</p>
     </div>
   );
 }

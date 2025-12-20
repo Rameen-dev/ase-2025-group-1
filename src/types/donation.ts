@@ -17,6 +17,7 @@ export type ClothingItem = {
   size: string;
   condition: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
+  drafted_status: "AVAILABLE" | "APPROVED";
   front_image_url?: string | null;
   back_image_url?: string | null;
 };

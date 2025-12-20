@@ -104,11 +104,10 @@ export function DashboardLayout<T extends string>({
                 onTabChange(tab);
                 setIsSidebarOpen(false);
               }}
-              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${
-                activeTab === tab
+              className={`px-8 py-2 text-left transition-colors duration-200 cursor-pointer ${activeTab === tab
                   ? "bg-white text-green-700 font-semibold rounded-l-full shadow-md"
                   : "text-white hover:bg-green-600/70"
-              }`}
+                }`}
             >
               {tab}
             </button>

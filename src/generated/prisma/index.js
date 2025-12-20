@@ -81,7 +81,7 @@ Prisma.NullTypes = {
 
 
 
-  const path = require('path')
+const path = require('path')
 
 /**
  * Enums
@@ -234,11 +234,44 @@ exports.Prisma.DraftScalarFieldEnum = {
 exports.Prisma.DraftedItemScalarFieldEnum = {
   draft_id: 'draft_id',
   clothing_id: 'clothing_id'
+  status: 'status',
+  drafted_status: 'drafted_status'
+};
+
+exports.Prisma.AuditEventScalarFieldEnum = {
+  event_id: 'event_id',
+  actor_type: 'actor_type',
+  actor_user_id: 'actor_user_id',
+  actor_charity_id: 'actor_charity_id',
+  event_type: 'event_type',
+  donation_request_id: 'donation_request_id',
+  donation_id: 'donation_id',
+  metadata: 'metadata',
+  created_on: 'created_on'
+};
+
+exports.Prisma.DraftScalarFieldEnum = {
+  draft_id: 'draft_id',
+  charity_id: 'charity_id',
+  title: 'title',
+  draft_status: 'draft_status',
+  created_at: 'created_at',
+  edited_at: 'edited_at'
+};
+
+exports.Prisma.DraftedItemScalarFieldEnum = {
+  draft_id: 'draft_id',
+  clothing_id: 'clothing_id'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullableJsonNullValueInput = {
@@ -283,6 +316,16 @@ exports.Status = exports.$Enums.Status = {
   REJECTED: 'REJECTED'
 };
 
+exports.clothingDrafted = exports.$Enums.clothingDrafted = {
+  ALLOCATED: 'ALLOCATED',
+  AVAILABLE: 'AVAILABLE'
+};
+
+exports.draftStatus = exports.$Enums.draftStatus = {
+  DRAFT: 'DRAFT',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   EmailVerificationTokens: 'EmailVerificationTokens',
@@ -293,6 +336,10 @@ exports.Prisma.ModelName = {
   Donations: 'Donations',
   DonationRequest: 'DonationRequest',
   Session: 'Session',
+  ClothingItems: 'ClothingItems',
+  AuditEvent: 'AuditEvent',
+  Draft: 'Draft',
+  DraftedItem: 'DraftedItem'
   ClothingItems: 'ClothingItems',
   AuditEvent: 'AuditEvent',
   Draft: 'Draft',
@@ -359,7 +406,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
     "src/generated/prisma",
     "generated/prisma",
   ]
-  
+
   const alternativePath = alternativePaths.find((altPath) => {
     return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
   }) ?? alternativePaths[0]
@@ -377,8 +424,8 @@ config.compilerWasm = undefined
 const { warnEnvConflicts } = require('./runtime/library.js')
 
 warnEnvConflicts({
-    rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
-    schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
+  rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.rootEnvPath),
+  schemaEnvPath: config.relativeEnvPaths.schemaEnvPath && path.resolve(config.dirname, config.relativeEnvPaths.schemaEnvPath)
 })
 
 const PrismaClient = getPrismaClient(config)
