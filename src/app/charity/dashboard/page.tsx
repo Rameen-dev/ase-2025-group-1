@@ -8,6 +8,7 @@ import CharityViewDonationRequest from "@/components/charity/donations/charityVi
 import CharityDonationHistoryModal from "@/components/charity/donations/charityDonationHistoryModal";
 import ViewDonationItemsModal from "@/components/modals/viewDonationRequestModal";
 import InventoryTab from "@/components/charity/inventory/inventory";
+import CharityImpactCards from "@/components/charity/CharityImpactCards";
 
 type ClothingItem = {
   clothing_id: number;
@@ -33,7 +34,7 @@ type CharityAnalytics = {
     created_on: string;
     donation_request_id: number | null;
     donation_id: number | null;
-    metadata: any;
+    metadata: unknown;
   }[];
 };
 
@@ -104,7 +105,6 @@ export default function CharityDashboard() {
     }
 
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -131,6 +131,7 @@ export default function CharityDashboard() {
         )}
 
         {activeTab === "Inventory" && <InventoryTab />}
+      </div>
     </DashboardLayout>
   );
 }

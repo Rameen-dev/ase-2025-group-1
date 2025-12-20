@@ -54,24 +54,25 @@ model PasswordResetTokens {
 }
 
 model Charities {
-  charity_id                 Int                   @id @default(autoincrement())
-  name                       String
-  email                      String                @unique
-  phone                      String
-  address                    String
-  website                    String
-  verified                   Boolean               @default(false)
-  created_on                 DateTime              @default(now())
-  updated_on                 DateTime              @updatedAt
-  password_hash              String?
+  charity_id    Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  phone         String
+  address       String
+  website       String
+  verified      Boolean  @default(false)
+  created_on    DateTime @default(now())
+  updated_on    DateTime @updatedAt
+  password_hash String?
+
   applications               CharityApplications[]
   signup_tokens              CharitySignupTokens[]
   ClothingItems              ClothingItems[]
   donation_requests_answered DonationRequest[]     @relation("charity_answer")
   donations_received         Donations[]           @relation("charity_donation")
-  Draft                      Draft[]
   Session                    Session[]
-  Draft                      Draft[]
+
+  drafts Draft[]
 
   @@index([name])
   @@index([email])
@@ -173,12 +174,13 @@ model ClothingItems {
   back_image_url      String
   status              Status          @default(PENDING)
   drafted_status      clothingDrafted @default(AVAILABLE)
-  Donations           Donations?      @relation(fields: [donation_id], references: [donation_id])
-  DonationRequest     DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
-  User                User            @relation(fields: [donor_id], references: [user_id])
-  Charities           Charities?      @relation(fields: [owned_by], references: [charity_id])
-  drafted_status      clothingDrafted @default(AVAILABLE)
-  DraftedItem         DraftedItem[]
+
+  Donations       Donations?      @relation(fields: [donation_id], references: [donation_id])
+  DonationRequest DonationRequest @relation(fields: [donation_request_id], references: [donation_request_id])
+  User            User            @relation(fields: [donor_id], references: [user_id])
+  Charities       Charities?      @relation(fields: [owned_by], references: [charity_id])
+
+  DraftedItem DraftedItem[]
 }
 
 model AuditEvent {
@@ -217,18 +219,8 @@ model DraftedItem {
   draft    Draft         @relation(fields: [draft_id], references: [draft_id], onDelete: Cascade)
   clothing ClothingItems @relation(fields: [clothing_id], references: [clothing_id], onDelete: Cascade)
 
-  @@id([draft_id, clothing_id]) // composite PK prevents duplicates
+  @@id([draft_id, clothing_id])
   @@index([clothing_id])
-}
-
-enum clothingDrafted {
-  ALLOCATED
-  AVAILABLE
-}
-
-enum draftStatus {
-  DRAFT
-  CANCELLED
 }
 
 enum SessionActorType {
