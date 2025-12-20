@@ -1,4 +1,4 @@
-/* Privacy & Cookie Policy Page */ 
+/* Privacy & Cookie Policy Page */
 
 "use client";
 
@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function PrivacyPolicyPage() {
- const router = useRouter();
+  const router = useRouter();
   const [showFloatingBack, setShowFloatingBack] = useState(false);
 
   const handleBack = () => {
@@ -30,11 +30,14 @@ export default function PrivacyPolicyPage() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  
-  return (
-    <main className="min-h-screen bg-white">
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 text-gray-800 leading-relaxed">
 
+  const goHomeSection = (sectionId: string) => {
+    router.push(`/#${sectionId}`);
+  };
+
+  return (
+    <main className="min-h-screen bg-white flex flex-col">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 text-gray-800 leading-relaxed">
         {/* Top back button inside content column */}
         <button
           onClick={handleBack}
@@ -45,19 +48,19 @@ export default function PrivacyPolicyPage() {
           ← Back to Home
         </button>
 
-      {/* Floating back button that appears when scrolling down */}
-      {showFloatingBack && (
-        <button
-          onClick={handleBack}
-          className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 
+        {/* Floating back button that appears when scrolling down */}
+        {showFloatingBack && (
+          <button
+            onClick={handleBack}
+            className="fixed bottom-4 left-4 z-40 inline-flex items-center gap-2 
                      px-4 py-2 rounded-full bg-white/90 border border-gray-300 
                      text-gray-800 text-sm shadow-md backdrop-blur
                      hover:bg-[#2E7D32] hover:text-white hover:border-[#2E7D32]
                      transition-all cursor-pointer"
-        >
-          ← Back to Home
-        </button>
-      )}
+          >
+            ← Back to Home
+          </button>
+        )}
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 text-[#2E7D32]">
           Privacy & Cookie Policy
@@ -256,8 +259,12 @@ export default function PrivacyPolicyPage() {
           As a user, you have the following rights over your personal data:
         </p>
         <ul className="list-disc ml-5 sm:ml-6 mb-6 space-y-2 text-sm sm:text-base">
-          <li>Right of access - request a copy of the data we hold about you.</li>
-          <li>Right to rectification - correct inaccurate or incomplete data.</li>
+          <li>
+            Right of access - request a copy of the data we hold about you.
+          </li>
+          <li>
+            Right to rectification - correct inaccurate or incomplete data.
+          </li>
           <li>
             Right to erasure - request deletion of your data (“right to be
             forgotten”).
@@ -287,7 +294,9 @@ export default function PrivacyPolicyPage() {
         </p>
 
         {/* 9. Contact */}
-        <h2 className="text-2xl sm:text-3xl font-semibold mb-3">9. Contact Us</h2>
+        <h2 className="text-2xl sm:text-3xl font-semibold mb-3">
+          9. Contact Us
+        </h2>
         <p className="mb-6 text-sm sm:text-base">
           If you have any questions about this policy or wish to exercise your
           data protection rights, please contact us:
@@ -307,6 +316,83 @@ export default function PrivacyPolicyPage() {
           Last updated: {new Date().getFullYear()}
         </p>
       </section>
+
+      {/* Footer implemented on Privacy page */}
+      <footer className="w-full bg-[#E6E6E6] text-black py-10 px-6 sm:px-12 md:px-20 mt-auto pb-28 md:pb-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-10">
+          {/* Left Section */}
+          <div className="flex-1 text-left">
+            <button
+              onClick={() => router.push("/")}
+              className="font-kalam text-3xl mb-4"
+            >
+              <span className="text-[#2E7D32]">S</span>ustain
+              <span className="text-[#2E7D32]">W</span>ear
+            </button>
+            <p className="max-w-sm text-gray-700">
+              A streamlined platform that makes{" "}
+              <span className="text-[#2E7D32]">Sustaining Tomorrow</span> easier
+              than ever through smarter clothing donations
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-10 md:flex md:gap-16 md:items-start">
+            {/* Quick Links */}
+            <div className="text-left">
+              <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => router.push("/#about")}
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
+                  >
+                    About Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => router.push("/#donate")}
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
+                  >
+                    Donate
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Help and Support */}
+            <div className="text-left">
+              <h3 className="font-semibold text-lg mb-3">Help and Support</h3>
+              <ul className="space-y-2">
+                <li>
+                  <button
+                    onClick={() => router.push("/#contact")}
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
+                  >
+                    Contact Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => router.push("/#how-it-works")}
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
+                  >
+                    How It Works
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => router.push("/privacy")}
+                    className="hover:text-[#2E7D32] transition cursor-pointer"
+                  >
+                    Privacy Policy
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
