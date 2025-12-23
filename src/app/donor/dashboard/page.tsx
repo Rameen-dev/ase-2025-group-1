@@ -28,7 +28,7 @@ type DonorAnalytics = {
     event_type: string;
     created_on: string;
     donation_request_id: number | null;
-    metadata: any;
+    metadata: unknown;
   }[];
 };
 
@@ -152,7 +152,6 @@ export default function DonorDashboard() {
       roleLabel="Donor"
       headerTitle={headerTitle}
     >
-      {/* ✅ Mobile: allow scroll. Desktop: keep locked. */}
       <div className="h-full min-h-0 overflow-y-auto md:overflow-hidden">
         {activeTab === "Home" && (
           <HomeTab analytics={analytics} loading={analyticsLoading} />
@@ -289,8 +288,6 @@ function Donations({
   title,
   apps,
   loading,
-  analytics,
-  analyticsLoading,
   onCreated,
   onDelete,
 }: DonationsProps) {

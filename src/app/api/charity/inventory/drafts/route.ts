@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
                 draft_status: true,
                 _count: {
                     select: {
-                        DraftedItem: true,
+                        items: true,
                     }
                 }
             },

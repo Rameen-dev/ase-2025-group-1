@@ -277,8 +277,8 @@ export default function InventoryTab() {
             // refresh drafts table / chart if you want
             setRefreshDraftsToken((x) => x + 1);
 
-        } catch (e: any) {
-            setDraftErr(e?.message ?? "Failed to add items");
+        } catch {
+            setDraftErr("Failed to add items");
         } finally {
             setSavingDraft(false);
         }

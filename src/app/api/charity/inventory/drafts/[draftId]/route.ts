@@ -37,10 +37,10 @@ export async function GET(
                 draft_status: true,
                 created_at: true,
                 edited_at: true,
-                DraftedItem: {
+                items: {
                     select: {
                         clothing_id: true,
-                        ClothingItems: {
+                        clothing: {
                             select: {
                                 clothing_id: true,
                                 type: true,
@@ -60,7 +60,7 @@ export async function GET(
             return NextResponse.json({ error: "Draft not found" }, { status: 404 });
         }
 
-        const items = draft.DraftedItem.map((di) => di.ClothingItems).filter(Boolean);
+        const items = draft.items.map((di) => di.clothing).filter(Boolean);
 
         return NextResponse.json({
             draft_id: draft.draft_id,
