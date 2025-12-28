@@ -130,15 +130,13 @@ const CookieBanner: React.FC<{ forceOpen?: boolean }> = ({ forceOpen }) => {
             <button
               type="button"
               onClick={() => setAnalyticsEnabled((prev) => !prev)}
-              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
-                analyticsEnabled ? "bg-[#2E7D32]" : "bg-gray-300"
-              }`}
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${analyticsEnabled ? "bg-[#2E7D32]" : "bg-gray-300"
+                }`}
               aria-pressed={analyticsEnabled}
             >
               <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                  analyticsEnabled ? "translate-x-5" : "translate-x-0"
-                }`}
+                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${analyticsEnabled ? "translate-x-5" : "translate-x-0"
+                  }`}
               />
             </button>
           </div>
@@ -193,23 +191,23 @@ export default function HomePage() {
   } | null>(null);
 
 
-useEffect(() => {
-  async function fetchImpact() {
-    try {
-      const res = await fetch("/api/impact/live");
-      const data = await res.json();
-      console.log("LIVE IMPACT:", data); 
-      setImpactData(data);
-    } catch (err) {
-      console.error("Failed to fetch live impact", err);
+  useEffect(() => {
+    async function fetchImpact() {
+      try {
+        const res = await fetch("/api/impact/live");
+        const data = await res.json();
+        console.log("LIVE IMPACT:", data);
+        setImpactData(data);
+      } catch (err) {
+        console.error("Failed to fetch live impact", err);
+      }
     }
-  }
 
-  fetchImpact();
-}, []);
+    fetchImpact();
+  }, []);
 
-// Add loading states for better UX - FUTURE IMPROVEMENT!
-// const [impactLoading, setImpactLoading] = useState(true);
+  // Add loading states for better UX - FUTURE IMPROVEMENT!
+  // const [impactLoading, setImpactLoading] = useState(true);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -304,12 +302,12 @@ useEffect(() => {
                 </li>
               </ul>
 
-                {/* Divider */}
-                <li aria-hidden="true" className="mx-2 h-5 w-px bg-gray-300" />
+              {/* Divider */}
+              <li aria-hidden="true" className="mx-2 h-5 w-px bg-gray-300" />
 
               <li>
-                <Link href="/auth/login" 
-                className="text-black px-4 py-2 rounded hover:bg-gray-200 transition inline-block">
+                <Link href="/auth/login"
+                  className="text-black px-4 py-2 rounded hover:bg-gray-200 transition inline-block">
                   Log In
                 </Link>
               </li>
@@ -498,13 +496,13 @@ useEffect(() => {
         </div>
 
         {/* Live Impact Preview */}
-          <section className="min-h-screen flex flex-col justify-center bg-gradient-to-r from-[#2E7D32] to-[#bed0bf] px-4 sm:px-8 md:px-20 py-24">
+        <section className="min-h-screen flex flex-col justify-center bg-gradient-to-r from-[#2E7D32] to-[#bed0bf] px-4 sm:px-8 md:px-20 py-24">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold italic mb-10 text-white drop-shadow-sm text-center">
-          Live Impact Preview
+            Live Impact Preview
           </h2>
           <ImpactPreview
-            totalItems={impactData?.totals.items ?? 0}
-            peopleSupported={impactData?.totals.peopleSupported ?? 0}
+            totalItems={impactData?.totals?.items ?? 0}
+            peopleSupported={impactData?.totals?.peopleSupported ?? 0}
           />
 
           <p className="text-sm text-white mt-10 text-center max-w-2xl mx-auto">
@@ -639,11 +637,10 @@ useEffect(() => {
 
                 {statusMessage && (
                   <p
-                    className={`text-sm text-left ${
-                      statusType === "success"
-                        ? "text-green-700"
-                        : "text-red-600"
-                    }`}
+                    className={`text-sm text-left ${statusType === "success"
+                      ? "text-green-700"
+                      : "text-red-600"
+                      }`}
                   >
                     {statusMessage}
                   </p>

@@ -253,7 +253,7 @@ function DonationsTab({
     setItemsModalItems([]);
 
     try {
-      const res = await fetch(`${API_BASE}/api/charity/donations`, {
+      const res = await fetch(`${API_BASE}/api/charity/donations/${req.donation_request_id}/items`, {
         credentials: "include",
         cache: "no-store",
       });
