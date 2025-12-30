@@ -144,7 +144,6 @@ export default function InventoryTab() {
 
     if (loading) return <p>Loading inventory...</p>;
     if (error) return <p className="text-red-600">{error}</p>;
-    if (!items.length) return <p>No items in inventory yet.</p>;
 
     //item types in array, used for filtering
     const allTypes = ["JACKET", "PANTS", "SHIRT", "SHOES", "OTHER"];
@@ -399,19 +398,26 @@ export default function InventoryTab() {
             </div>
 
             <div className="flex-1 overflow-y-auto border rounded-lg shadow-md bg-green-50">
+                {/* if no items to display show message*/}
+                {displayItems.length === 0 ? (
+                    <div className="h-full flex items-center justify-center p-6">
+                        <p className="text-sm text-gray-600">No items here</p>
+                    </div>
+                ) : (
 
-                {/* using displayItems const instead of items, which handles all sorting functions */}
-                <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
-                    {displayItems?.map((item) => (
-                        <ImageSlider
-                            key={item.clothing_id}
-                            item={item}
-                            isDraftMode={isDraftMode}
-                            isSelected={selectedIds.has(item.clothing_id)}
-                            onToggleSelect={toggleSelectItem}
-                        />
-                    ))}
-                </div>
+                    //using displayItems const instead of items, which handles all sorting functions
+                    <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
+                        {displayItems?.map((item) => (
+                            <ImageSlider
+                                key={item.clothing_id}
+                                item={item}
+                                isDraftMode={isDraftMode}
+                                isSelected={selectedIds.has(item.clothing_id)}
+                                onToggleSelect={toggleSelectItem}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
             <div className="mt-4 flex flex-col gap-4 md:flex-row">
                 <div className="w-full md:flex-1 border shadow-md rounded-xl p-4 text-gray-500 bg-green-50">

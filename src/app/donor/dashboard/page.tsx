@@ -11,8 +11,8 @@ import DonorImpactCards from "@/components/donor/DonorImpactCards";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-type TabName = "Home" | "Donations" | "Inventory";
-const TABS: TabName[] = ["Home", "Donations", "Inventory"];
+type TabName = "Home" | "Donations";
+const TABS: TabName[] = ["Home", "Donations"];
 
 type DonorAnalytics = {
   totals: {
@@ -139,9 +139,7 @@ export default function DonorDashboard() {
       ? "Dashboard Overview"
       : activeTab === "Donations"
         ? "Donations"
-        : activeTab === "Inventory"
-          ? "Inventory"
-          : "Impact & Reports";
+        : "Impact & Reports";
 
   return (
     <DashboardLayout
@@ -176,8 +174,6 @@ export default function DonorDashboard() {
             }}
           />
         )}
-
-        {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
       </div>
     </DashboardLayout>
   );
@@ -352,7 +348,7 @@ function Donations({
 
   return (
     <div className="flex flex-col h-full min-h-0 overflow-hidden">
-      <div className="h-[420px] md:h-[400px] mb-4">
+      <div className="h-full mb-4">
         <div className="border rounded-lg shadow-md flex flex-col h-full overflow-hidden">
           <div className="bg-green-100 px-4 py-3 font-semibold text-lg border-b flex items-center justify-between">
             <span>{title}</span>
@@ -432,17 +428,6 @@ function Donations({
           </div>
         </div>
       </div>
-
-      <div className="flex-1 flex flex-col md:flex-row gap-4 overflow-hidden">
-        <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
-          *TOTAL ITEMS DONATED*
-        </div>
-
-        <div className="flex flex-1 border border-blue-700 rounded-xl p-8 text-center items-center justify-center">
-          *TO BE DECIDED*
-        </div>
-      </div>
-
       <CreateDonationRequestModal
         isOpen={createOpen}
         onClose={() => setCreateOpen(false)}
@@ -463,18 +448,6 @@ function Donations({
         onConfirm={handleDeleteConfirm}
         title={itemToDelete?.title}
       />
-    </div>
-  );
-}
-
-function PlaceholderTab({ title }: { title: string }) {
-  return (
-    <div className="h-full min-h-0 border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
-      <h3 className="text-lg font-semibold text-gray-700 mb-2">{title}</h3>
-      <p className="text-sm">
-        This section is not built yet. You can describe what will go here in
-        your documentation.
-      </p>
     </div>
   );
 }

@@ -10,7 +10,7 @@ type Draft = {
     title: string;
     draft_status: "DRAFT" | string;
     _count: {
-        DraftedItem: number;
+        items: number;
     }
 };
 
@@ -104,7 +104,7 @@ export default function Drafts({
                             drafts.map((d) => (
                                 <tr key={d.draft_id} className="border-b">
                                     <td className="py-2 pr-2 truncate font-bold text-lg text-gray-600 underline">{d.title}</td>
-                                    <td className="py-2 tabular-nums">{d._count.DraftedItem}</td>
+                                    <td className="py-2 tabular-nums">{d._count.items ?? 0}</td>
                                     <td className="py-2">
                                         <button
                                             className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:bg-black"
