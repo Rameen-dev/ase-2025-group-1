@@ -346,6 +346,15 @@ function Donations({
     }
   }
 
+  function statusRowColour(status: string) {
+    switch (status) {
+      case "APPROVED":
+        return "bg-green-50 hover:bg-green-100";
+      case "REJECTED":
+        return "bg-red-50 hover:bg-red-100";
+    }
+  }
+
   return (
     <div className="flex flex-col h-full min-h-0 overflow-hidden">
       <div className="h-full mb-4">
@@ -382,7 +391,7 @@ function Donations({
 
                 {!loading &&
                   apps.map((app) => (
-                    <tr key={app.donation_request_id} className="border-b">
+                    <tr key={app.donation_request_id} className={`border-b transition-colors ${statusRowColour(app.status)}`}>
                       <td className="p-3 text-center text-black font-bold">
                         {app.title}
                       </td>

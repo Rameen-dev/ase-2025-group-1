@@ -24,7 +24,7 @@ export default function Drafts({
     onCreateDraft: () => void;
     refreshToken: number;
     onChanged: () => void;
-    onAddItems: (draftId: number) => void;
+    onAddItems: (draftId: number, title: string) => void;
 }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -107,7 +107,7 @@ export default function Drafts({
                                     <td className="py-2 tabular-nums">{d._count.items ?? 0}</td>
                                     <td className="py-2">
                                         <button
-                                            className="text-xs px-2 py-1 rounded bg-gray-900 text-white hover:bg-black"
+                                            className="text-xs px-2 py-1 rounded bg-green-600 text-white hover:bg-green-700"
                                             onClick={() => {
                                                 setViewDraftId(d.draft_id);
                                                 setIsViewOpen(true);
@@ -128,7 +128,8 @@ export default function Drafts({
                 onClose={() => setIsViewOpen(false)}
                 onChanged={onChanged}
                 onAddItems={(draftId) => {
-                    onAddItems(draftId);
+                    const title = drafts.find((x) => x.draft_id === draftId)?.title ?? `Draft #${draftId}`;
+                    onAddItems(draftId, title);
                     setIsViewOpen(false);
                 }}
             />
