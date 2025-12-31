@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import UsersTab from "./components/UsersTab";
 import ImpactTab from "./components/ImpactTab";
+import InventoryTab from "./components/InventoryTab";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
@@ -39,9 +40,15 @@ export default function AdminPage() {
     async function load() {
       try {
         setLoading(true);
-        const res = await fetch(`${API_BASE}/api/charity-applications`);
+        const res = await fetch(`${API_BASE}/api/charity-applications`, {
+          credentials: "include",
+          cache: "no-store",
+        });
         const data = await res.json();
-        setApps(data);
+        setApps(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error loading charity applications:", err);
+        setApps([]);
       } finally {
         setLoading(false);
       }
@@ -73,8 +80,9 @@ export default function AdminPage() {
       onSignOut={handleSignOut}
       roleLabel="Admin"
       headerTitle={headerTitle}
+      mainScrollable={true}
+      settingsHref="/admin/settings"
     >
-      {/* ADMIN ONLY: allow scrolling inside dashboard content */}
       <div className="h-full min-h-0 overflow-y-auto pr-1">
         {activeTab === "Home" && <HomeTab />}
 
@@ -84,7 +92,7 @@ export default function AdminPage() {
 
         {activeTab === "Users" && <UsersTab />}
 
-        {activeTab === "Inventory" && <PlaceholderTab title="Inventory" />}
+        {activeTab === "Inventory" && <InventoryTab />}
 
         {activeTab === "Impact" && <ImpactTab />}
       </div>
@@ -140,12 +148,14 @@ function RequestsTab({
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ action }),
         }
       );
 
       if (!res.ok) throw new Error();
 
+      // simple refresh to reflect latest status
       window.location.reload();
     } catch (err) {
       alert("Error updating application");
@@ -173,33 +183,27 @@ function RequestsTab({
               <table className="w-full min-w-[640px]">
                 <thead className="bg-green-50 border-b">
                   <tr>
-                    <th className="p-2 sm:p-3 text-left text-sm">
-                      Organisation
-                    </th>
-                    <th className="p-2 sm:p-3 text-left text-sm">
-                      Contact Name
-                    </th>
-                    <th className="p-2 sm:p-3 text-left text-sm">Email</th>
-                    <th className="p-2 sm:p-3 text-center text-sm">Status</th>
-                    <th className="p-2 sm:p-3 text-center text-sm">Action</th>
+                    <th className="p-3 text-left text-sm">Organisation</th>
+                    <th className="p-3 text-left text-sm">Contact</th>
+                    <th className="p-3 text-left text-sm">Email</th>
+                    <th className="p-3 text-center text-sm">Status</th>
+                    <th className="p-3 text-center text-sm">Action</th>
                   </tr>
                 </thead>
+
                 <tbody>
-                  {apps.map((app) => (
-                    <tr key={app.application_id} className="border-b">
-                      <td className="p-2 sm:p-3 text-sm">{app.org_name}</td>
-                      <td className="p-2 sm:p-3 text-sm">{app.contact_name}</td>
-                      <td className="p-2 sm:p-3 text-sm break-all">
-                        {app.contact_email}
+                  {apps.map((a) => (
+                    <tr key={a.application_id} className="border-b">
+                      <td className="p-3 text-sm">{a.org_name}</td>
+                      <td className="p-3 text-sm">{a.contact_name}</td>
+                      <td className="p-3 text-sm break-all">
+                        {a.contact_email}
                       </td>
-                      <td className="p-2 sm:p-3 text-center text-sm">
-                        {app.status}
-                      </td>
-                      <td className="p-2 sm:p-3 text-center">
+                      <td className="p-3 text-center text-sm">{a.status}</td>
+                      <td className="p-3 text-center">
                         <button
-                          onClick={() => openModal(app)}
-                          className="bg-green-600 text-white px-3 sm:px-4 py-1 rounded cursor-pointer text-sm
-                                     hover:bg-green-700 transition-colors duration-200"
+                          onClick={() => openModal(a)}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded text-sm"
                         >
                           View
                         </button>
@@ -220,87 +224,54 @@ function RequestsTab({
             className="fixed inset-0 bg-black/40 z-40"
             onClick={closeModal}
           />
+
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 bg-green-50 border-b rounded-t-xl">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border max-h-[90vh] overflow-y-auto">
+              <div className="flex justify-between px-6 py-4 bg-green-50 border-b rounded-t-xl">
                 <div>
-                  <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                    Charity Application
-                  </h3>
-                  <p className="text-xs sm:text-sm text-gray-600">
-                    {selected.org_name}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <span className="text-xs px-2 sm:px-3 py-1 rounded-full bg-gray-100 text-gray-700 uppercase tracking-wide">
-                    {selected.status}
-                  </span>
-                  <button
-                    onClick={closeModal}
-                    className="text-gray-500 hover:text-gray-700 text-2xl leading-none cursor-pointer"
-                    aria-label="Close"
-                  >
-                    ×
-                  </button>
-                </div>
-              </div>
-
-              <div className="px-4 sm:px-6 py-4 sm:py-5 space-y-4 text-sm">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                  <Field label="Organisation" value={selected.org_name} />
-                  <Field
-                    label="Charity Number"
-                    value={selected.charity_number || "N/A"}
-                  />
+                  <h3 className="text-lg font-semibold">Charity Application</h3>
+                  <p className="text-sm text-gray-600">{selected.org_name}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                  <Field label="Contact Name" value={selected.contact_name} />
-                  <Field label="Contact Email" value={selected.contact_email} />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                  <Field
-                    label="Contact Number"
-                    value={selected.contact_number}
-                  />
-                  <Field label="Website" value={selected.website || "N/A"} />
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="font-semibold text-sm">
-                    Organisation Address
-                  </label>
-                  <textarea
-                    className="border rounded px-2 py-1 text-sm bg-gray-50"
-                    readOnly
-                    rows={3}
-                    value={selected.org_address}
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 border-t bg-gray-50 rounded-b-xl">
                 <button
                   onClick={closeModal}
-                  className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer text-center sm:text-left"
+                  className="text-2xl text-gray-500 hover:text-gray-700"
                 >
-                  Close
+                  ×
                 </button>
+              </div>
+
+              <div className="p-6 space-y-4 text-sm">
+                <Field label="Organisation" value={selected.org_name} />
+                <Field
+                  label="Charity Number"
+                  value={selected.charity_number || "N/A"}
+                />
+                <Field label="Contact" value={selected.contact_name} />
+                <Field label="Email" value={selected.contact_email} />
+                <Field label="Phone" value={selected.contact_number} />
+                <Field label="Website" value={selected.website || "N/A"} />
+                <Field label="Address" value={selected.org_address} />
+              </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t bg-gray-50 px-6 py-4 rounded-b-xl">
+                <span className="text-sm text-gray-600">
+                  Current status:{" "}
+                  <span className="font-semibold">{selected.status}</span>
+                </span>
+
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
                   <button
                     disabled={saving || isLocked}
                     onClick={() => handleDecision("DENY")}
-                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded 
-                    hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
                   >
                     Deny
                   </button>
                   <button
                     disabled={saving || isLocked}
                     onClick={() => handleDecision("APPROVE")}
-                    className="text-sm bg-green-600 text-white px-5 py-2 rounded 
-                    hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                    className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
                   >
                     Approve
                   </button>
@@ -323,20 +294,6 @@ function HomeTab() {
       <p className="text-xs sm:text-sm">
         Here you can later show stats like total charities, donations, and
         impact.
-      </p>
-    </div>
-  );
-}
-
-function PlaceholderTab({ title }: { title: string }) {
-  return (
-    <div className="border border-dashed border-gray-300 rounded-xl p-6 sm:p-8 text-center text-gray-500">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
-        {title}
-      </h3>
-      <p className="text-xs sm:text-sm">
-        This section is not built yet. You can describe what will go here in
-        your documentation.
       </p>
     </div>
   );
