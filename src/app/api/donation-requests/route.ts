@@ -19,37 +19,38 @@ async function getUserId(req: NextRequest): Promise<number | null> {
 
   return session?.user_id ?? null;
 }
-
-
-
 //returns all donation requests for the dashboard, 
 //including a count of how many clothing items per request
 
 function formatTimeAgo(createdOn: Date): string {
-    const seconds = Math.floor((Date.now() - createdOn.getTime()) / 1000);
+  const seconds = Math.floor((Date.now() - createdOn.getTime()) / 1000);
 
-    const units: [number, string][] = [
-        [60, "second"],
-        [60, "minute"],
-        [24, "hour"],
-        [7, "day"],
-        [4, "week"],
-        [12, "month"],
-        [Number.POSITIVE_INFINITY, "year"],
-    ];
+  const units: [number, string][] = [
+    [60, "second"],
+    [60, "minute"],
+    [24, "hour"],
+    [7, "day"],
+    [4, "week"],
+    [12, "month"],
+    [Number.POSITIVE_INFINITY, "year"],
+  ];
 
-    let value = seconds;
-    let i = 0;
+  let value = seconds;
+  let i = 0;
 
-    while (i < units.length && value >= units[i][0]) {
-        value = Math.floor(value / units[i][0]);
-        i++;
-    }
+  while (i < units.length && value >= units[i][0]) {
+    value = Math.floor(value / units[i][0]);
+    i++;
+  }
 
-    const label = units[i][1];
-    return value === 0
-        ? "just now"
-        : `${value} ${label}${value > 1 ? "s" : ""} ago`;
+  const label = units[i][1];
+  return value === 0
+    ? "just now"
+    : `${value} ${label}${value > 1 ? "s" : ""} ago`;
+}
+
+function toDashboardRequest(r: { created_on: Date } & Record<string, unknown>) {
+  return { ...r, createdAgo: formatTimeAgo(r.created_on) };
 }
 
 export async function GET(req: NextRequest) {
@@ -70,13 +71,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    // Add a friendly “time ago” field for UI
-    const transformed = requests.map((r) => ({
-      ...r,
-      createdAgo: formatTimeAgo(r.created_on),
-    }));
-
-    return NextResponse.json(transformed);
+    return NextResponse.json(requests.map(toDashboardRequest));
   } catch (error) {
     console.error("GET /api/donation-requests ERROR:", error);
     return NextResponse.json({ error: "Failed to fetch donation requests" }, { status: 500 });
@@ -159,11 +154,19 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return reqRow;
+      const full = await tx.donationRequest.findUnique({
+        where: { donation_request_id: reqRow.donation_request_id },
+        include: {
+          _count: { select: { ClothingItems: true } },
+        },
+      });
+
+      if (!full) throw new Error("Failed to fetch created donation request");
+      return full;
     });
 
     // Return created request
-    return NextResponse.json(donationRequest, { status: 201 });
+    return NextResponse.json(toDashboardRequest(donationRequest), { status: 201 });
 
   } catch (error) {
     console.error("POST /api/donation-requests ERROR:", error);

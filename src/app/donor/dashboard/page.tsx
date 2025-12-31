@@ -4,15 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-import DonorImpactCards from "@/components/donor/DonorImpactCards";
 import { DonorHomeTab } from "./components/DonorHomeTab";
 import { DonorDonationsTab } from "./components/DonorDonationsTab";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-// Sidebar tabs for donor
-type TabName = "Home" | "Donations" | "Inventory";
-const TABS: TabName[] = ["Home", "Donations", "Inventory"];
+// Sidebar tabs for donor – Inventory removed
+type TabName = "Home" | "Donations";
+const TABS: TabName[] = ["Home", "Donations"];
 
 type DonorAnalytics = {
   totals: {
@@ -28,7 +27,7 @@ type DonorAnalytics = {
     event_type: string;
     created_on: string;
     donation_request_id: number | null;
-    metadata: any;
+    metadata: unknown;
   }[];
 };
 
@@ -113,24 +112,19 @@ export default function DonorDashboard() {
     }
 
     load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     refreshAnalytics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleSignOut() {
     router.push("/");
   }
 
-  const headerTitle =
-    activeTab === "Home"
-      ? "Dashboard Overview"
-      : activeTab === "Donations"
-        ? "Donations"
-        : activeTab === "Inventory"
-          ? "Inventory"
-          : "Impact & Reports";
+  const headerTitle = activeTab === "Home" ? "Dashboard Overview" : "Donations";
 
   return (
     <DashboardLayout
@@ -164,18 +158,6 @@ export default function DonorDashboard() {
             refreshAnalytics();
           }}
         />
-      )}
-
-      {activeTab === "Inventory" && (
-        <div className="border border-dashed border-gray-300 rounded-xl p-8 text-center text-gray-500">
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">
-            Inventory
-          </h3>
-          <p className="text-sm">
-            This section is not built yet. You can describe what will go here in
-            your documentation.
-          </p>
-        </div>
       )}
     </DashboardLayout>
   );

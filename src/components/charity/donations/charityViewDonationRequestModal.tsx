@@ -36,6 +36,9 @@ export default function CharityViewDonationRequest({
     const [imageModalItem, setImageModalItem] = useState<ClothingItemView | null>(null);
     const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
 
+    const [uiError, setUiError] = useState<string | null>(null);
+
+
 
     const allUnchecked = selectedItems.length === 0;
 
@@ -64,6 +67,8 @@ export default function CharityViewDonationRequest({
             } finally {
                 setLoading(false);
             }
+
+            setUiError(null);
         }
 
         loadItems(requestId);
@@ -73,7 +78,7 @@ export default function CharityViewDonationRequest({
         if (!request) return;
 
         if (selectedItems.length === 0) {
-            alert("Select at least one item to approve.");
+            setUiError("Select at least one item to approve.");
             return;
         }
 
@@ -108,7 +113,6 @@ export default function CharityViewDonationRequest({
             )
         );
 
-        // Optional: refresh full list from server so UI stays consistent
         try {
             const refresh = await fetch(`${API_BASE}/api/donation-requests`);
             const updatedRequests = await refresh.json();
@@ -181,13 +185,14 @@ export default function CharityViewDonationRequest({
                                             <input
                                                 type="checkbox"
                                                 checked={selectedItems.includes(item.clothing_id)}
-                                                onChange={() =>
+                                                onChange={() => {
                                                     setSelectedItems((prev) =>
                                                         prev.includes(item.clothing_id)
                                                             ? prev.filter((x) => x !== item.clothing_id)
                                                             : [...prev, item.clothing_id]
                                                     )
-                                                }
+                                                    setUiError(null);
+                                                }}
                                             />
                                         </td>
                                         <td className="p-2">
@@ -208,6 +213,11 @@ export default function CharityViewDonationRequest({
                     )}
 
                     <div className="flex justify-end gap-2 mt-4">
+                        {uiError && (
+                            <div className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                                {uiError}
+                            </div>
+                        )}
                         <button
                             onClick={onClose}
                             className="border px-3 py-1 rounded"
