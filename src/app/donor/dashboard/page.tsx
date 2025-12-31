@@ -6,12 +6,13 @@ import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
 import { DonorHomeTab } from "./components/DonorHomeTab";
 import { DonorDonationsTab } from "./components/DonorDonationsTab";
+import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-// Sidebar tabs for donor – Inventory removed
-type TabName = "Home" | "Donations";
-const TABS: TabName[] = ["Home", "Donations"];
+// Sidebar tabs for donor – now includes Settings
+type TabName = "Home" | "Donations" | "Settings";
+const TABS: TabName[] = ["Home", "Donations", "Settings"];
 
 type DonorAnalytics = {
   totals: {
@@ -124,7 +125,12 @@ export default function DonorDashboard() {
     router.push("/");
   }
 
-  const headerTitle = activeTab === "Home" ? "Dashboard Overview" : "Donations";
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Donations"
+        ? "Donations"
+        : "Settings";
 
   return (
     <DashboardLayout
@@ -135,7 +141,6 @@ export default function DonorDashboard() {
       roleLabel="Donor"
       headerTitle={headerTitle}
       mainScrollable={false}
-      settingsHref="/donor/settings"
     >
       {activeTab === "Home" && (
         <DonorHomeTab analytics={analytics} loading={analyticsLoading} />
@@ -159,6 +164,8 @@ export default function DonorDashboard() {
           }}
         />
       )}
+
+      {activeTab === "Settings" && <AccountSettings />}
     </DashboardLayout>
   );
 }

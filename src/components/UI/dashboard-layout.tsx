@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -15,15 +13,9 @@ type DashboardLayoutProps<T extends string> = {
 
   /**
    * If true, the main content area scrolls (recommended for Admin).
-   * If false, main content is clipped and tabs manage scroll inside.
+   * If false, main content is clipped and you manage scroll inside tabs.
    */
   mainScrollable?: boolean;
-
-  /**
-   * Where the bottom "Settings" button should go.
-   * e.g. "/admin/settings", "/charity/settings", "/donor/settings"
-   */
-  settingsHref?: string;
 };
 
 export function DashboardLayout<T extends string>({
@@ -35,7 +27,6 @@ export function DashboardLayout<T extends string>({
   headerTitle,
   children,
   mainScrollable = false,
-  settingsHref, // optional – we’ll guard it
 }: DashboardLayoutProps<T>) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [logoutModalOpen, setLogoutModalOpen] = useState(false);
@@ -55,9 +46,13 @@ export function DashboardLayout<T extends string>({
   async function confirmSignOut() {
     try {
       setIsSigningOut(true);
-      await fetch("/api/auth/logout", { method: "POST" });
+
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
       onSignOut();
-      router.push("/");
     } finally {
       setIsSigningOut(false);
       setLogoutModalOpen(false);
@@ -99,11 +94,11 @@ export function DashboardLayout<T extends string>({
             href="/"
             className="hover:opacity-80 transition-opacity inline-block"
           >
-            <div className="font-kalam text-3xl md:text-4xl">
+            <div className="font-kalam text-4xl md:text-5xl">
               <span className="text-[#2E7D32]">S</span>ustain
               <span className="text-[#2E7D32]">W</span>ear
             </div>
-            <p className="text-xs md:text-sm italic">
+            <p className="text-xs md:text-lg italic">
               <span className="text-black">Give Today.</span>{" "}
               <span className="text-[#2E7D32]">Sustain</span>
               <span className="text-black"> Tomorrow.</span>
@@ -111,8 +106,8 @@ export function DashboardLayout<T extends string>({
           </Link>
         </div>
 
-        {/* NAV TABS */}
-        <nav className="flex-1 flex flex-col justify-center space-y-4 text-xl">
+        {/* TABS */}
+        <nav className="flex-1 flex flex-col justify-center space-y-6 text-2xl">
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -134,21 +129,8 @@ export function DashboardLayout<T extends string>({
         {/* BOTTOM MENU */}
         <div className="border-t border-white/70 py-6 text-center text-white font-semibold space-y-2">
           <button
-            type="button"
-            onClick={() => {
-              if (settingsHref) {
-                router.push(settingsHref);
-              }
-              setIsSidebarOpen(false);
-            }}
-            className="block w-full hover:opacity-80 cursor-pointer transition-opacity duration-150"
-          >
-            Settings
-          </button>
-
-          <button
             onClick={openLogoutModal}
-            className="block w-full hover:opacity-80 cursor-pointer mt-2 transition-opacity duration-150"
+            className="hover:opacity-80 cursor-pointer transition-opacity duration-150"
           >
             Log Out
           </button>
@@ -166,9 +148,7 @@ export function DashboardLayout<T extends string>({
         {/* Header */}
         <div className="flex justify-between mb-6">
           <div>
-            <h2 className="text-2xl md:text-3xl font-semibold">
-              {headerTitle}
-            </h2>
+            <h2 className="text-3xl font-semibold">{headerTitle}</h2>
             <p className="text-sm text-gray-500">
               Welcome back, {roleLabel}. Manage your SustainWear from here.
             </p>

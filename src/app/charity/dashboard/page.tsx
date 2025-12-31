@@ -4,20 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
+
 import { CharityHomeTab } from "./components/CharityHomeTab";
 import { CharityDonationsTab } from "./components/CharityDonationsTab";
+import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-type ClothingItem = {
-  clothing_id: number;
-  type: string;
-  size: string;
-  condition: string;
-  status: string;
-  front_image_url?: string;
-  back_image_url?: string;
-};
+// Tabs now include Settings
+type TabName = "Home" | "Donations" | "Inventory" | "Settings";
+const TABS: TabName[] = ["Home", "Donations", "Inventory", "Settings"];
 
 type CharityAnalytics = {
   totals: {
@@ -37,13 +33,10 @@ type CharityAnalytics = {
   }[];
 };
 
-type TabName = "Home" | "Donations" | "Inventory";
-const TABS: TabName[] = ["Home", "Donations", "Inventory"];
-
 export default function CharityDashboard() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<TabName>("Home");
 
+  const [activeTab, setActiveTab] = useState<TabName>("Home");
   const [requests, setRequests] = useState<DonationRequest[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -108,16 +101,28 @@ export default function CharityDashboard() {
     load();
   }, []);
 
+  function handleSignOut() {
+    router.push("/");
+  }
+
+  const headerTitle =
+    activeTab === "Home"
+      ? "Dashboard Overview"
+      : activeTab === "Donations"
+        ? "Donations"
+        : activeTab === "Inventory"
+          ? "Inventory"
+          : "Settings";
+
   return (
     <DashboardLayout
       tabs={TABS}
       activeTab={activeTab}
       onTabChange={setActiveTab}
-      onSignOut={() => router.push("/")}
+      onSignOut={handleSignOut}
       roleLabel="Charity"
-      headerTitle={activeTab}
+      headerTitle={headerTitle}
       mainScrollable={false}
-      settingsHref="/charity/settings"
     >
       {activeTab === "Home" && (
         <CharityHomeTab analytics={analytics} loading={analyticsLoading} />
@@ -125,19 +130,29 @@ export default function CharityDashboard() {
 
       {activeTab === "Donations" && (
         <CharityDonationsTab
-          apiBase={API_BASE}
           requests={requests}
           loading={loading}
           setRequests={setRequests}
+          apiBase={API_BASE}
         />
       )}
 
       {activeTab === "Inventory" && (
-        <div className="border rounded-xl p-6 text-center text-gray-400">
-          <h3 className="text-lg font-semibold">Inventory</h3>
-          <p>Coming soon.</p>
-        </div>
+        <InventoryPlaceholder />
+        // or <CharityInventoryTab ... /> if you later split that out too
       )}
+
+      {activeTab === "Settings" && <AccountSettings />}
     </DashboardLayout>
+  );
+}
+
+/** Simple inventory placeholder to keep things compiling */
+function InventoryPlaceholder() {
+  return (
+    <div className="border rounded-xl p-6 text-center text-gray-400">
+      <h3 className="text-lg font-semibold">Inventory</h3>
+      <p>Coming soon.</p>
+    </div>
   );
 }

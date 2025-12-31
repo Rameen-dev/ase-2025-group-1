@@ -6,12 +6,26 @@ import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import UsersTab from "./components/UsersTab";
 import ImpactTab from "./components/ImpactTab";
 import InventoryTab from "./components/InventoryTab";
+import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-// Tabs type
-type TabName = "Home" | "Requests" | "Users" | "Inventory" | "Impact";
-const TABS: TabName[] = ["Home", "Requests", "Users", "Inventory", "Impact"];
+// Tabs type – now includes Settings
+type TabName =
+  | "Home"
+  | "Requests"
+  | "Users"
+  | "Inventory"
+  | "Impact"
+  | "Settings";
+const TABS: TabName[] = [
+  "Home",
+  "Requests",
+  "Users",
+  "Inventory",
+  "Impact",
+  "Settings",
+];
 
 // Prisma model types
 type CharityStatus = "PENDING" | "APPROVED" | "REJECTED";
@@ -70,7 +84,9 @@ export default function AdminPage() {
           ? "User Management"
           : activeTab === "Inventory"
             ? "Inventory"
-            : "Impact & Reports";
+            : activeTab === "Impact"
+              ? "Impact & Reports"
+              : "Settings";
 
   return (
     <DashboardLayout
@@ -81,7 +97,6 @@ export default function AdminPage() {
       roleLabel="Admin"
       headerTitle={headerTitle}
       mainScrollable={true}
-      settingsHref="/admin/settings"
     >
       <div className="h-full min-h-0 overflow-y-auto pr-1">
         {activeTab === "Home" && <HomeTab />}
@@ -95,6 +110,8 @@ export default function AdminPage() {
         {activeTab === "Inventory" && <InventoryTab />}
 
         {activeTab === "Impact" && <ImpactTab />}
+
+        {activeTab === "Settings" && <AccountSettings />}
       </div>
     </DashboardLayout>
   );
