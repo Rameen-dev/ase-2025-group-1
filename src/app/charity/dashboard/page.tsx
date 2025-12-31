@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-
+import { CharityInventoryTab } from "./components/CharityInventoryTab";
 import { CharityHomeTab } from "./components/CharityHomeTab";
 import { CharityDonationsTab } from "./components/CharityDonationsTab";
 import { AccountSettings } from "@/components/settings/AccountSettings";
@@ -137,22 +137,9 @@ export default function CharityDashboard() {
         />
       )}
 
-      {activeTab === "Inventory" && (
-        <InventoryPlaceholder />
-        // or <CharityInventoryTab ... /> if you later split that out too
-      )}
+      {activeTab === "Inventory" && <CharityInventoryTab />}
 
       {activeTab === "Settings" && <AccountSettings />}
     </DashboardLayout>
-  );
-}
-
-/** Simple inventory placeholder to keep things compiling */
-function InventoryPlaceholder() {
-  return (
-    <div className="border rounded-xl p-6 text-center text-gray-400">
-      <h3 className="text-lg font-semibold">Inventory</h3>
-      <p>Coming soon.</p>
-    </div>
   );
 }
