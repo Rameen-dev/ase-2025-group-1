@@ -308,7 +308,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Projects\\ase-2025-group-1\\src\\generated\\prisma",
+      "value": "/Users/r.d.a/Downloads/SustainWear/ase-2025-group-1/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -317,12 +317,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Projects\\ase-2025-group-1\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/r.d.a/Downloads/SustainWear/ase-2025-group-1/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

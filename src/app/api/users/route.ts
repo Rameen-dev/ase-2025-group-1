@@ -5,17 +5,17 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
 
-    // Get query parameters
+    // Query parameters
     const search = searchParams.get("search") || "";
     const roleFilter = searchParams.get("role") || "all";
-    const page = parseInt(searchParams.get("page") || "1");
+    const page = parseInt(searchParams.get("page") || "1", 10);
     const pageSize = 10;
     const skip = (page - 1) * pageSize;
 
     const allUsers: any[] = [];
     let totalCount = 0;
 
-    // If filtering by charity or all, fetch charities
+    // Charities for role=all or role=charity
     if (roleFilter === "all" || roleFilter === "charity") {
       const charityWhere: any = {};
 
@@ -37,7 +37,6 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // Transform charities to match user format
       const transformedCharities = charities.map((charity) => ({
         user_id: charity.charity_id,
         first_name: charity.name,
@@ -46,13 +45,13 @@ export async function GET(request: NextRequest) {
         role: "charity",
         is_verified: charity.verified,
         created_on: charity.created_on,
-        userType: "charity", // Add this to distinguish
+        userType: "charity",
       }));
 
       allUsers.push(...transformedCharities);
     }
 
-    // If filtering by donor/admin or all, fetch users
+    // Users (donor/admin/all)
     if (
       roleFilter === "all" ||
       roleFilter === "donor" ||
@@ -68,7 +67,8 @@ export async function GET(request: NextRequest) {
         ];
       }
 
-      if (roleFilter !== "donor" && roleFilter !== "admin") {
+      // 🔧 FIX: only filter by role when donor/admin, NEVER when "all"
+      if (roleFilter === "donor" || roleFilter === "admin") {
         userWhere.role = roleFilter;
       }
 
@@ -85,7 +85,6 @@ export async function GET(request: NextRequest) {
         },
       });
 
-      // Add userType to regular users
       const transformedUsers = users.map((user) => ({
         ...user,
         userType: "user",
@@ -94,17 +93,15 @@ export async function GET(request: NextRequest) {
       allUsers.push(...transformedUsers);
     }
 
-    // Sort by created_on descending
+    // Sort by newest
     allUsers.sort(
       (a, b) =>
         new Date(b.created_on).getTime() - new Date(a.created_on).getTime()
     );
 
-    // Calculate pagination
+    // Pagination
     totalCount = allUsers.length;
     const totalPages = Math.ceil(totalCount / pageSize);
-
-    // Apply pagination
     const paginatedUsers = allUsers.slice(skip, skip + pageSize);
 
     return NextResponse.json({
