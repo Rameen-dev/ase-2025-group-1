@@ -13,8 +13,8 @@ type DonorSettings = {
   receiveEmails: boolean;
 };
 
-type TabName = "Home" | "Donations" | "Inventory";
-const TABS: TabName[] = ["Home", "Donations", "Inventory"];
+type TabName = "Home" | "Donations";
+const TABS: TabName[] = ["Home", "Donations"];
 
 export default function DonorSettingsPage() {
   const router = useRouter();
