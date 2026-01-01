@@ -58,6 +58,7 @@ export default function CharityDashboard() {
       const text = await res.text();
 
       //try parse plain text as JSON
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let json: any = null;
       try {
         //if text is non-null parse it as JSON
