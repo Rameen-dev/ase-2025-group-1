@@ -45,7 +45,7 @@ export const CharityDonationsTab: React.FC<Props> = ({
     setItemsModalItems([]);
 
     try {
-      const res = await fetch(`${apiBase}/api/charity/donations`, {
+      const res = await fetch(`${apiBase}/api/charity/donations/[requestId]/items`, {
         credentials: "include",
         cache: "no-store",
       });

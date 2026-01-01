@@ -17,6 +17,7 @@ type CharityAnalytics = {
     created_on: string;
     donation_request_id: number | null;
     donation_id: number | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata: any;
   }[];
 };

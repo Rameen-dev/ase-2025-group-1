@@ -35,11 +35,8 @@ export async function GET(
             return NextResponse.json({ error: "Invalid request id" }, { status: 400 });
         }
 
-        const request = await prisma.donationRequest.findFirst({
-            where: {
-                donation_request_id: requestId,
-                answered_by: session.charity_id,
-            },
+        const request = await prisma.donationRequest.findUnique({
+            where: { donation_request_id: requestId },
             select: { donation_request_id: true },
         });
 
