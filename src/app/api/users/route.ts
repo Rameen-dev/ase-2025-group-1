@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
         ];
       }
 
-      // 🔧 FIX: only filter by role when donor/admin, NEVER when "all"
+      // Only filter by role when donor/admin, never when "all"
       if (roleFilter === "donor" || roleFilter === "admin") {
         userWhere.role = roleFilter;
       }

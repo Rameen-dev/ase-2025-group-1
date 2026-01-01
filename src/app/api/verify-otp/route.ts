@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import crypto from "crypto";
+import { SessionActorType } from "@/generated/prisma";
 
 export const runtime = "nodejs"; 
 
+function generateSessionToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
 export async function POST(req: NextRequest) {
   // 1. Parse request body
   const body = await req.json().catch(() => ({}));
@@ -88,14 +93,39 @@ export async function POST(req: NextRequest) {
       }),
     ]);
 
+    // Create a session cookie after verification
+    const sessionToken = generateSessionToken();
+    const expires = new Date(Date.now() + 1000 * 60 * 30);
+
+    const actorType = SessionActorType.DONOR; // Signed up people will always be Donor (You can't sign up as an admin)
+
+    await prisma.session.create({
+      data: {
+        session_token: sessionToken,
+        actor_type: actorType,
+        user_id: user.user_id,
+        charity_id: null,
+        expires_on: expires,
+      },
+    });
     // 7. Send success
-    return NextResponse.json(
+    const res = NextResponse.json(
       {
         code: "VERIFIED",
         message: "Email verified successfully.",
       },
       { status: 200 }
     );
+
+    res.cookies.set("session", sessionToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 30,
+    });
+
+    return res;
   } catch (err) {
     console.error("verify-otp error:", err);
     return NextResponse.json(
