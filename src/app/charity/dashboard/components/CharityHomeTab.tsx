@@ -26,11 +26,26 @@ type Props = {
   loading: boolean;
 };
 
+function formatEventLabel(eventType: string) {
+  switch (eventType) {
+    case "REQUEST_CREATED":
+      return "A donation request was created";
+    case "REQUEST_APPROVED":
+      return "You accepted a donation request";
+    case "REQUEST_REJECTED":
+      return "You declined a donation request";
+    case "DONATION_CREATED":
+      return "A donation was created";
+    default:
+      return eventType.replaceAll("_", " ");
+  }
+}
+
 export const CharityHomeTab: React.FC<Props> = ({ analytics, loading }) => {
   return (
     <div className="h-full space-y-6">
       {/* Impact summary */}
-      <div className="border h-full border-gray-200 rounded-xl p-8 bg-white">
+      <div className="border border-gray-200 rounded-xl p-8 bg-white">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">
           Your Sustainability Impact
         </h3>
@@ -38,9 +53,9 @@ export const CharityHomeTab: React.FC<Props> = ({ analytics, loading }) => {
       </div>
 
       {/* Bottom row */}
-      <div className="flex flex-col md:flex-row gap-6 h-full">
+      <div className="flex flex-col md:flex-row gap-6 md:h-[400px]">
         {/* Recent activity */}
-        <div className="md:w-1/2 border border-gray-200 rounded-xl p-8 bg-white">
+        <div className="md:w-1/2 border border-gray-200 rounded-xl p-8 bg-white flex flex-col h-[320px] md:h-full">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Recent Activity
           </h3>
@@ -52,14 +67,18 @@ export const CharityHomeTab: React.FC<Props> = ({ analytics, loading }) => {
           )}
 
           {!loading && analytics && analytics.recentEvents.length > 0 && (
-            <div className="space-y-3">
+            <div className="space-y-3 overflow-y-auto flex-1 pr-2">
               {analytics.recentEvents.map((e) => (
-                <div key={e.event_id} className="border rounded-lg p-3">
+                <div
+                  key={e.event_id}
+                  className="border rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                >
                   <p className="text-sm font-semibold text-gray-800">
-                    {e.event_type.replaceAll("_", " ")}
+                    {formatEventLabel(e.event_type)}
                     {e.donation_request_id
                       ? ` — Request #${e.donation_request_id}`
                       : ""}
+                    {e.donation_id ? ` — Donation #${e.donation_id}` : ""}
                   </p>
                   <p className="text-xs text-gray-500">
                     {new Date(e.created_on).toLocaleString()}
@@ -71,7 +90,7 @@ export const CharityHomeTab: React.FC<Props> = ({ analytics, loading }) => {
         </div>
 
         {/* Stats */}
-        <div className="md:w-1/2 border border-gray-200 rounded-xl p-8 bg-white">
+        <div className="md:w-1/2 border border-gray-200 rounded-xl p-8 bg-white h-[320px] md:h-full">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Charity Overview
           </h3>
