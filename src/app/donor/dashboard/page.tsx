@@ -140,7 +140,7 @@ export default function DonorDashboard() {
       onSignOut={handleSignOut}
       roleLabel="Donor"
       headerTitle={headerTitle}
-      mainScrollable={false}
+      mainScrollable={true}
     >
       {activeTab === "Home" && (
         <DonorHomeTab analytics={analytics} loading={analyticsLoading} />
