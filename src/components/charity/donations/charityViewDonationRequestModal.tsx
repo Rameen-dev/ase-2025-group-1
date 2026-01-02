@@ -41,12 +41,11 @@ export default function CharityViewDonationRequest({
 
 
     const allUnchecked = selectedItems.length === 0;
+    const requestId = request?.donation_request_id;
 
     // Load items when modal opens for a specific request
     useEffect(() => {
-        if (!isOpen || !request) return;
-
-        const requestId = request.donation_request_id;
+        if (!isOpen || !requestId) return;
 
         async function loadItems(id: number) {
             try {
@@ -55,8 +54,14 @@ export default function CharityViewDonationRequest({
                 setSelectedItems([]);
 
                 const res = await fetch(
-                    `${API_BASE}/api/donation-requests/${id}/items`
-                );
+                    `${API_BASE}/api/charity/donations/${id}/items`, {
+                    credentials: "include",
+                    cache: "no-store",
+                });
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Items fetch failed: ${res.status} ${text}`);
+                }
                 const data = await res.json();
                 const itemsArray: ClothingItemView[] = Array.isArray(data) ? data : [];
                 setItems(itemsArray);
@@ -72,7 +77,7 @@ export default function CharityViewDonationRequest({
         }
 
         loadItems(requestId);
-    }, [isOpen, request]);
+    }, [isOpen, requestId]);
 
     async function handleAccept() {
         if (!request) return;

@@ -68,6 +68,7 @@ export default function VerifyEmailPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
+        credentials: "include",
       });
 
       const data = await res.json();

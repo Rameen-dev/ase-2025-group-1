@@ -308,7 +308,11 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
+<<<<<<< HEAD
       "value": "C:\\Users\\oelam\\OneDrive - Sheffield Hallam University\\Documents\\GitHub\\ase-2025-group-1\\src\\generated\\prisma",
+=======
+      "value": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\src\\generated\\prisma",
+>>>>>>> 19982422010742fd42d5a5825d461dd309daa6a7
       "fromEnvVar": null
     },
     "config": {
@@ -322,7 +326,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
+<<<<<<< HEAD
     "sourceFilePath": "C:\\Users\\oelam\\OneDrive - Sheffield Hallam University\\Documents\\GitHub\\ase-2025-group-1\\prisma\\schema.prisma",
+=======
+    "sourceFilePath": "C:\\University Projects\\Applied Software Engineering\\ase-2025-group-1\\prisma\\schema.prisma",
+>>>>>>> 19982422010742fd42d5a5825d461dd309daa6a7
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

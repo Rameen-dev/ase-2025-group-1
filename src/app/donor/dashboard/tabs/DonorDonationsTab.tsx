@@ -47,8 +47,6 @@ export const DonorDonationsTab: React.FC<Props> = ({
   title,
   apps,
   loading,
-  analytics,
-  analyticsLoading,
   apiBase,
   onCreated,
   onDelete,
@@ -98,7 +96,7 @@ export const DonorDonationsTab: React.FC<Props> = ({
       onDelete(itemToDelete.donation_request_id);
       setDeleteOpen(false);
       setItemToDelete(null);
-    } catch (err) {
+    } catch {
       alert("Error deleting donation request");
     }
   }
@@ -106,7 +104,7 @@ export const DonorDonationsTab: React.FC<Props> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Requests table */}
-      <div className="h-[400px] md:h-[420px] mb-4">
+      <div className="h-full mb-4">
         <div className="border rounded-lg shadow-md flex flex-col h-full bg-white">
           <div className="bg-green-100 px-4 py-3 font-semibold text-lg flex items-center justify-between">
             <span>{title}</span>
@@ -201,17 +199,6 @@ export const DonorDonationsTab: React.FC<Props> = ({
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
-
-      {/* Bottom summary placeholders */}
-      <div className="flex-1 flex flex-col md:flex-row gap-4">
-        <div className="flex flex-1 border border-blue-700 rounded-xl p-6 md:p-8 text-center items-center justify-center">
-          *TOTAL ITEMS DONATED*
-        </div>
-
-        <div className="flex flex-1 border border-blue-700 rounded-xl p-6 md:p-8 text-center items-center justify-center">
-          *TO BE DECIDED*
         </div>
       </div>
 
