@@ -4,9 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-import { CharityInventoryTab } from "./components/CharityInventoryTab";
-import { CharityHomeTab } from "./components/CharityHomeTab";
-import { CharityDonationsTab } from "./components/CharityDonationsTab";
+import { CharityInventoryTab } from "./tabs/CharityInventoryTab";
+import { CharityHomeTab } from "./tabs/CharityHomeTab";
+import { CharityDonationsTab } from "./tabs/CharityDonationsTab";
 import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
@@ -29,6 +29,7 @@ type CharityAnalytics = {
     created_on: string;
     donation_request_id: number | null;
     donation_id: number | null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata: any;
   }[];
 };
@@ -52,7 +53,26 @@ export default function CharityDashboard() {
         cache: "no-store",
       });
 
-      const json = await res.json();
+      //bug fix where charity analytics API sometimes returns non-JSON errors
+      //read as plain text first to handle non-JSON errors
+      const text = await res.text();
+
+      //try parse plain text as JSON
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let json: any = null;
+      try {
+        //if text is non-null parse it as JSON
+        json = text ? JSON.parse(text) : null;
+        //if text is empty, json remains null
+      } catch {
+        console.error("Charity analytics returned NON-JSON response", {
+          status: res.status,
+          bodyPreview: text.slice(0, 300),
+        });
+        //bail out on JSON parse error
+        setAnalytics(null);
+        return;
+      }
 
       if (!res.ok) {
         console.error("Failed to fetch charity analytics:", json);

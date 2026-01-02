@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DashboardLayout } from "@/components/UI/dashboard-layout";
 import type { DonationRequest } from "@/types/donation";
-import { DonorHomeTab } from "./components/DonorHomeTab";
-import { DonorDonationsTab } from "./components/DonorDonationsTab";
+import { DonorHomeTab } from "./tabs/DonorHomeTab";
+import { DonorDonationsTab } from "./tabs/DonorDonationsTab";
 import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";

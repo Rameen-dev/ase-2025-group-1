@@ -11,10 +11,13 @@ type ClothingItemDTO = {
     back_image_url: string | null;
 };
 
-export async function GET(
-    req: NextRequest,
-    { params }: { params: { requestId: string } }
-) {
+export async function GET(req: NextRequest, context: any) {
+    const { requestId } = await context.params;
+    const id = Number(requestId);
+
+    if (!Number.isInteger(id)) {
+        return NextResponse.json({ error: "Invalid request id" }, { status: 400 });
+    }
     try {
         const sessionToken = req.cookies.get("session")?.value;
         if (!sessionToken) {
@@ -30,16 +33,13 @@ export async function GET(
             return NextResponse.json({ error: "Not a charity session" }, { status: 403 });
         }
 
-        const requestId = Number(params.requestId);
+        const requestId = Number(id);
         if (!Number.isInteger(requestId)) {
             return NextResponse.json({ error: "Invalid request id" }, { status: 400 });
         }
 
-        const request = await prisma.donationRequest.findFirst({
-            where: {
-                donation_request_id: requestId,
-                answered_by: session.charity_id,
-            },
+        const request = await prisma.donationRequest.findUnique({
+            where: { donation_request_id: requestId },
             select: { donation_request_id: true },
         });
 

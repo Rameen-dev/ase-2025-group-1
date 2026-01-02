@@ -33,7 +33,6 @@ function formatTimeAgo(createdOn: Date): string {
 export async function GET() {
     try {
         const apps = await prisma.donationRequest.findMany({
-            // no `where: { created_by: userId }` here
             orderBy: { created_on: "desc" },
             include: {
                 _count: {

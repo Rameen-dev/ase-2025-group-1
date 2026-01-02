@@ -44,8 +44,11 @@ export const CharityDonationsTab: React.FC<Props> = ({
     setItemsModalLoading(true);
     setItemsModalItems([]);
 
+    const url = `${apiBase}/api/charity/donations/${req.donation_request_id}/items`;
+    console.log("CHARITY HISTORY ITEMS URL:", url);
+
     try {
-      const res = await fetch(`${apiBase}/api/charity/donations`, {
+      const res = await fetch(url, {
         credentials: "include",
         cache: "no-store",
       });
