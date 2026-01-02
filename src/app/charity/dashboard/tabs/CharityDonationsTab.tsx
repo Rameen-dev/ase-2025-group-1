@@ -141,15 +141,13 @@ export const CharityDonationsTab: React.FC<Props> = ({
                   </tr>
                 ))}
 
-              {!loading &&
-                Array.isArray(pendingRequests) &&
-                requests.length === 0 && (
-                  <tr>
-                    <td colSpan={4} className="text-center p-4">
-                      No donation requests found.
-                    </td>
-                  </tr>
-                )}
+              {!loading && pendingRequests.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="text-center p-4">
+                    No donation requests yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
