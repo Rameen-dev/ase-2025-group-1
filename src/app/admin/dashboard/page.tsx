@@ -320,27 +320,52 @@ function HomeTab() {
   } | null>(null);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  async function loadDashboard() {
+    try {
+      setError(null);
+      setLoading(true);
+
+      const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
+      if (!res.ok) {
+        setError(`Dashboard request failed (${res.status})`);
+        setData(null);
+        return;
+      }
+
+      const json = await res.json();
+      setData(json);
+    } catch (err) {
+      console.error("dashboard load failed:", err);
+      setError("Could not load dashboard data.");
+      setData(null);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function loadDashboard() {
-      try {
-        const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to load");
-        const json = await res.json();
-        setData(json);
-      } catch (err) {
-        console.error("dashboard load failed:", err);
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     loadDashboard();
   }, []);
 
   if (loading) return <div>Loading dashboard...</div>;
-  if (!data) return <div>Failed to load dashboard.</div>;
+
+  if (error) {
+    return (
+      <div className="space-y-3">
+        <div>{error}</div>
+        <button
+          onClick={loadDashboard}
+          className="border rounded px-3 py-2 text-sm"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) return <div>No dashboard data.</div>;
 
   const nothingUrgent =
     data.actionRequired.pendingApplications === 0 &&
@@ -349,6 +374,15 @@ function HomeTab() {
 
   return (
     <div className="space-y-6">
+      <div className="flex justify-end">
+        <button
+          onClick={loadDashboard}
+          className="border rounded px-3 py-2 text-sm"
+        >
+          Refresh
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card title="Total donations" value={data.totalDonations} />
         <Card title="Pending applications" value={data.actionRequired.pendingApplications} />
