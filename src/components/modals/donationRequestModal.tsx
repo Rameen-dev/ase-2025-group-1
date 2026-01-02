@@ -247,11 +247,11 @@ export default function CreateDonationRequestModal({
           <div>
             <label className="block text-sm mb-2">Items</label>
 
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-[40vh] overflow-y-auto overscroll-contain">
               {items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col md:flex-row gap-3 items-end border rounded-md p-3"
+                  className="flex flex-row flex-wrap sm:flex-row sm:flex-nowrap gap-1 items-end border rounded-md p-3"
                 >
                   {/* TYPE */}
                   <div className="flex-1">
@@ -347,7 +347,7 @@ export default function CreateDonationRequestModal({
                   <button
                     type="button"
                     onClick={() => removeItemRow(item.id)}
-                    className="text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
+                    className="shrink-0 text-xs px-3 py-2 rounded-md border border-red-300 text-red-600 hover:bg-red-50"
                   >
                     Remove
                   </button>
