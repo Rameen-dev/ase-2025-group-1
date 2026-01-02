@@ -142,7 +142,7 @@ export default function CharityDashboard() {
       onSignOut={handleSignOut}
       roleLabel="Charity"
       headerTitle={headerTitle}
-      mainScrollable={false}
+      mainScrollable={true}
     >
       {activeTab === "Home" && (
         <CharityHomeTab analytics={analytics} loading={analyticsLoading} />
