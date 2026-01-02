@@ -304,7 +304,15 @@ function RequestsTab({
 
 // Home tab (read-only dashboard)
 function HomeTab() {
-  const [totalDonations, setTotalDonations] = useState<number | null>(null);
+  const [data, setData] = useState<{
+    totalDonations: number;
+    actionRequired: {
+      pendingApplications: number;
+      pendingRequests: number;
+      unverifiedUsers: number;
+    };
+  } | null>(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -313,10 +321,14 @@ function HomeTab() {
         const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to load");
         const json = await res.json();
-        setTotalDonations(json.totalDonations);
+
+        setData({
+          totalDonations: json.totalDonations,
+          actionRequired: json.actionRequired,
+        });
       } catch (err) {
         console.error("dashboard load failed:", err);
-        setTotalDonations(null);
+        setData(null);
       } finally {
         setLoading(false);
       }
@@ -326,12 +338,15 @@ function HomeTab() {
   }, []);
 
   if (loading) return <div>Loading dashboard...</div>;
-  if (totalDonations === null) return <div>Failed to load dashboard.</div>;
+  if (!data) return <div>Failed to load dashboard.</div>;
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card title="Total donations" value={totalDonations} />
+        <Card title="Total donations" value={data.totalDonations} />
+        <Card title="Pending applications" value={data.actionRequired.pendingApplications} />
+        <Card title="Pending requests" value={data.actionRequired.pendingRequests} />
+        <Card title="Unverified users" value={data.actionRequired.unverifiedUsers} />
       </div>
     </div>
   );
@@ -345,4 +360,3 @@ function Card({ title, value }: { title: string; value: number }) {
     </div>
   );
 }
-
