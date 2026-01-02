@@ -302,8 +302,9 @@ function RequestsTab({
   );
 }
 
-// Home tab (read-only dashboard)
+// Home tab for the admin dashboard.
 function HomeTab() {
+  // Stores all data coming back from the dashboard API
   const [data, setData] = useState<{
     totalDonations: number;
     actionRequired: {
@@ -319,21 +320,29 @@ function HomeTab() {
     }[];
   } | null>(null);
 
+  // Used while the page is loading
   const [loading, setLoading] = useState(true);
+
+  // Used if something goes wrong with the fetch
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch dashboard data from the backend
   async function loadDashboard() {
     try {
       setError(null);
       setLoading(true);
 
+      // Call admin dashboard endpoint
       const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
+
+      // If the request fails, show a basic error
       if (!res.ok) {
         setError(`Dashboard request failed (${res.status})`);
         setData(null);
         return;
       }
 
+      // Convert response to json and save it
       const json = await res.json();
       setData(json);
     } catch (err) {
@@ -341,16 +350,19 @@ function HomeTab() {
       setError("Could not load dashboard data.");
       setData(null);
     } finally {
+      // Stop loading once we are done
       setLoading(false);
     }
   }
 
+  // Load dashboard when the page first opens
   useEffect(() => {
     loadDashboard();
   }, []);
 
   if (loading) return <div>Loading dashboard...</div>;
 
+  // Show error and allow retry
   if (error) {
     return (
       <div className="space-y-3">
@@ -367,6 +379,7 @@ function HomeTab() {
 
   if (!data) return <div>No dashboard data.</div>;
 
+  // Check if there is anything that actually needs attention
   const nothingUrgent =
     data.actionRequired.pendingApplications === 0 &&
     data.actionRequired.pendingRequests === 0 &&
@@ -374,6 +387,7 @@ function HomeTab() {
 
   return (
     <div className="space-y-6">
+      {/* Manual refresh button */}
       <div className="flex justify-end">
         <button
           onClick={loadDashboard}
@@ -383,6 +397,7 @@ function HomeTab() {
         </button>
       </div>
 
+      {/* Summary cards at the top */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card title="Total donations" value={data.totalDonations} />
         <Card title="Pending applications" value={data.actionRequired.pendingApplications} />
@@ -391,11 +406,12 @@ function HomeTab() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Action required section */}
         <div className="lg:col-span-2 border rounded-lg p-4">
           <h2 className="text-lg font-semibold mb-3">Action required</h2>
 
           {nothingUrgent ? (
-            <p className="text-sm text-gray-600">Nothing urgent.</p>
+            <p className="text-sm text-gray-600">Nothing urgent right now.</p>
           ) : (
             <ul className="space-y-2">
               {data.actionRequired.pendingApplications > 0 && (
@@ -404,12 +420,14 @@ function HomeTab() {
                   <span>{data.actionRequired.pendingApplications}</span>
                 </li>
               )}
+
               {data.actionRequired.pendingRequests > 0 && (
                 <li className="flex justify-between border p-2 rounded">
                   <span>Pending donation requests</span>
                   <span>{data.actionRequired.pendingRequests}</span>
                 </li>
               )}
+
               {data.actionRequired.unverifiedUsers > 0 && (
                 <li className="flex justify-between border p-2 rounded">
                   <span>Unverified users</span>
@@ -420,6 +438,7 @@ function HomeTab() {
           )}
         </div>
 
+        {/* Recent activity feed */}
         <div className="border rounded-lg p-4">
           <h2 className="text-lg font-semibold mb-3">Recent activity</h2>
 
@@ -443,6 +462,7 @@ function HomeTab() {
   );
 }
 
+// Simple card used for dashboard numbers
 function Card({ title, value }: { title: string; value: number }) {
   return (
     <div className="border rounded-lg p-4">
