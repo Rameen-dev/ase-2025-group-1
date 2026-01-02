@@ -309,71 +309,83 @@ export default function InventoryTab() {
 
     return (
         <div className="h-[calc(100vh-180px)] flex flex-col">
-            <div className="flex items-center justify-between mb-0.5 relative gap-2">
-                <div className="flex items-center gap-2">
-                    {isDraftMode && (
-                        <>
-                            {!isAddMode ? (
-                                <>
-                                    <input
-                                        value={draftTitle}
-                                        onChange={(e) => setDraftTitle(e.target.value)}
-                                        placeholder="Draft title…"
-                                        className="text-sm px-3 py-1 rounded-md border w-64"
-                                        disabled={savingDraft}
-                                    />
-                                    <button className="text-sm px-3 py-1 rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
-                                        onClick={saveDraft}>Save draft ({selectedIds.size})</button>
-                                    <button className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
-                                        onClick={cancelDraftMode}>Cancel</button>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="text-sm text-gray-700 px-2">
-                                        Adding to draft <span className="font-bold">{addToDraftTitle}</span>
-                                    </div>
+            <div className="mb-0.5 relative flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between min-w-0">
+                <div className="w-full sm:w-auto min-w-0">
+                    <div className="flex flex-row gap-2 sm:flex-row sm:items-center sm:gap-2 min-w-0">
 
-                                    <button
-                                        onClick={addItemsToDraft}
-                                        disabled={savingDraft || selectedIds.size === 0}
-                                        className="text-sm px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600"
-                                    >
-                                        Add to draft ({selectedIds.size})
-                                    </button>
+                        {isDraftMode && (
+                            <>
+                                {!isAddMode ? (
+                                    <>
+                                        <input
+                                            value={draftTitle}
+                                            onChange={(e) => setDraftTitle(e.target.value)}
+                                            placeholder="Draft title…"
+                                            className="text-sm px-3 py-1 rounded-md border w-full sm:w-64"
+                                            disabled={savingDraft}
+                                        />
+                                        <button className="text-sm px-3 py-1 rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
+                                            onClick={saveDraft}>Save</button>
+                                        <button className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
+                                            onClick={cancelDraftMode}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-sm text-gray-700 px-2">
+                                            Adding to draft <span className="font-bold">{addToDraftTitle}</span>
+                                        </div>
 
-                                    <button
-                                        onClick={cancelAddToDraftMode}
-                                        disabled={savingDraft}
-                                        className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
-                                    >
-                                        Cancel
-                                    </button>
-                                </>
-                            )}
-                        </>
-                    )}
+                                        <button
+                                            onClick={addItemsToDraft}
+                                            disabled={savingDraft || selectedIds.size === 0}
+                                            className="text-sm px-3 py-1 rounded-md bg-green-500 text-white hover:bg-green-600"
+                                        >
+                                            Add to draft ({selectedIds.size})
+                                        </button>
 
-                    {draftErr && <span className="text-xs text-red-600">{draftErr}</span>}
+                                        <button
+                                            onClick={cancelAddToDraftMode}
+                                            disabled={savingDraft}
+                                            className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50 disabled:opacity-50"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </>
+                                )}
+                            </>
+                        )}
+
+                        {draftErr && <span className="text-xs text-red-600">{draftErr}</span>}
+                    </div>
                 </div>
 
-                <div className="flex items-center">
-                    <button
-                        onClick={() => setTypeMenuOpen((v) => !v)}
-                        className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                        disabled={savingDraft}
-                    >
-                        Filter by {selectedTypes.size ? `(${selectedTypes.size})` : ""}
-                    </button>
-                    <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                        onClick={toggleConditionSort}
-                        disabled={savingDraft} >
-                        Condition {sortMode === "CONDITION" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
-                    </button>
-                    <button className="text-sm px-3 py-1 m-1 rounded-md border hover:bg-gray-50"
-                        onClick={toggleSizeSort}
-                        disabled={savingDraft}>
-                        Size {sortMode === "SIZE" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
-                    </button>
+                <div className="w-full sm:w-auto">
+                    <div className="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+                        <button
+                            onClick={() => setTypeMenuOpen((v) => !v)}
+                            className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50"
+                            disabled={savingDraft}
+                        >
+                            Filter by {selectedTypes.size ? `(${selectedTypes.size})` : ""}
+                        </button>
+
+                        <button
+                            className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50"
+                            onClick={toggleConditionSort}
+                            disabled={savingDraft}
+                        >
+                            Condition {sortMode === "CONDITION" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                        </button>
+
+                        <button
+                            className="text-sm px-3 py-1 rounded-md border hover:bg-gray-50"
+                            onClick={toggleSizeSort}
+                            disabled={savingDraft}
+                        >
+                            Size {sortMode === "SIZE" ? (sortDir === "ASC" ? "↑" : "↓") : ""}
+                        </button>
+                    </div>
+
                     {typeMenuOpen && (
                         <div className="absolute right-2 top-12 z-20 w-56 rounded-lg border bg-white shadow-md p-2">
                             <div className="flex items-center justify-between px-2 py-1">
@@ -389,12 +401,16 @@ export default function InventoryTab() {
 
                             <div className="max-h-56 overflow-y-auto">
                                 {allTypes.map((t) => (
-                                    <label key={t} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded">
+                                    <label
+                                        key={t}
+                                        className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 rounded"
+                                    >
                                         <input
                                             type="checkbox"
                                             checked={selectedTypes.has(t)}
                                             onChange={() => toggleType(t)}
-                                            disabled={savingDraft} />
+                                            disabled={savingDraft}
+                                        />
                                         <span className="text-sm">{t}</span>
                                     </label>
                                 ))}
