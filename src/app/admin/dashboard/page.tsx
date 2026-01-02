@@ -302,16 +302,47 @@ function RequestsTab({
   );
 }
 
+// Home tab (read-only dashboard)
 function HomeTab() {
+  const [totalDonations, setTotalDonations] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadDashboard() {
+      try {
+        const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to load");
+        const json = await res.json();
+        setTotalDonations(json.totalDonations);
+      } catch (err) {
+        console.error("dashboard load failed:", err);
+        setTotalDonations(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDashboard();
+  }, []);
+
+  if (loading) return <div>Loading dashboard...</div>;
+  if (totalDonations === null) return <div>Failed to load dashboard.</div>;
+
   return (
-    <div className="border border-dashed border-gray-300 rounded-xl p-6 sm:p-8 text-center text-gray-500">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
-        Dashboard Overview (Coming Soon)
-      </h3>
-      <p className="text-xs sm:text-sm">
-        Here you can later show stats like total charities, donations, and
-        impact.
-      </p>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card title="Total donations" value={totalDonations} />
+      </div>
     </div>
   );
 }
+
+function Card({ title, value }: { title: string; value: number }) {
+  return (
+    <div className="border rounded-lg p-4">
+      <div className="text-sm text-gray-600">{title}</div>
+      <div className="text-2xl font-semibold">{value}</div>
+    </div>
+  );
+}
+
