@@ -302,16 +302,172 @@ function RequestsTab({
   );
 }
 
+// Home tab for the admin dashboard.
 function HomeTab() {
+  // Stores all data coming back from the dashboard API
+  const [data, setData] = useState<{
+    totalDonations: number;
+    actionRequired: {
+      pendingApplications: number;
+      pendingRequests: number;
+      unverifiedUsers: number;
+    };
+    recentActivity: {
+      event_id: number;
+      event_type: string;
+      actor_type: string;
+      created_on: string;
+    }[];
+  } | null>(null);
+
+  // Used while the page is loading
+  const [loading, setLoading] = useState(true);
+
+  // Used if something goes wrong with the fetch
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch dashboard data from the backend
+  async function loadDashboard() {
+    try {
+      setError(null);
+      setLoading(true);
+
+      // Call admin dashboard endpoint
+      const res = await fetch("/api/admin/dashboard", { cache: "no-store" });
+
+      // If the request fails, show a basic error
+      if (!res.ok) {
+        setError(`Dashboard request failed (${res.status})`);
+        setData(null);
+        return;
+      }
+
+      // Convert response to json and save it
+      const json = await res.json();
+      setData(json);
+    } catch (err) {
+      console.error("dashboard load failed:", err);
+      setError("Could not load dashboard data.");
+      setData(null);
+    } finally {
+      // Stop loading once we are done
+      setLoading(false);
+    }
+  }
+
+  // Load dashboard when the page first opens
+  useEffect(() => {
+    loadDashboard();
+  }, []);
+
+  if (loading) return <div>Loading dashboard...</div>;
+
+  // Show error and allow retry
+  if (error) {
+    return (
+      <div className="space-y-3">
+        <div>{error}</div>
+        <button
+          onClick={loadDashboard}
+          className="border rounded px-3 py-2 text-sm"
+        >
+          Try again
+        </button>
+      </div>
+    );
+  }
+
+  if (!data) return <div>No dashboard data.</div>;
+
+  // Check if there is anything that actually needs attention
+  const nothingUrgent =
+    data.actionRequired.pendingApplications === 0 &&
+    data.actionRequired.pendingRequests === 0 &&
+    data.actionRequired.unverifiedUsers === 0;
+
   return (
-    <div className="border border-dashed border-gray-300 rounded-xl p-6 sm:p-8 text-center text-gray-500">
-      <h3 className="text-base sm:text-lg font-semibold text-gray-700 mb-2">
-        Dashboard Overview (Coming Soon)
-      </h3>
-      <p className="text-xs sm:text-sm">
-        Here you can later show stats like total charities, donations, and
-        impact.
-      </p>
+    <div className="space-y-6">
+      {/* Manual refresh button */}
+      <div className="flex justify-end">
+        <button
+          onClick={loadDashboard}
+          className="border rounded px-3 py-2 text-sm"
+        >
+          Refresh
+        </button>
+      </div>
+
+      {/* Summary cards at the top */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card title="Total donations" value={data.totalDonations} />
+        <Card title="Pending applications" value={data.actionRequired.pendingApplications} />
+        <Card title="Pending requests" value={data.actionRequired.pendingRequests} />
+        <Card title="Unverified users" value={data.actionRequired.unverifiedUsers} />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* Action required section */}
+        <div className="lg:col-span-2 border rounded-lg p-4">
+          <h2 className="text-lg font-semibold mb-3">Action required</h2>
+
+          {nothingUrgent ? (
+            <p className="text-sm text-gray-600">Nothing urgent right now.</p>
+          ) : (
+            <ul className="space-y-2">
+              {data.actionRequired.pendingApplications > 0 && (
+                <li className="flex justify-between border p-2 rounded">
+                  <span>Pending charity applications</span>
+                  <span>{data.actionRequired.pendingApplications}</span>
+                </li>
+              )}
+
+              {data.actionRequired.pendingRequests > 0 && (
+                <li className="flex justify-between border p-2 rounded">
+                  <span>Pending donation requests</span>
+                  <span>{data.actionRequired.pendingRequests}</span>
+                </li>
+              )}
+
+              {data.actionRequired.unverifiedUsers > 0 && (
+                <li className="flex justify-between border p-2 rounded">
+                  <span>Unverified users</span>
+                  <span>{data.actionRequired.unverifiedUsers}</span>
+                </li>
+              )}
+            </ul>
+          )}
+        </div>
+
+        {/* Recent activity feed */}
+        <div className="border rounded-lg p-4">
+          <h2 className="text-lg font-semibold mb-3">Recent activity</h2>
+
+          {data.recentActivity.length === 0 ? (
+            <p className="text-sm text-gray-600">No recent activity.</p>
+          ) : (
+            <ul className="space-y-2">
+              {data.recentActivity.map((e) => (
+                <li key={e.event_id} className="border p-2 rounded">
+                  <div className="font-medium">{e.event_type}</div>
+                  <div className="text-sm text-gray-600">
+                    {e.actor_type} • {new Date(e.created_on).toLocaleString()}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Simple card used for dashboard numbers
+function Card({ title, value }: { title: string; value: number }) {
+  return (
+    <div className="border rounded-lg p-4">
+      <div className="text-sm text-gray-600">{title}</div>
+      <div className="text-2xl font-semibold">{value}</div>
     </div>
   );
 }
