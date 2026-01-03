@@ -10,7 +10,7 @@ import { AccountSettings } from "@/components/settings/AccountSettings";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "";
 
-// Tabs type – now includes Settings
+// Tabs type - now includes Settings
 type TabName =
   | "Home"
   | "Requests"
