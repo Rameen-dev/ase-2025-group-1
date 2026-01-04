@@ -1,4 +1,4 @@
-/* Privacy & Cookie Policy Page */
+/* Privacy & Cookie Policy Page for SustainWear*/
 
 "use client";
 
