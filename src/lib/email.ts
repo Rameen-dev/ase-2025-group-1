@@ -76,7 +76,7 @@ export async function sendResetCodeEmail(
     `,
   });
 }
-
+// Email sent to charities if they get rejected
 export async function sendCharityRejectionEmail(options: {
 toEmail: string;
 orgName: string;
@@ -95,7 +95,7 @@ orgName: string;
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: toEmail,
-    subject: "SustainWear - Charity Application Update",
+    subject: "SustainWear | Charity Application Update",
     html: `
     <p>Hi ${orgName},</p>
     <p>Thank you for taking the time to apply to partner with SustainWear.</p>
@@ -141,7 +141,7 @@ orgName: string;
     `,
   });
 }
-
+// Email sent to charity's if there application gets approved.
 export async function sendCharityApprovalEmail(options: {
   toEmail: string;
   orgName: string;
@@ -161,7 +161,7 @@ export async function sendCharityApprovalEmail(options: {
   await transporter.sendMail({
     from: process.env.MAIL_FROM,
     to: toEmail,
-    subject: "SustainWear – Charity Application Approved",
+    subject: "SustainWear | Charity Application Approved",
     html: `
       <p>Hi ${orgName},</p>
       <p>

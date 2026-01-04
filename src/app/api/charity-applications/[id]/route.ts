@@ -35,14 +35,14 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
   // const adminId = session.user.id;
 
   try {
-    // ===================== DENY / REJECT FLOW =====================
+    // REJECT FLOW 
     if (action === "DENY") {
       const updated = await prisma.charityApplications.update({
         where: { application_id: applicationId },
         data: {
           status: "REJECTED",
           reviewed_on: new Date(),
-          // Don't set reviewed_by yet (would FK fail if ID not real)
+          // Don't set reviewed_by yet 
           approved_on: null,
           approved_by: null,
           updated_on: new Date(),
@@ -69,15 +69,15 @@ export async function PATCH(req: NextRequest, context: RouteContext) {
       const expiresOn = new Date(Date.now() + 1000 * 60 * 60 * 48); // 48 hours
 
       const result = await prisma.$transaction(async (tx) => {
-        // 1) Update application to APPROVED
+        // 1) Update application status to APPROVED
         const app = await tx.charityApplications.update({
           where: { application_id: applicationId },
           data: {
             status: "APPROVED",
             reviewed_on: new Date(),
-            // reviewed_by: null for now (or leave untouched)
+            // reviewed_by: null for now (Future improvement)
             approved_on: new Date(),
-            // approved_by: null for now
+            // approved_by: null for now 
             updated_on: new Date(),
           },
         });

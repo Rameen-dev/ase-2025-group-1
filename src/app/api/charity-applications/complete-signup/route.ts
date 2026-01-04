@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await prisma.$transaction(async (tx) => {
-      // 1) Update charity password + verified flag
+      // 1) Update charity password and verified status
       await tx.charities.update({
         where: { charity_id: invite.charity_id },
         data: {
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // 3) (Optional) Invalidate any other unused invites for this charity
+      // 3) Invalidate any other unused invites for this charity
       await tx.charitySignupTokens.updateMany({
         where: {
           charity_id: invite.charity_id,

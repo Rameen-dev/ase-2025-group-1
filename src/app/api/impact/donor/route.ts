@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 // Here we import our shared sustainability calculation logic
 // This ensures all roles (Donor, Charity, Admin) use the same model
 import { calculateImpact } from "@/lib/impact";
-// Import Prisma Client to talk to the Neon database
 import { prisma } from "@/lib/prisma";
 // Import authentication helper to get the currently logged-in user
 // This should return session info

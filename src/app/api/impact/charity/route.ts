@@ -3,13 +3,9 @@
 
 // Next Response is used to send JSON responses from Next.js API routes
 import { NextResponse } from "next/server";
-
 // Here we use the shared sustainability calculation logic 
 import { calculateImpact } from "@/lib/impact";
-
-// Prisma client for access to database
 import { prisma } from "@/lib/prisma";
-
 import { cookies } from "next/headers";
 
 // This function runs when a GET request is made to /api/impact/charity
@@ -25,7 +21,6 @@ export async function GET() {
         { status: 401 }
         );
     }
-    
     // Here we look up the session in the database
     const session = await prisma.session.findUnique({
         where: { session_token: sessionToken },
@@ -51,7 +46,6 @@ export async function GET() {
     
     // Here we then calculate the sustainability impact using the shared logic from "impact.ts"
     const impact = calculateImpact(totalItems);
-
     // We return the total item count and calculated impact
     return NextResponse.json({ totalItems, impact});
 }
