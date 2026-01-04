@@ -6,4 +6,8 @@ Defect report documentation: https://docs.google.com/spreadsheets/d/1SYQMqzkV9po
 ## Bug Report 2 - Error-handling (catch block) was not tested
 Defect report documentation: https://docs.google.com/spreadsheets/d/1RWifAAmc6Gat8BrXdibEHApfb6huHyISIVrt3Qrpmx0/edit?usp=sharing
 
-## Bug Report 3 - 
+## Bug Report 3 - Charity "No items in inventory"
+Defect report documentation: https://docs.google.com/spreadsheets/d/17W6BfGFRg3qC4FlqyqWLKMKwq7ZlKcSTigFcIHIk8MA/edit?usp=sharing
+
+## Bug Report 4 - Admin User View 
+Defect report documentation: https://docs.google.com/spreadsheets/d/1PTEn684Ts80QolpC3dl40NK114vaMZbhgEALdkA6pns/edit?usp=sharing
