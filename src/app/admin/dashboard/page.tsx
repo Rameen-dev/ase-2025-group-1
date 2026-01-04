@@ -200,27 +200,56 @@ function RequestsTab({
               <table className="w-full min-w-[640px]">
                 <thead className="bg-green-50 border-b">
                   <tr>
-                    <th className="p-3 text-left text-sm">Organisation</th>
-                    <th className="p-3 text-left text-sm">Contact</th>
-                    <th className="p-3 text-left text-sm">Email</th>
-                    <th className="p-3 text-center text-sm">Status</th>
-                    <th className="p-3 text-center text-sm">Action</th>
+                    <th className="p-2 sm:p-3 text-left text-xs sm:text-sm">
+                      Organisation
+                    </th>
+                    <th className="p-2 sm:p-3 text-left text-xs sm:text-sm">
+                      Contact
+                    </th>
+                    <th className="p-2 sm:p-3 text-left text-xs sm:text-sm hidden sm:table-cell">
+                      Email
+                    </th>
+                    <th className="p-2 sm:p-3 text-center text-xs sm:text-sm">
+                      Status
+                    </th>
+                    <th className="p-2 sm:p-3 text-center text-xs sm:text-sm">
+                      Action
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {apps.map((a) => (
-                    <tr key={a.application_id} className="border-b">
-                      <td className="p-3 text-sm">{a.org_name}</td>
-                      <td className="p-3 text-sm">{a.contact_name}</td>
-                      <td className="p-3 text-sm break-all">
+                    <tr
+                      key={a.application_id}
+                      className="border-b transition-colors hover:bg-gray-50"
+                    >
+                      <td className="p-2 sm:p-3 text-xs sm:text-sm">
+                        {a.org_name}
+                      </td>
+                      <td className="p-2 sm:p-3 text-xs sm:text-sm">
+                        {a.contact_name}
+                      </td>
+                      <td className="p-2 sm:p-3 text-xs sm:text-sm break-all hidden sm:table-cell">
                         {a.contact_email}
                       </td>
-                      <td className="p-3 text-center text-sm">{a.status}</td>
-                      <td className="p-3 text-center">
+                      <td className="p-2 sm:p-3 text-center text-xs sm:text-sm">
+                        <span
+                          className={`inline-block px-2 py-1 rounded text-xs ${
+                            a.status === "PENDING"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : a.status === "APPROVED"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {a.status}
+                        </span>
+                      </td>
+                      <td className="p-2 sm:p-3 text-center">
                         <button
                           onClick={() => openModal(a)}
-                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded text-sm"
+                          className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-1 rounded text-xs sm:text-sm transition-colors"
                         >
                           View
                         </button>
@@ -244,21 +273,25 @@ function RequestsTab({
 
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border max-h-[90vh] overflow-y-auto">
-              <div className="flex justify-between px-6 py-4 bg-green-50 border-b rounded-t-xl">
+              <div className="flex justify-between items-start px-4 sm:px-6 py-3 sm:py-4 bg-green-50 border-b rounded-t-xl">
                 <div>
-                  <h3 className="text-lg font-semibold">Charity Application</h3>
-                  <p className="text-sm text-gray-600">{selected.org_name}</p>
+                  <h3 className="text-base sm:text-lg font-semibold">
+                    Charity Application
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-600">
+                    {selected.org_name}
+                  </p>
                 </div>
 
                 <button
                   onClick={closeModal}
-                  className="text-2xl text-gray-500 hover:text-gray-700"
+                  className="text-2xl text-gray-500 hover:text-gray-700 transition-colors -mt-1"
                 >
                   ×
                 </button>
               </div>
 
-              <div className="p-6 space-y-4 text-sm">
+              <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 text-sm">
                 <Field label="Organisation" value={selected.org_name} />
                 <Field
                   label="Charity Number"
@@ -271,8 +304,8 @@ function RequestsTab({
                 <Field label="Address" value={selected.org_address} />
               </div>
 
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t bg-gray-50 px-6 py-4 rounded-b-xl">
-                <span className="text-sm text-gray-600">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t bg-gray-50 px-4 sm:px-6 py-3 sm:py-4 rounded-b-xl">
+                <span className="text-xs sm:text-sm text-gray-600">
                   Current status:{" "}
                   <span className="font-semibold">{selected.status}</span>
                 </span>
@@ -281,14 +314,14 @@ function RequestsTab({
                   <button
                     disabled={saving || isLocked}
                     onClick={() => handleDecision("DENY")}
-                    className="text-sm border border-red-500 text-red-600 px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                    className="text-xs sm:text-sm border border-red-500 text-red-600 px-4 sm:px-5 py-2 rounded hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto transition-colors"
                   >
                     Deny
                   </button>
                   <button
                     disabled={saving || isLocked}
                     onClick={() => handleDecision("APPROVE")}
-                    className="text-sm bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto"
+                    className="text-xs sm:text-sm bg-green-600 text-white px-4 sm:px-5 py-2 rounded hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto transition-colors"
                   >
                     Approve
                   </button>
@@ -360,16 +393,17 @@ function HomeTab() {
     loadDashboard();
   }, []);
 
-  if (loading) return <div>Loading dashboard...</div>;
+  if (loading)
+    return <div className="text-sm sm:text-base">Loading dashboard...</div>;
 
   // Show error and allow retry
   if (error) {
     return (
       <div className="space-y-3">
-        <div>{error}</div>
+        <div className="text-sm sm:text-base">{error}</div>
         <button
           onClick={loadDashboard}
-          className="border rounded px-3 py-2 text-sm"
+          className="border rounded px-3 py-2 text-xs sm:text-sm hover:bg-gray-50 transition-colors"
         >
           Try again
         </button>
@@ -377,7 +411,8 @@ function HomeTab() {
     );
   }
 
-  if (!data) return <div>No dashboard data.</div>;
+  if (!data)
+    return <div className="text-sm sm:text-base">No dashboard data.</div>;
 
   // Check if there is anything that actually needs attention
   const nothingUrgent =
@@ -386,76 +421,117 @@ function HomeTab() {
     data.actionRequired.unverifiedUsers === 0;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Manual refresh button */}
       <div className="flex justify-end">
         <button
           onClick={loadDashboard}
-          className="border rounded px-3 py-2 text-sm"
+          className="border rounded px-3 py-2 text-xs sm:text-sm hover:bg-gray-50 transition-colors"
         >
           Refresh
         </button>
       </div>
 
       {/* Summary cards at the top */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <Card title="Total donations" value={data.totalDonations} />
-        <Card title="Pending applications" value={data.actionRequired.pendingApplications} />
-        <Card title="Pending requests" value={data.actionRequired.pendingRequests} />
-        <Card title="Unverified users" value={data.actionRequired.unverifiedUsers} />
+        <Card
+          title="Pending applications"
+          value={data.actionRequired.pendingApplications}
+        />
+        <Card
+          title="Pending requests"
+          value={data.actionRequired.pendingRequests}
+        />
+        <Card
+          title="Unverified users"
+          value={data.actionRequired.unverifiedUsers}
+        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4">
         {/* Action required section */}
-        <div className="lg:col-span-2 border rounded-lg p-4">
-          <h2 className="text-lg font-semibold mb-3">Action required</h2>
+        <div className="lg:col-span-2 border rounded-lg p-3 sm:p-4 flex flex-col transition-shadow hover:shadow-md">
+          <h2 className="text-base sm:text-lg font-semibold mb-3">
+            Action required
+          </h2>
 
-          {nothingUrgent ? (
-            <p className="text-sm text-gray-600">Nothing urgent right now.</p>
-          ) : (
-            <ul className="space-y-2">
-              {data.actionRequired.pendingApplications > 0 && (
-                <li className="flex justify-between border p-2 rounded">
-                  <span>Pending charity applications</span>
-                  <span>{data.actionRequired.pendingApplications}</span>
-                </li>
-              )}
+          <div className="overflow-y-auto max-h-96">
+            {nothingUrgent ? (
+              <p className="text-xs sm:text-sm text-gray-600">
+                Nothing urgent right now.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {data.actionRequired.pendingApplications > 0 && (
+                  <li className="flex justify-between border p-2 rounded transition-colors hover:bg-gray-50">
+                    <span className="text-xs sm:text-sm">
+                      Pending charity applications
+                    </span>
+                    <span className="text-xs sm:text-sm font-semibold">
+                      {data.actionRequired.pendingApplications}
+                    </span>
+                  </li>
+                )}
 
-              {data.actionRequired.pendingRequests > 0 && (
-                <li className="flex justify-between border p-2 rounded">
-                  <span>Pending donation requests</span>
-                  <span>{data.actionRequired.pendingRequests}</span>
-                </li>
-              )}
+                {data.actionRequired.pendingRequests > 0 && (
+                  <li className="flex justify-between border p-2 rounded transition-colors hover:bg-gray-50">
+                    <span className="text-xs sm:text-sm">
+                      Pending donation requests
+                    </span>
+                    <span className="text-xs sm:text-sm font-semibold">
+                      {data.actionRequired.pendingRequests}
+                    </span>
+                  </li>
+                )}
 
-              {data.actionRequired.unverifiedUsers > 0 && (
-                <li className="flex justify-between border p-2 rounded">
-                  <span>Unverified users</span>
-                  <span>{data.actionRequired.unverifiedUsers}</span>
-                </li>
-              )}
-            </ul>
-          )}
+                {data.actionRequired.unverifiedUsers > 0 && (
+                  <li className="flex justify-between border p-2 rounded transition-colors hover:bg-gray-50">
+                    <span className="text-xs sm:text-sm">Unverified users</span>
+                    <span className="text-xs sm:text-sm font-semibold">
+                      {data.actionRequired.unverifiedUsers}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            )}
+          </div>
         </div>
 
         {/* Recent activity feed */}
-        <div className="border rounded-lg p-4">
-          <h2 className="text-lg font-semibold mb-3">Recent activity</h2>
+        <div className="border rounded-lg p-3 sm:p-4 flex flex-col transition-shadow hover:shadow-md">
+          <h2 className="text-base sm:text-lg font-semibold mb-3">
+            Recent activity
+          </h2>
 
-          {data.recentActivity.length === 0 ? (
-            <p className="text-sm text-gray-600">No recent activity.</p>
-          ) : (
-            <ul className="space-y-2">
-              {data.recentActivity.map((e) => (
-                <li key={e.event_id} className="border p-2 rounded">
-                  <div className="font-medium">{e.event_type}</div>
-                  <div className="text-sm text-gray-600">
-                    {e.actor_type} • {new Date(e.created_on).toLocaleString()}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="overflow-y-auto max-h-96">
+            {data.recentActivity.length === 0 ? (
+              <p className="text-xs sm:text-sm text-gray-600">
+                No recent activity.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {data.recentActivity.map((e) => (
+                  <li
+                    key={e.event_id}
+                    className="border p-2 rounded transition-colors hover:bg-gray-50"
+                  >
+                    <div className="font-medium text-xs sm:text-sm">
+                      {e.event_type}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      {e.actor_type} •{" "}
+                      {new Date(e.created_on).toLocaleDateString()}{" "}
+                      {new Date(e.created_on).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -465,9 +541,9 @@ function HomeTab() {
 // Simple card used for dashboard numbers
 function Card({ title, value }: { title: string; value: number }) {
   return (
-    <div className="border rounded-lg p-4">
-      <div className="text-sm text-gray-600">{title}</div>
-      <div className="text-2xl font-semibold">{value}</div>
+    <div className="border rounded-lg p-3 sm:p-4 transition-shadow hover:shadow-md">
+      <div className="text-xs sm:text-sm text-gray-600">{title}</div>
+      <div className="text-xl sm:text-2xl font-semibold">{value}</div>
     </div>
   );
 }

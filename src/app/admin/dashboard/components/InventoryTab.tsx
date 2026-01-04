@@ -59,7 +59,7 @@ function safeImgUrl(u?: string) {
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-700">
+    <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[10px] sm:text-xs text-gray-700">
       {children}
     </span>
   );
@@ -92,7 +92,7 @@ function Thumbnail({
     <button
       type="button"
       onClick={onClick}
-      className={`${dims} rounded-md overflow-hidden border bg-gray-50 hover:ring-2 hover:ring-green-200 transition`}
+      className={`${dims} rounded-md overflow-hidden border bg-gray-50 hover:ring-2 hover:ring-green-200 transition-all active:scale-95`}
       title="Tap to view"
     >
       <img
@@ -374,37 +374,40 @@ export default function InventoryTab() {
         : null;
 
   return (
-    <div className="h-full min-h-0 flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4 pb-4">
       {/* Inventory (including controls) */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col min-h-0">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden flex flex-col">
         {/* Slimmer header with controls */}
-        <div className="px-4 py-3 border-b bg-gray-50 space-y-3">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-1">
-            <h3 className="text-base md:text-lg font-semibold text-gray-800">
+        <div className="px-3 sm:px-4 py-2 sm:py-3 border-b bg-gray-50 space-y-2 sm:space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+            <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800">
               Charity Inventory
             </h3>
-            <div className="text-xs md:text-sm text-gray-600">
+            <div className="text-[10px] sm:text-xs md:text-sm text-gray-600">
               {selectionLabel ? (
                 <span>
-                  Viewing: <b>{selectionLabel}</b>
+                  Viewing:{" "}
+                  <b className="text-xs sm:text-sm">{selectionLabel}</b>
                 </span>
               ) : (
-                <span>Select a charity or “All items”</span>
+                <span>Select a charity or All items</span>
               )}
             </div>
           </div>
 
           {charitiesError && (
-            <p className="text-xs text-red-600">{charitiesError}</p>
+            <p className="text-[10px] sm:text-xs text-red-600">
+              {charitiesError}
+            </p>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-            <div className="md:col-span-1">
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+            <div className="sm:col-span-1">
+              <label className="block text-[10px] sm:text-xs font-semibold text-gray-700 mb-1">
                 Charity
               </label>
               <select
-                className="w-full border rounded-lg px-2 py-2 text-sm"
+                className="w-full border rounded-lg px-2 py-1.5 sm:py-2 text-xs sm:text-sm hover:border-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-200 transition-colors"
                 value={
                   selectedCharityId === ""
                     ? ""
@@ -435,12 +438,12 @@ export default function InventoryTab() {
               </select>
             </div>
 
-            <div className="md:col-span-1">
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+            <div className="sm:col-span-1">
+              <label className="block text-[10px] sm:text-xs font-semibold text-gray-700 mb-1">
                 Search
               </label>
               <input
-                className="w-full border rounded-lg px-2 py-2 text-sm"
+                className="w-full border rounded-lg px-2 py-1.5 sm:py-2 text-xs sm:text-sm hover:border-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-200 transition-colors disabled:bg-gray-50 disabled:cursor-not-allowed"
                 placeholder="Type, id, size, condition…"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -448,13 +451,13 @@ export default function InventoryTab() {
               />
             </div>
 
-            <div className="md:col-span-1 flex flex-col md:flex-row md:items-end gap-1">
+            <div className="sm:col-span-2 md:col-span-1 flex flex-col sm:flex-row md:flex-col md:items-start gap-2">
               <div className="flex-1">
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-[10px] sm:text-xs font-semibold text-gray-700 mb-1">
                   Page size
                 </label>
                 <select
-                  className="w-full border rounded-lg px-2 py-2 text-sm"
+                  className="w-full border rounded-lg px-2 py-1.5 sm:py-2 text-xs sm:text-sm hover:border-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-200 transition-colors disabled:bg-gray-50 disabled:cursor-not-allowed"
                   value={String(pageSize)}
                   onChange={(e) => setPageSize(Number(e.target.value) as any)}
                   disabled={!hasSelection}
@@ -464,7 +467,7 @@ export default function InventoryTab() {
                   <option value="50">50</option>
                 </select>
               </div>
-              <div className="hidden md:block text-xs text-gray-500 md:text-right">
+              <div className="hidden md:block text-[10px] sm:text-xs text-gray-500 md:text-left mt-1">
                 <div>
                   Showing <b>{pagedItems.length}</b> of{" "}
                   <b>{filteredItems.length}</b>
@@ -478,56 +481,60 @@ export default function InventoryTab() {
         </div>
 
         {/* Body: items */}
-        <div className="flex-1 min-h-0 overflow-auto">
+        <div className="overflow-auto max-h-[600px]">
           {selectedCharityId === "" ? (
-            <div className="p-4 text-gray-500 text-sm">
-              Choose a charity or “All items” above to view inventory.
+            <div className="p-3 sm:p-4 text-gray-500 text-xs sm:text-sm">
+              Choose a charity or All items above to view inventory.
             </div>
           ) : loadingItems ? (
-            <div className="p-4 text-gray-500 text-sm">Loading inventory…</div>
+            <div className="p-3 sm:p-4 text-gray-500 text-xs sm:text-sm">
+              Loading inventory…
+            </div>
           ) : itemsError ? (
-            <div className="p-4 text-red-600 text-sm">{itemsError}</div>
+            <div className="p-3 sm:p-4 text-red-600 text-xs sm:text-sm">
+              {itemsError}
+            </div>
           ) : filteredItems.length === 0 ? (
-            <div className="p-4 text-gray-500 text-sm">
+            <div className="p-3 sm:p-4 text-gray-500 text-xs sm:text-sm">
               No items match your search.
             </div>
           ) : (
             <>
               {/* Mobile cards (collapsible) */}
-              <div className="md:hidden p-3 space-y-3">
+              <div className="md:hidden p-2 sm:p-3 space-y-2 sm:space-y-3">
                 {pagedItems.map((it) => {
                   const expanded = expandedId === it.clothing_id;
 
                   return (
                     <div
                       key={it.clothing_id}
-                      className="border rounded-xl bg-white shadow-sm overflow-hidden"
+                      className="border rounded-xl bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md"
                     >
                       <button
                         type="button"
                         onClick={() =>
                           setExpandedId(expanded ? null : it.clothing_id)
                         }
-                        className="w-full text-left p-3 flex items-start justify-between gap-3"
+                        className="w-full text-left p-2.5 sm:p-3 flex items-start justify-between gap-2 sm:gap-3 active:bg-gray-50 transition-colors"
                       >
-                        <div>
-                          <div className="text-sm font-semibold text-gray-900">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-xs sm:text-sm font-semibold text-gray-900 truncate">
                             Item #{it.clothing_id} • {it.type}
                           </div>
-                          <div className="text-xs text-gray-600 mt-1">
+                          <div className="text-[10px] sm:text-xs text-gray-600 mt-0.5 sm:mt-1">
                             Request #{it.donation_request_id}
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
                           <Badge>{it.status}</Badge>
-                          <span className="text-gray-400 text-xl leading-none">
+                          <span className="text-gray-400 text-lg sm:text-xl leading-none">
                             {expanded ? "−" : "+"}
                           </span>
                         </div>
                       </button>
 
-                      <div className="px-3 pb-3">
-                        <div className="flex items-center gap-3">
+                      <div className="px-2.5 sm:px-3 pb-2.5 sm:pb-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <Thumbnail
                             src={it.front_image_url}
                             alt="Front thumbnail"
@@ -543,14 +550,14 @@ export default function InventoryTab() {
                           <button
                             onClick={() => openImages(it)}
                             disabled={!it.front_image_url && !it.back_image_url}
-                            className="ml-auto text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="ml-auto text-[10px] sm:text-xs px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95"
                           >
                             View
                           </button>
                         </div>
 
                         {expanded && (
-                          <div className="mt-3 flex flex-wrap gap-2">
+                          <div className="mt-2 sm:mt-3 flex flex-wrap gap-1.5 sm:gap-2">
                             <Badge>Size: {it.size}</Badge>
                             <Badge>Condition: {it.condition}</Badge>
                             <Badge>Donation ID: {it.donation_id ?? "—"}</Badge>
@@ -564,31 +571,48 @@ export default function InventoryTab() {
 
               {/* Desktop table */}
               <div className="hidden md:block overflow-x-auto">
-                <table className="w-full min-w-[960px] text-sm">
+                <table className="w-full min-w-[960px] text-xs sm:text-sm">
                   <thead className="bg-white border-b">
                     <tr>
-                      <th className="p-3 text-left">ID</th>
-                      <th className="p-3 text-left">Type</th>
-                      <th className="p-3 text-left">Size</th>
-                      <th className="p-3 text-left">Condition</th>
-                      <th className="p-3 text-left">Status</th>
-                      <th className="p-3 text-left">Donation Req</th>
-                      <th className="p-3 text-left">Donation ID</th>
-                      <th className="p-3 text-left">Images</th>
-                      <th className="p-3 text-left">Action</th>
+                      <th className="p-2 sm:p-3 text-left">ID</th>
+                      <th className="p-2 sm:p-3 text-left">Type</th>
+                      <th className="p-2 sm:p-3 text-left">Size</th>
+                      <th className="p-2 sm:p-3 text-left">Condition</th>
+                      <th className="p-2 sm:p-3 text-left">Status</th>
+                      <th className="p-2 sm:p-3 text-left">Donation Req</th>
+                      <th className="p-2 sm:p-3 text-left">Donation ID</th>
+                      <th className="p-2 sm:p-3 text-left">Images</th>
+                      <th className="p-2 sm:p-3 text-left">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {pagedItems.map((it) => (
-                      <tr key={it.clothing_id} className="border-b">
-                        <td className="p-3">{it.clothing_id}</td>
-                        <td className="p-3">{it.type}</td>
-                        <td className="p-3">{it.size}</td>
-                        <td className="p-3">{it.condition}</td>
-                        <td className="p-3">{it.status}</td>
-                        <td className="p-3">#{it.donation_request_id}</td>
-                        <td className="p-3">{it.donation_id ?? "—"}</td>
-                        <td className="p-3">
+                      <tr
+                        key={it.clothing_id}
+                        className="border-b transition-colors hover:bg-gray-50"
+                      >
+                        <td className="p-2 sm:p-3">{it.clothing_id}</td>
+                        <td className="p-2 sm:p-3">{it.type}</td>
+                        <td className="p-2 sm:p-3">{it.size}</td>
+                        <td className="p-2 sm:p-3">{it.condition}</td>
+                        <td className="p-2 sm:p-3">
+                          <span
+                            className={`inline-block px-2 py-0.5 rounded text-[10px] sm:text-xs ${
+                              it.status === "PENDING"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : it.status === "APPROVED"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {it.status}
+                          </span>
+                        </td>
+                        <td className="p-2 sm:p-3">
+                          #{it.donation_request_id}
+                        </td>
+                        <td className="p-2 sm:p-3">{it.donation_id ?? "—"}</td>
+                        <td className="p-2 sm:p-3">
                           <div className="flex gap-2">
                             <Thumbnail
                               src={it.front_image_url}
@@ -602,11 +626,11 @@ export default function InventoryTab() {
                             />
                           </div>
                         </td>
-                        <td className="p-3">
+                        <td className="p-2 sm:p-3">
                           {it.front_image_url || it.back_image_url ? (
                             <button
                               onClick={() => openImages(it)}
-                              className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50"
+                              className="text-xs px-3 py-2 rounded-md border border-blue-300 text-blue-600 hover:bg-blue-50 transition-colors"
                             >
                               View
                             </button>
@@ -624,89 +648,103 @@ export default function InventoryTab() {
         </div>
 
         {/* Pagination controls */}
-        <div className="px-4 py-2 border-t bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div className="text-xs text-gray-500">
+        <div className="px-3 sm:px-4 py-2 border-t bg-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">
             Search works across ID, type, size, condition, status and request
             ID.
           </div>
 
-          <div className="flex items-center gap-2 justify-end text-xs">
-            <span className="sm:hidden">
+          <div className="flex items-center gap-1.5 sm:gap-2 justify-between sm:justify-end text-[10px] sm:text-xs">
+            <span className="sm:hidden text-gray-600">
               Page <b>{page}</b>/<b>{totalPages}</b>
             </span>
-            <button
-              type="button"
-              onClick={() => setPage(1)}
-              disabled={page <= 1}
-              className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              First
-            </button>
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page <= 1}
-              className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Prev
-            </button>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                type="button"
+                onClick={() => setPage(1)}
+                disabled={page <= 1}
+                className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95"
+              >
+                First
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95"
+              >
+                Prev
+              </button>
 
-            <span className="hidden sm:inline-block px-2">
-              Page <b>{page}</b> / <b>{totalPages}</b>
-            </span>
+              <span className="hidden sm:inline-block px-2">
+                Page <b>{page}</b> / <b>{totalPages}</b>
+              </span>
 
-            <button
-              type="button"
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page >= totalPages}
-              className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Next
-            </button>
-            <button
-              type="button"
-              onClick={() => setPage(totalPages)}
-              disabled={page >= totalPages}
-              className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Last
-            </button>
+              <button
+                type="button"
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95"
+              >
+                Next
+              </button>
+              <button
+                type="button"
+                onClick={() => setPage(totalPages)}
+                disabled={page >= totalPages}
+                className="px-2 py-1 rounded border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors active:scale-95"
+              >
+                Last
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-5 min-h-[260px] flex flex-col">
-          <h4 className="font-semibold text-gray-800 mb-2 text-sm md:text-base">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
+        <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 md:p-5 min-h-[220px] sm:min-h-[260px] flex flex-col transition-shadow hover:shadow-md">
+          <h4 className="font-semibold text-gray-800 mb-2 text-xs sm:text-sm md:text-base">
             Split of clothing types (Available inventory)
           </h4>
           <div className="flex-1 relative">
             {loadingAnalytics ? (
-              <div className="text-gray-500 text-sm">Loading chart…</div>
+              <div className="text-gray-500 text-xs sm:text-sm">
+                Loading chart…
+              </div>
             ) : analyticsError ? (
-              <div className="text-red-600 text-sm">{analyticsError}</div>
+              <div className="text-red-600 text-xs sm:text-sm">
+                {analyticsError}
+              </div>
             ) : analytics && analytics.typeSplit?.length ? (
               <Doughnut data={typeChartData} options={doughnutOptions} />
             ) : (
-              <div className="text-gray-500 text-sm">No data to display.</div>
+              <div className="text-gray-500 text-xs sm:text-sm">
+                No data to display.
+              </div>
             )}
           </div>
         </div>
 
-        <div className="bg-white border border-gray-200 rounded-xl p-4 md:p-5 min-h-[260px] flex flex-col">
-          <h4 className="font-semibold text-gray-800 mb-2 text-sm md:text-base">
+        <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 md:p-5 min-h-[220px] sm:min-h-[260px] flex flex-col transition-shadow hover:shadow-md">
+          <h4 className="font-semibold text-gray-800 mb-2 text-xs sm:text-sm md:text-base">
             Items contributed by charities (Available inventory)
           </h4>
           <div className="flex-1 relative">
             {loadingAnalytics ? (
-              <div className="text-gray-500 text-sm">Loading chart…</div>
+              <div className="text-gray-500 text-xs sm:text-sm">
+                Loading chart…
+              </div>
             ) : analyticsError ? (
-              <div className="text-red-600 text-sm">{analyticsError}</div>
+              <div className="text-red-600 text-xs sm:text-sm">
+                {analyticsError}
+              </div>
             ) : analytics && analytics.itemsByCharity?.length ? (
               <Doughnut data={charityChartData} options={doughnutOptions} />
             ) : (
-              <div className="text-gray-500 text-sm">No data to display.</div>
+              <div className="text-gray-500 text-xs sm:text-sm">
+                No data to display.
+              </div>
             )}
           </div>
         </div>
@@ -719,66 +757,66 @@ export default function InventoryTab() {
             className="fixed inset-0 bg-black/50 z-40"
             onClick={closeImages}
           />
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100 overflow-hidden">
-              <div className="px-5 py-4 border-b bg-gray-50 flex items-center justify-between">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
+            <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-gray-100 overflow-hidden max-h-[90vh] overflow-y-auto">
+              <div className="px-3 sm:px-5 py-3 sm:py-4 border-b bg-gray-50 flex items-center justify-between sticky top-0 z-10">
+                <div className="flex-1 min-w-0 pr-2">
+                  <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 truncate">
                     Item #{imageItem.clothing_id} Images
                   </h3>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-[10px] sm:text-xs text-gray-600 truncate">
                     {imageItem.type} • {imageItem.size} • {imageItem.condition}
                   </p>
                 </div>
                 <button
                   onClick={closeImages}
-                  className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+                  className="text-gray-500 hover:text-gray-700 text-xl sm:text-2xl leading-none transition-colors flex-shrink-0"
                   aria-label="Close"
                 >
                   ×
                 </button>
               </div>
 
-              <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-3 sm:p-5 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div className="border rounded-lg overflow-hidden bg-gray-50">
-                  <div className="px-3 py-2 text-sm font-semibold border-b bg-white">
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold border-b bg-white">
                     Front
                   </div>
                   {imageItem.front_image_url ? (
                     <img
                       src={safeImgUrl(imageItem.front_image_url)}
                       alt="Front view"
-                      className="w-full h-[320px] object-contain bg-gray-50"
+                      className="w-full h-[240px] sm:h-[320px] object-contain bg-gray-50"
                     />
                   ) : (
-                    <div className="h-[320px] flex items-center justify-center text-gray-400">
+                    <div className="h-[240px] sm:h-[320px] flex items-center justify-center text-gray-400 text-xs sm:text-sm">
                       No front image
                     </div>
                   )}
                 </div>
 
                 <div className="border rounded-lg overflow-hidden bg-gray-50">
-                  <div className="px-3 py-2 text-sm font-semibold border-b bg-white">
+                  <div className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold border-b bg-white">
                     Back
                   </div>
                   {imageItem.back_image_url ? (
                     <img
                       src={safeImgUrl(imageItem.back_image_url)}
                       alt="Back view"
-                      className="w-full h-[320px] object-contain bg-gray-50"
+                      className="w-full h-[240px] sm:h-[320px] object-contain bg-gray-50"
                     />
                   ) : (
-                    <div className="h-[320px] flex items-center justify-center text-gray-400">
+                    <div className="h-[240px] sm:h-[320px] flex items-center justify-center text-gray-400 text-xs sm:text-sm">
                       No back image
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="px-5 py-4 border-t bg-gray-50 flex justify-end">
+              <div className="px-3 sm:px-5 py-3 sm:py-4 border-t bg-gray-50 flex justify-end sticky bottom-0">
                 <button
                   onClick={closeImages}
-                  className="text-sm px-4 py-2 rounded border border-gray-300 hover:bg-gray-100"
+                  className="text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded border border-gray-300 hover:bg-gray-100 transition-colors active:scale-95"
                 >
                   Close
                 </button>
