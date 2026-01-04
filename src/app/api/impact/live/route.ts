@@ -52,10 +52,11 @@ export async function GET() {
 
     /**
      * Simple sustainability estimates
-     * These are calculated using average values.
-     * (Values can be refined later without changing the API contract)
+     * Match landing page calculation: 0.5 kg per item × 3.6 CO₂ per kg = 1.8 kg CO₂ per item
      */
-    const AVERAGE_CO2_SAVED_PER_ITEM_KG = 3.0;
+    const AVERAGE_KG_PER_ITEM = 0.5;
+    const CO2_PER_KG = 3.6;
+    const AVERAGE_CO2_SAVED_PER_ITEM_KG = AVERAGE_KG_PER_ITEM * CO2_PER_KG; // 1.8
     const AVERAGE_LANDFILL_SAVED_PER_ITEM_KG = 0.5;
 
     const co2SavedKg = totalItems * AVERAGE_CO2_SAVED_PER_ITEM_KG;

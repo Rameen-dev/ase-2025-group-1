@@ -3,19 +3,8 @@ import { PrismaClient } from "@/generated/prisma";
 
 const prisma = new PrismaClient();
 
-// CO2 savings per clothing type (in kg)
-// Case-insensitive lookup
-const CO2_VALUES: { [key: string]: number } = {
-  jacket: 25,
-  pants: 15,
-  shirt: 10,
-  shoes: 20,
-};
-
-function getCO2Value(type: string): number {
-  const normalizedType = type.toLowerCase();
-  return CO2_VALUES[normalizedType] || 0;
-}
+// Match landing page calculation: 0.5 kg per item × 3.6 CO₂ per kg = 1.8 kg CO₂ per item
+const CO2_PER_ITEM = 1.8;
 
 export async function GET() {
   try {
@@ -31,25 +20,22 @@ export async function GET() {
       },
     });
 
-    // Calculate total CO2
-    let totalCO2 = 0;
+    // Calculate total CO2 using flat rate
+    const totalCO2 = allItems.length * CO2_PER_ITEM;
     const donorCO2Map = new Map<number, number>();
     const charityCO2Map = new Map<number, number>();
 
     allItems.forEach((item) => {
-      const co2Value = getCO2Value(item.type);
-      totalCO2 += co2Value;
-
       // Track by donor
       if (item.donor_id) {
         const current = donorCO2Map.get(item.donor_id) || 0;
-        donorCO2Map.set(item.donor_id, current + co2Value);
+        donorCO2Map.set(item.donor_id, current + CO2_PER_ITEM);
       }
 
       // Track by charity
       if (item.owned_by) {
         const current = charityCO2Map.get(item.owned_by) || 0;
-        charityCO2Map.set(item.owned_by, current + co2Value);
+        charityCO2Map.set(item.owned_by, current + CO2_PER_ITEM);
       }
     });
 
