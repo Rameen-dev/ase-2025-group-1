@@ -1,6 +1,6 @@
 ### ASE-2025-Group-1 - Applied Software Engineering Project
 
-SustainWear | A sustainable clothing donation platform.
+**SustainWear** | A sustainable clothing donation platform.
 
 ## Overview 
 SustainWear is a full-stack web platform designed to connect donors, charities and administrators in order to help facilitate sustainable clothing donations.
@@ -94,7 +94,7 @@ cd sustainwear
 ---
 
 # 2. Install Dependencies
-npm install 
+```npm install```
 
 This installs all of the required frontend, backend and testing dependencies.
 
