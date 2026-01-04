@@ -1,157 +1,331 @@
-# 📘 ASE-2025-Group-1 — Applied Software Engineering Project
+# ASE-2025-Group-1 - Applied Software Engineering Project
 
-This repository hosts the **Group 1 project** for the 2025 Applied Software Engineering module.  
-It’s a **Next.js (React + Node.js)** monorepo with both frontend UI and backend API in one codebase.
-
----
-
-## 🚀 Tech Stack
-
-- **Framework:** Next.js 15 (React + Node.js)  
-- **Language:** JavaScript / TypeScript (if extended)  
-- **Styling:** TailwindCSS  
-- **CI/CD:** GitHub Actions (build + lint + tests)  
-- **Package Manager:** npm
-
----
-
-## 🌿 Branching & Git Workflow (Professional Setup)
-
-We now use a **trunk-based + short-lived feature branch** model.  
-👉 The old permanent `frontend` and `backend` branches have been removed for clarity.
-
-```
-(main)  ← production-only, stable
-  ▲
-(dev)   ← shared integration (auto-deploy & test)
-  ▲
-  ├─ feature/login-ui
-  ├─ feature/login-api
-  ├─ feature/payments-refactor
-  └─ feature/bugfix-xyz
-```
-
-**Key rules**
-- **`main`**: production-ready only. Updated *only* via PR from `dev` and tagged releases.  
-- **`dev`**: single integration branch. All work merges here via PR after passing CI.  
-- **`feature/*`**: short‑lived task branches (front or back end). Merge → `dev` via PR.
-
-This keeps integration clean, supports parallel work, and mirrors industry practice.
-
----
-
-## ⚙️ Quick Start (Local Setup)
-
-```bash
-git clone https://github.com/Rameen-dev/ase-2025-group-1.git
-cd ase-2025-group-1
-
-# Work from dev
-git switch dev
-git pull
-
-# Create a task branch
-git checkout -b feature/<topic-short-desc>
-
-# Install dependencies (clean install for consistency)
-npm ci
-
-# Run the app
-npm run dev   # http://localhost:3000
-```
-
-### Useful scripts
-```bash
-npm run build   # Production build
-npm run start   # Run production build
-npm run lint    # ESLint checks
-npm test        # (when tests are added)
-```
-
----
-
-## 🔐 Branch Protection (recommended)
-- **dev**: require PRs, passing status checks, 1–2 reviews, up‑to‑date with base.  
-- **main**: same as dev **plus** releases are cut from tags (e.g., `v0.1.0`).
-
----
-
-## 🤝 Collaboration Workflow
-
-1) **Create** a feature branch from `dev`  
-   ```bash
-   git switch dev && git pull
-   git checkout -b feature/<topic-short-desc>
-   ```
-
-2) **Develop & commit** (use Conventional Commits when possible)  
-   ```bash
-   git commit -m "feat: add login form component"
-   ```
-
-3) **Open PR → `dev`**  
-   - CI runs: lint, typecheck, unit tests, build (and e2e when available).  
-   - Address review comments; PR must be green.
-
-4) **Merge** when CI passes. `dev` auto-deploys to the shared dev environment.
-
-5) **Release**: when stable, open PR `dev → main`, run full checks, tag release.
-
-> **Tip:** Slice work by *feature*, not by “frontend vs backend”. If a UI depends on an API change, coordinate two PRs (e.g., `feature/login-ui` and `feature/login-api`) that both target `dev`. Use feature flags if needed.
-
----
-
-## ✅ CI/CD (GitHub Actions)
-
-Every push and PR triggers:  
-1. **Install deps** (`npm ci`)  
-2. **Lint** (`npm run lint`)  
-3. **Build** (`npm run build`)  
-4. **Tests** (unit/e2e as configured)  
-5. (Optional) **Preview Deploy** for PRs and **auto-deploy** for `dev`
-
----
-
-## 🧩 Conventions
-
-- **Branch names:** `feature/<topic-short-desc>`, `fix/<bug-id>`, `chore/<task>`  
-- **Commits:** Conventional Commits (`feat:`, `fix:`, `chore:`, `refactor:`, etc.)  
-- **PR Template:** add `.github/pull_request_template.md`
-
-Example PR template:
-```md
-## Summary
-<What this changes and why>
-
-## Scope
-- [ ] Frontend
-- [ ] Backend
-- [ ] DB/Schema
-- [ ] Docs
-
-## Tests
-- [ ] Unit tests added/updated
-- [ ] E2E/Smoke (if applicable)
-
-## Notes
-Feature flags / migrations / rollout:
-```
-
----
-
-## 🧾 Assessment Alignment
-
-- **Agile & CI/CD:** Professional branching + PR reviews + automated checks.  
-- **Version Control Rigor:** Protected branches and traceable releases.  
-- **Maintainability:** Reproducible installs via `npm ci`; clear workflow docs.  
-- **Professionalism:** Industry-aligned process that assessors can audit easily.
-
----
-
-## 📌 Contribution Guidelines
-
-- Pull latest before starting work: `git switch/ checkout dev && git pull`.  
-- Do **not** commit directly to `main` or `dev`. Always use PRs.  
-- Ensure `npm run lint` and `npm run build` and `npm run test` pass locally before opening PRs.
-
----
++---src
+|   +---app
+|   |   |   favicon.svg
+|   |   |   globals.css
+|   |   |   layout.tsx
+|   |   |   page.tsx
+|   |   |
+|   |   +---admin
+|   |   |   \---dashboard
+|   |   |       |   page.tsx
+|   |   |       |
+|   |   |       \---components
+|   |   |               ImpactTab.tsx
+|   |   |               InventoryTab.tsx
+|   |   |               UserDetailsModal.tsx
+|   |   |               UsersTab.tsx
+|   |   |
+|   |   +---api
+|   |   |   +---admin
+|   |   |   |   +---charities
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---dashboard
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   \---inventory
+|   |   |   |       |   route.ts
+|   |   |   |       |
+|   |   |   |       \---analytics
+|   |   |   |               route.ts
+|   |   |   |
+|   |   |   +---auth
+|   |   |   |   +---charity-login
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---logout
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   \---reset
+|   |   |   |       +---confirm
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       +---request
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       +---resend
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       \---verify
+|   |   |   |               route.ts
+|   |   |   |
+|   |   |   +---charity
+|   |   |   |   +---analytics
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---donations
+|   |   |   |   |   |   route.ts
+|   |   |   |   |   |
+|   |   |   |   |   \---[requestId]
+|   |   |   |   |       \---items
+|   |   |   |   |               route.ts
+|   |   |   |   |
+|   |   |   |   \---inventory
+|   |   |   |       |   route.ts
+|   |   |   |       |
+|   |   |   |       +---chart
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       \---drafts
+|   |   |   |           |   route.ts
+|   |   |   |           |
+|   |   |   |           \---[draftId]
+|   |   |   |               |   route.ts
+|   |   |   |               |
+|   |   |   |               +---add
+|   |   |   |               |       route.ts
+|   |   |   |               |
+|   |   |   |               +---cancel
+|   |   |   |               |       route.ts
+|   |   |   |               |
+|   |   |   |               \---remove
+|   |   |   |                       route.ts
+|   |   |   |
+|   |   |   +---charity-application
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---charity-applications
+|   |   |   |   |   route.ts
+|   |   |   |   |
+|   |   |   |   +---complete-signup
+|   |   |   |   |   |   route.ts
+|   |   |   |   |   |
+|   |   |   |   |   \---validate
+|   |   |   |   |           route.ts
+|   |   |   |   |
+|   |   |   |   \---[id]
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   +---contact
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---debug
+|   |   |   |   \---session
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   +---donation-requests
+|   |   |   |   |   route.ts
+|   |   |   |   |
+|   |   |   |   \---[id]
+|   |   |   |       |   route.ts
+|   |   |   |       |
+|   |   |   |       +---accept
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       +---decline
+|   |   |   |       |       route.ts
+|   |   |   |       |
+|   |   |   |       \---items
+|   |   |   |               route.ts
+|   |   |   |
+|   |   |   +---donor
+|   |   |   |   \---analytics
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   +---getname
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---impact
+|   |   |   |   +---charities
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---charity
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---donor
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---donors
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   +---live
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   \---platform
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   +---login
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---resend-otp
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---settings
+|   |   |   |   +---me
+|   |   |   |   |       route.ts
+|   |   |   |   |
+|   |   |   |   \---password
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   +---signup
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---support-chat
+|   |   |   |       route.ts
+|   |   |   |
+|   |   |   +---users
+|   |   |   |   |   route.ts
+|   |   |   |   |
+|   |   |   |   \---[id]
+|   |   |   |           route.ts
+|   |   |   |
+|   |   |   \---verify-otp
+|   |   |           route.ts
+|   |   |
+|   |   +---auth
+|   |   |   +---charity-application
+|   |   |   |   |   page.tsx
+|   |   |   |   |
+|   |   |   |   \---application-successful
+|   |   |   |           page.tsx
+|   |   |   |
+|   |   |   +---charity-signup
+|   |   |   |       page.tsx
+|   |   |   |
+|   |   |   +---login
+|   |   |   |       page.tsx
+|   |   |   |
+|   |   |   +---reset
+|   |   |   |   +---new-password
+|   |   |   |   |       page.tsx
+|   |   |   |   |
+|   |   |   |   +---request
+|   |   |   |   |       page.tsx
+|   |   |   |   |
+|   |   |   |   \---verify
+|   |   |   |           page.tsx
+|   |   |   |
+|   |   |   +---signup
+|   |   |   |       page.tsx
+|   |   |   |
+|   |   |   \---verify
+|   |   |           page.tsx
+|   |   |
+|   |   +---charity
+|   |   |   \---dashboard
+|   |   |       |   page.tsx
+|   |   |       |
+|   |   |       \---tabs
+|   |   |               CharityDonationsTab.tsx
+|   |   |               CharityHomeTab.tsx
+|   |   |               CharityInventoryTab.tsx
+|   |   |
+|   |   +---donor
+|   |   |   \---dashboard
+|   |   |       |   page.tsx
+|   |   |       |
+|   |   |       +---components
+|   |   |       |       DonorHomeTab.tsx
+|   |   |       |
+|   |   |       \---tabs
+|   |   |               DonorDonationsTab.tsx
+|   |   |               DonorHomeTab.tsx
+|   |   |
+|   |   \---privacy
+|   |           page.tsx
+|   |
+|   +---components
+|   |   |   ChatWidget.tsx
+|   |   |   impactPreview.tsx
+|   |   |   loginButton.tsx
+|   |   |   signupButton.tsx
+|   |   |
+|   |   +---charity
+|   |   |   |   CharityImpactCards.tsx
+|   |   |   |
+|   |   |   +---donations
+|   |   |   |       charityDonationHistoryModal.tsx
+|   |   |   |       charityViewDonationRequestModal.tsx
+|   |   |   |
+|   |   |   \---inventory
+|   |   |           drafts.tsx
+|   |   |           imageSlider.tsx
+|   |   |           inventory.tsx
+|   |   |           inventoryChart.tsx
+|   |   |           viewDraftModal.tsx
+|   |   |
+|   |   +---donor
+|   |   |       DonorImpactCards.tsx
+|   |   |
+|   |   +---forms
+|   |   |       input.tsx
+|   |   |       password-fields.tsx
+|   |   |       passwordInput.tsx
+|   |   |
+|   |   +---modals
+|   |   |       confirmMessageModal.tsx
+|   |   |       donationRequestModal.tsx
+|   |   |       viewDonationRequestModal.tsx
+|   |   |
+|   |   +---settings
+|   |   |       AccountSettings.tsx
+|   |   |
+|   |   \---UI
+|   |           dashboard-layout.tsx
+|   |           SustainWearLogo.tsx
+|   |
+|   +---generated
+|   |   \---prisma
+|   |       |   client.d.ts
+|   |       |   client.js
+|   |       |   default.d.ts
+|   |       |   default.js
+|   |       |   edge.d.ts
+|   |       |   edge.js
+|   |       |   index-browser.js
+|   |       |   index.d.ts
+|   |       |   index.js
+|   |       |   package.json
+|   |       |   query_engine-windows.dll.node
+|   |       |   query_engine-windows.dll.node.tmp27452
+|   |       |   query_engine-windows.dll.node.tmp29972
+|   |       |   query_engine_bg.js
+|   |       |   query_engine_bg.wasm
+|   |       |   schema.prisma
+|   |       |   wasm-edge-light-loader.mjs
+|   |       |   wasm-worker-loader.mjs
+|   |       |   wasm.d.ts
+|   |       |   wasm.js
+|   |       |
+|   |       \---runtime
+|   |               edge-esm.js
+|   |               edge.js
+|   |               index-browser.d.ts
+|   |               index-browser.js
+|   |               library.d.ts
+|   |               library.js
+|   |               react-native.js
+|   |               wasm-compiler-edge.js
+|   |               wasm-engine-edge.js
+|   |
+|   +---lib
+|   |   |   email.ts
+|   |   |   impact.ts
+|   |   |   prisma.ts
+|   |   |   types.ts
+|   |   |   validation.ts
+|   |   |
+|   |   \---cloud
+|   |           cloud.ts
+|   |           cloudClient.ts
+|   |
+|   \---types
+|           donation.ts
+|           sgv.d.ts
+|
++---tests
+|       setup.ts
+|       styleMock.js
+|
+\---__tests__
+    \---validation
+        +---auth
+        |       resetConfirm.test.ts
+        |
+        +---password
+        |       password.test.ts
+        |
+        \---signup
+                signup.test.ts
