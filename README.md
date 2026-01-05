@@ -1,8 +1,8 @@
-### ASE-2025-Group-1 - Applied Software Engineering Project
+# ASE-2025-Group-1 - Applied Software Engineering Project
 
 **SustainWear** | A sustainable clothing donation platform.
 
-## Overview 
+# Overview 
 SustainWear is a full-stack web platform designed to connect donors, charities and administrators in order to help facilitate sustainable clothing donations.
 
 The platform focuses on secure onboarding and authentication, controlled charity approval, donation tracking and sustainability impact analytics, such as estimated CO2 savings and clothing diverted from landfill.
@@ -11,7 +11,7 @@ The system was developed using Agile Scrum principles with repeated development,
 
 ---
 
-## Key Features
+# Key Features
 - Secure donor authentication (Sign-up, Email Verification, Password reset).
 - Controlled charity onboarding with admin approval and invite flow.
 - Donation request creation and charity response management.
@@ -22,7 +22,7 @@ The system was developed using Agile Scrum principles with repeated development,
 
 ---
 
-## Technology Stack
+# Technology Stack
 - Frontend & Backend: Next.js (App Router)
 - Database: PostgreSQL
 - Cloud Database Hosting: Neon
@@ -35,7 +35,7 @@ The system was developed using Agile Scrum principles with repeated development,
 
 ---
 
-## Project Structure
+# Project Structure
 ```
 src/
 ├── app/                    # Next.js App Router
@@ -67,7 +67,7 @@ We tried to make sure the project follows a modular, role-based structure, separ
 
 ---
 
-## Testing 
+# Testing 
 Unit testing was implemented using Jest. Our tests focus on: 
 - Authentication flows
 - Input validation schemas
@@ -76,7 +76,7 @@ In addition, Code coverage was used to ensure key backend logic and error handli
 
 ---
 
-## Team Members
+# Team Members
 - Rameen Burdabar - Scrum Master / Backend & Database
 - Bogdan Dinulescu - Product Owner / Frontend & Backend
 - Reefat Daniel Aziz - Developer / UI & Design
@@ -84,12 +84,11 @@ In addition, Code coverage was used to ensure key backend logic and error handli
 
 ---
 
-## Setting Up & Running the Project Locally
+# Setting Up & Running the Project Locally
 This is a quick guide on how the SustainWear platform can be run locally for demonstration or assessment purposes. 
 
-# 1. Clone the Repository 
-git clone <repository-url>
-cd sustainwear
+## 1. Clone the Repository 
+```git clone <repository-url> cd sustainwear```
 
 ---
 
@@ -107,28 +106,37 @@ This project uses environment variables to manage sensitive configuration such a
 Create a `.env` file in the project root and configure the following variables:
 
 env
-# Database (PostgreSQL - Neon)
+## Database (PostgreSQL - Neon)
+```
 DATABASE_URL=
+```
 
-# Email (SMTP)
+## Email (SMTP)
+```
 SMTP_HOST=
 SMTP_PORT=
 SMTP_USER=
 SMTP_PASS=
 MAIL_FROM=
-
-# Application
+```
+## Application
+```
 APP_BASE_URL=http://localhost:3000
+```
 
-# Cloudinary (Image Storage)
+## Cloudinary (Image Storage)
+```
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
 NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET=
+```
 
-# Google Gemini API Key for the AI-Chat Assistant
+## Google Gemini API Key for the AI-Chat Assistant
+```
 GEMINI_API_KEY=
+```
 
 ---
 
@@ -138,11 +146,11 @@ For this project, we used PostgreSQL hosted on Neon, managed via Prisma.
 
 Run the following command to apply the databse schema:
 
-npx prisma migrate deploy
+```npx prisma migrate deploy```
 
 To view the database schema visually, run the following command: 
 
-npx prisma studio
+```npx prisma studio```
 
 ---
 
@@ -150,7 +158,7 @@ npx prisma studio
 
 Start the development server by running this:
 
-npm run dev
+```npm run dev```
 
 The application will be available at:
 
@@ -162,7 +170,7 @@ http://localhost:3000
 
 Unit tests can be executed as well by running this command: 
 
-npm test 
+```npm test```
 
 These tests validate authentication flows and shared validation logic
 
@@ -171,7 +179,7 @@ These tests validate authentication flows and shared validation logic
 # 7. User Roles for Demoonstration
 
 - Donor: Create an account via the standard sign-up flow
-- Charity: Submit an application and complete sign-9up via admin invite
+- Charity: Submit an application and complete sign-up via admin invite
 - Admin: Admin accounts are seeded manually in the database for security
 
 
