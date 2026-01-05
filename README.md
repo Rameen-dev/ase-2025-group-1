@@ -176,7 +176,7 @@ These tests validate authentication flows and shared validation logic
 
 ---
 
-# 7. User Roles for Demoonstration
+# 7. User Roles for Demonstration
 
 - Donor: Create an account via the standard sign-up flow
 - Charity: Submit an application and complete sign-up via admin invite
