@@ -144,9 +144,9 @@ GEMINI_API_KEY=
 
 For this project, we used PostgreSQL hosted on Neon, managed via Prisma.
 
-Run the following command to apply the databse schema:
+Run the following command to generate the prisma client:
 
-```npx prisma migrate deploy```
+```npx prisma generate```
 
 To view the database schema visually, run the following command: 
 
